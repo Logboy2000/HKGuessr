@@ -1,0 +1,95 @@
+@font-face {
+    font-family: 'Trajan Pro Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Trajan Pro Regular'), url('TrajanPro-Regular.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Trajan Pro Bold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Trajan Pro Bold'), url('TrajanPro-Bold.woff') format('woff');
+}
+
+body {
+    
+    background-color: #000;
+    overflow: hidden;
+}
+
+#locationImg {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+}
+
+#guessButton {
+    font-family: 'Trajan Pro Bold';
+    font-size: 1.5rem;
+    height:min-content;
+    width: 100%;
+    background-color: transparent;
+    color: #FFF;
+    border: 2px solid #FFF;
+    border-radius: 0.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+#guessButton:hover {
+    background-color: #FFF;
+    color: #000;
+}
+
+#guessButton:disabled {
+    background-color: #555;
+    color: #999;
+    border: 2px solid #999;
+    cursor: not-allowed;
+}
+
+
+#mapCanvas {
+    width: 100%;
+    height: 100%;
+}
+
+#mapContainer {
+    background-color: #000000;
+    transition: all 0.3s ease-in-out;
+    position: absolute;
+    width: 20%;
+    height: auto;
+    right: 0;
+    bottom: 0;
+    margin: 1rem;
+    border-radius: 1rem;
+    border-color: #000;
+    border-style: solid;
+    border-width: 1rem;
+    aspect-ratio: 25 / 17;
+    image-rendering: optimizeSpeed;
+}
+
+#mapContainer:hover {
+    width: 50%;
+    height: auto;
+
+}
+
+#scoreContainer {
+    font-family: 'Trajan Pro Bold';
+    font-size: 2rem;
+    color: #FFF;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
