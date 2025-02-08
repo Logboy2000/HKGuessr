@@ -23,41 +23,41 @@ const locationData = [
     [1193, 967, 'images/screenshots/13.png'],
     [1690, 639, 'images/screenshots/14.png'],
     [301, 1907, 'images/screenshots/15.png'],
-    // [0, 0, 'images/screenshots/16.png'],
-    // [0, 0, 'images/screenshots/17.png'],
-    // [0, 0, 'images/screenshots/18.png'],
-    // [0, 0, 'images/screenshots/19.png'],
-    // [0, 0, 'images/screenshots/20.png'],
-    // [0, 0, 'images/screenshots/21.png'],
-    // [0, 0, 'images/screenshots/22.png'],
-    // [0, 0, 'images/screenshots/23.png'],
-    // [0, 0, 'images/screenshots/24.png'],
-    // [0, 0, 'images/screenshots/25.png'],
-    // [0, 0, 'images/screenshots/26.png'],
-    // [0, 0, 'images/screenshots/27.png'],
-    // [0, 0, 'images/screenshots/28.png'],
-    // [0, 0, 'images/screenshots/29.png'],
-    // [0, 0, 'images/screenshots/30.png'],
-    // [0, 0, 'images/screenshots/31.png'],
-    // [0, 0, 'images/screenshots/32.png'],
-    // [0, 0, 'images/screenshots/33.png'],
-    // [0, 0, 'images/screenshots/34.png'],
-    // [0, 0, 'images/screenshots/35.png'],
-    // [0, 0, 'images/screenshots/36.png'],
-    // [0, 0, 'images/screenshots/37.png'],
-    // [0, 0, 'images/screenshots/38.png'],
-    // [0, 0, 'images/screenshots/39.png'],
-    // [0, 0, 'images/screenshots/40.png'],
-    // [0, 0, 'images/screenshots/41.png'],
-    // [0, 0, 'images/screenshots/42.png'],
-    // [0, 0, 'images/screenshots/43.png'],
-    // [0, 0, 'images/screenshots/44.png'],
-    // [0, 0, 'images/screenshots/45.png'],
-    // [0, 0, 'images/screenshots/46.png'],
-    // [0, 0, 'images/screenshots/47.png'],
-    // [0, 0, 'images/screenshots/48.png'],
-    // [0, 0, 'images/screenshots/49.png'],
-    // [0, 0, 'images/screenshots/50.png'],
+    [1914, 871, 'images/screenshots/16.png'],
+    [1854, 865, 'images/screenshots/17.png'],
+    [2103, 2239, 'images/screenshots/18.png'],
+    [2057, 1760, 'images/screenshots/19.png'],
+    [2022, 616, 'images/screenshots/20.png'],
+    [2052, 624, 'images/screenshots/21.png'],
+    [3493, 2002, 'images/screenshots/22.png'],
+    [3683, 1712, 'images/screenshots/23.png'],
+    [2963, 482, 'images/screenshots/24.png'],
+    [2894, 986, 'images/screenshots/25.png'],
+    [2669, 1850, 'images/screenshots/26.png'],
+    [2738, 1779, 'images/screenshots/27.png'],
+    [3552, 1275, 'images/screenshots/28.png'],
+    [2716, 1548, 'images/screenshots/29.png'],
+    [3832, 1449, 'images/screenshots/30.png'],
+    [3849, 1527, 'images/screenshots/31.png'],
+    [3839, 1370, 'images/screenshots/32.png'],
+    [2053, 844, 'images/screenshots/33.png'],
+    [2244, 799, 'images/screenshots/34.png'],
+    [2557, 878, 'images/screenshots/35.png'],
+    [3590, 1535, 'images/screenshots/36.png'],
+    [2074, 936, 'images/screenshots/37.png'],
+    [2404, 2077, 'images/screenshots/38.png'],
+    [2558, 922, 'images/screenshots/39.png'],
+    [2630, 2258, 'images/screenshots/40.png'],
+    [2773, 2065, 'images/screenshots/41.png'],
+    [3221, 2228, 'images/screenshots/42.png'],
+    [3035, 2227, 'images/screenshots/43.png'],
+    [2726, 2346, 'images/screenshots/44.png'],
+    [1858, 2269, 'images/screenshots/45.png'],
+    [2138, 2374, 'images/screenshots/46.png'],
+    [2448, 2261, 'images/screenshots/47.png'],
+    [2734, 2192, 'images/screenshots/48.png'],
+    [2353, 2119, 'images/screenshots/49.png'],
+    [2522, 2071, 'images/screenshots/50.png'],
     // [0, 0, 'images/screenshots/51.png'],
     // [0, 0, 'images/screenshots/52.png'],
     // [0, 0, 'images/screenshots/53.png'],
@@ -102,6 +102,9 @@ var guessButton
 var gameOverWindow
 var restartButton
 var totalRoundsElement
+var loadingText
+var imageIsLoaded = false
+
 // Canvas context
 var mapCtx
 
@@ -157,6 +160,7 @@ function loaded() {
     mapCamera.targetY = mapCamera.y
 
     // HTML Elements
+    loadingText = getElement('loadingText')
     totalRoundsElement = getElement('totalRounds')
     accuracyElement = getElement('accuracy')
     mapContainer = getElement('mapContainer')
@@ -185,7 +189,9 @@ function updateGuessPos() {
             x: mouseXRelative,
             y: mouseYRelative
         }
-        guessButton.disabled = false
+        if (imageIsLoaded) {
+            guessButton.disabled = false
+        }
     }
 }
 
@@ -264,7 +270,7 @@ function addEventListeners() {
 }
 
 function guessButtonClicked() {
-    if (guessPos == null){
+    if (guessPos == null) {
         return -1
     }
 
@@ -402,8 +408,20 @@ function update() {
 }
 
 function setLocation(i) {
+    imageIsLoaded = false
     currentLocation = locations[i]
-    locationImgElement.src = currentLocation.imageSrc
+    locationImgElement.src = ''
+    loadingText.style.display = 'flex'
+    const img = new Image()
+    img.onload = function () {
+        imageIsLoaded = true
+        loadingText.style.display = 'none'
+        locationImgElement.src = currentLocation.imageSrc
+        if (guessPos) {
+            guessButton.disabled = false
+        }
+    }
+    img.src = currentLocation.imageSrc
 }
 
 function addLocation(mapX, mapY, imageSrc) {

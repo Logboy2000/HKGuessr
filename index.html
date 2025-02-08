@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
     <title>HK Guessr</title>
 </head>
+
 <body>
 
     <img src="" alt="Loading Image..." id="locationImg">
@@ -18,13 +20,17 @@
         <br>
         <button id="guessButton" disabled>Guess!</button>
     </div>
-    <div id="gameOverWindow" hidden>
+    <div id="gameOverWindow">
         <h2>Game Over</h2>
         <p id="finalScore">Final Score: </p>
         <p id="accuracy">Accuracy: </p>
         <p id="totalRounds">Total Rounds: </p>
-        <button id="restartButton" >Restart Game</button>
+        <button id="restartButton">Restart Game</button>
     </div>
+
+    <p id="loadingText">Getting Image...</p>
+
     <script src="script.js"></script>
 </body>
+
 </html>
