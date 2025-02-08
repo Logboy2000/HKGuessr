@@ -15,10 +15,15 @@
     <div id="scoreContainer">
         <span id="round">Round: 1/5</span>
     </div>
-    <div id="mapContainer">
+    <div id="mapContainer" class="">
         <canvas id="mapCanvas"></canvas>
         <br>
-        <button id="guessButton" disabled>Guess!</button>
+        <div id="buttonContainer">
+            <button id="guessButton" disabled>Guess!</button>
+            <button id="fullscreenButton">
+                <img src="images/fullscreen.png" alt="FS" style="scale: 0.8;">
+            </button>
+        </div>
     </div>
     <div id="gameOverWindow">
         <h2>Game Over</h2>

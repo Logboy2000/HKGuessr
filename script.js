@@ -103,6 +103,8 @@ var gameOverWindow
 var restartButton
 var totalRoundsElement
 var loadingText
+var fullscreenButton
+
 var imageIsLoaded = false
 
 // Canvas context
@@ -160,6 +162,7 @@ function loaded() {
     mapCamera.targetY = mapCamera.y
 
     // HTML Elements
+    fullscreenButton = getElement('fullscreenButton')
     loadingText = getElement('loadingText')
     totalRoundsElement = getElement('totalRounds')
     accuracyElement = getElement('accuracy')
@@ -195,14 +198,30 @@ function updateGuessPos() {
     }
 }
 
+function toggleFullscreen(){
+    if (mapContainer.classList.contains('fullscreen')) {
+        mapContainer.classList.remove('fullscreen');
+    } else {
+        mapContainer.classList.add('fullscreen');
+    }
+}
+
+
 function addEventListeners() {
     var isDragging = false
     var dragStart = { x: 0, y: 0 }
     var hasMoved = false
 
+    fullscreenButton.addEventListener('click', function(){
+        toggleFullscreen()
+    })
+
     document.addEventListener('keypress', function (event) {
         if (event.code === 'Space') {
             guessButtonClicked()
+        }
+        if (event.key === 'f'){
+            toggleFullscreen()
         }
     })
 
@@ -254,6 +273,61 @@ function addEventListeners() {
         mapCamera.targetZoom = Math.min(Math.max(mapCamera.targetZoom, 0.1), 5)
     })
 
+    // Touch events for mobile support
+    mapCanvas.addEventListener('touchstart', function (event) {
+        if (event.touches.length === 1) {
+            isDragging = true
+            hasMoved = false
+            dragStart.x = event.touches[0].clientX
+            dragStart.y = event.touches[0].clientY
+        } else if (event.touches.length === 2) {
+            isDragging = false
+            pinchStartDistance = Math.hypot(
+                event.touches[0].clientX - event.touches[1].clientX,
+                event.touches[0].clientY - event.touches[1].clientY
+            )
+            initialZoom = mapCamera.targetZoom
+        }
+    })
+
+    mapCanvas.addEventListener('touchmove', function (event) {
+        if (event.touches.length === 1 && isDragging) {
+            const rect = mapCanvas.getBoundingClientRect()
+            mousePos.x = (event.touches[0].clientX - rect.left)
+            mousePos.y = (event.touches[0].clientY - rect.top)
+            mouseXRelative = (mousePos.x - mapCanvas.width / 2) / mapCamera.zoom - mapCamera.x
+            mouseYRelative = (mousePos.y - mapCanvas.height / 2) / mapCamera.zoom - mapCamera.y
+
+            var dx = event.touches[0].clientX - dragStart.x
+            var dy = event.touches[0].clientY - dragStart.y
+
+            if (dx !== 0 || dy !== 0) {
+                hasMoved = true
+            }
+
+            mapCamera.targetX += dx / mapCamera.zoom
+            mapCamera.targetY += dy / mapCamera.zoom
+
+            dragStart.x = event.touches[0].clientX
+            dragStart.y = event.touches[0].clientY
+        } else if (event.touches.length === 2) {
+            const currentDistance = Math.hypot(
+                event.touches[0].clientX - event.touches[1].clientX,
+                event.touches[0].clientY - event.touches[1].clientY
+            )
+            const zoomFactor = currentDistance / pinchStartDistance
+            mapCamera.targetZoom = initialZoom * zoomFactor
+            mapCamera.targetZoom = Math.min(Math.max(mapCamera.targetZoom, 0.1), 5)
+        }
+    })
+
+    mapCanvas.addEventListener('touchend', function () {
+        if (!hasMoved) {
+            updateGuessPos()
+        }
+        isDragging = false
+    })
+
     guessButton.addEventListener('click', function () {
         guessButtonClicked()
     });
@@ -300,6 +374,9 @@ function guessButtonClicked() {
         mapCamera.targetZoom = Math.min(Math.max(requiredZoomX, 0.1), Math.max(requiredZoomY, 0.1), 2);
     } else if (gameState === gameStates.guessed) {
         if (currentRound < totalRounds) {
+            if (mapContainer.classList.contains('fullscreen')) {
+                mapContainer.classList.remove('fullscreen');
+            }
             gameState = gameStates.guessing;
             nextRound();
             guessButton.disabled = true;
