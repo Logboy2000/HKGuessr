@@ -22,39 +22,18 @@ body {
 #locationImg {
     position: absolute;
     width: 100%;
-    height: auto;
+    height: 100%;
     left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    aspect-ratio: 16 / 9;
+    top: 0;
+    object-fit:contain;
     overflow: hidden;
 }
 
 #guessButton {
-    font-family: 'Trajan Pro Bold';
-    font-size: 1.5rem;
     height:min-content;
     width: 100%;
-    background-color: transparent;
-    color: #FFF;
-    border: 2px solid #FFF;
-    border-radius: 0.5rem;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.1s ease-in-out;
 }
 
-#guessButton:hover {
-    background-color: #FFF;
-    color: #000;
-}
-
-#guessButton:disabled {
-    background-color: #555;
-    color: #999;
-    border: 2px solid #999;
-    cursor: not-allowed;
-}
 
 
 #mapCanvas {
@@ -82,8 +61,9 @@ body {
 #mapContainer:hover {
     width: 50%;
     height: auto;
-
 }
+
+
 
 #scoreContainer {
     font-family: 'Trajan Pro Bold';
@@ -92,4 +72,53 @@ body {
     position: absolute;
     top: 0;
     left: 0;
+}
+
+#gameOverWindow {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.863);
+    color: #FFF;
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    font-family: 'Trajan Pro Bold';
+    font-size: 2rem;
+    z-index: 1000;
+    height: 50%;
+    width: 30%;
+    min-width: max-content;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+}
+
+button {
+    font-family: 'Trajan Pro Bold';
+    font-size: 2rem;
+    background-color: transparent;
+    color: #FFF;
+    border: 2px solid #FFF;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+button:hover {
+    background-color: #FFF;
+    color: #000000;
+}
+
+button:disabled {
+    background-color: #555;
+    color: #999;
+    border: 2px solid #999;
+    cursor: not-allowed;
+}
+
+p {
+    margin: 1rem;
 }

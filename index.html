@@ -4,20 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>HK Guessur</title>
+    <title>HK Guessr</title>
 </head>
 <body>
 
     <img src="" alt="Loading Image..." id="locationImg">
     <div id="scoreContainer">
         <span id="round">Round:</span>
-        <br>
-        <span id="score">Score:</span>
     </div>
     <div id="mapContainer">
         <canvas id="mapCanvas"></canvas>
         <br>
         <button id="guessButton" disabled>Guess!</button>
+    </div>
+    <div id="gameOverWindow" hidden>
+        <h2>Game Over</h2>
+        <p id="finalScore">Final Score: </p>
+        <p id="accuracy">Accuracy: </p>
+        <p id="totalRounds">Total Rounds: </p>
+        <button id="restartButton" >Restart Game</button>
     </div>
     <script src="script.js"></script>
 </body>

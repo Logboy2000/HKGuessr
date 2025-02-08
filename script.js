@@ -1,86 +1,90 @@
-// Geoguessr Clone for Hollow Knight
+// Geoguessr Clone for Hollow Knight //
+
+///////////////////////////////////////////////
+//BEWARE THIS SOURCE CODE IS AN ABOSLUTE MESS//
+///////////////////////////////////////////////
+
 window.onload = loaded
 
 // Locations
 const locationData = [
-    [0, 0, 'images/screenshots/1.png'],
-    [100, 200, 'images/screenshots/2.png'],
-    [300, 400, 'images/screenshots/3.png'],
-    [500, 600, 'images/screenshots/4.png'],
-    [700, 800, 'images/screenshots/5.png'],
-    [900, 1000, 'images/screenshots/6.png'],
-    [1100, 1200, 'images/screenshots/7.png'],
-    [1300, 1400, 'images/screenshots/8.png'],
-    [1500, 1600, 'images/screenshots/9.png'],
-    [1700, 1800, 'images/screenshots/10.png'],
-    [1900, 2000, 'images/screenshots/11.png'],
-    [2100, 2200, 'images/screenshots/12.png'],
-    [2300, 2400, 'images/screenshots/13.png'],
-    [2500, 2600, 'images/screenshots/14.png'],
-    [2700, 2800, 'images/screenshots/15.png'],
-    [2900, 3000, 'images/screenshots/16.png'],
-    [3100, 3200, 'images/screenshots/17.png'],
-    [3300, 3400, 'images/screenshots/18.png'],
-    [3500, 3600, 'images/screenshots/19.png'],
-    [3700, 3800, 'images/screenshots/20.png'],
-    [3900, 4000, 'images/screenshots/21.png'],
-    [4100, 4200, 'images/screenshots/22.png'],
-    [4300, 4400, 'images/screenshots/23.png'],
-    [4500, 4600, 'images/screenshots/24.png'],
-    [4700, 4800, 'images/screenshots/25.png'],
-    [4900, 5000, 'images/screenshots/26.png'],
-    [5100, 5200, 'images/screenshots/27.png'],
-    [5300, 5400, 'images/screenshots/28.png'],
-    [5500, 5600, 'images/screenshots/29.png'],
-    [5700, 5800, 'images/screenshots/30.png'],
-    [5900, 6000, 'images/screenshots/31.png'],
-    [6100, 6200, 'images/screenshots/32.png'],
-    [6300, 6400, 'images/screenshots/33.png'],
-    [6500, 6600, 'images/screenshots/34.png'],
-    [6700, 6800, 'images/screenshots/35.png'],
-    [6900, 7000, 'images/screenshots/36.png'],
-    [7100, 7200, 'images/screenshots/37.png'],
-    [7300, 7400, 'images/screenshots/38.png'],
-    [7500, 7600, 'images/screenshots/39.png'],
-    [7700, 7800, 'images/screenshots/40.png'],
-    [7900, 8000, 'images/screenshots/41.png'],
-    [8100, 8200, 'images/screenshots/42.png'],
-    [8300, 8400, 'images/screenshots/43.png'],
-    [8500, 8600, 'images/screenshots/44.png'],
-    [8700, 8800, 'images/screenshots/45.png'],
-    [8900, 9000, 'images/screenshots/46.png'],
-    [9100, 9200, 'images/screenshots/47.png'],
-    [9300, 9400, 'images/screenshots/48.png'],
-    [9500, 9600, 'images/screenshots/49.png'],
-    [9700, 9800, 'images/screenshots/50.png'],
-    [9900, 10000, 'images/screenshots/51.png'],
-    [10100, 10200, 'images/screenshots/52.png'],
-    [10300, 10400, 'images/screenshots/53.png'],
-    [10500, 10600, 'images/screenshots/54.png'],
-    [10700, 10800, 'images/screenshots/55.png'],
-    [10900, 11000, 'images/screenshots/56.png'],
-    [11100, 11200, 'images/screenshots/57.png'],
-    [11300, 11400, 'images/screenshots/58.png'],
-    [11500, 11600, 'images/screenshots/59.png'],
-    [11700, 11800, 'images/screenshots/60.png'],
-    [11900, 12000, 'images/screenshots/61.png'],
-    [12100, 12200, 'images/screenshots/62.png'],
-    [12300, 12400, 'images/screenshots/63.png'],
-    [12500, 12600, 'images/screenshots/64.png'],
-    [12700, 12800, 'images/screenshots/65.png'],
-    [12900, 13000, 'images/screenshots/66.png'],
-    [13100, 13200, 'images/screenshots/67.png'],
-    [13300, 13400, 'images/screenshots/68.png'],
-    [13500, 13600, 'images/screenshots/69.png'],
-    [13700, 13800, 'images/screenshots/70.png'],
-    [13900, 14000, 'images/screenshots/71.png'],
-    [14100, 14200, 'images/screenshots/72.png'],
-    [14300, 14400, 'images/screenshots/73.png'],
-    [14500, 14600, 'images/screenshots/74.png'],
-    [14700, 14800, 'images/screenshots/75.png'],
-    [14900, 15000, 'images/screenshots/76.png'],
-    [15100, 15200, 'images/screenshots/77.png'],
-    [15300, 15400, 'images/screenshots/78.png']
+    [2581, 1878, 'images/screenshots/1.png'],
+    [3451, 842, 'images/screenshots/2.png'],
+    [3360, 928, 'images/screenshots/3.png'],
+    [3112, 937, 'images/screenshots/4.png'],
+    [981, 1322, 'images/screenshots/5.png'],
+    [3278, 1363, 'images/screenshots/6.png'],
+    [583, 767, 'images/screenshots/7.png'],
+    [4367, 1953, 'images/screenshots/8.png'],
+    [3965, 1644, 'images/screenshots/9.png'],
+    [3350, 1946, 'images/screenshots/10.png'],
+    [3906, 1945, 'images/screenshots/11.png'],
+    [3670, 1922, 'images/screenshots/12.png'],
+    [1193, 967, 'images/screenshots/13.png'],
+    [1690, 639, 'images/screenshots/14.png'],
+    [301, 1907, 'images/screenshots/15.png'],
+    // [0, 0, 'images/screenshots/16.png'],
+    // [0, 0, 'images/screenshots/17.png'],
+    // [0, 0, 'images/screenshots/18.png'],
+    // [0, 0, 'images/screenshots/19.png'],
+    // [0, 0, 'images/screenshots/20.png'],
+    // [0, 0, 'images/screenshots/21.png'],
+    // [0, 0, 'images/screenshots/22.png'],
+    // [0, 0, 'images/screenshots/23.png'],
+    // [0, 0, 'images/screenshots/24.png'],
+    // [0, 0, 'images/screenshots/25.png'],
+    // [0, 0, 'images/screenshots/26.png'],
+    // [0, 0, 'images/screenshots/27.png'],
+    // [0, 0, 'images/screenshots/28.png'],
+    // [0, 0, 'images/screenshots/29.png'],
+    // [0, 0, 'images/screenshots/30.png'],
+    // [0, 0, 'images/screenshots/31.png'],
+    // [0, 0, 'images/screenshots/32.png'],
+    // [0, 0, 'images/screenshots/33.png'],
+    // [0, 0, 'images/screenshots/34.png'],
+    // [0, 0, 'images/screenshots/35.png'],
+    // [0, 0, 'images/screenshots/36.png'],
+    // [0, 0, 'images/screenshots/37.png'],
+    // [0, 0, 'images/screenshots/38.png'],
+    // [0, 0, 'images/screenshots/39.png'],
+    // [0, 0, 'images/screenshots/40.png'],
+    // [0, 0, 'images/screenshots/41.png'],
+    // [0, 0, 'images/screenshots/42.png'],
+    // [0, 0, 'images/screenshots/43.png'],
+    // [0, 0, 'images/screenshots/44.png'],
+    // [0, 0, 'images/screenshots/45.png'],
+    // [0, 0, 'images/screenshots/46.png'],
+    // [0, 0, 'images/screenshots/47.png'],
+    // [0, 0, 'images/screenshots/48.png'],
+    // [0, 0, 'images/screenshots/49.png'],
+    // [0, 0, 'images/screenshots/50.png'],
+    // [0, 0, 'images/screenshots/51.png'],
+    // [0, 0, 'images/screenshots/52.png'],
+    // [0, 0, 'images/screenshots/53.png'],
+    // [0, 0, 'images/screenshots/54.png'],
+    // [0, 0, 'images/screenshots/55.png'],
+    // [0, 0, 'images/screenshots/56.png'],
+    // [0, 0, 'images/screenshots/57.png'],
+    // [0, 0, 'images/screenshots/58.png'],
+    // [0, 0, 'images/screenshots/59.png'],
+    // [0, 0, 'images/screenshots/60.png'],
+    // [0, 0, 'images/screenshots/61.png'],
+    // [0, 0, 'images/screenshots/62.png'],
+    // [0, 0, 'images/screenshots/63.png'],
+    // [0, 0, 'images/screenshots/64.png'],
+    // [0, 0, 'images/screenshots/65.png'],
+    // [0, 0, 'images/screenshots/66.png'],
+    // [0, 0, 'images/screenshots/67.png'],
+    // [0, 0, 'images/screenshots/68.png'],
+    // [0, 0, 'images/screenshots/69.png'],
+    // [0, 0, 'images/screenshots/70.png'],
+    // [0, 0, 'images/screenshots/71.png'],
+    // [0, 0, 'images/screenshots/72.png'],
+    // [0, 0, 'images/screenshots/73.png'],
+    // [0, 0, 'images/screenshots/74.png'],
+    // [0, 0, 'images/screenshots/75.png'],
+    // [0, 0, 'images/screenshots/76.png'],
+    // [0, 0, 'images/screenshots/77.png']
 ];
 
 // Frame rate and timing
@@ -89,11 +93,15 @@ var deltaTime
 
 // DOM elements
 var locationImgElement
+var mapContainer
 var mapCanvas
-var scoreElement
+var finalScoreElement
+var accuracyElement
 var roundElement
 var guessButton
-
+var gameOverWindow
+var restartButton
+var totalRoundsElement
 // Canvas context
 var mapCtx
 
@@ -108,7 +116,9 @@ var locations = []
 var currentLocation = null
 var currentRound = 0
 var totalRounds = 5
-var score = 0
+var totalScore = 0
+var roundScore = 0
+var maxScore = 5000
 
 // Images
 var mapImg = new Image()
@@ -146,23 +156,26 @@ function loaded() {
     mapCamera.targetX = mapCamera.x
     mapCamera.targetY = mapCamera.y
 
-    //Elements
+    // HTML Elements
+    totalRoundsElement = getElement('totalRounds')
+    accuracyElement = getElement('accuracy')
+    mapContainer = getElement('mapContainer')
     locationImgElement = getElement('locationImg')
     mapCanvas = getElement('mapCanvas')
-    scoreElement = getElement('score')
+    finalScoreElement = getElement('finalScore')
     roundElement = getElement('round')
     guessButton = getElement('guessButton')
-    //CTX
-    mapCtx = mapCanvas.getContext('2d')
+    gameOverWindow = getElement('gameOverWindow')
+    restartButton = getElement('restartButton')
 
+    mapCtx = mapCanvas.getContext('2d')
     addEventListeners()
 
     locationData.forEach(([mapX, mapY, imageFilename]) => {
         addLocation(mapX, mapY, imageFilename);
     });
 
-    startNewRound()
-
+    nextRound()
     requestAnimationFrame(update)
 }
 
@@ -174,7 +187,6 @@ function updateGuessPos() {
         }
         guessButton.disabled = false
     }
-
 }
 
 function addEventListeners() {
@@ -184,7 +196,7 @@ function addEventListeners() {
 
     document.addEventListener('keypress', function (event) {
         if (event.code === 'Space') {
-            updateGuessPos()
+            guessButtonClicked()
         }
     })
 
@@ -231,31 +243,71 @@ function addEventListeners() {
 
     mapCanvas.addEventListener('wheel', function (event) {
         event.preventDefault()
-        var zoomAmount = -event.deltaY * 0.001
-        mapCamera.targetZoom += zoomAmount
+        var zoomFactor = Math.exp(-event.deltaY * 0.001)
+        mapCamera.targetZoom *= zoomFactor
         mapCamera.targetZoom = Math.min(Math.max(mapCamera.targetZoom, 0.1), 5)
     })
 
     guessButton.addEventListener('click', function () {
+        guessButtonClicked()
+    });
 
+    restartButton.addEventListener('click', function () {
+        gameState = gameStates.guessing;
+        totalScore = 0;
+        currentRound = 0;
+        nextRound();
+        guessButton.disabled = true;
+        guessButton.innerText = 'Guess!';
+        gameOverWindow.style.display = 'none';
+    })
+}
 
-        switch (gameState) {
-            case gameStates.guessed:
-                if (currentRound < totalRounds) {
-                    guessButton.innerText = 'Guess!'
-                    startNewRound()
-                } else {
-                    alert(`Game over! Your final score is ${score}`)
-                }
-                break
-            case gameStates.guessing:
-                calculateScore()
-                guessButton.innerText = 'Next Round'
-                gameState = gameStates.guessed
-                break
+function guessButtonClicked() {
+    if (guessPos == null){
+        return -1
+    }
+
+    if (gameState === gameStates.guessing) {
+        gameState = gameStates.guessed;
+        calculateScore();
+        if (currentRound >= totalRounds) {
+            guessButton.innerText = 'End Game';
+            gameState = gameStates.gameOver
+        } else {
+            guessButton.innerText = 'Next Round';
         }
 
-    })
+        // Set the mapCamera's position and zoom to the middle of guessPos and the location's position
+        const midX = (guessPos.x + currentLocation.mapX) / 2;
+        const midY = (guessPos.y + currentLocation.mapY) / 2;
+        mapCamera.targetX = -midX;
+        mapCamera.targetY = -midY;
+        const dx = Math.abs(guessPos.x - currentLocation.mapX);
+        const dy = Math.abs(guessPos.y - currentLocation.mapY);
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const padding = 30;
+
+        // Calculate the required zoom level to fit both points
+        const requiredZoomX = mapCanvas.width / (distance + padding);
+        const requiredZoomY = mapCanvas.height / (distance + padding);
+        mapCamera.targetZoom = Math.min(Math.max(requiredZoomX, 0.1), Math.max(requiredZoomY, 0.1), 2);
+    } else if (gameState === gameStates.guessed) {
+        if (currentRound < totalRounds) {
+            gameState = gameStates.guessing;
+            nextRound();
+            guessButton.disabled = true;
+            guessButton.innerText = 'Guess!';
+        }
+    } else if (gameState === gameStates.gameOver) {
+        guessButton.disabled = true;
+        gameOverWindow.style.display = 'flex';
+        gameState = gameStates.gameOver;
+        finalScoreElement.innerText = `Final Score: ${totalScore}/${totalRounds * maxScore}`
+        var accuracyPercent = ((totalScore / (totalRounds * maxScore)) * 100).toFixed(2)
+        accuracyElement.innerText = `Accuracy: ${accuracyPercent}%`
+        totalRoundsElement.innerText = `Total Rounds: ${totalRounds}`
+    }
 }
 
 function update() {
@@ -272,7 +324,7 @@ function update() {
 
     mapCtx.drawImage(mapImg, 0, 0, mapImg.width, mapImg.height)
 
-    if (gameState == gameStates.guessed && guessPos) {
+    if (gameState != gameStates.guessing) {
         // Draw line between guess and correct spot
         mapCtx.beginPath()
         mapCtx.moveTo(guessPos.x, guessPos.y)
@@ -282,10 +334,13 @@ function update() {
         mapCtx.stroke()
 
         //draw shade at correct spot
-        mapCtx.drawImage(shadePinImg,
+        mapCtx.drawImage(
+            shadePinImg,
             currentLocation.mapX - (shadePinImg.width / 2),
             currentLocation.mapY - (shadePinImg.height / 2),
         )
+
+
     }
 
     //draw knight at guessed spot
@@ -298,18 +353,49 @@ function update() {
     }
 
     mapCtx.restore()
-    mapCtx.fillStyle = 'white'
+
     mapCtx.font = '20px Trajan Pro Bold'
-    mapCtx.fillText(
-        `Mouse: ${Math.round(mouseXRelative)}, ${Math.round(mouseYRelative)}`,
-        10,
-        20
-    )
+    if (gameState != gameStates.guessing) {
+        const boxWidth = 300;
+        const boxHeight = 25;
+        const boxX = (mapCanvas.width - boxWidth) / 2;
+        const boxY = mapCanvas.height - boxHeight - 20;
+        const cornerRadius = 10;
+
+        mapCtx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        mapCtx.beginPath();
+        mapCtx.moveTo(boxX + cornerRadius, boxY);
+        mapCtx.lineTo(boxX + boxWidth - cornerRadius, boxY);
+        mapCtx.quadraticCurveTo(boxX + boxWidth, boxY, boxX + boxWidth, boxY + cornerRadius);
+        mapCtx.lineTo(boxX + boxWidth, boxY + boxHeight - cornerRadius);
+        mapCtx.quadraticCurveTo(boxX + boxWidth, boxY + boxHeight, boxX + boxWidth - cornerRadius, boxY + boxHeight);
+        mapCtx.lineTo(boxX + cornerRadius, boxY + boxHeight);
+        mapCtx.quadraticCurveTo(boxX, boxY + boxHeight, boxX, boxY + boxHeight - cornerRadius);
+        mapCtx.lineTo(boxX, boxY + cornerRadius);
+        mapCtx.quadraticCurveTo(boxX, boxY, boxX + cornerRadius, boxY);
+        mapCtx.closePath();
+        mapCtx.fill();
+
+        // Add white border
+        mapCtx.strokeStyle = 'white';
+        mapCtx.lineWidth = 2;
+        mapCtx.stroke();
+
+        mapCtx.fillStyle = '#FFF'
+        mapCtx.textAlign = 'center'
+        mapCtx.fillText(`You earned ${roundScore} points`, mapCanvas.width / 2, mapCanvas.height - 25)
+    }
+
+    mapCtx.fillStyle = 'rgba(0, 0, 0, 0.5)'
+    mapCtx.fillRect(0, 0, 250, 25)
+
+    mapCtx.fillStyle = 'white'
+    mapCtx.textAlign = 'left'
     if (guessPos) {
         mapCtx.fillText(
             `Guess: ${Math.round(guessPos.x)}, ${Math.round(guessPos.y)}`,
             10,
-            40
+            20
         )
     }
     requestAnimationFrame(update)
@@ -348,8 +434,10 @@ function lerp(start, end, t) {
     return start * (1 - t) + end * t
 }
 
-function startNewRound() {
-    gameState = gameStates.guessing
+function nextRound() {
+    mapCamera.targetX = -2249
+    mapCamera.targetY = -1450
+    mapCamera.targetZoom = 0.125
     currentRound++
     roundElement.textContent = `Round: ${currentRound}/${totalRounds}`
     setLocation(randIRange(0, locations.length - 1))
@@ -361,11 +449,9 @@ function calculateScore() {
     const dx = guessPos.x - currentLocation.mapX
     const dy = guessPos.y - currentLocation.mapY
     const distance = Math.sqrt(dx * dx + dy * dy)
-    const leniency = 100
-    var roundScore = 1000
-    if (distance > leniency) {
-        roundScore = Math.max(0, 1000 - (distance - leniency))
-    }
-    score += Math.round(roundScore)
-    scoreElement.textContent = `Score: ${score}`
+    const leniency = 100 // Distance in which you get the max score
+    const dropOffRate = 0.002 // How quickly the score drops off when guessing farther aue aue
+    roundScore = maxScore * Math.exp(-dropOffRate * (distance - leniency))
+    roundScore = Math.round(Math.min(roundScore, maxScore))
+    totalScore += roundScore
 }
