@@ -407,8 +407,8 @@ function update() {
     mapCanvas.height = mapCanvas.clientHeight
     mapCtx.clearRect(0, 0, mapCanvas.width, mapCanvas.height)
     mapCtx.save()
-    mapCamera.x = lerp(mapCamera.x, mapCamera.targetX, 0.25)
-    mapCamera.y = lerp(mapCamera.y, mapCamera.targetY, 0.25)
+    mapCamera.x = lerp(mapCamera.x, mapCamera.targetX, 0.5)
+    mapCamera.y = lerp(mapCamera.y, mapCamera.targetY, 0.5)
     mapCamera.zoom = lerp(mapCamera.zoom, mapCamera.targetZoom, 0.25)
     mapCtx.translate(mapCanvas.width / 2, mapCanvas.height / 2)
     mapCtx.scale(mapCamera.zoom, mapCamera.zoom)
