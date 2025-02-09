@@ -61,30 +61,6 @@ const locationData = [
     [1970, 1835, 'images/screenshots/51.png'],
     [2910, 1745, 'images/screenshots/52.png'],
     [2893, 1634, 'images/screenshots/53.png'],
-    // [0, 0, 'images/screenshots/54.png'],
-    // [0, 0, 'images/screenshots/55.png'],
-    // [0, 0, 'images/screenshots/56.png'],
-    // [0, 0, 'images/screenshots/57.png'],
-    // [0, 0, 'images/screenshots/58.png'],
-    // [0, 0, 'images/screenshots/59.png'],
-    // [0, 0, 'images/screenshots/60.png'],
-    // [0, 0, 'images/screenshots/61.png'],
-    // [0, 0, 'images/screenshots/62.png'],
-    // [0, 0, 'images/screenshots/63.png'],
-    // [0, 0, 'images/screenshots/64.png'],
-    // [0, 0, 'images/screenshots/65.png'],
-    // [0, 0, 'images/screenshots/66.png'],
-    // [0, 0, 'images/screenshots/67.png'],
-    // [0, 0, 'images/screenshots/68.png'],
-    // [0, 0, 'images/screenshots/69.png'],
-    // [0, 0, 'images/screenshots/70.png'],
-    // [0, 0, 'images/screenshots/71.png'],
-    // [0, 0, 'images/screenshots/72.png'],
-    // [0, 0, 'images/screenshots/73.png'],
-    // [0, 0, 'images/screenshots/74.png'],
-    // [0, 0, 'images/screenshots/75.png'],
-    // [0, 0, 'images/screenshots/76.png'],
-    // [0, 0, 'images/screenshots/77.png']
 ];
 
 // Frame rate and timing
@@ -95,7 +71,7 @@ var deltaTime
 var locationImgElement
 var mapContainer
 var mapCanvas
-var finalScoreElement
+var finalScoreDisplay
 var accuracyElement
 var roundElement
 var guessButton
@@ -104,6 +80,7 @@ var restartButton
 var totalRoundsElement
 var loadingText
 var fullscreenButton
+var timerDisplay
 
 var imageIsLoaded = false
 
@@ -170,11 +147,12 @@ function loaded() {
     mapContainer = getElement('mapContainer')
     locationImgElement = getElement('locationImg')
     mapCanvas = getElement('mapCanvas')
-    finalScoreElement = getElement('finalScore')
+    finalScoreDisplay = getElement('finalScore')
     roundElement = getElement('round')
     guessButton = getElement('guessButton')
     gameOverWindow = getElement('gameOverWindow')
     restartButton = getElement('restartButton')
+    timerDisplay = getElement('timer')
 
     mapCtx = mapCanvas.getContext('2d')
     addEventListeners()
@@ -394,7 +372,7 @@ function guessButtonClicked() {
         guessButton.disabled = true;
         gameOverWindow.style.display = 'flex';
         gameState = gameStates.gameOver;
-        finalScoreElement.innerText = `Final Score: ${totalScore}/${totalRounds * maxScore}`
+        finalScoreDisplay.innerText = `Final Score: ${totalScore}/${totalRounds * maxScore}`
         var accuracyPercent = ((totalScore / (totalRounds * maxScore)) * 100).toFixed(2)
         accuracyElement.innerText = `Accuracy: ${accuracyPercent}%`
         totalRoundsElement.innerText = `Total Rounds: ${totalRounds}`
