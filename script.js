@@ -60,7 +60,7 @@ const locationData = [
     [2522, 2071, 'images/screenshots/50.png'],
     [1970, 1835, 'images/screenshots/51.png'],
     [2910, 1745, 'images/screenshots/52.png'],
-    // [0, 0, 'images/screenshots/53.png'],
+    [2893, 1634, 'images/screenshots/53.png'],
     // [0, 0, 'images/screenshots/54.png'],
     // [0, 0, 'images/screenshots/55.png'],
     // [0, 0, 'images/screenshots/56.png'],
@@ -199,7 +199,7 @@ function updateGuessPos() {
     }
 }
 
-function toggleFullscreen(){
+function toggleFullscreen() {
     if (mapContainer.classList.contains('fullscreen')) {
         mapContainer.classList.remove('fullscreen');
     } else {
@@ -213,7 +213,7 @@ function addEventListeners() {
     var dragStart = { x: 0, y: 0 }
     var hasMoved = false
 
-    fullscreenButton.addEventListener('click', function(){
+    fullscreenButton.addEventListener('click', function () {
         toggleFullscreen()
     })
 
@@ -221,7 +221,10 @@ function addEventListeners() {
         if (event.code === 'Space') {
             guessButtonClicked()
         }
-        if (event.key === 'f'){
+        if (event.key === 'f') {
+            toggleFullscreen()
+        }
+        if(event.key === 'Escape'){
             toggleFullscreen()
         }
     })

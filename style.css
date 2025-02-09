@@ -75,11 +75,13 @@ p {
 
 
 #mapContainer {
+
     background-color: #000000;
     transition: all 0.3s ease-in-out;
     position: absolute;
-    width: 20%;
-    height: 30%;
+    inset: auto 0 1rem auto;
+    width: 30%;
+    height: auto;
     right: 0;
     bottom: 0;
     margin: 1rem;
@@ -96,7 +98,7 @@ p {
 
 #mapContainer:hover {
     width: 50%;
-    height: 70%;
+    height: auto;
 }
 
 #mapCanvas {
@@ -108,7 +110,7 @@ p {
 #buttonContainer {
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    width: 70%;
     padding: 0.5rem;
 }
 
