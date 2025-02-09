@@ -84,8 +84,8 @@ p {
 
 
 #mapContainer {
-
-    background-color: #000000;
+    background-color: #000;
+    opacity: 0.9;
     transition: all 0.3s ease-in-out;
     position: absolute;
     inset: auto 0 1rem auto;
