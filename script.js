@@ -580,6 +580,10 @@ function setLocation(i) {
         if (guessPos) {
             guessButton.disabled = false
         }
+        if (timerEnabled) {
+            startTime = performance.now()
+            endTime = startTime + (timerLengthSeconds * 1000)
+        }
     }
     img.src = currentLocation.imageSrc
 }
@@ -615,10 +619,7 @@ function lerp(start, end, t) {
 
 
 function nextRound() {
-    if (timerEnabled) {
-        startTime = performance.now()
-        endTime = startTime + (timerLengthSeconds * 1000)
-    }
+
     mapCamera.targetX = -2249;
     mapCamera.targetY = -1450;
     mapCamera.targetZoom = 0.125;
