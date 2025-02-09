@@ -58,8 +58,8 @@ const locationData = [
     [2734, 2192, 'images/screenshots/48.png'],
     [2353, 2119, 'images/screenshots/49.png'],
     [2522, 2071, 'images/screenshots/50.png'],
-    // [0, 0, 'images/screenshots/51.png'],
-    // [0, 0, 'images/screenshots/52.png'],
+    [1970, 1835, 'images/screenshots/51.png'],
+    [2910, 1745, 'images/screenshots/52.png'],
     // [0, 0, 'images/screenshots/53.png'],
     // [0, 0, 'images/screenshots/54.png'],
     // [0, 0, 'images/screenshots/55.png'],
@@ -529,16 +529,32 @@ function lerp(start, end, t) {
     return start * (1 - t) + end * t
 }
 
+let usedLocations = []; // Store previously used locations
+
 function nextRound() {
-    mapCamera.targetX = -2249
-    mapCamera.targetY = -1450
-    mapCamera.targetZoom = 0.125
-    currentRound++
-    roundElement.textContent = `Round: ${currentRound}/${totalRounds}`
-    setLocation(randIRange(0, locations.length - 1))
-    guessButton.disabled = true
-    guessPos = null
+    mapCamera.targetX = -2249;
+    mapCamera.targetY = -1450;
+    mapCamera.targetZoom = 0.125;
+    currentRound++;
+    roundElement.textContent = `Round: ${currentRound}/${totalRounds}`;
+
+    if (usedLocations.length >= locations.length) {
+        console.log("All locations used! Restarting selection.");
+        usedLocations = []; // Reset if all locations are used
+    }
+
+    let newLocation;
+    do {
+        newLocation = randIRange(0, locations.length - 1);
+    } while (usedLocations.includes(newLocation)); // Ensure uniqueness
+
+    usedLocations.push(newLocation);
+    setLocation(newLocation);
+
+    guessButton.disabled = true;
+    guessPos = null;
 }
+
 
 function calculateScore() {
     const dx = guessPos.x - currentLocation.mapX
