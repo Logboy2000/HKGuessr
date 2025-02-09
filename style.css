@@ -26,6 +26,15 @@ body {
     top: 0;
     object-fit: contain;
     overflow: hidden;
+    user-select: none;
+}
+
+#locationImg::selection {
+    background: none;
+}
+
+img {
+    -webkit-user-drag: none;
 }
 
 #scoreContainer {

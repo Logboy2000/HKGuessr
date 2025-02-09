@@ -213,6 +213,10 @@ function addEventListeners() {
     var dragStart = { x: 0, y: 0 }
     var hasMoved = false
 
+    locationImgElement.addEventListener("dragstart", (event) => {
+        event.preventDefault();
+    });
+
     fullscreenButton.addEventListener('click', function () {
         toggleFullscreen()
     })
