@@ -4,7 +4,7 @@ A GeoGuessr clone for the Hollow Knight map
 
 PLAY IT HERE: https://logboy2000.github.io/HKGuessr/
 
-Suggest new locations here (please): https://github.com/Logboy2000/HKGuessr/issues
+Suggest new locations here (please): https://github.com/Logboy2000/HKGuessr/issues/new?template=location-request.md
 
 View planned features here: https://trello.com/b/1gtIgJIS/hk-guessr
 
