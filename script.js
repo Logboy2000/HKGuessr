@@ -569,8 +569,8 @@ function calculateScore() {
     const dx = guessPos.x - currentLocation.mapX
     const dy = guessPos.y - currentLocation.mapY
     const distance = Math.sqrt(dx * dx + dy * dy)
-    const leniency = 100 // Distance in which you get the max score
-    const dropOffRate = 0.002 // How quickly the score drops off when guessing farther aue aue
+    const leniency = 50 // Distance in which you get the max score
+    const dropOffRate = 0.001 // How quickly the score drops off when guessing farther aue aue
     roundScore = maxScore * Math.exp(-dropOffRate * (distance - leniency))
     roundScore = Math.round(Math.min(roundScore, maxScore))
     totalScore += roundScore
