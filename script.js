@@ -118,6 +118,7 @@ var gameStates = {
 }
 var gameState = gameStates.guessing
 var locations = []
+var usedLocations = [] // Store previously used locations this round
 var currentLocation = null
 var currentRound = 0
 var totalRounds = 5
@@ -390,6 +391,7 @@ function guessButtonClicked() {
         var accuracyPercent = ((totalScore / (totalRounds * maxScore)) * 100).toFixed(2)
         accuracyElement.innerText = `Accuracy: ${accuracyPercent}%`
         totalRoundsElement.innerText = `Total Rounds: ${totalRounds}`
+        usedLocations = []
     }
 }
 
@@ -529,7 +531,7 @@ function lerp(start, end, t) {
     return start * (1 - t) + end * t
 }
 
-let usedLocations = []; // Store previously used locations
+
 
 function nextRound() {
     mapCamera.targetX = -2249;
