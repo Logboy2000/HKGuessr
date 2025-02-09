@@ -1,0 +1,11 @@
+{
+    "name": "Hollow Guessr",
+    "icons": [
+      {
+        "src": "images/favicon.png",
+        "type": "image/png",
+        "sizes": "256x256"
+      }
+    ]
+  }
+  

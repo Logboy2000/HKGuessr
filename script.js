@@ -225,7 +225,7 @@ function restartGame() {
 function update() {
     //timer
     if (timerEnabled) {
-        if (gameState == gameStates.guessing){
+        if (gameState == gameStates.guessing) {
             if (performance.now() > endTime) {
                 gameState = gameStates.guessed
                 timerDisplay.innerText = 0
@@ -253,7 +253,7 @@ function update() {
 
     if ((gameState == gameStates.guessed || gameState == gameStates.gameOver)) {
         // Draw line between guess and correct spot
-        if (guessPos){
+        if (guessPos) {
             mapCtx.beginPath()
             mapCtx.moveTo(guessPos.x, guessPos.y)
             mapCtx.lineTo(currentLocation.mapX, currentLocation.mapY)
@@ -561,6 +561,7 @@ function guessButtonClicked() {
         var accuracyPercent = ((totalScore / (totalRounds * maxScore)) * 100).toFixed(2)
         accuracyElement.innerText = `Accuracy: ${accuracyPercent}%`
         totalRoundsElement.innerText = `Total Rounds: ${totalRounds}`
+        getElement('timerLengthDisplay').innerText = `Timer Length: ${timerLengthSeconds}s`
         usedLocations = []
     }
 }
