@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+    <title>HK Guessr</title>
+</head>
+
+<body>
+    <img src="" alt="image should be here by now" id="locationImg">
+    <p id="loadingText">Getting Image...</p>
+    <div id="scoreContainer">
+        <button onclick="window.location.href='index.html'">&lt;- Back</button>
+        <hr>
+        <span id="round">1/5</span>
+        <hr>
+        <span id="timerDisplay"></span>
+    </div>
+    <div id="mapContainer" hidden>
+        <canvas id="mapCanvas"></canvas>
+        <br>
+        <div id="buttonContainer">
+            <button id="guessButton" disabled>Guess!</button>
+            <button id="fullscreenButton">
+                <img src="images/fullscreen.png" alt="FS" style="scale: 0.8;">
+            </button>
+        </div>
+    </div>
+    <div id="gameOverWindow" class="window">
+        <h2>Game Over</h2>
+        <hr>
+        <p id="finalScore">Final Score: </p>
+        <p id="accuracy">Accuracy: </p>
+        <p id="totalRounds">Total Rounds: </p>
+        <hr>
+        <button id="restartButton">Play Again</button>
+        <button id="optionsButton">Options</button>
+    </div>
+
+    <div id="gameOptionsWindow" class="window">
+        <h2>Game Options</h2>
+        <hr>
+        <div class="option">
+            <label for="roundCount">Round count: </label>
+            <input type="text" id="roundCount" name="roundCount" min="1" value="5">
+
+        </div>
+        <br>
+        <div class="option">
+            <label for="timerEnabled">Timer enabled?: </label>
+            <input type="checkbox" id="timerEnabled" name="timerEnabled">
+        </div>
+        <br>
+        <div class="option">
+            <label for="timerLength">Timer length: </label>
+            <input type="text" id="timerLength" name="timerLength" placeholder="60" value="60" disabled>
+        </div>
+        <br>
+        <hr>
+        <button id="startButton">Start Game</button>
+    </div>
+
+    <div id="fade-overlay" class="fade-overlay fade-in"></div>
+    <script src="script.js"></script>
+</body>
+
+</html>

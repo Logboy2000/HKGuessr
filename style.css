@@ -13,6 +13,10 @@ img {
     object-fit: scale-down;
 }
 
+hr {
+    width: 95%;
+}
+
 body {
     background-color: #000;
     overflow: hidden;
@@ -46,7 +50,7 @@ img {
     left: 0;
 }
 
-#gameOverWindow {
+.window {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -59,7 +63,7 @@ img {
     font-family: 'Trajan Pro Bold';
     font-size: 2rem;
     z-index: 1000;
-    height: 50%;
+    height: min-content;
     width: 30%;
     min-width: max-content;
     display: none;
@@ -163,21 +167,14 @@ button:disabled {
     margin-left: 0.5rem;
 }
 
-#versionLabel {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    color: #FFF;
-    user-select: none;
-    margin: 2px;
-}
-
 @media (max-width: 768px) {
     #versionLabel {
         top: 0;
         right: 0;
-        left: auto; /* Reset conflicting left */
-        bottom: auto; /* Reset conflicting bottom */
+        left: auto;
+        /* Reset conflicting left */
+        bottom: auto;
+        /* Reset conflicting bottom */
     }
 
     #mapContainer {
@@ -197,7 +194,7 @@ button:disabled {
         font-size: 1.5rem;
     }
 
-    #gameOverWindow {
+    .window {
         width: 80%;
         padding: 1rem;
         font-size: 1.5rem;
@@ -229,3 +226,50 @@ button:disabled {
     position: fixed !important;
 }
 
+
+input[type="text"] {
+    background-color: #000;
+    color: #FFF;
+    padding: 10px;
+    border: 2px solid #818181;
+    border-radius: 5px;
+    width: 5rem;
+    font-size: 12px;
+}
+
+
+input[type="text"]:focus {
+    border-color: #ffffff;
+    outline: none;
+}
+
+input[type="text"]:disabled {
+    background-color: #818181;
+    border-color: #000000;
+    outline: none;
+    user-select: none;
+}
+
+/* Style the checkbox */
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* Style when the checkbox is checked */
+input[type="checkbox"]:checked {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.option {
+    display: flex;
+    justify-content: center;
+    /* Center horizontally */
+    align-items: center;
+    /* Center vertically */
+    height: 100%;
+    /* Ensure the div takes up some height */
+}

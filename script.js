@@ -81,6 +81,13 @@ var totalRoundsElement
 var loadingText
 var fullscreenButton
 var timerDisplay
+var gameOptionsWindow
+var startButton
+var optionsButton
+
+var timerLengthInput
+var timerEnabledInput
+var roundCountInput
 
 var imageIsLoaded = false
 
@@ -91,9 +98,10 @@ var mapCtx
 var gameStates = {
     guessing: 0,
     guessed: 1,
-    gameOver: 2
+    gameOver: 2,
+    optionsWindow: 3
 }
-var gameState = gameStates.guessing
+var gameState = gameStates.optionsWindow
 var locations = []
 var usedLocations = [] // Store previously used locations this round
 var currentLocation = null
@@ -102,6 +110,10 @@ var totalRounds = 5
 var totalScore = 0
 var roundScore = 0
 var maxScore = 5000
+var timerLengthSeconds = 60
+var timerEnabled = false
+var startTime
+var endTime
 
 // Images
 var mapImg = new Image()
@@ -135,11 +147,17 @@ var mouseYRelative = 0
 var guessPos = null
 
 function loaded() {
-    //camera
+    // Camera reset
     mapCamera.targetX = mapCamera.x
     mapCamera.targetY = mapCamera.y
 
     // HTML Elements
+    timerLengthInput = getElement('timerLength')
+    timerEnabledInput = getElement('timerEnabled')
+    roundCountInput = getElement('roundCount')
+    optionsButton = getElement('optionsButton')
+    startButton = getElement('startButton')
+    gameOptionsWindow = getElement('gameOptionsWindow')
     fullscreenButton = getElement('fullscreenButton')
     loadingText = getElement('loadingText')
     totalRoundsElement = getElement('totalRounds')
@@ -152,41 +170,192 @@ function loaded() {
     guessButton = getElement('guessButton')
     gameOverWindow = getElement('gameOverWindow')
     restartButton = getElement('restartButton')
-    timerDisplay = getElement('timer')
+    timerDisplay = getElement('timerDisplay')
 
+    // canvas ctx thingy
     mapCtx = mapCanvas.getContext('2d')
+
+    // this function scares me
     addEventListeners()
 
+
+    // Adds location info to the list
     locationData.forEach(([mapX, mapY, imageFilename]) => {
         addLocation(mapX, mapY, imageFilename);
     });
 
-    nextRound()
+    gameOptionsWindow.style.display = 'flex'
+    loadingText.style.display = 'none'
+    setLocation(randIRange(0, locations.length - 1))
+    locationImgElement.src = currentLocation.imageSrc
+
     requestAnimationFrame(update)
 }
 
-function updateGuessPos() {
-    if (gameState == gameStates.guessing) {
-        guessPos = {
-            x: mouseXRelative,
-            y: mouseYRelative
-        }
-        if (imageIsLoaded) {
-            guessButton.disabled = false
-        }
-    }
-}
-
-function toggleFullscreen() {
-    if (mapContainer.classList.contains('fullscreen')) {
-        mapContainer.classList.remove('fullscreen');
+function restartGame() {
+    // Check if roundCountInput value is a valid number
+    if (!isNaN(roundCountInput.value) && roundCountInput.value !== '') {
+        totalRounds = Number(roundCountInput.value);  // Convert to number
     } else {
-        mapContainer.classList.add('fullscreen');
+        alert('Please use a valid number for round count');
+        return;
     }
+
+    // Check if timerLengthInput value is a valid number
+    if (!isNaN(timerLengthInput.value) && timerLengthInput.value !== '') {
+        timerLengthSeconds = Number(timerLengthInput.value);  // Convert to number
+    } else {
+        alert('Please use a valid number for timer length');
+        return;
+    }
+
+    timerEnabled = timerEnabledInput.checked
+    gameState = gameStates.guessing
+    totalScore = 0;
+    currentRound = 0;
+
+    gameOptionsWindow.style.display = 'none'
+    gameOverWindow.style.display = 'none';
+    guessButton.disabled = true;
+    guessButton.innerText = 'Guess!';
+
+    nextRound()
 }
 
+function update() {
+    //timer
+    if (timerEnabled) {
+        if (gameState == gameStates.guessing){
+            if (performance.now() > endTime) {
+                gameState = gameStates.guessed
+                timerDisplay.innerText = 0
+                guessButtonClicked()
+            } else {
+                timerDisplay.innerText = ((endTime - performance.now()) / 1000).toFixed(2)
+            }
+        }
+    }
+
+
+    //DrAWING
+    mapCanvas.width = mapCanvas.clientWidth
+    mapCanvas.height = mapCanvas.clientHeight
+    mapCtx.clearRect(0, 0, mapCanvas.width, mapCanvas.height)
+    mapCtx.save()
+    mapCamera.x = lerp(mapCamera.x, mapCamera.targetX, 0.5)
+    mapCamera.y = lerp(mapCamera.y, mapCamera.targetY, 0.5)
+    mapCamera.zoom = lerp(mapCamera.zoom, mapCamera.targetZoom, 0.25)
+    mapCtx.translate(mapCanvas.width / 2, mapCanvas.height / 2)
+    mapCtx.scale(mapCamera.zoom, mapCamera.zoom)
+    mapCtx.translate(mapCamera.x, mapCamera.y)
+
+    mapCtx.drawImage(mapImg, 0, 0, mapImg.width, mapImg.height)
+
+    if ((gameState == gameStates.guessed || gameState == gameStates.gameOver)) {
+        // Draw line between guess and correct spot
+        if (guessPos){
+            mapCtx.beginPath()
+            mapCtx.moveTo(guessPos.x, guessPos.y)
+            mapCtx.lineTo(currentLocation.mapX, currentLocation.mapY)
+            mapCtx.strokeStyle = 'red'
+            mapCtx.lineWidth = 10
+            mapCtx.stroke()
+        }
+
+        //draw shade at correct spot
+        mapCtx.drawImage(
+            shadePinImg,
+            currentLocation.mapX - (shadePinImg.width / 2),
+            currentLocation.mapY - (shadePinImg.height / 2),
+        )
+
+
+    }
+
+    //draw knight at guessed spot
+    if (guessPos) {
+        mapCtx.drawImage(
+            knightPinImg,
+            guessPos.x - (knightPinImg.width / 2),
+            guessPos.y - (knightPinImg.height / 2),
+        )
+    }
+
+    mapCtx.restore()
+
+    mapCtx.font = '20px Trajan Pro Bold'
+    if (gameState != gameStates.guessing && gameState != gameStates.optionsWindow) {
+        const boxWidth = 300;
+        const boxHeight = 25;
+        const boxX = (mapCanvas.width - boxWidth) / 2;
+        const boxY = mapCanvas.height - boxHeight - 20;
+        const cornerRadius = 10;
+
+        mapCtx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        mapCtx.beginPath();
+        mapCtx.moveTo(boxX + cornerRadius, boxY);
+        mapCtx.lineTo(boxX + boxWidth - cornerRadius, boxY);
+        mapCtx.quadraticCurveTo(boxX + boxWidth, boxY, boxX + boxWidth, boxY + cornerRadius);
+        mapCtx.lineTo(boxX + boxWidth, boxY + boxHeight - cornerRadius);
+        mapCtx.quadraticCurveTo(boxX + boxWidth, boxY + boxHeight, boxX + boxWidth - cornerRadius, boxY + boxHeight);
+        mapCtx.lineTo(boxX + cornerRadius, boxY + boxHeight);
+        mapCtx.quadraticCurveTo(boxX, boxY + boxHeight, boxX, boxY + boxHeight - cornerRadius);
+        mapCtx.lineTo(boxX, boxY + cornerRadius);
+        mapCtx.quadraticCurveTo(boxX, boxY, boxX + cornerRadius, boxY);
+        mapCtx.closePath();
+        mapCtx.fill();
+
+        // Add white border
+        mapCtx.strokeStyle = 'white';
+        mapCtx.lineWidth = 2;
+        mapCtx.stroke();
+
+        mapCtx.fillStyle = '#FFF'
+        mapCtx.textAlign = 'center'
+        mapCtx.fillText(`You earned ${roundScore} points`, mapCanvas.width / 2, mapCanvas.height - 25)
+    }
+
+    mapCtx.fillStyle = 'rgba(0, 0, 0, 0.5)'
+    mapCtx.fillRect(0, 0, 250, 25)
+
+    mapCtx.fillStyle = 'white'
+    mapCtx.textAlign = 'left'
+    if (guessPos) {
+        mapCtx.fillText(
+            `Guess: ${Math.round(guessPos.x)}, ${Math.round(guessPos.y)}`,
+            10,
+            20
+        )
+    }
+    requestAnimationFrame(update)
+}
 
 function addEventListeners() {
+    optionsButton.addEventListener('click', function () {
+        gameOptionsWindow.style.display = 'flex'
+        gameOverWindow.style.display = 'none'
+    })
+
+    timerEnabledInput.addEventListener('change', function (event) {
+        if (event.target.checked) {
+            timerLengthInput.disabled = false
+            timerDisplay.style.display = 'block'
+        } else {
+            timerLengthInput.disabled = true
+            timerDisplay.style.display = 'none'
+        }
+    })
+
+
+
+
+
+    startButton.addEventListener('click', function () {
+        restartGame()
+    })
+
+
+
     var isDragging = false
     var dragStart = { x: 0, y: 0 }
     var hasMoved = false
@@ -206,7 +375,7 @@ function addEventListeners() {
         if (event.key === 'f') {
             toggleFullscreen()
         }
-        if(event.key === 'Escape'){
+        if (event.key === 'Escape') {
             toggleFullscreen()
         }
     })
@@ -319,14 +488,30 @@ function addEventListeners() {
     });
 
     restartButton.addEventListener('click', function () {
-        gameState = gameStates.guessing;
-        totalScore = 0;
-        currentRound = 0;
-        nextRound();
-        guessButton.disabled = true;
-        guessButton.innerText = 'Guess!';
-        gameOverWindow.style.display = 'none';
+
+        restartGame();
+
     })
+}
+
+function toggleFullscreen() {
+    if (mapContainer.classList.contains('fullscreen')) {
+        mapContainer.classList.remove('fullscreen');
+    } else {
+        mapContainer.classList.add('fullscreen');
+    }
+}
+
+function updateGuessPos() {
+    if (gameState == gameStates.guessing) {
+        guessPos = {
+            x: mouseXRelative,
+            y: mouseYRelative
+        }
+        if (imageIsLoaded) {
+            guessButton.disabled = false
+        }
+    }
 }
 
 function guessButtonClicked() {
@@ -380,96 +565,7 @@ function guessButtonClicked() {
     }
 }
 
-function update() {
-    mapCanvas.width = mapCanvas.clientWidth
-    mapCanvas.height = mapCanvas.clientHeight
-    mapCtx.clearRect(0, 0, mapCanvas.width, mapCanvas.height)
-    mapCtx.save()
-    mapCamera.x = lerp(mapCamera.x, mapCamera.targetX, 0.5)
-    mapCamera.y = lerp(mapCamera.y, mapCamera.targetY, 0.5)
-    mapCamera.zoom = lerp(mapCamera.zoom, mapCamera.targetZoom, 0.25)
-    mapCtx.translate(mapCanvas.width / 2, mapCanvas.height / 2)
-    mapCtx.scale(mapCamera.zoom, mapCamera.zoom)
-    mapCtx.translate(mapCamera.x, mapCamera.y)
 
-    mapCtx.drawImage(mapImg, 0, 0, mapImg.width, mapImg.height)
-
-    if (gameState != gameStates.guessing) {
-        // Draw line between guess and correct spot
-        mapCtx.beginPath()
-        mapCtx.moveTo(guessPos.x, guessPos.y)
-        mapCtx.lineTo(currentLocation.mapX, currentLocation.mapY)
-        mapCtx.strokeStyle = 'red'
-        mapCtx.lineWidth = 10
-        mapCtx.stroke()
-
-        //draw shade at correct spot
-        mapCtx.drawImage(
-            shadePinImg,
-            currentLocation.mapX - (shadePinImg.width / 2),
-            currentLocation.mapY - (shadePinImg.height / 2),
-        )
-
-
-    }
-
-    //draw knight at guessed spot
-    if (guessPos) {
-        mapCtx.drawImage(
-            knightPinImg,
-            guessPos.x - (knightPinImg.width / 2),
-            guessPos.y - (knightPinImg.height / 2),
-        )
-    }
-
-    mapCtx.restore()
-
-    mapCtx.font = '20px Trajan Pro Bold'
-    if (gameState != gameStates.guessing) {
-        const boxWidth = 300;
-        const boxHeight = 25;
-        const boxX = (mapCanvas.width - boxWidth) / 2;
-        const boxY = mapCanvas.height - boxHeight - 20;
-        const cornerRadius = 10;
-
-        mapCtx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-        mapCtx.beginPath();
-        mapCtx.moveTo(boxX + cornerRadius, boxY);
-        mapCtx.lineTo(boxX + boxWidth - cornerRadius, boxY);
-        mapCtx.quadraticCurveTo(boxX + boxWidth, boxY, boxX + boxWidth, boxY + cornerRadius);
-        mapCtx.lineTo(boxX + boxWidth, boxY + boxHeight - cornerRadius);
-        mapCtx.quadraticCurveTo(boxX + boxWidth, boxY + boxHeight, boxX + boxWidth - cornerRadius, boxY + boxHeight);
-        mapCtx.lineTo(boxX + cornerRadius, boxY + boxHeight);
-        mapCtx.quadraticCurveTo(boxX, boxY + boxHeight, boxX, boxY + boxHeight - cornerRadius);
-        mapCtx.lineTo(boxX, boxY + cornerRadius);
-        mapCtx.quadraticCurveTo(boxX, boxY, boxX + cornerRadius, boxY);
-        mapCtx.closePath();
-        mapCtx.fill();
-
-        // Add white border
-        mapCtx.strokeStyle = 'white';
-        mapCtx.lineWidth = 2;
-        mapCtx.stroke();
-
-        mapCtx.fillStyle = '#FFF'
-        mapCtx.textAlign = 'center'
-        mapCtx.fillText(`You earned ${roundScore} points`, mapCanvas.width / 2, mapCanvas.height - 25)
-    }
-
-    mapCtx.fillStyle = 'rgba(0, 0, 0, 0.5)'
-    mapCtx.fillRect(0, 0, 250, 25)
-
-    mapCtx.fillStyle = 'white'
-    mapCtx.textAlign = 'left'
-    if (guessPos) {
-        mapCtx.fillText(
-            `Guess: ${Math.round(guessPos.x)}, ${Math.round(guessPos.y)}`,
-            10,
-            20
-        )
-    }
-    requestAnimationFrame(update)
-}
 
 function setLocation(i) {
     imageIsLoaded = false
@@ -519,11 +615,15 @@ function lerp(start, end, t) {
 
 
 function nextRound() {
+    if (timerEnabled) {
+        startTime = performance.now()
+        endTime = startTime + (timerLengthSeconds * 1000)
+    }
     mapCamera.targetX = -2249;
     mapCamera.targetY = -1450;
     mapCamera.targetZoom = 0.125;
     currentRound++;
-    roundElement.textContent = `Round: ${currentRound}/${totalRounds}`;
+    roundElement.textContent = `${currentRound}/${totalRounds}`;
 
     if (usedLocations.length >= locations.length) {
         console.log("All locations used! Restarting selection.");

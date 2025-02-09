@@ -1,45 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
-    <title>HK Guessr</title>
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+    <title>Hollow Guessr</title>
+    <style>
+        @font-face {
+            font-family: 'Trajan Pro Bold';
+            font-style: normal;
+            font-weight: normal;
+            src: local('Trajan Pro Bold'), url('TrajanPro-Bold.woff') format('woff');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        a {
+            color: white;
+        }
+
+        /* Fullscreen container */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('images/screenshots/7.png') no-repeat center center fixed;
+            background-size: cover;
+            text-align: center;
+            color: white;
+            font-family: 'Trajan Pro Bold';
+            position: relative;
+        }
+
+        /* Fade-in and Fade-out overlay */
+        .fade-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            opacity: 1;
+            pointer-events: none;
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* Start faded in, then fade out on load */
+        .fade-in {
+            opacity: 1;
+        }
+
+        .fade-out {
+            opacity: 0;
+        }
+
+        /* Title image */
+        #title-image {
+            width: 80%;
+            max-width: 600px;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
+            margin-bottom: 20px;
+        }
+
+        /* Play button */
+        .play-button {
+            background: transparent;
+            color: white;
+            font-family: 'Trajan Pro Bold';
+            font-size: 28px;
+            font-weight: bold;
+            padding: 10px 50px;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border-radius: 5px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        }
+
+        .play-button:hover {
+            background: white;
+            color: black;
+            text-shadow: none;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(200px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #title-image,
+        .play-button {
+            animation: fadeIn 1.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 600px) {
+            #title-image {
+                max-width: 80%;
+            }
+
+            .play-button {
+                font-size: 22px;
+                padding: 8px 40px;
+            }
+        }
+
+        #versionLabel {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            color: #FFF;
+            user-select: none;
+            margin: 2px;
+            text-align: left;
+        }
+    </style>
+
+    <script>
+        function fadeToBlack(reverse = false) {
+            let overlay = document.getElementById('fade-overlay');
+            overlay.style.pointerEvents = "all"; // Prevent clicks
+
+            if (reverse) {
+                overlay.classList.remove('fade-in');
+                overlay.classList.add('fade-out');
+                setTimeout(() => {
+                    overlay.style.pointerEvents = "none"; // Allow interaction after fade-in
+                }, 1000);
+            } else {
+                overlay.classList.remove('fade-out');
+                overlay.classList.add('fade-in');
+                setTimeout(() => {
+                    window.location.href = "game.html"; // Redirect after fade-out
+                }, 1000);
+            }
+        }
+
+        // Automatically fade in on page load
+        window.onload = function () {
+            fadeToBlack(true);
+        };
+    </script>
 </head>
 
 <body>
-    <img src="" alt="image should be here by now" id="locationImg">
-    <p id="loadingText">Getting Image...</p>
-    <p id="versionLabel">HKGuessr v1.0.2</p>
-    <div id="scoreContainer">
-        <span id="round">Round: 1/5</span>
-        <br>
-        <span id="timer"></span>
-    </div>
-    <div id="mapContainer">
-        <canvas id="mapCanvas"></canvas>
-        <br>
-        <div id="buttonContainer">
-            <button id="guessButton" disabled>Guess!</button>
-            <button id="fullscreenButton">
-                <img src="images/fullscreen.png" alt="FS" style="scale: 0.8;">
-            </button>
-        </div>
-    </div>
-    <div id="gameOverWindow">
-        <h2>Game Over</h2>
-        <p id="finalScore">Final Score: </p>
-        <p id="accuracy">Accuracy: </p>
-        <p id="totalRounds">Total Rounds: </p>
-        <button id="restartButton">Restart Game</button>
-    </div>
-
-
-
-
-    <script src="script.js"></script>
+    
+    <img src="images/logo.png" alt="Hollow Guessr" id="title-image">
+    <button class="play-button" onclick="fadeToBlack()">Play</button>
+    <p id="versionLabel">
+        <span>v1.1.0</span><br>
+        <span>A game by Logboy2000</span><br>
+        <a href="https://github.com/Logboy2000/HKGuessr/issues/new?template=location-request.md" target="_blank">
+            Suggest a new location
+        </a>
+    </p>
+    <div id="fade-overlay" class="fade-overlay fade-in"></div>
 </body>
-
 </html>
