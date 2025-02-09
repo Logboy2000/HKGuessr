@@ -10,7 +10,7 @@ img {
     margin: 0;
     height: 100%;
     width: 100%;
-    object-fit:scale-down;
+    object-fit: scale-down;
 }
 
 body {
@@ -85,12 +85,13 @@ p {
 
 #mapContainer {
     background-color: #000;
-    opacity: 0.9;
+    opacity: 0.6;
     transition: all 0.3s ease-in-out;
     position: absolute;
     inset: auto 0 1rem auto;
     width: 30%;
     height: auto;
+    aspect-ratio: 16 / 9;
     right: 0;
     bottom: 0;
     margin: 1rem;
@@ -98,14 +99,15 @@ p {
     border-color: #000;
     border-style: solid;
     border-width: 1rem;
-    aspect-ratio: 25 / 17;
     image-rendering: optimizeSpeed;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: end;
+
 }
 
 #mapContainer:hover {
+    opacity: 0.9;
     width: 50%;
     height: auto;
 }
@@ -118,9 +120,10 @@ p {
 
 #buttonContainer {
     display: flex;
-    justify-content: space-between;
-    width: 70%;
-    padding: 0.5rem;
+    width: 100%;
+    padding: 0;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 button {
@@ -160,15 +163,34 @@ button:disabled {
     margin-left: 0.5rem;
 }
 
+#versionLabel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    color: #FFF;
+    user-select: none;
+    margin: 2px;
+}
+
 @media (max-width: 768px) {
+    #versionLabel {
+        top: 0;
+        right: 0;
+        left: auto; /* Reset conflicting left */
+        bottom: auto; /* Reset conflicting bottom */
+    }
+
     #mapContainer {
-        width: 70%;
-        margin: 0.5rem;
+        width: 100%;
+        height: 30%;
+        margin: 0;
         border-width: 0.5rem;
+        box-sizing: border-box;
     }
 
     #mapContainer:hover {
-        width: 90%;
+        width: 100%;
+        height: 30%;
     }
 
     #scoreContainer {
@@ -196,6 +218,7 @@ button:disabled {
 }
 
 .fullscreen {
+    opacity: 0.9;
     width: 100% !important;
     height: 100% !important;
     right: 0;
@@ -205,3 +228,4 @@ button:disabled {
     border-radius: 0 !important;
     position: fixed !important;
 }
+
