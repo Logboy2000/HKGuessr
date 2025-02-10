@@ -202,11 +202,17 @@ function restartGame() {
     }
 
     // Check if timerLengthInput value is a valid number
-    if (!isNaN(timerLengthInput.value) && timerLengthInput.value !== '') {
-        timerLengthSeconds = Number(timerLengthInput.value);  // Convert to number
-    } else {
-        alert('Please use a valid number for timer length');
-        return;
+    if (timerEnabledInput.checked){
+        if (!isNaN(timerLengthInput.value) && timerLengthInput.value !== '') {
+            timerLengthSeconds = Number(timerLengthInput.value);  // Convert to number
+        } else if (timerLengthInput.value == ''){
+            timerLengthSeconds = 60
+        } 
+        
+        else {
+            alert('Please use a valid number for timer length');
+            return;
+        }
     }
 
     timerEnabled = timerEnabledInput.checked
@@ -227,7 +233,6 @@ function update() {
     if (timerEnabled) {
         if (gameState == gameStates.guessing) {
             if (performance.now() > endTime) {
-                gameState = gameStates.guessed
                 timerDisplay.innerText = 0
                 guessButtonClicked()
             } else {
@@ -508,18 +513,32 @@ function updateGuessPos() {
             x: mouseXRelative,
             y: mouseYRelative
         }
-        if (imageIsLoaded) {
-            guessButton.disabled = false
-        }
+
+
+
+        guessButton.disabled = false
+
     }
 }
 
 function guessButtonClicked() {
-    if (guessPos == null) {
-        return -1
-    }
+    if (guessPos == null && gameState === gameStates.guessing) {
+        roundScore = 0
+        gameState = gameStates.guessed
+        guessButton.disabled = false
+        if (currentRound >= totalRounds) {
+            guessButton.innerText = 'End Game';
+            gameState = gameStates.gameOver
+        } else {
+            guessButton.innerText = 'Next Round';
+        }
+        mapCamera.targetX = -currentLocation.mapX;
+        mapCamera.targetY = -currentLocation.mapY;
+        mapCamera.targetZoom = 1
 
-    if (gameState === gameStates.guessing) {
+    } else if (gameState === gameStates.guessing) {
+
+
         gameState = gameStates.guessed;
         calculateScore();
         if (currentRound >= totalRounds) {
@@ -548,7 +567,7 @@ function guessButtonClicked() {
             if (mapContainer.classList.contains('fullscreen')) {
                 mapContainer.classList.remove('fullscreen');
             }
-            gameState = gameStates.guessing;
+
             nextRound();
             guessButton.disabled = true;
             guessButton.innerText = 'Guess!';
@@ -620,7 +639,7 @@ function lerp(start, end, t) {
 
 
 function nextRound() {
-
+    gameState = gameStates.guessing;
     mapCamera.targetX = -2249;
     mapCamera.targetY = -1450;
     mapCamera.targetZoom = 0.125;

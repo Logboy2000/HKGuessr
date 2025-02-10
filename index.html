@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link rel="manifest" href="manifest.json">
@@ -30,7 +31,8 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;  /* Fallback */
+            height: 100dvh;     /* Works better on mobile browsers */
             background: url('images/screenshots/7.png') no-repeat center center fixed;
             background-size: cover;
             text-align: center;
@@ -38,6 +40,7 @@
             font-family: 'Trajan Pro Bold';
             position: relative;
         }
+
 
         /* Fade-in and Fade-out overlay */
         .fade-overlay {
@@ -161,7 +164,7 @@
 </head>
 
 <body>
-    
+
     <img src="images/logo.png" alt="Hollow Guessr" id="title-image">
     <button class="play-button" onclick="fadeToBlack()">Play</button>
     <p id="versionLabel">
@@ -173,4 +176,5 @@
     </p>
     <div id="fade-overlay" class="fade-overlay fade-in"></div>
 </body>
+
 </html>
