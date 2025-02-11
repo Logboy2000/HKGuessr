@@ -201,21 +201,22 @@ function restartGame() {
         return;
     }
 
+
+    timerEnabled = timerEnabledInput.checked
+
     // Check if timerLengthInput value is a valid number
-    if (timerEnabledInput.checked){
+    if (timerEnabled) {
         if (!isNaN(timerLengthInput.value) && timerLengthInput.value !== '') {
             timerLengthSeconds = Number(timerLengthInput.value);  // Convert to number
-        } else if (timerLengthInput.value == ''){
+        } else if (timerLengthInput.value == '') {
             timerLengthSeconds = 60
-        } 
-        
-        else {
+        } else {
             alert('Please use a valid number for timer length');
             return;
         }
     }
 
-    timerEnabled = timerEnabledInput.checked
+
     gameState = gameStates.guessing
     totalScore = 0;
     currentRound = 0;
@@ -229,66 +230,64 @@ function restartGame() {
 }
 
 function update() {
-    //timer
-    if (timerEnabled) {
-        if (gameState == gameStates.guessing) {
-            if (performance.now() > endTime) {
-                timerDisplay.innerText = 0
-                guessButtonClicked()
-            } else {
-                timerDisplay.innerText = ((endTime - performance.now()) / 1000).toFixed(2)
-            }
+    // Timer
+    if (timerEnabled && gameState === gameStates.guessing) {
+        const currentTime = performance.now();
+        const remainingTime = endTime - currentTime;
+
+        if (remainingTime <= 0) {
+            timerDisplay.innerText = '0.00';
+            guessButtonClicked();
+        } else {
+            timerDisplay.innerText = (remainingTime / 1000).toFixed(2);
         }
     }
 
+    // Drawing
+    mapCanvas.width = mapCanvas.clientWidth;
+    mapCanvas.height = mapCanvas.clientHeight;
+    mapCtx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
+    mapCtx.save();
+    mapCamera.x = lerp(mapCamera.x, mapCamera.targetX, 0.5);
+    mapCamera.y = lerp(mapCamera.y, mapCamera.targetY, 0.5);
+    mapCamera.zoom = lerp(mapCamera.zoom, mapCamera.targetZoom, 0.25);
+    mapCtx.translate(mapCanvas.width / 2, mapCanvas.height / 2);
+    mapCtx.scale(mapCamera.zoom, mapCamera.zoom);
+    mapCtx.translate(mapCamera.x, mapCamera.y);
 
-    //DrAWING
-    mapCanvas.width = mapCanvas.clientWidth
-    mapCanvas.height = mapCanvas.clientHeight
-    mapCtx.clearRect(0, 0, mapCanvas.width, mapCanvas.height)
-    mapCtx.save()
-    mapCamera.x = lerp(mapCamera.x, mapCamera.targetX, 0.5)
-    mapCamera.y = lerp(mapCamera.y, mapCamera.targetY, 0.5)
-    mapCamera.zoom = lerp(mapCamera.zoom, mapCamera.targetZoom, 0.25)
-    mapCtx.translate(mapCanvas.width / 2, mapCanvas.height / 2)
-    mapCtx.scale(mapCamera.zoom, mapCamera.zoom)
-    mapCtx.translate(mapCamera.x, mapCamera.y)
-
-    mapCtx.drawImage(mapImg, 0, 0, mapImg.width, mapImg.height)
+    mapCtx.drawImage(mapImg, 0, 0, mapImg.width, mapImg.height);
 
     if ((gameState == gameStates.guessed || gameState == gameStates.gameOver)) {
         // Draw line between guess and correct spot
         if (guessPos) {
-            mapCtx.beginPath()
-            mapCtx.moveTo(guessPos.x, guessPos.y)
-            mapCtx.lineTo(currentLocation.mapX, currentLocation.mapY)
-            mapCtx.strokeStyle = 'red'
-            mapCtx.lineWidth = 10
-            mapCtx.stroke()
+            mapCtx.beginPath();
+            mapCtx.moveTo(guessPos.x, guessPos.y);
+            mapCtx.lineTo(currentLocation.mapX, currentLocation.mapY);
+            mapCtx.strokeStyle = 'red';
+            mapCtx.lineWidth = 10;
+            mapCtx.stroke();
         }
 
-        //draw shade at correct spot
+        // Draw shade at correct spot
         mapCtx.drawImage(
             shadePinImg,
             currentLocation.mapX - (shadePinImg.width / 2),
             currentLocation.mapY - (shadePinImg.height / 2),
-        )
-
-
+        );
     }
 
-    //draw knight at guessed spot
+    // Draw knight at guessed spot
     if (guessPos) {
         mapCtx.drawImage(
             knightPinImg,
             guessPos.x - (knightPinImg.width / 2),
             guessPos.y - (knightPinImg.height / 2),
-        )
+        );
     }
 
-    mapCtx.restore()
+    mapCtx.restore();
 
-    mapCtx.font = '20px Trajan Pro Bold'
+    mapCtx.font = '20px Trajan Pro Bold';
     if (gameState != gameStates.guessing && gameState != gameStates.optionsWindow) {
         const boxWidth = 300;
         const boxHeight = 25;
@@ -315,24 +314,24 @@ function update() {
         mapCtx.lineWidth = 2;
         mapCtx.stroke();
 
-        mapCtx.fillStyle = '#FFF'
-        mapCtx.textAlign = 'center'
-        mapCtx.fillText(`You earned ${roundScore} points`, mapCanvas.width / 2, mapCanvas.height - 25)
+        mapCtx.fillStyle = '#FFF';
+        mapCtx.textAlign = 'center';
+        mapCtx.fillText(`You earned ${roundScore} points`, mapCanvas.width / 2, mapCanvas.height - 25);
     }
 
-    mapCtx.fillStyle = 'rgba(0, 0, 0, 0.5)'
-    mapCtx.fillRect(0, 0, 250, 25)
+    mapCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    mapCtx.fillRect(0, 0, 250, 25);
 
-    mapCtx.fillStyle = 'white'
-    mapCtx.textAlign = 'left'
+    mapCtx.fillStyle = 'white';
+    mapCtx.textAlign = 'left';
     if (guessPos) {
         mapCtx.fillText(
             `Guess: ${Math.round(guessPos.x)}, ${Math.round(guessPos.y)}`,
             10,
             20
-        )
+        );
     }
-    requestAnimationFrame(update)
+    requestAnimationFrame(update);
 }
 
 function addEventListeners() {
@@ -523,27 +522,25 @@ function updateGuessPos() {
 
 function guessButtonClicked() {
     if (guessPos == null && gameState === gameStates.guessing) {
-        roundScore = 0
-        gameState = gameStates.guessed
-        guessButton.disabled = false
+        roundScore = 0;
+        gameState = gameStates.guessed;
+        guessButton.disabled = false;
         if (currentRound >= totalRounds) {
             guessButton.innerText = 'End Game';
-            gameState = gameStates.gameOver
+            gameState = gameStates.gameOver;
         } else {
             guessButton.innerText = 'Next Round';
         }
         mapCamera.targetX = -currentLocation.mapX;
         mapCamera.targetY = -currentLocation.mapY;
-        mapCamera.targetZoom = 1
+        mapCamera.targetZoom = 1;
 
     } else if (gameState === gameStates.guessing) {
-
-
         gameState = gameStates.guessed;
         calculateScore();
         if (currentRound >= totalRounds) {
             guessButton.innerText = 'End Game';
-            gameState = gameStates.gameOver
+            gameState = gameStates.gameOver;
         } else {
             guessButton.innerText = 'Next Round';
         }
@@ -576,15 +573,14 @@ function guessButtonClicked() {
         guessButton.disabled = true;
         gameOverWindow.style.display = 'flex';
         gameState = gameStates.gameOver;
-        finalScoreDisplay.innerText = `Final Score: ${totalScore}/${totalRounds * maxScore}`
-        var accuracyPercent = ((totalScore / (totalRounds * maxScore)) * 100).toFixed(2)
-        accuracyElement.innerText = `Accuracy: ${accuracyPercent}%`
-        totalRoundsElement.innerText = `Total Rounds: ${totalRounds}`
-        getElement('timerLengthDisplay').innerText = `Timer Length: ${timerLengthSeconds}s`
-        usedLocations = []
+        finalScoreDisplay.innerText = `Final Score: ${totalScore}/${totalRounds * maxScore}`;
+        var accuracyPercent = ((totalScore / (totalRounds * maxScore)) * 100).toFixed(2);
+        accuracyElement.innerText = `Accuracy: ${accuracyPercent}%`;
+        totalRoundsElement.innerText = `Total Rounds: ${totalRounds}`;
+        getElement('timerLengthDisplay').innerText = `Timer Length: ${timerLengthSeconds}s`;
+        usedLocations = [];
     }
 }
-
 
 
 function setLocation(i) {
@@ -613,10 +609,11 @@ function addLocation(mapX, mapY, imageSrc) {
 }
 
 class Location {
-    constructor(mapX, mapY, imageSrc) {
+    constructor(mapX, mapY, imageSrc, difficulty = 0) {
         this.mapX = mapX
         this.mapY = mapY
         this.imageSrc = imageSrc
+        this.difficulty = difficulty
     }
 }
 
@@ -661,6 +658,12 @@ function nextRound() {
 
     guessButton.disabled = true;
     guessPos = null;
+
+    // Reset and start the timer
+    if (timerEnabled) {
+        startTime = performance.now();
+        endTime = startTime + (timerLengthSeconds * 1000);
+    }
 }
 
 
