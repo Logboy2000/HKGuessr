@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="manifest" href="manifest.json">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
     <title>Hollow Guessr</title>
     <style>
@@ -31,16 +31,15 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;  /* Fallback */
-            height: 100dvh;     /* Works better on mobile browsers */
+            min-height: 100dvh; /* Use dynamic viewport height */
             background: url('images/screenshots/583_767_6.jpg') no-repeat center center fixed;
             background-size: cover;
             text-align: center;
             color: white;
             font-family: 'Trajan Pro Bold';
             position: relative;
+            overflow: hidden; /* Prevent scrolling */
         }
-
 
         /* Fade-in and Fade-out overlay */
         .fade-overlay {
