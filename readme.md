@@ -28,7 +28,7 @@ Some planned features for the future
 - [ ] Challenge Modes
   - [ ] Greyscale Images
   - [ ] Hitbox Only
-  - Suggest more!
+  - [ ] [Suggest more!](https://github.com/logboy2000/HKGuessr/issues)
 
 
 ## Installation For Developers

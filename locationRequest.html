@@ -6,14 +6,12 @@
     <link rel="manifest" href="manifest.json">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
-    <title>Hollow Guessr</title>
+    <title>Location Request | Hollow Guessr</title>
     <style>
-
         body {
             font-family: 'Trajan Pro Bold';
             background-color: #000;
             color: #ffffff;
-
         }
 
         button {
@@ -35,6 +33,25 @@
             background-color: #FFF;
             color: #000000;
         }
+
+        h2,
+        h3 {
+            color: #FFF;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        a {
+            color: #FFF;
+            text-decoration: underline;
+        }
+
+        a:hover {
+            color: #CCC;
+        }
     </style>
 </head>
 
@@ -43,22 +60,43 @@
         <button onclick="window.location.href='index.html'">&lt;- Back to Title</button>
         <h2>Suggest a Location</h2>
         <hr>
-        <h3>Instructions</h3>
-        <p>
-            A location requires an image as well as the map coordinates asscosiated with it
-        </p>
-        <br>
-        <img src="images/readme/coords.png" alt="" style="max-width: min-content;">
-        <h3>Where to contact me</h3>
-        <ul>Create an issue on
-            <a href="https://github.com/Logboy2000/HKGuessr/issues/new?template=location-request.md">Github</a>
+        <h3>Image Reqirements</h3>
+        <ul>
+            <li>
+                No player character visble
+            </li>
+            <li>
+                Roughly 16:9 Aspect ratio
+            </li>
+            <li>
+                The map coordinates associated with it.
+            </li>
+            <li>
+                A difficulty/obscurity rating out of 10.
+                <p style="font-size: xx-small;"> Note: Difficulty rating is not currently used but will be in the future to allow difficulty settings</p>
+            </li>
         </ul>
-        <ul>DM me on discord @logboy2000 (not checked very often)</ul>
         <hr>
-        <button onclick="window.location.href='index.html'">&lt;- Back to Title</button>
+        <h3>Map coordinates example:</h3>
+        <img src="images/readme/coords.png" alt="" style="max-width: min-content;">
+        <hr>
+        <h3>Where to Make Suggestions</h3>
+        <ul>
+            <li>Create an issue on
+                <a href="https://github.com/Logboy2000/HKGuessr/issues/new?template=location-request.md">GitHub</a>
+                (Preferred)
+            </li>
+            <li>DM me on Discord @logboy2000</li>
+        </ul>
+        <hr>
+        <h3>Top Image Contributors</h3>
+        <ul>
+            <li>52 - Hollow Knight Wiki</li>
+            <li>22 - RikiChik</li>
+            <li>10 - demapples14</li>
+            <li>1 - lucasbrasantos</li>
+        </ul>
     </div>
-
-
 </body>
 
 </html>

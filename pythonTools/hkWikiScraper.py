@@ -1,3 +1,4 @@
+### Downloads images from hollowknight.wiki automatically
 import os
 import requests
 import tkinter as tk

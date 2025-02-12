@@ -1,3 +1,4 @@
+### Generates the locationData array used in script.js
 import os
 import re
 from tkinter import Tk, filedialog
@@ -16,8 +17,8 @@ if not image_folder:
     print("❌ No folder selected. Exiting...")
     exit()
 
-# Regex to extract coordinates and difficulty from filenames (e.g., 2672_2453_5.jpg)
-filename_pattern = re.compile(r"(\d+)_(\d+)_(\d+)\.jpg")
+# Regex to extract coordinates, difficulty, and file extension from filenames (e.g., 2672_2453_5.jpg)
+filename_pattern = re.compile(r"(\d+)_(\d+)_(\d+)\.(jpg|png|gif|bmp)")
 
 # List to store location data
 location_data = []
@@ -26,12 +27,12 @@ location_data = []
 for filename in os.listdir(image_folder):
     match = filename_pattern.match(filename)
     if match:
-        map_x, map_y, difficulty = match.groups()
+        map_x, map_y, difficulty, file_extension = match.groups()  # Unpack all four groups
         image_path = f"images/screenshots/{filename}"
         location_data.append(f"    [{map_x}, {map_y}, '{image_path}', {difficulty}],")
 
 # Generate JavaScript code
-output_js = """// Auto-generated location data
+output_js = """// Auto-generated location data from 'genLocationData.py'
 const locationData = [
 """ + "\n".join(location_data) + """
 ];

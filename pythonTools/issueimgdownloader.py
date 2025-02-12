@@ -1,3 +1,4 @@
+### Gets images and names them based on github issues
 import requests
 import re
 import os

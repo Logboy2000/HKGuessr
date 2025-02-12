@@ -4,7 +4,7 @@
 //BEWARE THIS SOURCE CODE IS AN ABOSLUTE MESS//
 ///////////////////////////////////////////////
 
-// Auto-generated location data
+// Auto-generated location data from 'genLocationData.py'
 const locationData = [
     [1360, 1280, 'images/screenshots/1360_1280_3.jpg', 3],
     [2074, 936, 'images/screenshots/2074_936_3.jpg', 3],
@@ -13,10 +13,13 @@ const locationData = [
     [2600, 1401, 'images/screenshots/2600_1401_3.jpg', 3],
     [3683, 1712, 'images/screenshots/3683_1712_3.jpg', 3],
     [1800, 1850, 'images/screenshots/1800_1850_2.jpg', 2],
+    [2795, 1206, 'images/screenshots/2795_1206_7.jpg', 7],
     [872, 1982, 'images/screenshots/872_1982_9.jpg', 9],
     [2353, 2119, 'images/screenshots/2353_2119_4.jpg', 4],
     [3839, 1370, 'images/screenshots/3839_1370_4.jpg', 4],
     [980, 1950, 'images/screenshots/980_1950_9.jpg', 9],
+    [1689, 1142, 'images/screenshots/1689_1142_4.png', 4],
+    [2557, 1201, 'images/screenshots/2557_1201_5.png', 5],
     [981, 1322, 'images/screenshots/981_1322_5.jpg', 5],
     [2138, 2374, 'images/screenshots/2138_2374_4.jpg', 4],
     [2053, 844, 'images/screenshots/2053_844_2.jpg', 2],
@@ -24,8 +27,9 @@ const locationData = [
     [1970, 1835, 'images/screenshots/1970_1835_3.jpg', 3],
     [301, 1907, 'images/screenshots/301_1907_2.jpg', 2],
     [3221, 2228, 'images/screenshots/3221_2228_3.jpg', 3],
-    [2448, 2261, 'images/screenshots/2448_2261_3.jpg', 3],
     [2893, 1634, 'images/screenshots/2893_1634_8.jpg', 8],
+    [470, 978, 'images/screenshots/470_978_6.png', 6],
+    [1668, 961, 'images/screenshots/1668_961_10.png', 10],
     [3670, 1922, 'images/screenshots/3670_1922_6.jpg', 6],
     [2057, 1760, 'images/screenshots/2057_1760_2.jpg', 2],
     [3849, 1527, 'images/screenshots/3849_1527_5.jpg', 5],
@@ -45,9 +49,11 @@ const locationData = [
     [2690, 1410, 'images/screenshots/2690_1410_4.jpg', 4],
     [2630, 2258, 'images/screenshots/2630_2258_4.jpg', 4],
     [1700, 1100, 'images/screenshots/1700_1100_8.jpg', 8],
+    [1288, 449, 'images/screenshots/1288_449_6.png', 6],
     [3550, 1450, 'images/screenshots/3550_1450_4.jpg', 4],
     [3410, 630, 'images/screenshots/3410_630_3.jpg', 3],
     [3451, 842, 'images/screenshots/3451_842_2.jpg', 2],
+    [1739, 1743, 'images/screenshots/1739_1743_6.png', 6],
     [2726, 2346, 'images/screenshots/2726_2346_1.jpg', 1],
     [2672, 2453, 'images/screenshots/2672_2453_6.jpg', 6],
     [2244, 799, 'images/screenshots/2244_799_5.jpg', 5],
@@ -55,6 +61,7 @@ const locationData = [
     [3552, 1275, 'images/screenshots/3552_1275_5.jpg', 5],
     [2740, 1260, 'images/screenshots/2740_1260_3.jpg', 3],
     [2734, 2192, 'images/screenshots/2734_2192_3.jpg', 3],
+    [1739, 1995, 'images/screenshots/1739_1995_7.png', 7],
     [3360, 2710, 'images/screenshots/3360_2710_9.jpg', 9],
     [2520, 820, 'images/screenshots/2520_820_6.jpg', 6],
     [3278, 1363, 'images/screenshots/3278_1363_6.jpg', 6],
@@ -64,6 +71,7 @@ const locationData = [
     [3112, 937, 'images/screenshots/3112_937_2.jpg', 2],
     [2022, 616, 'images/screenshots/2022_616_1.jpg', 1],
     [2557, 878, 'images/screenshots/2557_878_3.jpg', 3],
+    [1150, 1240, 'images/screenshots/1150_1240_6.jpg', 6],
     [2103, 2239, 'images/screenshots/2103_2239_1.jpg', 1],
     [3180, 110, 'images/screenshots/3180_110_4.jpg', 4],
     [2052, 624, 'images/screenshots/2052_624_1.jpg', 1],
@@ -73,19 +81,18 @@ const locationData = [
     [2522, 2071, 'images/screenshots/2522_2071_2.jpg', 2],
     [2910, 1745, 'images/screenshots/2910_1745_9.jpg', 9],
     [3493, 2002, 'images/screenshots/3493_2002_4.jpg', 4],
+    [3613, 949, 'images/screenshots/3613_949_6.png', 6],
+    [1090, 1190, 'images/screenshots/1090_1190_10.jpg', 10],
     [2773, 2065, 'images/screenshots/2773_2065_5.jpg', 5],
     [2404, 2077, 'images/screenshots/2404_2077_8.jpg', 8],
     [3832, 1449, 'images/screenshots/3832_1449_6.jpg', 6],
     [2963, 482, 'images/screenshots/2963_482_5.jpg', 5],
+    [1070, 1289, 'images/screenshots/1070_1289_4.png', 4],
+    [3391, 432, 'images/screenshots/3391_432_6.png', 6],
     [2690, 850, 'images/screenshots/2690_850_7.jpg', 7],
-];
-
+]
 
 window.onload = loaded
-
-// Frame rate and timing
-var fps = 0
-var deltaTime
 
 // DOM elements
 var locationImgElement
@@ -598,7 +605,6 @@ function guessButtonClicked() {
         accuracyElement.innerText = `Accuracy: ${accuracyPercent}%`;
         totalRoundsElement.innerText = `Total Rounds: ${totalRounds}`;
         getElement('timerLengthDisplay').innerText = `Timer Length: ${timerLengthSeconds}s`;
-        usedLocations = [];
     }
 }
 
@@ -663,18 +669,31 @@ function nextRound() {
     currentRound++;
     roundElement.textContent = `${currentRound}/${totalRounds}`;
 
+    // Check if all locations have been used
     if (usedLocations.length >= locations.length) {
-        console.log("All locations used! Restarting selection.");
+        alert("You've played every location in this game! You WILL start seeing repeats!");
         usedLocations = []; // Reset if all locations are used
     }
 
-    let newLocation;
-    do {
-        newLocation = randIRange(0, locations.length - 1);
-    } while (usedLocations.includes(newLocation)); // Ensure uniqueness
+    // Filter out used locations
+    const availableLocations = locations.filter((_, index) => !usedLocations.includes(index));
 
-    usedLocations.push(newLocation);
-    setLocation(newLocation);
+    // Select a random location from the available ones
+    let newLocationIndex;
+    if (availableLocations.length > 0) {
+        newLocationIndex = randIRange(0, availableLocations.length - 1);
+        const selectedLocation = availableLocations[newLocationIndex];
+
+        // Find the original index of the selected location
+        const originalIndex = locations.indexOf(selectedLocation);
+        usedLocations.push(originalIndex); // Mark this location as used
+        setLocation(originalIndex); // Set the location for the round
+    } else {
+        // Fallback if no locations are available (should not happen due to the reset above)
+        newLocationIndex = randIRange(0, locations.length - 1);
+        usedLocations.push(newLocationIndex);
+        setLocation(newLocationIndex);
+    }
 
     guessButton.disabled = true;
     guessPos = null;
@@ -685,7 +704,6 @@ function nextRound() {
         endTime = startTime + (timerLengthSeconds * 1000);
     }
 }
-
 
 function calculateScore() {
     const dx = guessPos.x - currentLocation.mapX

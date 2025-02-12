@@ -22,14 +22,14 @@ body {
     height: 100%;
     left: 0;
     top: 0;
-    object-fit: contain;
+    object-fit: contain; /* Ensures the entire image is visible */
+    max-width: 100%; /* Prevents enlarging low-resolution images */
+    max-height: 100%; /* Prevents enlarging low-resolution images */
     overflow: hidden;
     user-select: none;
     padding: 0;
     margin: 0;
-    height: 100%;
-    width: 100%;
-    object-fit: scale-down;
+    pointer-events: none;
 }
 
 #locationImg::selection {
