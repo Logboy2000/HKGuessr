@@ -58,4 +58,4 @@ python -m http.server 8000
 - **Contributors**: Anyone who chooses to contribute locations, bug reports, and suggestions!
 
 ## Support Me
-You can support me by suggesting feedback and reporting issues
+I don't want your money. Donate to chairity or something.
