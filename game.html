@@ -45,9 +45,16 @@
         <h2>Game Options</h2>
         <hr>
         <div class="option">
+            <label for="gameMode">Select Game Mode:</label>
+            <select id="gameMode">
+                <option value="location">Normal Mode</option>
+                <option value="charms">Charms Mode</option>
+            </select>
+        </div>
+        <br>
+        <div class="option">
             <label for="roundCount">Round count: </label>
             <input type="text" id="roundCount" name="roundCount" min="1" value="5">
-
         </div>
         <br>
         <div class="option">
@@ -65,7 +72,7 @@
     </div>
 
     <div id="fade-overlay" class="fade-overlay fade-in"></div>
-    <script src="locationData.js?v=1.2.3"></script>
+    <script src="coordinatesData.js?v=1.2.3"></script>
     <script src="script.js?v=1.1.0"></script>
 </body>
 

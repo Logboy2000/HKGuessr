@@ -42,6 +42,7 @@ let gameStates = {
 }
 let gameState = gameStates.optionsWindow
 let locations = []
+let charms = []
 let usedLocations = [] // Store previously used locations this round
 let currentLocation = null
 let currentRound = 0
@@ -117,10 +118,13 @@ function loaded() {
     // this function scares me
     addEventListeners()
 
-
     // Adds location info to the list
     locationData.forEach(([mapX, mapY, imageSrc, difficulty]) => {
         addLocation(mapX, mapY, imageSrc, difficulty);
+    });
+
+    charmData.forEach(([mapX, mapY, imageSrc, difficulty]) => {
+        addCharm(mapX, mapY, imageSrc, difficulty);
     });
 
     gameOptionsWindow.style.display = 'flex'
@@ -132,6 +136,7 @@ function loaded() {
 }
 
 function restartGame() {
+    gameMode = document.getElementById('gameMode').value;
     // Check if roundCountInput value is a valid number
     if (!isNaN(roundCountInput.value) && roundCountInput.value !== '') {
         totalRounds = Number(roundCountInput.value);  // Convert to number
@@ -524,28 +529,44 @@ function guessButtonClicked() {
 
 
 function setLocation(i) {
-    imageIsLoaded = false
-    currentLocation = locations[i]
-    locationImgElement.src = ''
-    loadingText.style.display = 'flex'
-    const img = new Image()
+    imageIsLoaded = false;
+
+    // Если режим "charms", используйте массив charms
+    if (gameMode === 'charms') {
+        currentLocation = charms[i]; // Используйте charms для режима "charms"
+    } else {
+        currentLocation = locations[i]; // Используйте locations для режима "normal"
+    }
+
+    if (!currentLocation) {
+        console.error("Current location is undefined.");
+        return; // Выходите, если currentLocation не определен
+    }
+
+    locationImgElement.src = '';
+    loadingText.style.display = 'flex';
+    const img = new Image();
     img.onload = function () {
-        imageIsLoaded = true
-        loadingText.style.display = 'none'
-        locationImgElement.src = currentLocation.imageSrc
+        imageIsLoaded = true;
+        loadingText.style.display = 'none';
+        locationImgElement.src = currentLocation.imageSrc;
         if (guessPos) {
-            guessButton.disabled = false
+            guessButton.disabled = false;
         }
         if (timerEnabled) {
-            startTime = performance.now()
-            endTime = startTime + (timerLengthSeconds * 1000)
+            startTime = performance.now();
+            endTime = startTime + (timerLengthSeconds * 1000);
         }
-    }
-    img.src = currentLocation.imageSrc
+    };
+    img.src = currentLocation.imageSrc;
 }
 
 function addLocation(mapX, mapY, imageSrc, difficulty = 0) {
     locations.push(new Location(mapX, mapY, imageSrc, difficulty))
+}
+
+function addCharm(mapX, mapY, imageSrc, difficulty = 0) {
+    charms.push(new Location(mapX, mapY, imageSrc, difficulty))
 }
 
 class Location {
@@ -584,29 +605,40 @@ function nextRound() {
     roundElement.textContent = `${currentRound}/${totalRounds}`;
 
     // Check if all locations have been used
-    if (usedLocations.length >= locations.length) {
+    if (usedLocations.length >= locations.length && gameMode === 'normal') {
         alert("You've played every location in this game! You WILL start seeing repeats!");
         usedLocations = []; // Reset if all locations are used
+    } else if (usedLocations.length >= charms.length && gameMode === 'charms') {
+        alert("You've played every charm location in this game! You WILL start seeing repeats!");
+        usedLocations = []; // Reset if all charm locations are used
     }
 
-    // Filter out used locations
-    const availableLocations = locations.filter((_, index) => !usedLocations.includes(index));
-
-    // Select a random location from the available ones
     let newLocationIndex;
-    if (availableLocations.length > 0) {
-        newLocationIndex = randIRange(0, availableLocations.length - 1);
-        const selectedLocation = availableLocations[newLocationIndex];
 
-        // Find the original index of the selected location
-        const originalIndex = locations.indexOf(selectedLocation);
-        usedLocations.push(originalIndex); // Mark this location as used
-        setLocation(originalIndex); // Set the location for the round
+    if (gameMode === 'charms') {
+        const availableCharmLocations = charms.filter((_, index) => !usedLocations.includes(index));
+        if (availableCharmLocations.length > 0) {
+            newLocationIndex = randIRange(0, availableCharmLocations.length - 1);
+            const selectedLocation = availableCharmLocations[newLocationIndex];
+            const originalIndex = charms.indexOf(selectedLocation);
+            usedLocations.push(originalIndex);
+            setLocation(originalIndex);
+        } else {
+            console.error("No available charm locations found.");
+            return;
+        }
     } else {
-        // Fallback if no locations are available (should not happen due to the reset above)
-        newLocationIndex = randIRange(0, locations.length - 1);
-        usedLocations.push(newLocationIndex);
-        setLocation(newLocationIndex);
+        const availableLocations = locations.filter((_, index) => !usedLocations.includes(index));
+        if (availableLocations.length > 0) {
+            newLocationIndex = randIRange(0, availableLocations.length - 1);
+            const selectedLocation = availableLocations[newLocationIndex];
+            const originalIndex = locations.indexOf(selectedLocation);
+            usedLocations.push(originalIndex);
+            setLocation(originalIndex); // Set the location for the round
+        } else {
+            console.error("No available locations found.");
+            return; // Выходите, если нет доступных мест
+        }
     }
 
     guessButton.disabled = true;
