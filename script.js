@@ -531,16 +531,15 @@ function guessButtonClicked() {
 function setLocation(i) {
     imageIsLoaded = false;
 
-    // Если режим "charms", используйте массив charms
     if (gameMode === 'charms') {
-        currentLocation = charms[i]; // Используйте charms для режима "charms"
+        currentLocation = charms[i];
     } else {
-        currentLocation = locations[i]; // Используйте locations для режима "normal"
+        currentLocation = locations[i];
     }
 
     if (!currentLocation) {
         console.error("Current location is undefined.");
-        return; // Выходите, если currentLocation не определен
+        return;
     }
 
     locationImgElement.src = '';
@@ -637,7 +636,7 @@ function nextRound() {
             setLocation(originalIndex); // Set the location for the round
         } else {
             console.error("No available locations found.");
-            return; // Выходите, если нет доступных мест
+            return;
         }
     }
 
