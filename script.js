@@ -175,7 +175,7 @@ function restartGame() {
 
 function update() {
     // Timer
-    if (timerEnabled && gameState === gameStates.guessing) {
+    if (timerEnabled && gameState === gameStates.guessing && imageIsLoaded) {
         const currentTime = performance.now();
         const remainingTime = endTime - currentTime;
 
