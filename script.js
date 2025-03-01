@@ -43,7 +43,8 @@ let gameStates = {
 let gameState = gameStates.optionsWindow
 let locations = []
 let charms = []
-let usedLocations = [] // Store previously used locations this round
+let usedLocations = [] 
+let usedCharmLocations = [] 
 let currentLocation = null
 let currentRound = 0
 let totalRounds = 5
@@ -186,6 +187,7 @@ function update() {
             timerDisplay.innerText = (remainingTime / 1000).toFixed(2);
         }
     }
+
 
     // Drawing
     mapCanvas.width = mapCanvas.clientWidth;
@@ -583,7 +585,7 @@ function getElement(id) {
 
 function randIRange(min, max) {
     if (min === max) {
-        console.warn('randomRange min has same min and max!!')
+        console.warn('randomRange has same min and max!!')
         return min
     }
     return Math.floor(Math.random() * (max - min + 1) + min)
@@ -604,23 +606,23 @@ function nextRound() {
     roundElement.textContent = `${currentRound}/${totalRounds}`;
 
     // Check if all locations have been used
-    if (usedLocations.length >= locations.length && gameMode === 'normal') {
+    if (usedLocations.length >= locations.length && gameMode === 'location') {
         alert("You've played every location in this game! You WILL start seeing repeats!");
         usedLocations = []; // Reset if all locations are used
-    } else if (usedLocations.length >= charms.length && gameMode === 'charms') {
+    } else if (usedCharmLocations.length >= charms.length && gameMode === 'charms') {
         alert("You've played every charm location in this game! You WILL start seeing repeats!");
-        usedLocations = []; // Reset if all charm locations are used
+        usedCharmLocations = []; // Reset if all charm locations are used
     }
 
     let newLocationIndex;
 
     if (gameMode === 'charms') {
-        const availableCharmLocations = charms.filter((_, index) => !usedLocations.includes(index));
+        const availableCharmLocations = charms.filter((_, index) => !usedCharmLocations.includes(index));
         if (availableCharmLocations.length > 0) {
             newLocationIndex = randIRange(0, availableCharmLocations.length - 1);
             const selectedLocation = availableCharmLocations[newLocationIndex];
             const originalIndex = charms.indexOf(selectedLocation);
-            usedLocations.push(originalIndex);
+            usedCharmLocations.push(originalIndex);
             setLocation(originalIndex);
         } else {
             console.error("No available charm locations found.");
