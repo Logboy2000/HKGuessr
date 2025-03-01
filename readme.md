@@ -22,10 +22,11 @@ I welcome contributions from the anybody! Here's how you can help:
 Some planned features for the future
 - [x] Easy Location Suggestion
 - [x] Timed Games
-- [ ] Difficulty Settings
-- [ ] 100+ Locations
+- [x] Difficulty Settings
+- [x] 100+ Locations
 - [ ] Sound Effects
 - [ ] Challenge Modes
+  - [x] Charms Mode
   - [ ] Greyscale Images
   - [ ] Hitbox Only
   - [ ] [Suggest more!](https://github.com/logboy2000/HKGuessr/issues)
