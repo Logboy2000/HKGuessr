@@ -5,6 +5,10 @@
     src: local('Trajan Pro Bold'), url('TrajanPro-Bold.woff') format('woff');
 }
 
+* {
+    font-family: 'Trajan Pro Bold';
+}
+
 hr {
     width: 95%;
 }
@@ -41,7 +45,6 @@ img {
 }
 
 #scoreContainer {
-    font-family: 'Trajan Pro Bold';
     font-size: 2rem;
     color: #FFF;
     position: absolute;
@@ -59,7 +62,6 @@ img {
     padding: 2rem;
     border-radius: 1rem;
     text-align: center;
-    font-family: 'Trajan Pro Bold';
     font-size: 2rem;
     z-index: 1000;
     height: min-content;
@@ -75,7 +77,6 @@ img {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-family: 'Trajan Pro Bold';
     font-size: 2rem;
     color: #FFF;
     z-index: 1000;
@@ -130,7 +131,6 @@ p {
 }
 
 button {
-    font-family: 'Trajan Pro Bold';
     font-size: 2rem;
     background-color: transparent;
     color: #FFF;
@@ -226,6 +226,7 @@ button:disabled {
 }
 
 
+
 input[type="text"] {
     background-color: #000;
     color: #FFF;
@@ -265,10 +266,32 @@ input[type="checkbox"]:checked {
 
 .option {
     display: flex;
-    justify-content: center;
-    /* Center horizontally */
-    align-items: center;
-    /* Center vertically */
-    height: 100%;
-    /* Ensure the div takes up some height */
+    align-items: center; /* Vertically center the label and input */
+    justify-content: space-between; /* Push label to the left and input to the right */
+    width: 100%; /* Ensure the container takes full width */
+    margin-bottom: 10px; /* Add spacing between options */
+}
+
+select {
+    background-color: #000;
+    color: #FFF;
+    padding: 10px;
+    border: 2px solid #818181;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+select:hover {
+    border-color: #666; /* Darker border on hover */
+}
+
+select:focus {
+    border-color: #007bff; /* Blue border on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle glow */
+}
+
+select:disabled {
+    background-color: #e9ecef; /* Light gray background */
+    color: #6c757d; /* Gray text */
+    cursor: not-allowed; /* Change cursor to not-allowed */
 }

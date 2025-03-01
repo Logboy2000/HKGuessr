@@ -605,42 +605,35 @@ function nextRound() {
     currentRound++;
     roundElement.textContent = `${currentRound}/${totalRounds}`;
 
-    // Check if all locations have been used
-    if (usedLocations.length >= locations.length && gameMode === 'location') {
-        alert("You've played every location in this game! You WILL start seeing repeats!");
-        usedLocations = []; // Reset if all locations are used
-    } else if (usedCharmLocations.length >= charms.length && gameMode === 'charms') {
-        alert("You've played every charm location in this game! You WILL start seeing repeats!");
-        usedCharmLocations = []; // Reset if all charm locations are used
-    }
-
-    let newLocationIndex;
+    let usedList, dataList, warningMessage;
 
     if (gameMode === 'charms') {
-        const availableCharmLocations = charms.filter((_, index) => !usedCharmLocations.includes(index));
-        if (availableCharmLocations.length > 0) {
-            newLocationIndex = randIRange(0, availableCharmLocations.length - 1);
-            const selectedLocation = availableCharmLocations[newLocationIndex];
-            const originalIndex = charms.indexOf(selectedLocation);
-            usedCharmLocations.push(originalIndex);
-            setLocation(originalIndex);
-        } else {
-            console.error("No available charm locations found.");
-            return;
-        }
+        usedList = usedCharmLocations;
+        dataList = charms;
+        warningMessage = "You've played every charm location in this game! You WILL start seeing repeats!";
     } else {
-        const availableLocations = locations.filter((_, index) => !usedLocations.includes(index));
-        if (availableLocations.length > 0) {
-            newLocationIndex = randIRange(0, availableLocations.length - 1);
-            const selectedLocation = availableLocations[newLocationIndex];
-            const originalIndex = locations.indexOf(selectedLocation);
-            usedLocations.push(originalIndex);
-            setLocation(originalIndex); // Set the location for the round
-        } else {
-            console.error("No available locations found.");
-            return;
-        }
+        usedList = usedLocations;
+        dataList = locations;
+        warningMessage = "You've played every location in this game! You WILL start seeing repeats!";
     }
+
+    // Reset if all locations are used
+    if (usedList.length >= dataList.length) {
+        alert(warningMessage);
+        usedList.length = 0;
+    }
+
+    // Get available indices
+    const availableIndices = dataList.map((_, i) => i).filter(i => !usedList.includes(i));
+
+    if (availableIndices.length === 0) {
+        console.error("No available locations found.");
+        return;
+    }
+
+    const newLocationIndex = availableIndices[randIRange(0, availableIndices.length - 1)];
+    usedList.push(newLocationIndex);
+    setLocation(newLocationIndex);
 
     guessButton.disabled = true;
     guessPos = null;
@@ -648,9 +641,10 @@ function nextRound() {
     // Reset and start the timer
     if (timerEnabled) {
         startTime = performance.now();
-        endTime = startTime + (timerLengthSeconds * 1000);
+        endTime = startTime + timerLengthSeconds * 1000;
     }
 }
+
 
 function calculateScore() {
     const dx = guessPos.x - currentLocation.mapX
