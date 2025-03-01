@@ -19,16 +19,21 @@
         <hr>
         <span id="timerDisplay"></span>
     </div>
-    <div id="mapContainer" hidden>
+    <div id="mapContainer">
         <canvas id="mapCanvas"></canvas>
         <br>
         <div id="buttonContainer">
-            <button id="guessButton" disabled>Guess!</button>
+            <button id="guessButton">Guess!</button>
             <button id="fullscreenButton">
-                <img src="images/fullscreen.png" alt="FS" style="scale: 0.8;">
+                <img src="images/fullscreen.png" alt="FS" style="scale: 0.7;">
             </button>
+            <button id="minimiseButton">X</button>
         </div>
     </div>
+
+    <button id="showMapButton">O</button>
+
+
     <div id="gameOverWindow" class="window">
         <h2>Game Over</h2>
         <hr>
@@ -45,7 +50,7 @@
         <h2>Game Options</h2>
         <hr>
         <div class="option">
-            <label for="gameMode">Game Mode:</label>
+            <label for="gameMode">Game mode:</label>
             <select id="gameMode">
                 <option value="location">Normal Mode</option>
                 <option value="charms">Charms Mode</option>

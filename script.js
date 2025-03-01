@@ -7,22 +7,7 @@
 window.onload = loaded
 
 // DOM elements
-let locationImgElement;
-let mapContainer
-let mapCanvas
-let finalScoreDisplay
-let accuracyElement
-let roundElement
-let guessButton
-let gameOverWindow
-let restartButton
-let totalRoundsElement
-let loadingText
-let fullscreenButton
-let timerDisplay
-let gameOptionsWindow
-let startButton
-let optionsButton
+let locationImgElement, mapContainer, mapCanvas, finalScoreDisplay, accuracyElement, roundElement, guessButton, gameOverWindow, restartButton, totalRoundsElement, loadingText, fullscreenButton, timerDisplay, gameOptionsWindow, startButton, optionsButton, minimiseButton, showMapButton
 
 let timerLengthInput
 let timerEnabledInput
@@ -43,8 +28,8 @@ let gameStates = {
 let gameState = gameStates.optionsWindow
 let locations = []
 let charms = []
-let usedLocations = [] 
-let usedCharmLocations = [] 
+let usedLocations = []
+let usedCharmLocations = []
 let currentLocation = null
 let currentRound = 0
 let totalRounds = 5
@@ -100,6 +85,7 @@ function loaded() {
     startButton = getElement('startButton')
     gameOptionsWindow = getElement('gameOptionsWindow')
     fullscreenButton = getElement('fullscreenButton')
+    minimiseButton = getElement('minimiseButton')
     loadingText = getElement('loadingText')
     totalRoundsElement = getElement('totalRounds')
     accuracyElement = getElement('accuracy')
@@ -112,6 +98,7 @@ function loaded() {
     gameOverWindow = getElement('gameOverWindow')
     restartButton = getElement('restartButton')
     timerDisplay = getElement('timerDisplay')
+    showMapButton = getElement('showMapButton')
 
     // canvas ctx thingy
     mapCtx = mapCanvas.getContext('2d')
@@ -281,6 +268,17 @@ function update() {
 }
 
 function addEventListeners() {
+    showMapButton.addEventListener('click', function () {
+        mapContainer.style.display = 'flex'
+        showMapButton.style.display = 'none'
+    })
+
+    minimiseButton.addEventListener('click', function () {
+        mapContainer.style.display = 'none'
+        showMapButton.style.display = 'flex'
+    })
+
+
     optionsButton.addEventListener('click', function () {
         gameOptionsWindow.style.display = 'flex'
         gameOverWindow.style.display = 'none'

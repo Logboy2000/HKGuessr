@@ -26,9 +26,12 @@ body {
     height: 100%;
     left: 0;
     top: 0;
-    object-fit: contain; /* Ensures the entire image is visible */
-    max-width: 100%; /* Prevents enlarging low-resolution images */
-    max-height: 100%; /* Prevents enlarging low-resolution images */
+    object-fit: contain;
+    /* Ensures the entire image is visible */
+    max-width: 100%;
+    /* Prevents enlarging low-resolution images */
+    max-height: 100%;
+    /* Prevents enlarging low-resolution images */
     overflow: hidden;
     user-select: none;
     padding: 0;
@@ -98,7 +101,7 @@ p {
     aspect-ratio: 16 / 9;
     right: 0;
     bottom: 0;
-    margin: 1rem;
+    margin: 0;
     border-radius: 1rem;
     border-color: #000;
     border-style: solid;
@@ -139,7 +142,7 @@ button {
     padding: 0.5rem 1rem;
     cursor: pointer;
     transition: all 0.1s ease-in-out;
-    max-height: 50px;
+    max-height: 60px;
     flex-grow: 1;
     margin: 0 0.5rem;
 }
@@ -155,15 +158,31 @@ button:disabled {
     border: 2px solid #999;
     cursor: not-allowed;
     height: min-content;
-    max-height: 50px;
 }
 
-#fullscreenButton {
-    max-width: 55px;
-    min-width: 55px;
-    height: 50px;
+#fullscreenButton,
+#minimiseButton {
+    max-width: 60px;
     padding: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
     margin-left: 0.5rem;
+}
+
+#showMapButton {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    right: 0;
+    bottom: 0;
+    margin-bottom: 2rem;
+    margin-right: 1.5rem;
+    display: none;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
 }
 
 @media (max-width: 768px) {
@@ -214,15 +233,13 @@ button:disabled {
 }
 
 .fullscreen {
+    animation: all 0.5s;
     opacity: 0.9;
     width: 100% !important;
     height: 100% !important;
-    right: 0;
-    bottom: 0;
     margin: 0 !important;
     border-width: 0 !important;
     border-radius: 0 !important;
-    position: fixed !important;
 }
 
 
@@ -266,10 +283,14 @@ input[type="checkbox"]:checked {
 
 .option {
     display: flex;
-    align-items: center; /* Vertically center the label and input */
-    justify-content: space-between; /* Push label to the left and input to the right */
-    width: 100%; /* Ensure the container takes full width */
-    margin-bottom: 10px; /* Add spacing between options */
+    align-items: center;
+    /* Vertically center the label and input */
+    justify-content: space-between;
+    /* Push label to the left and input to the right */
+    width: 100%;
+    /* Ensure the container takes full width */
+    margin-bottom: 10px;
+    /* Add spacing between options */
 }
 
 select {
@@ -279,19 +300,26 @@ select {
     border: 2px solid #818181;
     border-radius: 5px;
     font-size: 12px;
+    cursor: pointer;
 }
 
 select:hover {
-    border-color: #666; /* Darker border on hover */
+    border-color: #666;
+    /* Darker border on hover */
 }
 
 select:focus {
-    border-color: #007bff; /* Blue border on focus */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle glow */
+    border-color: #007bff;
+    /* Blue border on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    /* Add a subtle glow */
 }
 
 select:disabled {
-    background-color: #e9ecef; /* Light gray background */
-    color: #6c757d; /* Gray text */
-    cursor: not-allowed; /* Change cursor to not-allowed */
+    background-color: #e9ecef;
+    /* Light gray background */
+    color: #6c757d;
+    /* Gray text */
+    cursor: not-allowed;
+    /* Change cursor to not-allowed */
 }
