@@ -1,103 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="manifest" href="manifest.json" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+		<title>Location Request | Hollow Guessr</title>
+		<link rel="stylesheet" href="style.css" />
+		<style>
+			body {
+				background-image: url('images/locations/1026_579_2.png');
+				background-repeat: no-repeat;
+				background-size: cover;
+				background-attachment: fixed;
+			}
+		</style>
+	</head>
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="manifest" href="manifest.json">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
-    <title>Location Request | Hollow Guessr</title>
-    <style>
-        body {
-            font-family: 'Trajan Pro Bold',serif;
-            background-color: #000;
-            color: #ffffff;
-        }
+	<body>
+		<div class="location-request-container">
+			<nav class="back-nav">
+				<button onclick="window.location.href='index.html'">
+					&lt;- Back to Title
+				</button>
+			</nav>
 
-        button {
-            font-family: 'Trajan Pro Bold',serif;
-            font-size: 2rem;
-            background-color: transparent;
-            color: #FFF;
-            border: 2px solid #FFF;
-            border-radius: 0.5rem;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            transition: all 0.1s ease-in-out;
-            max-height: 50px;
-            flex-grow: 1;
-            margin: 0 0.5rem;
-        }
+			<main class="location-request-content">
+				<h1>Suggest a Location</h1>
 
-        button:hover {
-            background-color: #FFF;
-            color: #000000;
-        }
+				<section class="requirements-section">
+					<h2>Image Requirements</h2>
+					<ul class="requirements-list">
+						<li>No player character visible</li>
+						<li>Roughly 16:9 Aspect ratio</li>
+						<li>The map coordinates associated with it</li>
+						<li>A difficulty/obscurity rating out of 10</li>
+					</ul>
+				</section>
 
-        h2,
-        h3 {
-            color: #FFF;
-        }
+				<section class="coordinates-section">
+					<h2>Map Coordinates Example</h2>
+					<div class="coordinates-image">
+						<img src="images/readme/coords.png" alt="Map coordinates example" />
+					</div>
+				</section>
 
-        ul {
-            list-style-type: disc;
-            margin-left: 20px;
-        }
+				<section class="suggestions-section">
+					<h2>Where to Make Suggestions</h2>
+					<ul class="suggestions-list">
+						<li class="preferred">
+							<span>Create an issue on</span>
+							<a
+								target="_blank"
+								href="https://github.com/Logboy2000/HKGuessr/issues/new?template=location-request.md"
+								>GitHub</a
+							>
+							<span>(Preferred)</span>
+						</li>
+						<li class="alternative">
+							<span>Email me at</span>
+							<a
+								href="mailto:loganhowarth@icloud.com"
+								target="_blank"
+								rel="noopener"
+								>loganhowarth@icloud.com</a
+							>
+						</li>
+						<li class="alternative">
+							<span>DM me on Discord</span>
+							<span>@logboy2000</span>
+						</li>
+					</ul>
+				</section>
 
-        a {
-            color: #FFF;
-            text-decoration: underline;
-        }
-
-        a:hover {
-            color: #CCC;
-        }
-    </style>
-</head>
-
-<body>
-    <div>
-        <button onclick="window.location.href='index.html'">&lt;- Back to Title</button>
-        <h2>Suggest a Location</h2>
-        <hr>
-        <h3>Image Reqirements</h3>
-        <ul>
-            <li>
-                No player character visble
-            </li>
-            <li>
-                Roughly 16:9 Aspect ratio
-            </li>
-            <li>
-                The map coordinates associated with it.
-            </li>
-            <li>
-                A difficulty/obscurity rating out of 10.
-            </li>
-        </ul>
-        <hr>
-        <h3>Map coordinates example:</h3>
-        <img src="images/readme/coords.png" alt="" style="max-width: min-content;">
-        <hr>
-        <h3>Where to Make Suggestions</h3>
-        <ul>
-            <li>Create an issue on
-                <a href="https://github.com/Logboy2000/HKGuessr/issues/new?template=location-request.md">GitHub</a>
-                (Preferred)
-            </li>
-            <li>DM me on Discord @logboy2000</li>
-        </ul>
-        <hr>
-        <h3>Top Image Contributors</h3>
-        <ul>
-            <li>52 - Hollow Knight Wiki</li>
-            <li>42 - rblashchuk</li>
-            <li>22 - RikiChik</li>
-            <li>10 - demapples14</li>
-            <li>9 - derRumit</li>
-            <li>3 - lucasbrasantos</li>
-        </ul>
-    </div>
-</body>
-
+				<section class="contributors-section">
+					<h2>Top Image Contributors</h2>
+					<ul class="contributors-list">
+						<li><span class="count">52</span> - Hollow Knight Wiki</li>
+						<li>
+							<span class="count">42</span> - rblashchuk <i>(Charms Mode)</i>
+						</li>
+						<li><span class="count">22</span> - RikiChik</li>
+						<li><span class="count">10</span> - demapples14</li>
+						<li><span class="count">10</span> - Hood_</li>
+						<li><span class="count">9</span> - derRumit</li>
+						<li><span class="count">3</span> - lucasbrasantos</li>
+					</ul>
+				</section>
+			</main>
+		</div>
+	</body>
 </html>

@@ -4,8 +4,6 @@
 //BEWARE THIS SOURCE CODE IS AN ABSOLUTE MESS//
 ///////////////////////////////////////////////
 
-window.onload = loaded
-
 // DOM elements
 let locationImgElement,
 	mapContainer,
@@ -26,7 +24,8 @@ let locationImgElement,
 	minimiseButton,
 	showMapButton,
 	difficultySelector,
-	customDifficultyDiv
+	customDifficultyDiv,
+	timerLengthDisplay
 
 let timerLengthInput
 let timerEnabledInput
@@ -47,7 +46,7 @@ let gameStates = {
 let gameState = gameStates.optionsWindow
 let locations = []
 let charms = []
-let usedLocations = []
+let usedLocations = {}
 let usedCharmLocations = []
 let currentLocation = null
 let currentRound = 0
@@ -59,6 +58,7 @@ let timerLengthSeconds = 60
 let timerEnabled = false
 let startTime
 let endTime
+let gameMode
 
 // Images
 let mapImg = new Image()
@@ -100,35 +100,43 @@ const difficultyRanges = {
 let minDiff = 1
 let maxDiff = 10
 
-function loaded() {
+// Called when the location data is loaded
+function dataLoaded() {
 	// Camera reset
 	mapCamera.targetX = mapCamera.x
 	mapCamera.targetY = mapCamera.y
 
 	// HTML Elements
-	timerLengthInput = getElement('timerLength')
-	timerEnabledInput = getElement('timerEnabled')
+
+	// Game options elements
+	customDifficultyDiv = getElement('customDifficultyDiv')
+	difficultySelector = getElement('difficultySelector')
 	roundCountInput = getElement('roundCount')
-	optionsButton = getElement('optionsButton')
 	startButton = getElement('startButton')
-	gameOptionsWindow = getElement('gameOptionsWindow')
-	fullscreenButton = getElement('fullscreenButton')
-	minimiseButton = getElement('minimiseButton')
-	loadingText = getElement('loadingText')
-	totalRoundsElement = getElement('totalRounds')
+	timerEnabledInput = getElement('timerEnabled')
+	timerLengthInput = getElement('timerLength')
+
+	// Game window elements
 	accuracyElement = getElement('accuracy')
-	mapContainer = getElement('mapContainer')
+	finalScoreDisplay = getElement('finalScore')
+	gameOverWindow = getElement('gameOverWindow')
+	gameOptionsWindow = getElement('gameOptionsWindow')
+	loadingText = getElement('loadingText')
+	optionsButton = getElement('optionsButton')
+	restartButton = getElement('restartButton')
+	roundElement = getElement('round')
+	timerDisplay = getElement('timerDisplay')
+	totalRoundsElement = getElement('totalRounds')
+	timerLengthDisplay = getElement('timerLengthDisplay')
+
+	// Map and location elements
+	fullscreenButton = getElement('fullscreenButton')
+	guessButton = getElement('guessButton')
 	locationImgElement = getElement('locationImg')
 	mapCanvas = getElement('mapCanvas')
-	finalScoreDisplay = getElement('finalScore')
-	roundElement = getElement('round')
-	guessButton = getElement('guessButton')
-	gameOverWindow = getElement('gameOverWindow')
-	restartButton = getElement('restartButton')
-	timerDisplay = getElement('timerDisplay')
+	mapContainer = getElement('mapContainer')
+	minimiseButton = getElement('minimiseButton')
 	showMapButton = getElement('showMapButton')
-	difficultySelector = getElement('difficultySelector')
-	customDifficultyDiv = getElement('customDifficultyDiv')
 
 	// canvas ctx thingy
 	mapCtx = mapCanvas.getContext('2d')
@@ -136,25 +144,34 @@ function loaded() {
 	// this function scares me
 	addEventListeners()
 
-	// Adds location info to the list
-	locationData.forEach(([mapX, mapY, imageSrc, difficulty]) => {
-		addLocation(mapX, mapY, imageSrc, difficulty)
-	})
-
-	charmData.forEach(([mapX, mapY, imageSrc, difficulty]) => {
-		addCharm(mapX, mapY, imageSrc, difficulty)
+	// Initialize used locations for each game mode
+	usedLocations = {}
+	Object.keys(gameModeData).forEach((mode) => {
+		usedLocations[mode] = []
 	})
 
 	gameOptionsWindow.style.display = 'flex'
 	loadingText.style.display = 'none'
-	setLocation(randIRange(0, locations.length - 1))
-	locationImgElement.src = currentLocation.imageSrc
+
+	// Get the first available game mode
+	const firstGameMode = Object.keys(gameModeData)[0]
+	if (firstGameMode) {
+		setLocation(
+			randIRange(0, gameModeData[firstGameMode].length - 1),
+			firstGameMode
+		)
+		if (currentLocation && currentLocation[2]) {
+			locationImgElement.src = currentLocation[2]
+		} else {
+			console.error('Invalid current location or image path')
+		}
+	}
 
 	requestAnimationFrame(update)
 }
 
 function restartGame() {
-	gameMode = document.getElementById('gameMode').value
+	gameMode = getElement('gameMode').value
 	// Check if roundCountInput value is a valid number
 	if (
 		!isNaN(roundCountInput.value) &&
@@ -167,23 +184,21 @@ function restartGame() {
 		return
 	}
 
-    minDiff = parseInt(document.getElementById('minDifficulty').value, 10)
-    maxDiff = parseInt(document.getElementById('maxDifficulty').value, 10)
+	minDiff = parseInt(document.getElementById('minDifficulty').value, 10)
+	maxDiff = parseInt(document.getElementById('maxDifficulty').value, 10)
 
-    if (minDiff > maxDiff) {
-        alert('Minimum difficulty cannot be greater than maximum difficulty')
-        return
-    }
-    if (minDiff < 1 || minDiff > 10) {
-        alert('Minimum difficulty must be between 1 and 10')
-        return
-    }
-    if (maxDiff < 1 || maxDiff > 10) {
-        alert('Maximum difficulty must be between 1 and 10')
-        return
-    }
-
-
+	if (minDiff > maxDiff) {
+		alert('Minimum difficulty cannot be greater than maximum difficulty')
+		return
+	}
+	if (minDiff < 1 || minDiff > 10) {
+		alert('Minimum difficulty must be between 1 and 10')
+		return
+	}
+	if (maxDiff < 1 || maxDiff > 10) {
+		alert('Maximum difficulty must be between 1 and 10')
+		return
+	}
 
 	timerEnabled = timerEnabledInput.checked
 
@@ -248,7 +263,7 @@ function update() {
 		if (guessPos) {
 			mapCtx.beginPath()
 			mapCtx.moveTo(guessPos.x, guessPos.y)
-			mapCtx.lineTo(currentLocation.mapX, currentLocation.mapY)
+			mapCtx.lineTo(currentLocation[0], currentLocation[1])
 			mapCtx.strokeStyle = 'red'
 			mapCtx.lineWidth = 10
 			mapCtx.stroke()
@@ -257,8 +272,8 @@ function update() {
 		// Draw shade at correct spot
 		mapCtx.drawImage(
 			shadePinImg,
-			currentLocation.mapX - shadePinImg.width / 2,
-			currentLocation.mapY - shadePinImg.height / 2
+			currentLocation[0] - shadePinImg.width / 2,
+			currentLocation[1] - shadePinImg.height / 2
 		)
 	}
 
@@ -342,7 +357,7 @@ function update() {
 	requestAnimationFrame(update)
 }
 
-function checkWhetherYouShouldShowTheDifficultySelectorDivIWonderHowLongICanMakeThisFunctionNameOhTheEndlessExpanseOfCodeStretchingFarAndWideAFunctionNameSoLongItCannotHideThroughLoopsAndLogicItWeavesItsTaleASagaOfProgrammingDestinedToPrevailTheDifficultySelectorAHumbleDivToShowOrNotToShowThatIsTheQueryIGiveWhenTheUserSelectsCustomFromTheDropdownThisFunctionAwakensItsPurposeWellKnownLikeAPoetLostInTheLabyrinthOfThoughtThisFunctionRamblesItsNameOverwroughtYetInItsMadnessThereLiesAPlanToToggleTheVisibilityAsOnlyItCanSoHereWeStandAtTheEdgeOfReasonAFunctionNameDefyingEverySeasonForInTheChaosTheresBeautyToFindATestamentToTheProgrammersMindNowBackToTheTaskLetsNotDelayTheDivMustBeShownComeWhatMayAnywayHowsYourDayBeen() {
+function checkWhetherYouShouldShowTheDifficultySelectorDiv() {
 	if (difficultySelector.value === 'custom') {
 		customDifficultyDiv.style.display = 'flex'
 	} else {
@@ -350,10 +365,15 @@ function checkWhetherYouShouldShowTheDifficultySelectorDivIWonderHowLongICanMake
 	}
 }
 
+/*
+Old function name:
+checkWhetherYouShouldShowTheDifficultySelectorDivIWonderHowLongICanMakeThisFunctionNameOhTheEndlessExpanseOfCodeStretchingFarAndWideAFunctionNameSoLongItCannotHideThroughLoopsAndLogicItWeavesItsTaleASagaOfProgrammingDestinedToPrevailTheDifficultySelectorAHumbleDivToShowOrNotToShowThatIsTheQueryIGiveWhenTheUserSelectsCustomFromTheDropdownThisFunctionAwakensItsPurposeWellKnownLikeAPoetLostInTheLabyrinthOfThoughtThisFunctionRamblesItsNameOverwroughtYetInItsMadnessThereLiesAPlanToToggleTheVisibilityAsOnlyItCanSoHereWeStandAtTheEdgeOfReasonAFunctionNameDefyingEverySeasonForInTheChaosTheresBeautyToFindATestamentToTheProgrammersMindNowBackToTheTaskLetsNotDelayTheDivMustBeShownComeWhatMayAnywayHowsYourDayBeen
+ */
+
 function addEventListeners() {
-	checkWhetherYouShouldShowTheDifficultySelectorDivIWonderHowLongICanMakeThisFunctionNameOhTheEndlessExpanseOfCodeStretchingFarAndWideAFunctionNameSoLongItCannotHideThroughLoopsAndLogicItWeavesItsTaleASagaOfProgrammingDestinedToPrevailTheDifficultySelectorAHumbleDivToShowOrNotToShowThatIsTheQueryIGiveWhenTheUserSelectsCustomFromTheDropdownThisFunctionAwakensItsPurposeWellKnownLikeAPoetLostInTheLabyrinthOfThoughtThisFunctionRamblesItsNameOverwroughtYetInItsMadnessThereLiesAPlanToToggleTheVisibilityAsOnlyItCanSoHereWeStandAtTheEdgeOfReasonAFunctionNameDefyingEverySeasonForInTheChaosTheresBeautyToFindATestamentToTheProgrammersMindNowBackToTheTaskLetsNotDelayTheDivMustBeShownComeWhatMayAnywayHowsYourDayBeen()
+	checkWhetherYouShouldShowTheDifficultySelectorDiv()
 	difficultySelector.addEventListener('change', () => {
-		checkWhetherYouShouldShowTheDifficultySelectorDivIWonderHowLongICanMakeThisFunctionNameOhTheEndlessExpanseOfCodeStretchingFarAndWideAFunctionNameSoLongItCannotHideThroughLoopsAndLogicItWeavesItsTaleASagaOfProgrammingDestinedToPrevailTheDifficultySelectorAHumbleDivToShowOrNotToShowThatIsTheQueryIGiveWhenTheUserSelectsCustomFromTheDropdownThisFunctionAwakensItsPurposeWellKnownLikeAPoetLostInTheLabyrinthOfThoughtThisFunctionRamblesItsNameOverwroughtYetInItsMadnessThereLiesAPlanToToggleTheVisibilityAsOnlyItCanSoHereWeStandAtTheEdgeOfReasonAFunctionNameDefyingEverySeasonForInTheChaosTheresBeautyToFindATestamentToTheProgrammersMindNowBackToTheTaskLetsNotDelayTheDivMustBeShownComeWhatMayAnywayHowsYourDayBeen()
+		checkWhetherYouShouldShowTheDifficultySelectorDiv()
 	})
 
 	difficultySelector.addEventListener('change', function () {
@@ -568,8 +588,8 @@ function guessButtonClicked() {
 		} else {
 			guessButton.innerText = 'Next Round'
 		}
-		mapCamera.targetX = -currentLocation.mapX
-		mapCamera.targetY = -currentLocation.mapY
+		mapCamera.targetX = -currentLocation[0]
+		mapCamera.targetY = -currentLocation[1]
 		mapCamera.targetZoom = 1
 	} else if (gameState === gameStates.guessing) {
 		gameState = gameStates.guessed
@@ -582,12 +602,12 @@ function guessButtonClicked() {
 		}
 
 		// Set the mapCamera's position and zoom to the middle of guessPos and the location's position
-		const midX = (guessPos.x + currentLocation.mapX) / 2
-		const midY = (guessPos.y + currentLocation.mapY) / 2
+		const midX = (guessPos.x + currentLocation[0]) / 2
+		const midY = (guessPos.y + currentLocation[1]) / 2
 		mapCamera.targetX = -midX
 		mapCamera.targetY = -midY
-		const dx = Math.abs(guessPos.x - currentLocation.mapX)
-		const dy = Math.abs(guessPos.y - currentLocation.mapY)
+		const dx = Math.abs(guessPos.x - currentLocation[0])
+		const dy = Math.abs(guessPos.y - currentLocation[1])
 		const distance = Math.sqrt(dx * dx + dy * dy)
 		const padding = 30
 
@@ -611,8 +631,18 @@ function guessButtonClicked() {
 		}
 	} else if (gameState === gameStates.gameOver) {
 		guessButton.disabled = true
+
+		// Hide/show timer depending on timerEnabled
+		if (timerEnabled) {
+			timerLengthDisplay.style.display = 'block'
+			timerLengthDisplay.innerText = `Timer Length: ${timerLengthSeconds}s`
+		} else {
+			timerLengthDisplay.style.display = 'none'
+		}
+
 		gameOverWindow.style.display = 'flex'
 		gameState = gameStates.gameOver
+
 		finalScoreDisplay.innerText = `Final Score: ${totalScore}/${
 			totalRounds * maxScore
 		}`
@@ -622,23 +652,21 @@ function guessButtonClicked() {
 		).toFixed(2)
 		accuracyElement.innerText = `Accuracy: ${accuracyPercent}%`
 		totalRoundsElement.innerText = `Total Rounds: ${totalRounds}`
-		getElement(
-			'timerLengthDisplay'
-		).innerText = `Timer Length: ${timerLengthSeconds}s`
 	}
 }
 
-function setLocation(i) {
+function setLocation(i, gameMode) {
 	imageIsLoaded = false
 
-	if (gameMode === 'charms') {
-		currentLocation = charms[i]
-	} else {
-		currentLocation = locations[i]
-	}
+	currentLocation = gameModeData[gameMode][i]
 
 	if (!currentLocation) {
 		console.error('Current location is undefined.')
+		return
+	}
+
+	if (!currentLocation[2]) {
+		console.error('Image path is undefined for location:', currentLocation)
 		return
 	}
 
@@ -648,7 +676,7 @@ function setLocation(i) {
 	img.onload = function () {
 		imageIsLoaded = true
 		loadingText.style.display = 'none'
-		locationImgElement.src = currentLocation.imageSrc
+		locationImgElement.src = currentLocation[2]
 		if (guessPos) {
 			guessButton.disabled = false
 		}
@@ -657,24 +685,15 @@ function setLocation(i) {
 			endTime = startTime + timerLengthSeconds * 1000
 		}
 	}
-	img.src = currentLocation.imageSrc
-}
-
-function addLocation(mapX, mapY, imageSrc, difficulty = 0) {
-	locations.push(new Location(mapX, mapY, imageSrc, difficulty))
-}
-
-function addCharm(mapX, mapY, imageSrc, difficulty = 0) {
-	charms.push(new Location(mapX, mapY, imageSrc, difficulty))
-}
-
-class Location {
-	constructor(mapX, mapY, imageSrc, difficulty = 0) {
-		this.mapX = mapX
-		this.mapY = mapY
-		this.imageSrc = imageSrc
-		this.difficulty = difficulty
+	img.onerror = function (e) {
+		console.error('Failed to load image:', {
+			path: currentLocation[2],
+			error: e,
+			stack: new Error().stack,
+		})
+		loadingText.style.display = 'none'
 	}
+	img.src = currentLocation[2]
 }
 
 function getElement(id) {
@@ -700,15 +719,11 @@ function filterByDifficulty(dataList, difficulty) {
 	}
 
 	if (difficulty === 'custom') {
-		return dataList.filter(
-			(item) => item.difficulty >= minDiff && item.difficulty <= maxDiff
-		)
+		return dataList.filter((item) => item[3] >= minDiff && item[3] <= maxDiff)
 	}
 
 	const range = difficultyRanges[difficulty]
-	return dataList.filter(
-		(item) => item.difficulty >= range.min && item.difficulty <= range.max
-	)
+	return dataList.filter((item) => item[3] >= range.min && item[3] <= range.max)
 }
 
 function nextRound() {
@@ -719,15 +734,9 @@ function nextRound() {
 	currentRound++
 	roundElement.textContent = `${currentRound}/${totalRounds}`
 
-	let usedList, dataList, warningMessage
-
-	if (gameMode === 'charms') {
-		usedList = usedCharmLocations
-		dataList = charms
-	} else {
-		usedList = usedLocations
-		dataList = locations
-	}
+	const selectedGameMode = document.getElementById('gameMode').value
+	const dataList = gameModeData[selectedGameMode]
+	const usedList = usedLocations[selectedGameMode]
 
 	// Filter dataList by selected difficulty
 	const selectedDifficulty = difficultySelector.value
@@ -758,7 +767,7 @@ function nextRound() {
 
 	// Find the corresponding location in the original dataList
 	const newLocation = filteredDataList[newLocationIndex]
-	setLocation(dataList.indexOf(newLocation))
+	setLocation(dataList.indexOf(newLocation), selectedGameMode)
 
 	guessButton.disabled = true
 	guessPos = null
@@ -771,8 +780,8 @@ function nextRound() {
 }
 
 function calculateScore() {
-	const dx = guessPos.x - currentLocation.mapX
-	const dy = guessPos.y - currentLocation.mapY
+	const dx = guessPos.x - currentLocation[0]
+	const dy = guessPos.y - currentLocation[1]
 	const distance = Math.sqrt(dx * dx + dy * dy)
 	const leniency = 50 // Distance in which you get the max score
 	const dropOffRate = 0.001 // How quickly the score drops off when guessing farther away! away!

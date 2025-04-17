@@ -1,106 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="style.css?v=1.1.0" />
-		<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
-		<title>Hollow Guessr</title>
-	</head>
 
-	<body>
-		<img src="" alt="image should be here by now" id="locationImg" />
-		<p id="loadingText">Getting Image...</p>
-		<div id="scoreContainer">
-			<button onclick="window.location.href='index.html'">&lt;- Back</button>
-			<hr />
-			<span id="round">1/5</span>
-			<hr />
-			<span id="timerDisplay"></span>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="style.css?v=1.1.0" />
+	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+	<title>Hollow Guessr</title>
+	<style>
+		body {
+			overflow: hidden;
+		}
+	</style>
+</head>
+
+<body>
+	<img src="" alt="" id="locationImg" />
+	<p id="loadingText">Getting Image...</p>
+	<div id="scoreContainer">
+		<button onclick="window.location.href='index.html'">&lt;- Back</button>
+		<hr />
+		<span id="round">1/5</span>
+		<hr />
+		<span id="timerDisplay"></span>
+	</div>
+	<div id="mapContainer">
+		<canvas id="mapCanvas"></canvas>
+		<br />
+		<div id="buttonContainer">
+			<button id="guessButton">Guess!</button>
+			<button id="fullscreenButton">
+				<img src="images/fullscreen.png" alt="FS" style="scale: 0.7" />
+			</button>
+			<button id="minimiseButton">X</button>
 		</div>
-		<div id="mapContainer">
-			<canvas id="mapCanvas"></canvas>
-			<br />
-			<div id="buttonContainer">
-				<button id="guessButton">Guess!</button>
-				<button id="fullscreenButton">
-					<img src="images/fullscreen.png" alt="FS" style="scale: 0.7" />
-				</button>
-				<button id="minimiseButton">X</button>
-			</div>
+	</div>
+
+	<button id="showMapButton">O</button>
+
+	<div id="gameOverWindow" class="window">
+		<h2>Game Over</h2>
+		<hr />
+		<p id="finalScore">Final Score:</p>
+		<p id="accuracy">Accuracy:</p>
+		<p id="totalRounds">Total Rounds:</p>
+		<p id="timerLengthDisplay">Timer Length:</p>
+		<hr />
+		<button id="restartButton">Play Again</button>
+		<button id="optionsButton">Options</button>
+	</div>
+
+	<div id="gameOptionsWindow" class="window">
+		<h2>Game Options</h2>
+		<hr />
+		<div class="option">
+			<label for="gameMode">Game mode:</label>
+			<select id="gameMode">
+				<!--should be filled using the json files-->
+			</select>
 		</div>
-
-		<button id="showMapButton">O</button>
-
-		<div id="gameOverWindow" class="window">
-			<h2>Game Over</h2>
-			<hr />
-			<p id="finalScore">Final Score:</p>
-			<p id="accuracy">Accuracy:</p>
-			<p id="totalRounds">Total Rounds:</p>
-			<p id="timerLengthDisplay">Timer Length:</p>
-			<hr />
-			<button id="restartButton">Play Again</button>
-			<button id="optionsButton">Options</button>
+		<div class="option">
+			<label for="difficultySelector">Difficulty:</label>
+			<select id="difficultySelector">
+				<option value="all">All</option>
+				<option value="easy">Attuned</option>
+				<option value="normal">Ascended</option>
+				<option value="hard">Radiant</option>
+				<option value="custom">Custom</option>
+			</select>
 		</div>
-
-		<div id="gameOptionsWindow" class="window">
-			<h2>Game Options</h2>
-			<hr />
-			<div class="option">
-				<label for="gameMode">Game mode:</label>
-				<select id="gameMode">
-					<option value="location">Normal</option>
-					<option value="charms">Charms</option>
-				</select>
-			</div>
-			<div class="option">
-				<label for="difficultySelector">Difficulty:</label>
-				<select id="difficultySelector">
-					<option value="all">All</option>
-					<option value="easy">Attuned</option>
-					<option value="normal">Ascended</option>
-					<option value="hard">Radiant</option>
-					<option value="custom">Custom</option>
-				</select>
-			</div>
-			<div class="option" id="customDifficultyDiv" style="display: none">
-				<label for="minDifficulty">Min:</label>
-				<input type="text" id="minDifficulty" min="1" max="10" value="1" />
-				<label for="maxDifficulty">Max:</label>
-				<input type="text" id="maxDifficulty" min="1" max="10" value="10" />
-			</div>
-			<div class="option">
-				<label for="roundCount">Round count: </label>
-				<input
-					type="text"
-					id="roundCount"
-					name="roundCount"
-					min="1"
-					value="5"
-				/>
-			</div>
-			<div class="option">
-				<label for="timerEnabled">Timer enabled?: </label>
-				<input type="checkbox" id="timerEnabled" name="timerEnabled" />
-			</div>
-			<div class="option">
-				<label for="timerLength">Timer length: </label>
-				<input
-					type="text"
-					id="timerLength"
-					name="timerLength"
-					placeholder="60"
-					value="60"
-					disabled
-				/>
-			</div>
-			<hr />
-			<button id="startButton">Start Game</button>
+		<div class="option" id="customDifficultyDiv" style="display: none">
+			<label for="minDifficulty">Min:</label>
+			<input type="text" id="minDifficulty" min="1" max="10" value="1" />
+			<label for="maxDifficulty">Max:</label>
+			<input type="text" id="maxDifficulty" min="1" max="10" value="10" />
 		</div>
+		<div class="option">
+			<label for="roundCount">Round count: </label>
+			<input type="text" id="roundCount" name="roundCount" min="1" value="5" />
+		</div>
+		<div class="option">
+			<label for="timerEnabled">Timer enabled?: </label>
+			<input type="checkbox" id="timerEnabled" name="timerEnabled" />
+		</div>
+		<div class="option">
+			<label for="timerLength">Timer length: </label>
+			<input type="text" id="timerLength" name="timerLength" placeholder="60" value="60" disabled />
+		</div>
+		<hr />
+		<button id="startButton">Start Game</button>
+	</div>
 
-		<div id="fade-overlay" class="fade-overlay fade-in"></div>
-		<script src="coordinatesData.js?v=1.4.0"></script>
-		<script src="script.js?v=1.4.0"></script>
-	</body>
+	<script src="loadLocationData.js?v=1.0.0"></script>
+	<script src="script.js?v=1.4.1"></script>
+</body>
+
 </html>

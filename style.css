@@ -7,6 +7,7 @@
 
 * {
 	font-family: 'Trajan Pro Bold';
+	color: #fff;
 }
 
 hr {
@@ -15,7 +16,6 @@ hr {
 
 body {
 	background-color: #000;
-	overflow: hidden;
 }
 
 #locationImg {
@@ -25,11 +25,8 @@ body {
 	left: 0;
 	top: 0;
 	object-fit: contain;
-	/* Ensures the entire image is visible */
 	max-width: 100%;
-	/* Prevents enlarging low-resolution images */
 	max-height: 100%;
-	/* Prevents enlarging low-resolution images */
 	overflow: hidden;
 	user-select: none;
 	padding: 0;
@@ -80,7 +77,7 @@ img {
 	transform: translate(-50%, -50%);
 	font-size: 2rem;
 	color: #fff;
-	z-index: 1000;
+	z-index: 1;
 }
 
 p {
@@ -90,15 +87,13 @@ p {
 #mapContainer {
 	background-color: #000;
 	opacity: 0.6;
-	transition: all 0.3s ease-in-out;
-	position: absolute;
-	inset: auto 0 1rem auto;
-	width: 30%;
-	height: auto;
-	aspect-ratio: 16 / 9;
+	transition: all 0.5s ease;
+	position: fixed;
+	width: 25%;
+	height: calc(25% * 16 / 9);
 	right: 0;
 	bottom: 0;
-	margin: 0;
+	margin: 1rem;
 	border-radius: 1rem;
 	border-color: #000;
 	border-style: solid;
@@ -111,8 +106,8 @@ p {
 
 #mapContainer:hover {
 	opacity: 0.9;
-	width: 50%;
-	height: auto;
+	width: 40%;
+	height: calc(40% * 16 / 9);
 }
 
 #mapCanvas {
@@ -172,8 +167,8 @@ button:disabled {
 	height: 60px;
 	right: 0;
 	bottom: 0;
-	margin-bottom: 2rem;
-	margin-right: 1.5rem;
+	margin-bottom: 3rem;
+	margin-right: 2.5rem;
 	display: none;
 	text-align: center;
 	align-items: center;
@@ -229,13 +224,12 @@ button:disabled {
 }
 
 .fullscreen {
-	animation: all 0.5s;
+	transition: all 0.5s ease;
 	opacity: 0.9;
-	width: 100% !important;
-	height: 100% !important;
-	margin: 0 !important;
-	border-width: 0 !important;
-	border-radius: 0 !important;
+	width: calc(100% - 4rem) !important;
+	height: calc(100% - 4rem) !important;
+	right: 0 !important;
+	bottom: 0 !important;
 }
 
 input[type='text'],
@@ -248,16 +242,20 @@ select {
 	font-size: 20px;
 }
 
-input[type='text']:focus {
+input[type='text']:focus,
+select:focus {
 	border-color: #ffffff;
 	outline: none;
+	box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-input[type='text']:disabled {
+input[type='text']:disabled,
+select:disabled {
 	background-color: #818181;
 	border-color: #000000;
 	outline: none;
 	user-select: none;
+	cursor: not-allowed;
 }
 
 /* Style the checkbox */
@@ -286,27 +284,144 @@ label {
 	cursor: text;
 }
 
-select {
+/* Location Request Page Styles */
+.location-request-container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 2rem;
+	background-color: rgba(0, 0, 0, 0.8);
+	border-radius: 1rem;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.back-nav {
+	margin-bottom: 2rem;
+}
+
+.back-nav button {
+	background: transparent;
+	border: 2px solid #fff;
+	color: #fff;
+	padding: 0.5rem 1rem;
+	border-radius: 0.5rem;
 	cursor: pointer;
+	transition: all 0.3s ease;
 }
 
-select:hover {
-	border-color: #666;
-	/* Darker border on hover */
+.back-nav button:hover {
+	background: #fff;
+	color: #000;
 }
 
-select:focus {
-	border-color: #007bff;
-	/* Blue border on focus */
-	box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-	/* Add a subtle glow */
+.location-request-content {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
 }
 
-select:disabled {
-	background-color: #e9ecef;
-	/* Light gray background */
-	color: #6c757d;
-	/* Gray text */
-	cursor: not-allowed;
-	/* Change cursor to not-allowed */
+.location-request-content h1 {
+	text-align: center;
+	font-size: 2.5rem;
+	margin-bottom: 1rem;
+	color: #fff;
+	text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.location-request-content h2 {
+	font-size: 1.8rem;
+	margin-bottom: 1rem;
+	color: #fff;
+	border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+	padding-bottom: 0.5rem;
+}
+
+.requirements-list,
+.suggestions-list,
+.contributors-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.requirements-list li,
+.suggestions-list li,
+.contributors-list li {
+	margin: 1rem 0;
+	padding: 0.5rem;
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 0.5rem;
+	transition: all 0.3s ease;
+}
+
+.requirements-list li:hover,
+.suggestions-list li:hover,
+.contributors-list li:hover {
+	background: rgba(255, 255, 255, 0.2);
+}
+
+.suggestions-list li {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+}
+
+.suggestions-list li.preferred {
+	background: rgba(0, 255, 0, 0.1);
+}
+
+.suggestions-list li.alternative {
+	background: rgba(255, 255, 0, 0.1);
+}
+
+.suggestions-list a {
+	color: #fff;
+	text-decoration: none;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+	transition: all 0.3s ease;
+}
+
+.suggestions-list a:hover {
+	color: #fff;
+	border-bottom-color: #fff;
+}
+
+.coordinates-image {
+	display: flex;
+	justify-content: center;
+	margin: 1rem 0;
+}
+
+.coordinates-image img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 0.5rem;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.contributors-list .count {
+	display: inline-block;
+	min-width: 2.5rem;
+	text-align: right;
+	margin-right: 0.5rem;
+	color: #ffd700;
+}
+
+@media (max-width: 768px) {
+	.location-request-container {
+		padding: 1rem;
+	}
+
+	.location-request-content h1 {
+		font-size: 2rem;
+	}
+
+	.location-request-content h2 {
+		font-size: 1.5rem;
+	}
+
+	.suggestions-list li {
+		flex-direction: column;
+		align-items: flex-start;
+	}
 }

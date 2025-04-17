@@ -1,0 +1,264 @@
+{
+  "name": "Charms",
+  "gameModeId": "charms",
+  "locations": [
+    {
+      "x": 3732,
+      "y": 980,
+      "image": "images/charms/3732_980_5.png",
+      "difficulty": 5
+    },
+    {
+      "x": 1967,
+      "y": 1701,
+      "image": "images/charms/1967_1701_5.png",
+      "difficulty": 5
+    },
+    {
+      "x": 2547,
+      "y": 2634,
+      "image": "images/charms/2547_2634_4.png",
+      "difficulty": 4
+    },
+    {
+      "x": 2324,
+      "y": 814,
+      "image": "images/charms/2324_814_7.png",
+      "difficulty": 7
+    },
+    {
+      "x": 4211,
+      "y": 1904,
+      "image": "images/charms/4211_1904_8.png",
+      "difficulty": 8
+    },
+    {
+      "x": 2820,
+      "y": 1212,
+      "image": "images/charms/2820_1212_6.png",
+      "difficulty": 6
+    },
+    {
+      "x": 1934,
+      "y": 624,
+      "image": "images/charms/1934_624_2.png",
+      "difficulty": 2
+    },
+    {
+      "x": 1982,
+      "y": 624,
+      "image": "images/charms/1982_624_4.png",
+      "difficulty": 4
+    },
+    {
+      "x": 2947,
+      "y": 1804,
+      "image": "images/charms/2947_1804_3.png",
+      "difficulty": 3
+    },
+    {
+      "x": 2674,
+      "y": 1016,
+      "image": "images/charms/2674_1016_5.png",
+      "difficulty": 5
+    },
+    {
+      "x": 2435,
+      "y": 1939,
+      "image": "images/charms/2435_1939_1.png",
+      "difficulty": 1
+    },
+    {
+      "x": 1375,
+      "y": 661,
+      "image": "images/charms/1375_661_9.png",
+      "difficulty": 9
+    },
+    {
+      "x": 2674,
+      "y": 1016,
+      "image": "images/charms/2674_1016_6.png",
+      "difficulty": 6
+    },
+    {
+      "x": 2674,
+      "y": 1016,
+      "image": "images/charms/2674_1016_2.png",
+      "difficulty": 2
+    },
+    {
+      "x": 1306,
+      "y": 931,
+      "image": "images/charms/1306_931_7.png",
+      "difficulty": 7
+    },
+    {
+      "x": 2110,
+      "y": 1188,
+      "image": "images/charms/2110_1188_4.png",
+      "difficulty": 4
+    },
+    {
+      "x": 1889,
+      "y": 705,
+      "image": "images/charms/1889_705_2.png",
+      "difficulty": 2
+    },
+    {
+      "x": 1456,
+      "y": 502,
+      "image": "images/charms/1456_502_5.png",
+      "difficulty": 5
+    },
+    {
+      "x": 398,
+      "y": 905,
+      "image": "images/charms/398_905_6.png",
+      "difficulty": 6
+    },
+    {
+      "x": 1676,
+      "y": 2175,
+      "image": "images/charms/1676_2175_5.png",
+      "difficulty": 5
+    },
+    {
+      "x": 1982,
+      "y": 624,
+      "image": "images/charms/1982_624_3.png",
+      "difficulty": 3
+    },
+    {
+      "x": 2649,
+      "y": 2756,
+      "image": "images/charms/2649_2756_6.png",
+      "difficulty": 6
+    },
+    {
+      "x": 3999,
+      "y": 1986,
+      "image": "images/charms/3999_1986_8.png",
+      "difficulty": 8
+    },
+    {
+      "x": 3325,
+      "y": 852,
+      "image": "images/charms/3325_852_5.png",
+      "difficulty": 5
+    },
+    {
+      "x": 1985,
+      "y": 1828,
+      "image": "images/charms/1985_1828_6.png",
+      "difficulty": 6
+    },
+    {
+      "x": 982,
+      "y": 1950,
+      "image": "images/charms/982_1950_9.png",
+      "difficulty": 9
+    },
+    {
+      "x": 1982,
+      "y": 624,
+      "image": "images/charms/1982_624_2.png",
+      "difficulty": 2
+    },
+    {
+      "x": 2110,
+      "y": 1188,
+      "image": "images/charms/2110_1188_3.png",
+      "difficulty": 3
+    },
+    {
+      "x": 1982,
+      "y": 624,
+      "image": "images/charms/1982_624_5.png",
+      "difficulty": 5
+    },
+    {
+      "x": 2026,
+      "y": 624,
+      "image": "images/charms/2026_624_4.png",
+      "difficulty": 4
+    },
+    {
+      "x": 2674,
+      "y": 1016,
+      "image": "images/charms/2674_1016_4.png",
+      "difficulty": 4
+    },
+    {
+      "x": 2674,
+      "y": 1016,
+      "image": "images/charms/2674_1016_3.png",
+      "difficulty": 3
+    },
+    {
+      "x": 548,
+      "y": 1143,
+      "image": "images/charms/548_1143_3.png",
+      "difficulty": 3
+    },
+    {
+      "x": 2054,
+      "y": 839,
+      "image": "images/charms/2054_839_3.png",
+      "difficulty": 3
+    },
+    {
+      "x": 2678,
+      "y": 641,
+      "image": "images/charms/2678_641_3.png",
+      "difficulty": 3
+    },
+    {
+      "x": 1539,
+      "y": 1544,
+      "image": "images/charms/1539_1544_8.png",
+      "difficulty": 8
+    },
+    {
+      "x": 2042,
+      "y": 624,
+      "image": "images/charms/2042_624_1.png",
+      "difficulty": 1
+    },
+    {
+      "x": 1889,
+      "y": 705,
+      "image": "images/charms/1889_705_3.png",
+      "difficulty": 3
+    },
+    {
+      "x": 3426,
+      "y": 807,
+      "image": "images/charms/3426_807_2.png",
+      "difficulty": 2
+    },
+    {
+      "x": 3036,
+      "y": 2230,
+      "image": "images/charms/3036_2230_1.png",
+      "difficulty": 1
+    },
+    {
+      "x": 1718,
+      "y": 645,
+      "image": "images/charms/1718_645_4.png",
+      "difficulty": 4
+    },
+    {
+      "x": 1982,
+      "y": 624,
+      "image": "images/charms/1982_624_1.png",
+      "difficulty": 1
+    },
+    {
+      "x": 2110,
+      "y": 1188,
+      "image": "images/charms/2110_1188_5.png",
+      "difficulty": 5
+    }
+  ]
+}

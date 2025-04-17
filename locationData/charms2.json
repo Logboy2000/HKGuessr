@@ -1,0 +1,18 @@
+{
+  "name": "Charms2",
+  "gameModeId": "charms2",
+  "locations": [
+    {
+      "x": 3732,
+      "y": 980,
+      "image": "images/charms/3732_980_5.png",
+      "difficulty": 5
+    },
+    {
+      "x": 1967,
+      "y": 1701,
+      "image": "images/charms/1967_1701_5.png",
+      "difficulty": 5
+    }
+  ]
+}

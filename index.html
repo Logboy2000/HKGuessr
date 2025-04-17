@@ -1,231 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="manifest" href="manifest.json" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+		/>
+		<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+		<title>Hollow Guessr</title>
+		<meta
+			name="description"
+			content="Test your knowledge of Hallownest in Hollow Guessr, a Hollow Knight-inspired GeoGuessr game."
+		/>
+		<meta
+			name="keywords"
+			content="Hollow Knight, GeoGuessr, Hollow Guessr, Hallownest, indie games, guessing game"
+		/>
+		<meta name="author" content="Logboy2000" />
+		<meta
+			property="og:title"
+			content="Hollow Guessr - A Hollow Knight GeoGuessing Game"
+		/>
+		<meta
+			property="og:description"
+			content="Test your knowledge of Hallownest in this interactive guessing game. Can you recognize every location in Hollow Knight?"
+		/>
+		<meta property="og:image" content="images/social-preview.png" />
+		<meta property="og:url" content="https://yourwebsite.com" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta
+			name="twitter:title"
+			content="Hollow Guessr - A Hollow Knight GeoGuessing Game"
+		/>
+		<meta
+			name="twitter:description"
+			content="Guess the locations in Hallownest with Hollow Guessr, a fan-made Hollow Knight GeoGuessr clone."
+		/>
+		<meta name="twitter:image" content="images/social-preview.png" />
 
-    <head>
-        <meta charset="UTF-8">
-        <link rel="manifest" href="manifest.json">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
-        <title>Hollow Guessr</title>
-        <meta name="description" content="Test your knowledge of Hallownest in Hollow Guessr, a Hollow Knight-inspired GeoGuessr game.">
-        <meta name="keywords" content="Hollow Knight, GeoGuessr, Hollow Guessr, Hallownest, indie games, guessing game">
-        <meta name="author" content="Logboy2000">
-        <meta property="og:title" content="Hollow Guessr - A Hollow Knight GeoGuessing Game">
-        <meta property="og:description" content="Test your knowledge of Hallownest in this interactive guessing game. Can you recognize every location in Hollow Knight?">
-        <meta property="og:image" content="images/social-preview.png">
-        <meta property="og:url" content="https://yourwebsite.com">
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="Hollow Guessr - A Hollow Knight GeoGuessing Game">
-        <meta name="twitter:description" content="Guess the locations in Hallownest with Hollow Guessr, a fan-made Hollow Knight GeoGuessr clone.">
-        <meta name="twitter:image" content="images/social-preview.png">
+		<style>
+			@font-face {
+				font-family: 'Trajan Pro Bold';
+				font-style: normal;
+				font-weight: normal;
+				src: local('Trajan Pro Bold'), url('TrajanPro-Bold.woff') format('woff');
+			}
 
-        <style>
-            @font-face {
-                font-family: 'Trajan Pro Bold';
-                font-style: normal;
-                font-weight: normal;
-                src: local('Trajan Pro Bold'), url('TrajanPro-Bold.woff') format('woff');
-            }
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
 
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
+			a {
+				color: white;
+			}
 
-            a {
-                color: white;
-            }
+			/* Fullscreen container */
+			body {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				min-height: 100dvh; /* Use dynamic viewport height */
+				background: url('images/locations/583_767_6.jpg') no-repeat center
+					center fixed;
+				background-size: cover;
+				text-align: center;
+				color: white;
+				font-family: 'Trajan Pro Bold', serif;
+				position: relative;
+				overflow: hidden; /* Prevent scrolling */
+			}
 
+			/* Fade-in and Fade-out overlay */
+			.fade-overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: black;
+				opacity: 0;
+				pointer-events: none;
+			}
 
+			/* Title image */
+			#title-image {
+				width: 80%;
+				max-width: 600px;
+				filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
+				margin-bottom: 20px;
+			}
 
-            /* Fullscreen container */
-            body {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                min-height: 100dvh; /* Use dynamic viewport height */
-                background: url('images/locations/583_767_6.jpg') no-repeat center center fixed;
-                background-size: cover;
-                text-align: center;
-                color: white;
-                font-family: 'Trajan Pro Bold', serif;
-                position: relative;
-                overflow: hidden; /* Prevent scrolling */
-            }
+			/* Play button */
+			.play-button {
+				background: transparent;
+				color: white;
+				font-family: 'Trajan Pro Bold', serif;
+				font-size: 30px;
+				font-weight: bold;
+				padding: 15px 60px;
+				border: 2px solid white;
+				cursor: pointer;
+				transition: 0.3s;
+				text-transform: uppercase;
+				letter-spacing: 3px;
+				border-radius: 5px;
+				text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+			}
 
+			.play-button:hover {
+				background: white;
+				color: black;
+				text-shadow: none;
+			}
 
+			/* Fade-in animation */
+			@keyframes fadeIn {
+				from {
+					opacity: 0;
+					transform: translateY(200px);
+				}
 
-            /* Fade-in and Fade-out overlay */
-            .fade-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: black;
-                opacity: 1;
-                pointer-events: none;
-                transition: opacity 1s ease-in-out;
-            }
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
 
+			#title-image,
+			.play-button {
+				animation: fadeIn 1.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+			}
 
+			/* Mobile responsiveness */
+			@media (max-width: 600px) {
+				#title-image {
+					max-width: 80%;
+				}
 
-            /* Start faded in, then fade out on load */
-            .fade-in {
-                opacity: 1;
-            }
+				.play-button {
+					padding: 12px 50px;
+					font-size: 24px;
+				}
+			}
 
-            .fade-out {
-                opacity: 0;
-            }
+			#versionLabel {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				color: #fff;
+				user-select: none;
+				margin: 2px;
+				text-align: left;
+			}
+		</style>
 
+		<script>
+			function navigateToGame() {}
 
+			// Remove the fade animation and just show the page
+			window.onload = function () {
+				document.getElementById('fade-overlay').style.opacity = '0'
+			}
+		</script>
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "VideoGame",
+				"name": "Hollow Guessr",
+				"description": "Test your knowledge of Hallownest in Hollow Guessr, a Hollow Knight-inspired GeoGuessr game.",
+				"image": "https://yourwebsite.com/images/social-preview.png",
+				"url": "https://yourwebsite.com",
+				"author": {
+					"@type": "Person",
+					"name": "Logboy2000"
+				},
+				"genre": ["Puzzle", "Adventure"],
+				"gamePlatform": "Web"
+			}
+		</script>
+	</head>
 
-            /* Title image */
-            #title-image {
-                width: 80%;
-                max-width: 600px;
-                filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
-                margin-bottom: 20px;
-            }
-
-
-
-            /* Play button */
-            .play-button {
-                background: transparent;
-                color: white;
-                font-family: 'Trajan Pro Bold', serif;
-                font-size: 30px;
-                font-weight: bold;
-                padding: 15px 60px;
-                border: 2px solid white;
-                cursor: pointer;
-                transition: 0.3s;
-                text-transform: uppercase;
-                letter-spacing: 3px;
-                border-radius: 5px;
-                text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-            }
-
-            .play-button:hover {
-                background: white;
-                color: black;
-                text-shadow: none;
-            }
-
-
-
-            /* Fade-in animation */
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(200px);
-                }
-
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-
-            #title-image,
-            .play-button {
-                animation: fadeIn 1.5s cubic-bezier(0.075, 0.82, 0.165, 1);
-            }
-
-
-
-            /* Mobile responsiveness */
-            @media (max-width: 600px) {
-                #title-image {
-                    max-width: 80%;
-                }
-
-                .play-button {
-                    padding: 12px 50px;
-                    font-size: 24px;
-                }
-            }
-
-            #versionLabel {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                color: #FFF;
-                user-select: none;
-                margin: 2px;
-                text-align: left;
-            }
-        </style>
-
-        <script>
-            function fadeToBlack(reverse = false) {
-                let overlay = document.getElementById('fade-overlay');
-                overlay.style.pointerEvents = "all"; // Prevent clicks
-
-                if (reverse) {
-                    overlay.classList.remove('fade-in');
-                    overlay.classList.add('fade-out');
-                    setTimeout(() => {
-                        overlay.style.pointerEvents = "none"; // Allow interaction after fade-in
-                    }, 1000);
-                } else {
-                    overlay.classList.remove('fade-out');
-                    overlay.classList.add('fade-in');
-                    setTimeout(() => {
-                        window.location.href = "game.html"; // Redirect after fade-out
-                    }, 1000);
-                }
-            }
-
-            // Automatically fade in on page load
-            window.onload = function () {
-                fadeToBlack(true);
-            };
-        </script>
-        <script type="application/ld+json">
-            {
-                "@context": "https://schema.org",
-                "@type": "VideoGame",
-                "name": "Hollow Guessr",
-                "description": "Test your knowledge of Hallownest in Hollow Guessr, a Hollow Knight-inspired GeoGuessr game.",
-                "image": "https://yourwebsite.com/images/social-preview.png",
-                "url": "https://yourwebsite.com",
-                "author": {
-                    "@type": "Person",
-                    "name": "Logboy2000"
-                },
-                "genre": ["Puzzle", "Adventure"],
-                "gamePlatform": "Web"
-            }
-        </script>
-    </head>
-
-    <body>
-
-        <img src="images/logo.png" alt="Hollow Guessr logo - A Hollow Knight GeoGuessing Game" id="title-image">
-        <button class="play-button" onclick="fadeToBlack()">Play</button>
-        <p id="versionLabel">
-            <span>v1.4.1</span>
-            <br>
-            <br>
-            <span>A game by Logboy2000</span>
-            <br>
-            <br>
-            <a href="locationRequest.html" title="Suggest a new Hollow Knight location for Hollow Guessr">
-                Suggest a new location
-            </a>
-            <br>
-            <br>
-            <a href="https://github.com/Logboy2000/HKGuessr" title="Contribute to Hollow Guessr on GitHub">
-                Contribute Code to Improve the Project!
-            </a>
-
-        </p>
-        <div id="fade-overlay" class="fade-overlay fade-in"></div>
-    </body>
-
+	<body>
+		<img
+			src="images/logo.png"
+			alt="Hollow Guessr logo - A Hollow Knight GeoGuessing Game"
+			id="title-image"
+		/>
+		<button class="play-button" onclick="window.location.href = 'game.html';">
+			Play
+		</button>
+		<p id="versionLabel">
+			<span>v1.5.0</span>
+			<br />
+			<br />
+			<span>A game by Logboy2000</span>
+			<br />
+			<br />
+			<a
+				href="locationRequest.html"
+				title="Suggest a new Hollow Knight location for Hollow Guessr"
+			>
+				Suggest a new location
+			</a>
+			<br />
+			<br />
+			<a
+				href="https://github.com/Logboy2000/HKGuessr"
+				title="Contribute to Hollow Guessr on GitHub"
+			>
+				Contribute Code to Improve the Project!
+			</a>
+		</p>
+		<div id="fade-overlay" class="fade-overlay fade-in"></div>
+	</body>
 </html>
