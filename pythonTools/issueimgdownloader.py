@@ -31,8 +31,8 @@ issues = response.json()
 os.makedirs("downloadedImages", exist_ok=True)
 
 # Regular expressions
-github_image_pattern = re.compile(r"!\[.*?\]\((https://github\.com/user-attachments/assets/[^\s)]+)\)")
-coord_pattern = re.compile(r"\*What are its coordinates on the map:\*\s*(\d+),\s*(\d+)")
+github_image_pattern = re.compile(r"!\[Image\]\((https://github\.com/user-attachments/assets/[^\s)]+)\)")
+coord_pattern = re.compile(r"\*What are its coordinates on the map:\*\s*(\d+)_(\d+)")
 difficulty_pattern = re.compile(r"\*What would you rate its difficulty/obscurity out of 10:\*\s*(\d+)")
 
 image_urls = []
@@ -56,6 +56,7 @@ for issue in issues:
     coord_match = coord_pattern.search(issue_body)
     if coord_match:
         coord_x, coord_y = coord_match.groups()
+        print(f"✅ Found coordinates: {coord_x}_{coord_y}")
     else:
         print("❌ No coordinates found in this issue. Skipping...")
         continue  # Skip issues without coordinates
