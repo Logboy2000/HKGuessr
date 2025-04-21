@@ -5,89 +5,159 @@
 		<link rel="manifest" href="manifest.json" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
-		<title>Location Request | Hollow Guessr</title>
+		<title>Create Image Pack | Hollow Guessr</title>
 		<link rel="stylesheet" href="style.css" />
 		<style>
 			body {
-				background-image: url('images/locations/1026_579_2.png');
+				background-image: url('images/bg2.jpg');
 				background-repeat: no-repeat;
 				background-size: cover;
 				background-attachment: fixed;
+			}
+			.location-request-content {
+				max-width: 900px;
+				margin: 0 auto;
+				padding: 2rem;
+				background: rgba(0, 0, 0, 0.9);
+				border-radius: 8px;
+			}
+			.button-container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin: 1rem 0;
+			}
+			section {
+				margin: 2rem 0;
+				padding: 1.5rem;
+				background: rgba(255, 255, 255, 0.05);
+				border-radius: 6px;
+			}
+			h1 {
+				font-size: 2.5rem;
+				margin-bottom: 2rem;
+				text-align: center;
+				color: #fff;
+			}
+			h2 {
+				font-size: 1.8rem;
+				margin: 1rem 0;
+				color: #fff;
+				border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+				padding-bottom: 0.5rem;
+			}
+			ol {
+				padding-left: 2rem;
+			}
+			ol li {
+				margin: 1rem 0;
+				line-height: 1.6;
+				color: #eee;
+			}
+			img {
+				max-width: 100%;
+				border-radius: 4px;
+				margin: 1rem 0;
+				border: 2px solid rgba(255, 255, 255, 0.1);
+			}
+			.suggestions-list {
+				list-style: none;
+				padding: 0;
+			}
+			.suggestions-list li {
+				margin: 0.8rem 0;
+				padding: 0.8rem;
+				background: rgba(255, 255, 255, 0.05);
+				border-radius: 4px;
+			}
+			.suggestions-list li.preferred {
+				background: rgba(76, 175, 80, 0.2);
+				border-left: 4px solid #4CAF50;
+			}
+			.suggestions-list li.alternative {
+				background: rgba(255, 255, 255, 0.05);
+				border-left: 4px solid rgba(255, 255, 255, 0.2);
+			}
+			.count {
+				display: inline-block;
+				min-width: 2rem;
+				padding: 0.2rem 0.5rem;
+				background: rgba(255, 255, 255, 0.1);
+				border-radius: 3px;
+				text-align: center;
+				margin-right: 0.5rem;
 			}
 		</style>
 	</head>
 
 	<body>
-		<div class="location-request-container">
-			<nav class="back-nav">
-				<button onclick="window.location.href='index.html'">
-					&lt;- Back to Title
-				</button>
-			</nav>
+		
+		<main class="location-request-content">
+				<nav class="back-nav">
+					<button onclick="window.location.href='index.html'">
+						&lt;- Back to Title
+					</button>
+				</nav>
+				<h1>Create an Image Pack</h1>
 
-			<main class="location-request-content">
-				<h1>Suggest a Location</h1>
-
-				<section class="requirements-section">
-					<h2>Image Requirements</h2>
-					<ul class="requirements-list">
-						<li>No player character visible</li>
-						<li>Roughly 16:9 Aspect ratio</li>
-						<li>The map coordinates associated with it</li>
-						<li>A difficulty/obscurity rating out of 10</li>
-					</ul>
+				<section>
+					<h2>How to Create an Image Pack</h2>
+					<ol>
+						<li>Open the Image Pack Editor</li>
+						<div class="button-container">
+							<button onclick="window.location.href='editor.html'">Open Editor</button>
+						</div>
+						<li>Create a new game mode</li>
+						<img src="images/editorTutorial/1.png" alt="Creating a new game mode" />
+						<li>Give it a unique ID and name</li>
+						<img src="images/editorTutorial/2.png" alt="Giving the game mode a unique ID and name" />
+						<li>Add locations by uploading images and giving their coordinates and difficulty</li>
+						<img src="images/editorTutorial/3.png" alt="Adding locations" />
+						<li>Your location box should look similar to this</li>
+						<img src="images/editorTutorial/4.png" alt="Final location box" />
+						<li>Click the "Add Location" button at the bottom</li>
+						<li>The list should now have your location</li>
+						<img src="images/editorTutorial/5.png" alt="Final location list" />
+						<li>Save your pack as a ZIP file!</li>
+						<img src="images/editorTutorial/6.png" alt="Saving the pack" />
+					</ol>
 				</section>
 
-				<section class="coordinates-section">
-					<h2>Map Coordinates Example</h2>
-					<div class="coordinates-image">
-						<img src="images/readme/coords.png" alt="Map coordinates example" />
-					</div>
-				</section>
-
-				<section class="suggestions-section">
-					<h2>Where to Make Suggestions</h2>
+				<section>
+					<h2>I made a pack, now what?</h2>
+					<p>You can get it added/merged to the main game by:</p>
 					<ul class="suggestions-list">
 						<li class="preferred">
-							<span>Create an issue on</span>
-							<a
-								target="_blank"
-								href="https://github.com/Logboy2000/HKGuessr/issues/new?template=location-request.md"
-								>GitHub</a
-							>
-							<span>(Preferred)</span>
+							<a href="https://github.com/Logboy2000/HKGuessr/issues/new" target="_blank">Creating an issue</a>
+							on GitHub
 						</li>
 						<li class="alternative">
-							<span>Email me at</span>
-							<a
-								href="mailto:loganhowarth@icloud.com"
-								target="_blank"
-								rel="noopener"
-								>loganhowarth@icloud.com</a
-							>
+							Emailing me at
+							<a href="mailto:loganhowarth@icloud.com">loganhowarth@icloud.com</a>
 						</li>
-						<li class="alternative">
-							<span>DM me on Discord</span>
-							<span>@logboy2000</span>
-						</li>
+						<li class="alternative">Messaging me on Discord: @logboy2000</li>
+					</ul>
+					<p>Before doing so, please make sure your pack meets the following requirements:</p>
+					<ul>
+						<li>No player character visible in the screenshot</li>
+						<li>Roughly 16:9 aspect ratio images (1920x1080 recommended)</li>
+						<li>No UI elements or HUD visible</li>
+						<li>PNG or JPG format</li>
 					</ul>
 				</section>
-
-				<section class="contributors-section">
-					<h2>Top Image Contributors</h2>
-					<ul class="contributors-list">
-						<li><span class="count">52</span> - Hollow Knight Wiki</li>
-						<li>
-							<span class="count">42</span> - rblashchuk <i>(Charms Mode)</i>
-						</li>
-						<li><span class="count">22</span> - RikiChik</li>
-						<li><span class="count">10</span> - demapples14</li>
-						<li><span class="count">10</span> - Hood_</li>
-						<li><span class="count">9</span> - derRumit</li>
-						<li><span class="count">3</span> - lucasbrasantos</li>
-					</ul>
-				</section>
-			</main>
-		</div>
-	</body>
+				
+				
+				<h2>Top Image Contributors</h2>
+				<ul class="contributors-list">
+					<li><span class="count">52</span> - Hollow Knight Wiki</li>
+					<li><span class="count">42</span> - rblashchuk <i>(Charms Mode)</i></li>
+					<li><span class="count">22</span> - RikiChik</li>
+					<li><span class="count">10</span> - demapples14</li>
+					<li><span class="count">10</span> - Hood_</li>
+					<li><span class="count">9</span> - derRumit</li>
+					<li><span class="count">3</span> - lucasbrasantos</li>
+				</ul>
+			</section>
+		</main>
+</body>
 </html>

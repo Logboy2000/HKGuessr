@@ -4,6 +4,14 @@
 //BEWARE THIS SOURCE CODE IS AN ABSOLUTE MESS//
 ///////////////////////////////////////////////
 
+// Code Readability Scale
+//    2.5
+//  [OOo-------]
+//  1         10
+
+
+
+
 // DOM elements
 let locationImgElement,
 	mapContainer,
@@ -25,11 +33,10 @@ let locationImgElement,
 	showMapButton,
 	difficultySelector,
 	customDifficultyDiv,
-	timerLengthDisplay
-
-let timerLengthInput
-let timerEnabledInput
-let roundCountInput
+	timerLengthDisplay,
+	timerLengthInput,
+	timerEnabledInput,
+	roundCountInput
 
 let imageIsLoaded = false
 
@@ -48,6 +55,15 @@ let locations = []
 let charms = []
 let usedLocations = {}
 let usedCharmLocations = []
+/*
+Location Definition
+[
+  x,           // index 0
+  y,           // index 1
+  difficulty,  // index 2
+  imageUrl     // index 3
+]
+*/
 let currentLocation = null
 let currentRound = 0
 let totalRounds = 5
@@ -155,13 +171,14 @@ function dataLoaded() {
 
 	// Get the first available game mode
 	const firstGameMode = Object.keys(gameModeData)[0]
-	if (firstGameMode) {
+	if (firstGameMode && gameModeData[firstGameMode].locations) {
+		const locations = gameModeData[firstGameMode].locations
 		setLocation(
-			randIRange(0, gameModeData[firstGameMode].length - 1),
+			randIRange(0, locations.length - 1),
 			firstGameMode
 		)
-		if (currentLocation && currentLocation[2]) {
-			locationImgElement.src = currentLocation[2]
+		if (currentLocation && currentLocation[3]) {
+			locationImgElement.src = currentLocation[3]
 		} else {
 			console.error('Invalid current location or image path')
 		}
@@ -658,25 +675,41 @@ function guessButtonClicked() {
 function setLocation(i, gameMode) {
 	imageIsLoaded = false
 
-	currentLocation = gameModeData[gameMode][i]
+	if (!gameModeData[gameMode]) {
+		console.error('Game mode not found:', gameMode)
+		return
+	}
+
+	if (!gameModeData[gameMode].locations) {
+		console.error('No locations found for game mode:', gameMode)
+		return
+	}
+
+	if (i < 0 || i >= gameModeData[gameMode].locations.length) {
+		console.error('Invalid location index:', { index: i, max: gameModeData[gameMode].locations.length - 1 })
+		return
+	}
+
+	currentLocation = gameModeData[gameMode].locations[i]
 
 	if (!currentLocation) {
 		console.error('Current location is undefined.')
 		return
 	}
 
-	if (!currentLocation[2]) {
+	if (!currentLocation[3]) {
 		console.error('Image path is undefined for location:', currentLocation)
 		return
 	}
 
+	const imgSrc = currentLocation[3]
 	locationImgElement.src = ''
 	loadingText.style.display = 'flex'
 	const img = new Image()
 	img.onload = function () {
 		imageIsLoaded = true
 		loadingText.style.display = 'none'
-		locationImgElement.src = currentLocation[2]
+		locationImgElement.src = imgSrc
 		if (guessPos) {
 			guessButton.disabled = false
 		}
@@ -687,13 +720,13 @@ function setLocation(i, gameMode) {
 	}
 	img.onerror = function (e) {
 		console.error('Failed to load image:', {
-			path: currentLocation[2],
+			path: imgSrc,
 			error: e,
 			stack: new Error().stack,
 		})
 		loadingText.style.display = 'none'
 	}
-	img.src = currentLocation[2]
+	img.src = currentLocation[3]
 }
 
 function getElement(id) {
@@ -735,7 +768,7 @@ function nextRound() {
 	roundElement.textContent = `${currentRound}/${totalRounds}`
 
 	const selectedGameMode = document.getElementById('gameMode').value
-	const dataList = gameModeData[selectedGameMode]
+	const dataList = gameModeData[selectedGameMode].locations
 	const usedList = usedLocations[selectedGameMode]
 
 	// Filter dataList by selected difficulty

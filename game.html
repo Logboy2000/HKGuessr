@@ -6,11 +6,23 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="style.css?v=1.1.0" />
 	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 	<title>Hollow Guessr</title>
 	<style>
 		body {
 			overflow: hidden;
 		}
+		#loadPackButton {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-left: 8px;
+			height: 36px;
+			line-height: 20px;
+			border-radius: 4px;
+			font-size: 20px;
+		}
+
 	</style>
 </head>
 
@@ -54,10 +66,16 @@
 		<h2>Game Options</h2>
 		<hr />
 		<div class="option">
-			<label for="gameMode">Game mode:</label>
-			<select id="gameMode">
-				<!--should be filled using the json files-->
-			</select>
+			<label for="gameMode">Image Pack:</label>
+			<div style="display: flex; gap: 8px; align-items: center;">
+				<select id="gameMode">
+					<!--should be filled using the json files-->
+				</select>
+				<label class="custom-file-upload">
+					<input type="file" id="customImagePack" accept=".zip" style="display: none" />
+					<button id="loadPackButton" onclick="document.getElementById('customImagePack').click()">Load Pack (.zip)</button>
+				</label>
+			</div>
 		</div>
 		<div class="option">
 			<label for="difficultySelector">Difficulty:</label>
@@ -90,9 +108,10 @@
 		<hr />
 		<button id="startButton">Start Game</button>
 	</div>
-
-	<script src="loadLocationData.js?v=1.0.0"></script>
 	<script src="script.js?v=1.5.0"></script>
+	<script src="loadLocationData.js?v=1.0.0"></script>
+
+
 </body>
 
 </html>
