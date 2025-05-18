@@ -1,13 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-a {
-    color: white;
-}
-
 /* Fullscreen container */
 body {
     display: flex;
@@ -18,7 +8,6 @@ body {
     background: url('../images/bg.jpg') no-repeat center center fixed;
     background-size: cover;
     text-align: center;
-    color: white;
     font-family: 'Trajan Pro Bold', serif;
     position: relative;
     overflow: hidden; /* Prevent scrolling */
@@ -32,8 +21,9 @@ body {
     width: 100%;
     height: 100%;
     background: black;
-    opacity: 0;
     pointer-events: none;
+    opacity: 0;
+    animation: fadeOverlay 1.2s ease-out;
 }
 
 /* Title image */
@@ -46,21 +36,16 @@ body {
 
 /* Play button */
 .play-button {
-    background: transparent;
-    color: white;
     font-family: 'Trajan Pro Bold', serif;
     font-size: 30px;
     font-weight: bold;
     padding: 15px 60px;
-    border: 2px solid white;
-    cursor: pointer;
     transition: 0.3s;
 	max-height: none;
     flex-grow: 0;
     text-transform: uppercase;
     letter-spacing: 3px;
     border-radius: 5px;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
 }
 
 .play-button:hover {
@@ -79,6 +64,15 @@ body {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes fadeOverlay {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
     }
 }
 
@@ -103,7 +97,6 @@ body {
     position: absolute;
     bottom: 0;
     left: 0;
-    color: #fff;
     user-select: none;
     margin: 2px;
     text-align: left;

@@ -15,10 +15,8 @@
 	<img src="" alt="" id="locationImg" />
 	<p id="loadingText">Getting Image...</p>
 	<div id="scoreContainer">
-		<button onclick="window.location.href='index.html'">&lt;- Back</button>
-		<hr />
+		<button id="back-button" onclick="window.location.href='index.html'">&lt;- Back</button>
 		<span id="round">1/5</span>
-		<hr />
 		<span id="timerDisplay"></span>
 	</div>
 	<div id="mapContainer">
@@ -37,7 +35,6 @@
 
 	<div id="gameOverWindow" class="window">
 		<h2>Game Over</h2>
-		<hr />
 		<p id="finalScore">Final Score:</p>
 		<p id="accuracy">Accuracy:</p>
 		<p id="totalRounds">Total Rounds:</p>
@@ -49,7 +46,6 @@
 
 	<div id="gameOptionsWindow" class="window">
 		<h2>Game Options</h2>
-		<hr />
 		<div class="option">
 			<label for="gameMode">Image Pack:</label>
 			<div style="display: flex; gap: 8px; align-items: center;">
@@ -93,6 +89,7 @@
 		<hr />
 		<button id="startButton">Start Game</button>
 	</div>
+
 	<script src="script.js?v=1.5.0"></script>
 	<script src="loadLocationData.js?v=1.0.0"></script>
 
