@@ -32,7 +32,7 @@
 	<div id="scoreContainer">
 		<button onclick="window.location.href='index.html'">&lt;- Back</button>
 		<hr />
-		<span id="round">1/5</span>
+		<span id="round">0/5</span>
 		<hr />
 		<span id="timerDisplay"></span>
 	</div>
@@ -40,15 +40,15 @@
 		<canvas id="mapCanvas"></canvas>
 		<br />
 		<div id="buttonContainer">
-			<button id="guessButton">Guess!</button>
-			<button id="fullscreenButton">
+			<button id="guessButton" onclick="guessButtonClicked()">Guess!</button>
+			<button id="fullscreenButton" onclick="toggleFullscreen()">
 				<img src="images/fullscreen.png" alt="FS" style="scale: 0.7" />
 			</button>
-			<button id="minimiseButton">X</button>
+			<button id="minimiseButton" onclick="setMinimapVisible(false)">X</button>
 		</div>
 	</div>
 
-	<button id="showMapButton">O</button>
+	<button id="showMapButton" onclick="setMinimapVisible(true)">O</button>
 
 	<div id="gameOverWindow" class="window">
 		<h2>Game Over</h2>
@@ -58,8 +58,8 @@
 		<p id="totalRounds">Total Rounds:</p>
 		<p id="timerLengthDisplay">Timer Length:</p>
 		<hr />
-		<button id="restartButton">Play Again</button>
-		<button id="optionsButton">Options</button>
+		<button id="restartButton" onclick="restartGame()">Play Again</button>
+		<button id="optionsButton" onclick="openWindow('options')">Options</button>
 	</div>
 
 	<div id="gameOptionsWindow" class="window">
@@ -89,27 +89,29 @@
 		</div>
 		<div class="option" id="customDifficultyDiv" style="display: none">
 			<label for="minDifficulty">Min:</label>
-			<input type="text" id="minDifficulty" min="1" max="10" value="1" />
+			<input type="text" id="minDifficulty" min="1" max="10" placeholder="1" value="1" onchange="checkNumberIntegrity(this)"/>
 			<label for="maxDifficulty">Max:</label>
-			<input type="text" id="maxDifficulty" min="1" max="10" value="10" />
+			<input type="text" id="maxDifficulty" min="1" max="10" placeholder="10" value="10" onchange="checkNumberIntegrity(this)"/>
 		</div>
 		<div class="option">
 			<label for="roundCount">Round count: </label>
-			<input type="text" id="roundCount" name="roundCount" min="1" value="5" />
+			<input type="text" id="roundCount" name="roundCount" min="1" value="5" placeholder="5" oninput="updateRoundCounter()" onchange="checkNumberIntegrity(this); updateRoundCounter()"/>
 		</div>
 		<div class="option">
 			<label for="timerEnabled">Timer enabled?: </label>
-			<input type="checkbox" id="timerEnabled" name="timerEnabled" />
+			<input type="checkbox" id="timerEnabled" name="timerEnabled" onchange="timerInputDisplay(this)"/>
 		</div>
 		<div class="option">
 			<label for="timerLength">Timer length: </label>
-			<input type="text" id="timerLength" name="timerLength" placeholder="60" value="60" disabled />
+			<input type="text" id="timerLength" name="timerLength" placeholder="60" value="60" min="1" max="3600" oninput="checkNumberIntegrity(this)" disabled />
 		</div>
 		<hr />
-		<button id="startButton">Start Game</button>
+		<button id="startButton" onclick="restartGame()">Start Game</button>
 	</div>
-	<script src="script.js?v=1.5.0"></script>
-	<script src="loadLocationData.js?v=1.0.0"></script>
+	
+	<!-- defer notation grants the script will load AFTER the DOM -->
+	<script src="script.js?v=1.5.0" defer></script>
+	<script src="loadLocationData.js?v=1.0.0" defer></script>
 
 
 </body>

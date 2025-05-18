@@ -72,29 +72,11 @@ async function loadLocationData() {
 		// Clear existing data
 		gameModeData = {}
 
-		// Wait for DOM to be ready
-		if (!document.getElementById('gameMode')) {
-			console.log('Waiting for game mode selector to be available...')
-			await new Promise((resolve) => {
-				const observer = new MutationObserver((mutations, obs) => {
-					if (document.getElementById('gameMode')) {
-						obs.disconnect()
-						resolve()
-					}
-				})
-				observer.observe(document.documentElement, {
-					childList: true,
-					subtree: true,
-				})
-			})
-		}
-
 		// Update game mode select options
 		const gameModeSelect = document.getElementById('gameMode')
 		gameModeSelect.innerHTML = ''
 
 		// Load each image pack
-		
 		for (const packName of imagePacks) {
 			try {
 				// Load the pack.json file from the image pack folder
@@ -159,27 +141,25 @@ async function loadLocationData() {
 	}
 }
 
-// Start loading when the DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-	loadLocationData()
 
-	// Add event listener for custom image pack upload
-	const customImagePackInput = document.getElementById('customImagePack')
-	if (customImagePackInput) {
-		customImagePackInput.addEventListener('change', async (event) => {
-			const file = event.target.files[0]
-			if (!file) return
-			
-			if (!file.name.endsWith('.zip')) {
-				alert('Please select a ZIP file')
-				event.target.value = ''
-				return
-			}
+loadLocationData()
 
-			await loadCustomImagePack(file)
-			
-			// Clear the input so the same file can be loaded again
+// Add event listener for custom image pack upload
+const customImagePackInput = document.getElementById('customImagePack')
+if (customImagePackInput) {
+	customImagePackInput.addEventListener('change', async (event) => {
+		const file = event.target.files[0]
+		if (!file) return
+		
+		if (!file.name.endsWith('.zip')) {
+			alert('Please select a ZIP file')
 			event.target.value = ''
-		})
-	}
-})
+			return
+		}
+
+		await loadCustomImagePack(file)
+		
+		// Clear the input so the same file can be loaded again
+		event.target.value = ''
+	})
+}

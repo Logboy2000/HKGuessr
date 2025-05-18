@@ -13,48 +13,52 @@
 
 
 // DOM elements
-let locationImgElement,
-	mapContainer,
-	mapCanvas,
-	finalScoreDisplay,
-	accuracyElement,
-	roundElement,
-	guessButton,
-	gameOverWindow,
-	restartButton,
-	totalRoundsElement,
-	loadingText,
-	fullscreenButton,
-	timerDisplay,
-	gameOptionsWindow,
-	startButton,
-	optionsButton,
-	minimiseButton,
-	showMapButton,
-	difficultySelector,
-	customDifficultyDiv,
-	timerLengthDisplay,
-	timerLengthInput,
-	timerEnabledInput,
-	roundCountInput
+// Game options elements
+var customDifficultyDiv = document.getElementById('customDifficultyDiv')
+var difficultySelector = document.getElementById('difficultySelector')
+var roundCountInput = document.getElementById('roundCount')
+var timerLengthInput = document.getElementById('timerLength')
+
+// Game window elements
+var accuracyElement = document.getElementById('accuracy')
+var finalScoreDisplay = document.getElementById('finalScore')
+var gameOverWindow = document.getElementById('gameOverWindow')
+var gameOptionsWindow = document.getElementById('gameOptionsWindow')
+var loadingText = document.getElementById('loadingText')
+var roundElement = document.getElementById('round')
+var timerDisplay = document.getElementById('timerDisplay')
+var totalRoundsElement = document.getElementById('totalRounds')
+var timerLengthDisplay = document.getElementById('timerLengthDisplay')
+
+// Map and location elements
+var guessButton = document.getElementById('guessButton')
+var locationImgElement = document.getElementById('locationImg')
+var mapCanvas = document.getElementById('mapCanvas')
+var mapContainer = document.getElementById('mapContainer')
+var showMapButton = document.getElementById('showMapButton')
+
+// Game states
+const GAMESTATES = {
+	guessing: 0,
+	guessed: 1,
+	gameOver: 2,
+	optionsWindow: 3,
+}
+
+// Difficult Ranges
+const DIFFICULTRANGE = {
+	easy: { min: 1, max: 3 },
+	normal: { min: 4, max: 7 },
+	hard: { min: 8, max: 10 },
+}
 
 let imageIsLoaded = false
 
 // Canvas context
 let mapCtx
 
-// Game state
-let gameStates = {
-	guessing: 0,
-	guessed: 1,
-	gameOver: 2,
-	optionsWindow: 3,
-}
-let gameState = gameStates.optionsWindow
-let locations = []
-let charms = []
+let gameState = GAMESTATES.optionsWindow
 let usedLocations = {}
-let usedCharmLocations = []
 /*
 Location Definition
 [
@@ -72,9 +76,7 @@ let roundScore = 0
 let maxScore = 5000
 let timerLengthSeconds = 60
 let timerEnabled = false
-let startTime
 let endTime
-let gameMode
 
 // Images
 let mapImg = new Image()
@@ -107,12 +109,6 @@ let mouseYRelative = 0
 // Guess position
 let guessPos = null
 
-const difficultyRanges = {
-	easy: { min: 1, max: 3 },
-	normal: { min: 4, max: 7 },
-	hard: { min: 8, max: 10 },
-}
-
 let minDiff = 1
 let maxDiff = 10
 
@@ -122,42 +118,10 @@ function dataLoaded() {
 	mapCamera.targetX = mapCamera.x
 	mapCamera.targetY = mapCamera.y
 
-	// HTML Elements
-
-	// Game options elements
-	customDifficultyDiv = getElement('customDifficultyDiv')
-	difficultySelector = getElement('difficultySelector')
-	roundCountInput = getElement('roundCount')
-	startButton = getElement('startButton')
-	timerEnabledInput = getElement('timerEnabled')
-	timerLengthInput = getElement('timerLength')
-
-	// Game window elements
-	accuracyElement = getElement('accuracy')
-	finalScoreDisplay = getElement('finalScore')
-	gameOverWindow = getElement('gameOverWindow')
-	gameOptionsWindow = getElement('gameOptionsWindow')
-	loadingText = getElement('loadingText')
-	optionsButton = getElement('optionsButton')
-	restartButton = getElement('restartButton')
-	roundElement = getElement('round')
-	timerDisplay = getElement('timerDisplay')
-	totalRoundsElement = getElement('totalRounds')
-	timerLengthDisplay = getElement('timerLengthDisplay')
-
-	// Map and location elements
-	fullscreenButton = getElement('fullscreenButton')
-	guessButton = getElement('guessButton')
-	locationImgElement = getElement('locationImg')
-	mapCanvas = getElement('mapCanvas')
-	mapContainer = getElement('mapContainer')
-	minimiseButton = getElement('minimiseButton')
-	showMapButton = getElement('showMapButton')
-
 	// canvas ctx thingy
 	mapCtx = mapCanvas.getContext('2d')
 
-	// this function scares me
+	// this function should not scare you
 	addEventListeners()
 
 	// Initialize used locations for each game mode
@@ -166,7 +130,7 @@ function dataLoaded() {
 		usedLocations[mode] = []
 	})
 
-	gameOptionsWindow.style.display = 'flex'
+	openWindow('options')
 	loadingText.style.display = 'none'
 
 	// Get the first available game mode
@@ -188,7 +152,6 @@ function dataLoaded() {
 }
 
 function restartGame() {
-	gameMode = getElement('gameMode').value
 	// Check if roundCountInput value is a valid number
 	if (
 		!isNaN(roundCountInput.value) &&
@@ -201,23 +164,15 @@ function restartGame() {
 		return
 	}
 
-	minDiff = parseInt(document.getElementById('minDifficulty').value, 10)
-	maxDiff = parseInt(document.getElementById('maxDifficulty').value, 10)
+	minDiff = Number(document.getElementById('minDifficulty').value)
+	maxDiff = Number(document.getElementById('maxDifficulty').value)
 
 	if (minDiff > maxDiff) {
 		alert('Minimum difficulty cannot be greater than maximum difficulty')
 		return
 	}
-	if (minDiff < 1 || minDiff > 10) {
-		alert('Minimum difficulty must be between 1 and 10')
-		return
-	}
-	if (maxDiff < 1 || maxDiff > 10) {
-		alert('Maximum difficulty must be between 1 and 10')
-		return
-	}
 
-	timerEnabled = timerEnabledInput.checked
+	timerEnabled = document.getElementById('timerEnabled').checked
 
 	// Check if timerLengthInput value is a valid number
 	if (timerEnabled) {
@@ -235,12 +190,11 @@ function restartGame() {
 		}
 	}
 
-	gameState = gameStates.guessing
+	gameState = GAMESTATES.guessing
 	totalScore = 0
 	currentRound = 0
 
-	gameOptionsWindow.style.display = 'none'
-	gameOverWindow.style.display = 'none'
+	openWindow(null)
 	guessButton.disabled = true
 	guessButton.innerText = 'Guess!'
 
@@ -249,7 +203,7 @@ function restartGame() {
 
 function update() {
 	// Timer
-	if (timerEnabled && gameState === gameStates.guessing && imageIsLoaded) {
+	if (timerEnabled && gameState === GAMESTATES.guessing && imageIsLoaded) {
 		const currentTime = performance.now()
 		const remainingTime = endTime - currentTime
 
@@ -275,7 +229,7 @@ function update() {
 
 	mapCtx.drawImage(mapImg, 0, 0, mapImg.width, mapImg.height)
 
-	if (gameState === gameStates.guessed || gameState === gameStates.gameOver) {
+	if (gameState === GAMESTATES.guessed || gameState === GAMESTATES.gameOver) {
 		// Draw line between guess and correct spot
 		if (guessPos) {
 			mapCtx.beginPath()
@@ -307,8 +261,8 @@ function update() {
 
 	mapCtx.font = '20px Trajan Pro Bold'
 	if (
-		gameState !== gameStates.guessing &&
-		gameState !== gameStates.optionsWindow
+		gameState !== GAMESTATES.guessing &&
+		gameState !== GAMESTATES.optionsWindow
 	) {
 		const boxWidth = 300
 		const boxHeight = 25
@@ -374,6 +328,36 @@ function update() {
 	requestAnimationFrame(update)
 }
 
+function updateRoundCounter() {
+	if (checkNumberIntegrity(roundCountInput, true, false)) {
+		totalRounds = Number(roundCountInput.value) // Convert to number
+	} else return
+
+	roundElement.textContent = `${currentRound}/${totalRounds}`
+}
+
+function checkNumberIntegrity(element, integer=true, updateIfInvalid=true) {
+	let maxValue = Number(element.getAttribute('max')) || Infinity
+	let minValue = Number(element.getAttribute('min')) || 1
+
+	if (
+		!isNaN(element.value) &&
+		element.value !== '' &&
+		element.value >= minValue
+	) {
+		if(element.value > maxValue) element.value = maxValue
+		if(integer) element.value = parseInt(element.value)
+		return true
+	}
+
+	if(updateIfInvalid) {
+		element.value = Number(element.getAttribute('value'))
+	}
+
+	if(integer) element.value = parseInt(element.value)
+	return false
+}
+
 function checkWhetherYouShouldShowTheDifficultySelectorDiv() {
 	if (difficultySelector.value === 'custom') {
 		customDifficultyDiv.style.display = 'flex'
@@ -390,40 +374,8 @@ checkWhetherYouShouldShowTheDifficultySelectorDivIWonderHowLongICanMakeThisFunct
 function addEventListeners() {
 	checkWhetherYouShouldShowTheDifficultySelectorDiv()
 	difficultySelector.addEventListener('change', () => {
-		checkWhetherYouShouldShowTheDifficultySelectorDiv()
-	})
-
-	difficultySelector.addEventListener('change', function () {
 		const selectedDifficulty = difficultySelector.value
-	})
-
-	showMapButton.addEventListener('click', function () {
-		mapContainer.style.display = 'flex'
-		showMapButton.style.display = 'none'
-	})
-
-	minimiseButton.addEventListener('click', function () {
-		mapContainer.style.display = 'none'
-		showMapButton.style.display = 'flex'
-	})
-
-	optionsButton.addEventListener('click', function () {
-		gameOptionsWindow.style.display = 'flex'
-		gameOverWindow.style.display = 'none'
-	})
-
-	timerEnabledInput.addEventListener('change', function (event) {
-		if (event.target.checked) {
-			timerLengthInput.disabled = false
-			timerDisplay.style.display = 'block'
-		} else {
-			timerLengthInput.disabled = true
-			timerDisplay.style.display = 'none'
-		}
-	})
-
-	startButton.addEventListener('click', function () {
-		restartGame()
+		checkWhetherYouShouldShowTheDifficultySelectorDiv()
 	})
 
 	let isDragging = false
@@ -432,22 +384,11 @@ function addEventListeners() {
 	let initialZoom
 	let pinchStartDistance
 
-	locationImgElement.addEventListener('dragstart', (event) => {
-		event.preventDefault()
-	})
-
-	fullscreenButton.addEventListener('click', function () {
-		toggleFullscreen()
-	})
-
 	document.addEventListener('keypress', function (event) {
 		if (event.code === 'Space') {
 			guessButtonClicked()
 		}
-		if (event.key === 'f') {
-			toggleFullscreen()
-		}
-		if (event.key === 'Escape') {
+		if (event.key === 'f' || event.key === 'Escape') {
 			toggleFullscreen()
 		}
 	})
@@ -498,6 +439,7 @@ function addEventListeners() {
 		}
 		isDragging = false
 	})
+
 	mapCanvas.addEventListener('mouseleave', function () {
 		isDragging = false
 	})
@@ -565,14 +507,40 @@ function addEventListeners() {
 		}
 		isDragging = false
 	})
+}
 
-	guessButton.addEventListener('click', function () {
-		guessButtonClicked()
-	})
+function openWindow(windowName) {
+	gameOptionsWindow.style.display = 'none'
+	gameOverWindow.style.display = 'none'
+	switch(windowName) {
+		case 'options':
+			gameOptionsWindow.style.display = 'flex'
+			break;
+		case 'gameover':
+			gameOverWindow.style.display = 'flex'
+			break;
+	}
+}
 
-	restartButton.addEventListener('click', function () {
-		restartGame()
-	})
+function setMinimapVisible(visible) {
+	if(visible) {
+		mapContainer.style.display = 'flex'
+		showMapButton.style.display = 'none'
+	}
+	else {
+		mapContainer.style.display = 'none'
+		showMapButton.style.display = 'flex'
+	}
+}
+
+function timerInputDisplay(element) {
+	if (element.checked) {
+		timerLengthInput.disabled = false
+		timerDisplay.style.display = 'block'
+	} else {
+		timerLengthInput.disabled = true
+		timerDisplay.style.display = 'none'
+	}
 }
 
 function toggleFullscreen() {
@@ -584,7 +552,7 @@ function toggleFullscreen() {
 }
 
 function updateGuessPos() {
-	if (gameState === gameStates.guessing) {
+	if (gameState === GAMESTATES.guessing) {
 		guessPos = {
 			x: mouseXRelative,
 			y: mouseYRelative,
@@ -595,25 +563,25 @@ function updateGuessPos() {
 }
 
 function guessButtonClicked() {
-	if (guessPos == null && gameState === gameStates.guessing) {
+	if (guessPos == null && gameState === GAMESTATES.guessing) {
 		roundScore = 0
-		gameState = gameStates.guessed
+		gameState = GAMESTATES.guessed
 		guessButton.disabled = false
 		if (currentRound >= totalRounds) {
 			guessButton.innerText = 'End Game'
-			gameState = gameStates.gameOver
+			gameState = GAMESTATES.gameOver
 		} else {
 			guessButton.innerText = 'Next Round'
 		}
 		mapCamera.targetX = -currentLocation[0]
 		mapCamera.targetY = -currentLocation[1]
 		mapCamera.targetZoom = 1
-	} else if (gameState === gameStates.guessing) {
-		gameState = gameStates.guessed
+	} else if (gameState === GAMESTATES.guessing) {
+		gameState = GAMESTATES.guessed
 		calculateScore()
 		if (currentRound >= totalRounds) {
 			guessButton.innerText = 'End Game'
-			gameState = gameStates.gameOver
+			gameState = GAMESTATES.gameOver
 		} else {
 			guessButton.innerText = 'Next Round'
 		}
@@ -636,7 +604,7 @@ function guessButtonClicked() {
 			Math.max(requiredZoomY, 0.1),
 			2
 		)
-	} else if (gameState === gameStates.guessed) {
+	} else if (gameState === GAMESTATES.guessed) {
 		if (currentRound < totalRounds) {
 			if (mapContainer.classList.contains('fullscreen')) {
 				mapContainer.classList.remove('fullscreen')
@@ -646,7 +614,7 @@ function guessButtonClicked() {
 			guessButton.disabled = true
 			guessButton.innerText = 'Guess!'
 		}
-	} else if (gameState === gameStates.gameOver) {
+	} else if (gameState === GAMESTATES.gameOver) {
 		guessButton.disabled = true
 
 		// Hide/show timer depending on timerEnabled
@@ -657,8 +625,8 @@ function guessButtonClicked() {
 			timerLengthDisplay.style.display = 'none'
 		}
 
-		gameOverWindow.style.display = 'flex'
-		gameState = gameStates.gameOver
+		openWindow('gameover')
+		gameState = GAMESTATES.gameOver
 
 		finalScoreDisplay.innerText = `Final Score: ${totalScore}/${
 			totalRounds * maxScore
@@ -714,8 +682,7 @@ function setLocation(i, gameMode) {
 			guessButton.disabled = false
 		}
 		if (timerEnabled) {
-			startTime = performance.now()
-			endTime = startTime + timerLengthSeconds * 1000
+			endTime = performance.now() + timerLengthSeconds * 1000
 		}
 	}
 	img.onerror = function (e) {
@@ -727,10 +694,6 @@ function setLocation(i, gameMode) {
 		loadingText.style.display = 'none'
 	}
 	img.src = currentLocation[3]
-}
-
-function getElement(id) {
-	return document.getElementById(id)
 }
 
 function randIRange(min, max) {
@@ -755,17 +718,17 @@ function filterByDifficulty(dataList, difficulty) {
 		return dataList.filter((item) => item[3] >= minDiff && item[3] <= maxDiff)
 	}
 
-	const range = difficultyRanges[difficulty]
+	const range = DIFFICULTRANGE[difficulty]
 	return dataList.filter((item) => item[3] >= range.min && item[3] <= range.max)
 }
 
 function nextRound() {
-	gameState = gameStates.guessing
+	gameState = GAMESTATES.guessing
 	mapCamera.targetX = -2249
 	mapCamera.targetY = -1450
 	mapCamera.targetZoom = 0.125
 	currentRound++
-	roundElement.textContent = `${currentRound}/${totalRounds}`
+	updateRoundCounter(currentRound, totalRounds)
 
 	const selectedGameMode = document.getElementById('gameMode').value
 	const dataList = gameModeData[selectedGameMode].locations
@@ -807,8 +770,7 @@ function nextRound() {
 
 	// Reset and start the timer
 	if (timerEnabled) {
-		startTime = performance.now()
-		endTime = startTime + timerLengthSeconds * 1000
+		endTime = performance.now() + timerLengthSeconds * 1000
 	}
 }
 
