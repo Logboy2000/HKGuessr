@@ -5,29 +5,37 @@ body {
     padding: 20px;
     background: #1a1a1a;
     color: #fff;
+    line-height: 1.5;
+    min-height: 100vh;
 }
 .editor-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 20px;
+    grid-template-columns: 0.8fr 1.2fr;
+    column-gap: 30px;
     margin-top: 20px;
+    align-items: start;
 }
 .location-list {
     background: #2a2a2a;
     padding: 20px;
     border-radius: 8px;
-    height: 100vh;
-    overflow-y: scroll;
+    height: 70vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .list-item {
     background: #333;
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 10px;
     border-radius: 4px;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: all 0.2s ease;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .list-item .delete-btn {
     color: #ff4444;
@@ -36,10 +44,13 @@ body {
 }
 .list-item:hover {
     background: #444;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 .list-item.selected {
     background: #555;
     border: 1px solid #888;
+    box-shadow: 0 0 0 1px #aaa;
 }
 .mode-list, .location-list {
     background: #2a2a2a;
@@ -55,19 +66,24 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    margin-bottom: 15px;
 }
 .image-preview {
     margin-top: 10px;
-    background: #272727;
-    padding: 10px;
+    text-align: center;
+    width: 100%;
     border-radius: 4px;
-    max-width: 100%;
-    max-height: 300px;
-    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 #imageFileName {
     color: #888;
     font-size: 0.9em;
+    display: block;
+    margin: 10px 0;
+    word-break: break-all;
 }
 .location-item:hover {
     background: #444;
@@ -78,24 +94,31 @@ body {
 }
 .editor-form {
     background: #2a2a2a;
-    padding: 20px;
+    padding: 25px;
     border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 .form-group {
     margin-bottom: 15px;
+    width: 100%;
 }
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     color: #ddd;
+    font-weight: 500;
+    font-size: 14px;
 }
 input, select {
-    width: calc(100% - 20px);
-    padding: 8px;
+    width: 100%;
+    padding: 10px;
     border: 1px solid #444;
     background: #333;
     color: #fff;
     border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
 }
 button {
     background: #4a4a4a;
@@ -104,13 +127,22 @@ button {
     padding: 10px 20px;
     border-radius: 4px;
     cursor: pointer;
-    margin-right: 10px;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 100px;
 }
 button:hover {
     background: #555;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 .button-group {
-    margin-top: 20px;
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 .json-preview {
     width: calc(100% - 20px);
@@ -123,11 +155,91 @@ button:hover {
     overflow: auto;
     white-space: pre-wrap;
     font-family: monospace;
-    font-size: 10px;
+    font-size: 12px;
     resize: none;
-    
-
+    line-height: 1.5;
 }
 .hidden {
     display: none !important;
+}
+
+.empty-message {
+    padding: 20px;
+    color: #aaa;
+    text-align: center;
+    font-style: italic;
+    border: 1px dashed #555;
+    border-radius: 4px;
+    margin: 20px 0;
+}
+
+.status-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    z-index: 1000;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    min-width: 250px;
+}
+
+/* Animation for selected row */
+.list-item.selected {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.2);
+    }
+    70% {
+        box-shadow: 0 0 0 5px rgba(255, 255, 255, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+}
+
+/* Improved form element focus states */
+input:focus, select:focus, button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #4a90e2;
+    border-color: #4a90e2;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .editor-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .location-list {
+        height: 50vh;
+        margin-bottom: 20px;
+    }
+    
+    .coordinates-container {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .image-section {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .button-group button {
+        width: 100%;
+    }
+    
+    .image-preview img {
+        max-width: 100%;
+    }
 }

@@ -14,8 +14,9 @@ A game inspired by GeoGuessr, but set in the world of Hollow Knight.
 - **Touch Support**: Playable on desktop or mobile devices.
 
 ## Contributing
-I welcome contributions from the anybody! Here's how you can help:
-- **Add New Locations**: Submit new locations via the [Location Request](https://logboy2000.github.io/HKGuessr/locationRequest.html) page.
+I welcome contributions from anybody! Here's how you can help:
+- **Create Image Packs**: Build your own collection of locations that can be merged into the main game! Visit the [Image Pack Creator](https://logboy2000.github.io/HKGuessr/locationRequest.html) page to get started.
+- **Add Individual Locations**: Submit single locations via a [GitHub Issue](https://github.com/logboy2000/HKGuessr/issues/new?template=location-request.md).
 - **Report Bugs**: Found a bug? Open an issue on [GitHub](https://github.com/logboy2000/HKGuessr/issues).
 
 ## Roadmap
@@ -56,7 +57,7 @@ python -m http.server 8000
 - **[The HK Wiki](https://hollowknight.wiki/)**: Provided 54 of the screenshots in game
 - **[HK Title Generator](https://prashantmohta.github.io/TitleGenerator.HollowKnight/)**: Used to make the game's logo
 - **[GeoGuessr](https://www.geoguessr.com/)**: Inspired by the mechanics of GeoGuessr.
-- **Contributors**: Anyone who chooses to contribute locations, bug reports, and suggestions!
+- **Community Contributors**: Special thanks to everyone who has contributed image packs and locations! See the full list of contributors on the [Image Pack Creator](https://logboy2000.github.io/HKGuessr/locationRequest.html) page.
 
 ## Support Me
 I don't want your money. Donate to charity or something.

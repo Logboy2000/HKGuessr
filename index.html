@@ -1,96 +1,85 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<link rel="manifest" href="manifest.json" />
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-		/>
-		<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
-		<title>Hollow Guessr</title>
-		<meta
-			name="description"
-			content="Test your knowledge of Hallownest in Hollow Guessr, a Hollow Knight-inspired GeoGuessr game."
-		/>
-		<meta
-			name="keywords"
-			content="Hollow Knight, GeoGuessr, Hollow Guessr, Hallownest, indie games, guessing game"
-		/>
-		<meta name="author" content="Logboy2000" />
-		<meta
-			property="og:title"
-			content="Hollow Guessr - A Hollow Knight GeoGuessing Game"
-		/>
-		<meta
-			property="og:description"
-			content="Test your knowledge of Hallownest in this interactive guessing game. Can you recognize every location in Hollow Knight?"
-		/>
-		<meta property="og:image" content="images/social-preview.png" />
-		<meta property="og:url" content="https://yourwebsite.com" />
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta
-			name="twitter:title"
-			content="Hollow Guessr - A Hollow Knight GeoGuessing Game"
-		/>
-		<meta
-			name="twitter:description"
-			content="Guess the locations in Hallownest with Hollow Guessr, a fan-made Hollow Knight GeoGuessr clone."
-		/>
-		<meta name="twitter:image" content="images/social-preview.png" />
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="manifest" href="manifest.json" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <link
+            rel="shortcut icon"
+            href="images/favicon.png"
+            type="image/x-icon"
+        />
+        <title>Hollow Guessr</title>
+        <meta
+            name="description"
+            content="Test your knowledge of Hallownest in Hollow Guessr, a Hollow Knight-inspired GeoGuessr game."
+        />
+        <meta
+            name="keywords"
+            content="Hollow Knight, GeoGuessr, Hollow Guessr, Hallownest, indie games, guessing game"
+        />
+        <meta name="author" content="Logboy2000" />
+        <meta
+            property="og:title"
+            content="Hollow Guessr - A Hollow Knight GeoGuessing Game"
+        />
+        <meta
+            property="og:description"
+            content="Test your knowledge of Hallownest in this interactive guessing game. Can you recognize every location in Hollow Knight?"
+        />
+        <meta property="og:image" content="images/social-preview.png" />
+        <meta property="og:url" content="https://yourwebsite.com" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+            name="twitter:title"
+            content="Hollow Guessr - A Hollow Knight GeoGuessing Game"
+        />
+        <meta
+            name="twitter:description"
+            content="Guess the locations in Hallownest with Hollow Guessr, a fan-made Hollow Knight GeoGuessr clone."
+        />
+        <meta name="twitter:image" content="images/social-preview.png" />
 
-		<link rel="stylesheet" href="style/style.css">
-		<link rel="stylesheet" href="style/index.css">
+        <link rel="stylesheet" href="style/style.css" />
+        <link rel="stylesheet" href="style/index.css" />
+    </head>
 
-		<script type="application/ld+json">
-			{
-				"@context": "https://schema.org",
-				"@type": "VideoGame",
-				"name": "Hollow Guessr",
-				"description": "Test your knowledge of Hallownest in Hollow Guessr, a Hollow Knight-inspired GeoGuessr game.",
-				"image": "https://yourwebsite.com/images/social-preview.png",
-				"url": "https://yourwebsite.com",
-				"author": {
-					"@type": "Person",
-					"name": "Logboy2000"
-				},
-				"genre": ["Puzzle", "Adventure"],
-				"gamePlatform": "Web"
-			}
-		</script>
-	</head>
-
-	<body>
-		<img
-			src="images/logo.png"
-			alt="Hollow Guessr logo - A Hollow Knight GeoGuessing Game"
-			id="title-image"
-		/>
-		<button class="play-button" onclick="window.location.href = 'game.html';">
-			Play
-		</button>
-		<p id="versionLabel">
-			<span>v1.6.0</span>
-			<br />
-			<br />
-			<span>A game by Logboy2000</span>
-			<br />
-			<br />
-			<a
-				href="locationRequest.html"
-				title="Suggest a new Hollow Knight location for Hollow Guessr"
-			>
-				Add your own locations
-			</a>
-			<br />
-			<br />
-			<a
-				href="https://github.com/Logboy2000/HKGuessr"
-				title="Contribute to Hollow Guessr on GitHub"
-			>
-				Contribute Code to Improve the Project!
-			</a>
-		</p>
-		<div id="fade-overlay" class="fade-overlay"></div>
-	</body>
+    <body>
+        <img
+            src="images/logo.png"
+            alt="Hollow Guessr logo - A Hollow Knight GeoGuessing Game"
+            id="title-image"
+        />
+        <button
+            class="play-button"
+            onclick="window.location.href = 'game.html';"
+        >
+            Play
+        </button>
+        <p id="versionLabel">
+            <span>v1.6.0</span>
+            <br />
+            <br />
+            <span>A game by Logboy2000</span>
+            <br />
+            <br />
+            <a
+                href="locationRequest.html"
+                title="Suggest a new Hollow Knight location for Hollow Guessr"
+            >
+                Add your own locations
+            </a>
+            <br />
+            <br />
+            <a
+                href="https://github.com/Logboy2000/HKGuessr"
+                title="Contribute to Hollow Guessr on GitHub"
+            >
+                Contribute to Hollow Guessr on GitHub!
+            </a>
+        </p>
+    </body>
 </html>
