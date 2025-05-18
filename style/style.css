@@ -8,6 +8,9 @@
 * {
 	font-family: 'Trajan Pro Bold';
 	color: #fff;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 hr {
@@ -136,11 +139,16 @@ button {
 	max-height: 60px;
 	flex-grow: 1;
 	margin: 0 0.5rem;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
 }
 
 button:hover {
 	background-color: #fff;
 	color: #000000;
+}
+
+button:hover > img {
+	filter: invert(1);
 }
 
 button:disabled {

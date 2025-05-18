@@ -1,0 +1,49 @@
+body {
+    overflow: hidden;
+}
+
+hr {
+    width: 100%;
+    border-color: white;
+    margin: 0;
+}
+
+#minimiseButton {
+    padding: 8px 16px;
+}
+
+#scoreContainer span {
+    text-align: right;
+    padding: 5px 15px;
+}
+
+#back-button {
+    margin-bottom: 15px;
+}
+
+#round {
+    display: block;
+    border: 2px solid white;
+    border-left: none;
+    border-right: none;
+}
+
+#loadPackButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    height: 36px;
+    line-height: 20px;
+    border-radius: 4px;
+    font-size: 20px;
+}
+
+.window > h2:first-child {
+    border-bottom: 2px solid white;
+    margin-bottom: 15px;
+}
+
+#startButton, #restartButton, #optionsButton {
+    margin: 15px 0px 0px 0px;
+}
