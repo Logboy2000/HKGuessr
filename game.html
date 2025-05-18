@@ -4,36 +4,19 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="style.css?v=1.1.0" />
 	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 	<title>Hollow Guessr</title>
-	<style>
-		body {
-			overflow: hidden;
-		}
-		#loadPackButton {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			margin-left: 8px;
-			height: 36px;
-			line-height: 20px;
-			border-radius: 4px;
-			font-size: 20px;
-		}
-
-	</style>
+	<link rel="stylesheet" href="style/style.css?v=1.1.0" />
+	<link rel="stylesheet" href="style/game.css">
 </head>
 
 <body>
 	<img src="" alt="" id="locationImg" />
 	<p id="loadingText">Getting Image...</p>
 	<div id="scoreContainer">
-		<button onclick="window.location.href='index.html'">&lt;- Back</button>
-		<hr />
+		<button id="back-button" onclick="window.location.href='index.html'">&lt;- Back</button>
 		<span id="round">0/5</span>
-		<hr />
 		<span id="timerDisplay"></span>
 	</div>
 	<div id="mapContainer">
@@ -52,7 +35,6 @@
 
 	<div id="gameOverWindow" class="window">
 		<h2>Game Over</h2>
-		<hr />
 		<p id="finalScore">Final Score:</p>
 		<p id="accuracy">Accuracy:</p>
 		<p id="totalRounds">Total Rounds:</p>
@@ -64,7 +46,6 @@
 
 	<div id="gameOptionsWindow" class="window">
 		<h2>Game Options</h2>
-		<hr />
 		<div class="option">
 			<label for="gameMode">Image Pack:</label>
 			<div style="display: flex; gap: 8px; align-items: center;">
@@ -108,7 +89,6 @@
 		<hr />
 		<button id="startButton" onclick="restartGame()">Start Game</button>
 	</div>
-	
 	<!-- defer notation grants the script will load AFTER the DOM -->
 	<script src="script.js?v=1.5.0" defer></script>
 	<script src="loadLocationData.js?v=1.0.0" defer></script>
