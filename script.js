@@ -744,6 +744,9 @@ function nextRound() {
 			"You've played every location in this gamemode/difficulty! Please suggest more from the title screen!"
 		)
 		usedList.length = 0
+		gameState = GAMESTATES.gameOver
+		guessButtonClicked()
+		return
 	}
 
 	// Get available indices from the filtered list
