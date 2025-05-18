@@ -715,11 +715,11 @@ function filterByDifficulty(dataList, difficulty) {
 	}
 
 	if (difficulty === 'custom') {
-		return dataList.filter((item) => item[3] >= minDiff && item[3] <= maxDiff)
+		return dataList.filter((item) => item[2] >= minDiff && item[2] <= maxDiff)
 	}
 
 	const range = DIFFICULTRANGE[difficulty]
-	return dataList.filter((item) => item[3] >= range.min && item[3] <= range.max)
+	return dataList.filter((item) => item[2] >= range.min && item[2] <= range.max)
 }
 
 function nextRound() {
