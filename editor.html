@@ -1,108 +1,159 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
-    <title>Image Pack Editor | Hollow Guessr</title>
-    <link rel="stylesheet" href="style/editor.css">
-</head>
-<body>
-    <button onclick="window.location.href='locationRequest.html'">&lt;- Back</button>
-    <h1>Image Pack Editor</h1>
-    
-    <h2>Pack List</h2>
-    <div class="editor-form" style="margin-bottom: 20px;" id="imagePackList">
-        <div class="form-group">
-            <button onclick="createNew()">Create New</button>
-            <button onclick="saveFile()">Save to File (.zip)</button>
-            <input type="file" id="fileInput" accept=".json,.zip" onchange="loadLocalFile(event)" style="display: none;">
-            <button onclick="document.getElementById('fileInput').click()">Load from File (.json/.zip)</button>
-        </div>
-        <div class="form-group" id="modeList">
-            <span>Parsing image pack data...</span>
-        </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="shortcut icon"
+            href="images/favicon.png"
+            type="image/x-icon"
+        />
+        <title>Image Pack Editor | Hollow Guessr</title>
+        <link rel="stylesheet" href="style/editor.css" />
+    </head>
+    <body>
+        <button onclick="window.location.href='locationRequest.html'">
+            &lt;- Back
+        </button>
+        <h1>Image Pack Editor</h1>
 
-    </div>
-
-    <div id="editorMain">
-    <h2>Image Pack</h2>
-    <div class="editor-form">
-        <div class="form-group">
-            <label>Image Pack Name:</label>
-            <input type="text" id="gameModeName" placeholder="e.g., Normal">
-        </div>
-        <div class="form-group">
-            <label>Image Pack ID:</label>
-            <input type="text" id="gameModeId" placeholder="e.g., normal">
-        </div>
-    </div>
-
-    <div class="editor-grid">
-        <h2>Locations List</h2>
-        <h2>Selected Location</h2>
-        <div class="location-list" id="locationList">
-            <!-- Locations will be listed here -->
-        </div>
-
-        <div class="editor-form">
-            <h3>Selected Location</h3>
+        <h2>Pack List</h2>
+        <div class="editor-form" style="margin-bottom: 20px" id="imagePackList">
             <div class="form-group">
-                <label for="locationX">X Coordinate:</label>
-                <input type="text" id="locationX">
+                <button onclick="createNew()">Create New</button>
+                <button onclick="saveFile()">Save to File (.zip)</button>
+                <input
+                    type="file"
+                    id="fileInput"
+                    accept=".json,.zip"
+                    onchange="loadLocalFile(event)"
+                    style="display: none"
+                />
+                <button onclick="document.getElementById('fileInput').click()">
+                    Load from File (.json/.zip)
+                </button>
             </div>
-            <div class="form-group">
-                <label for="locationY">Y Coordinate:</label>
-                <input type="text" id="locationY">
+            <div class="form-group" id="modeList">
+                <span>Parsing image pack data...</span>
             </div>
-            <div class="form-group">
-                <label for="locationDifficulty">Difficulty (1-10):</label>
-                <select id="locationDifficulty">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Image:</label>
-                <div class="image-upload">
-                    <input type="file" id="locationImage" accept="image/*" style="display: none;">
-                    <button onclick="document.getElementById('locationImage').click()">Choose Image</button>
+        </div>
+
+        <div id="editorMain">
+            <h2>Image Pack</h2>
+            <div class="editor-form">
+                <div class="form-group">
+                    <label>Image Pack Name:</label>
+                    <input
+                        type="text"
+                        id="gameModeName"
+                        placeholder="e.g., Normal"
+                    />
                 </div>
-                <div class="form-group" style="margin-top: 10px;">
-                    <label for="imageUrl">Or enter image URL/path:</label>
-                    <input type="text" id="imageUrl" placeholder="e.g., http://... or imagePacks/pack/image.png">
-                    <button onclick="previewImageUrl()">Add URL</button>
+                <div class="form-group">
+                    <label>Image Pack ID:</label>
+                    <input
+                        type="text"
+                        id="gameModeId"
+                        placeholder="e.g., normal"
+                    />
+                </div>
+            </div>
+
+            <div class="editor-grid">
+                <h2>Locations List</h2>
+                <h2>Selected Location</h2>
+                <div class="location-list" id="locationList">
+                    <!-- Locations will be listed here -->
                 </div>
 
-            </div>
-            <div class="button-group">
-                <button onclick="addLocation()">Add Location</button>
-                <button onclick="updateLocation()">Update Selected</button>
-            </div>
-            <div class="image-preview">
-                <label>Preview:</label>
+                <div class="editor-form">
+                    <h3>Selected Location</h3>
+                    <div class="form-group">
+                        <label for="locationX">X Coordinate:</label>
+                        <input type="text" id="locationX" />
+                    </div>
+                    <div class="form-group">
+                        <label for="locationY">Y Coordinate:</label>
+                        <input type="text" id="locationY" />
+                    </div>
+                    <div class="form-group">
+                        <label for="locationDifficulty"
+                            >Difficulty (1-10):</label
+                        >
+                        <select id="locationDifficulty">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Image:</label>
+                        <div class="image-upload">
+                            <input
+                                type="file"
+                                id="locationImage"
+                                accept="image/*"
+                                style="display: none"
+                            />
+                            <button
+                                onclick="document.getElementById('locationImage').click()"
+                            >
+                                Choose Image
+                            </button>
+                        </div>
+                        <div class="form-group" style="margin-top: 10px">
+                            <label for="imageUrl"
+                                >Or enter image URL/path:</label
+                            >
+                            <input
+                                type="text"
+                                id="imageUrl"
+                                placeholder="e.g., http://... or imagePacks/pack/image.png"
+                            />
+                            <button onclick="previewImageUrl()">Add URL</button>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button onclick="addLocation()">Add Location</button>
+                        <button onclick="updateLocation()">
+                            Update Selected
+                        </button>
+                    </div>
+                    <div class="image-preview">
+                        <label>Preview:</label>
 
-                <span id="imageFileName">No image selected</span>
-                <img id="imagePreview" style="max-width: 300px; max-height: 200px; display: none;">
+                        <span id="imageFileName">No image selected</span>
+                        <img
+                            id="imagePreview"
+                            style="
+                                max-width: 300px;
+                                max-height: 200px;
+                                display: none;
+                            "
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div class="editor-form" style="margin-top: 20px">
+                <h3>JSON Preview</h3>
+                <textarea
+                    class="json-preview"
+                    id="jsonPreview"
+                    readonly
+                ></textarea>
             </div>
         </div>
-    </div>
+        <!-- end #editorMain -->
 
-    <div class="editor-form" style="margin-top: 20px;">
-        <h3>JSON Preview</h3>
-        <textarea class="json-preview" id="jsonPreview" readonly></textarea>
-    </div>
-    </div> <!-- end #editorMain -->
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="editor.js"></script>
-</body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+        <script src="script/editor.js"></script>
+    </body>
 </html>
