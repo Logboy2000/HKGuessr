@@ -3,7 +3,7 @@
 A game inspired by GeoGuessr, but set in the world of Hollow Knight.
 
 ## How to Play
-1. Visit the game at [https://logboy2000.github.io/HKGuessr/](https://logboy2000.github.io/HKGuessr/).
+1. Visit the game at [hollowguessr.pages.dev](https://hollowguessr.pages.dev/)
 2. You'll be placed in a random location from Hollow Knight.
 3. Use the map to guess where you are.
 4. Submit your guess and see how close you were!
