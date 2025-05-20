@@ -15,7 +15,7 @@ A game inspired by GeoGuessr, but set in the world of Hollow Knight.
 
 ## Contributing
 I welcome contributions from anybody! Here's how you can help:
-- **Create Image Packs**: Build your own collection of locations that can be merged into the main game! Visit the [Image Pack Creator](https://logboy2000.github.io/HKGuessr/locationRequest.html) page to get started.
+- **Create Image Packs**: Build your own collection of locations that can be merged into the main game! Visit the [Image Pack Creator](https://hollowguessr.pages.dev/imagePacks) page to get started.
 - **Add Individual Locations**: Submit single locations via a [GitHub Issue](https://github.com/logboy2000/HKGuessr/issues/new?template=location-request.md).
 - **Report Bugs**: Found a bug? Open an issue on [GitHub](https://github.com/logboy2000/HKGuessr/issues).
 
