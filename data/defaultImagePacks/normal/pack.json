@@ -631,6 +631,126 @@
       "y": 2227,
       "difficulty": 1,
       "image": "images/locations_3035_2227_bd7fcf.jpg"
+    },
+    {
+      "x": 344,
+      "y": 2079,
+      "difficulty": 3,
+      "image": "images/2c4f51d0.png"
+    },
+    {
+      "x": 718,
+      "y": 1468,
+      "difficulty": 5,
+      "image": "images/75fef139.png"
+    },
+    {
+      "x": 379,
+      "y": 910,
+      "difficulty": 3,
+      "image": "images/7b487ef2.png"
+    },
+    {
+      "x": 990,
+      "y": 633,
+      "difficulty": 3,
+      "image": "images/0564a56f.png"
+    },
+    {
+      "x": 987,
+      "y": 1796,
+      "difficulty": 7,
+      "image": "images/ae5a26d1.png"
+    },
+    {
+      "x": 852,
+      "y": 1041,
+      "difficulty": 5,
+      "image": "images/e20b059b.png"
+    },
+    {
+      "x": 1869,
+      "y": 1425,
+      "difficulty": 5,
+      "image": "images/b953105c.png"
+    },
+    {
+      "x": 1505,
+      "y": 1420,
+      "difficulty": 4,
+      "image": "images/d823bd6b.png"
+    },
+    {
+      "x": 2552,
+      "y": 1612,
+      "difficulty": 3,
+      "image": "images/da395213.png"
+    },
+    {
+      "x": 2908,
+      "y": 1745,
+      "difficulty": 5,
+      "image": "images/e974a253.png"
+    },
+    {
+      "x": 2398,
+      "y": 1799,
+      "difficulty": 6,
+      "image": "images/0e8a6591.png"
+    },
+    {
+      "x": 2176,
+      "y": 1708,
+      "difficulty": 7,
+      "image": "images/41d2cfa9.png"
+    },
+    {
+      "x": 2900,
+      "y": 924,
+      "difficulty": 5,
+      "image": "images/3ec65c81.png"
+    },
+    {
+      "x": 3990,
+      "y": 1723,
+      "difficulty": 5,
+      "image": "images/e3bf9ef9.png"
+    },
+    {
+      "x": 2367,
+      "y": 2760,
+      "difficulty": 2,
+      "image": "images/4c71745a.png"
+    },
+    {
+      "x": 1162,
+      "y": 555,
+      "difficulty": 6,
+      "image": "images/023e933e.png"
+    },
+    {
+      "x": 2334,
+      "y": 610,
+      "difficulty": 6,
+      "image": "images/6b578457.png"
+    },
+    {
+      "x": 2793,
+      "y": 432,
+      "difficulty": 5,
+      "image": "images/44c85b3f.png"
+    },
+    {
+      "x": 783,
+      "y": 2013,
+      "difficulty": 7,
+      "image": "images/68497898.png"
+    },
+    {
+      "x": 3822,
+      "y": 2016,
+      "difficulty": 4,
+      "image": "images/80abc0c3.png"
     }
   ]
 }
