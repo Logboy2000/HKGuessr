@@ -51,8 +51,7 @@ const DIFFICULTRANGE = {
 
 let imageIsLoaded = false;
 
-// Canvas context
-let mapCtx;
+
 
 let gameState = GAMESTATES.optionsWindow;
 let usedLocations = {};
@@ -74,6 +73,9 @@ let maxScore = 5000;
 let timerLengthSeconds = 60;
 let timerEnabled = false;
 let endTime;
+
+// Canvas context
+let mapCtx;
 
 // Images
 let mapImg = new Image();

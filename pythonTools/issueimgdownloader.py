@@ -5,8 +5,8 @@ import os
 
 # Prompt user for GitHub details
 username = input("Enter your GitHub username: ").strip()
-repo = input("Enter the repository name: ").strip()
-token = input("Enter your GitHub Personal Access Token: ").strip()
+repo = input("Enter repo name to fetch from: ").strip()
+token = input("Enter GitHub Personal Access Token: ").strip()
 start_issue = int(input("Enter the starting issue number: ").strip())
 
 # GitHub API URL
