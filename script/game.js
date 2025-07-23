@@ -5,7 +5,7 @@
 ///////////////////////////////////////////////
 
 /**
- * Manages all game logic and state
+ * This file manages all game logic and state
  * Used by game.html
  */
 
@@ -26,6 +26,7 @@ var roundElement = document.getElementById("round");
 var timerDisplay = document.getElementById("timerDisplay");
 var totalRoundsElement = document.getElementById("totalRounds");
 var timerLengthDisplay = document.getElementById("timerLengthDisplay");
+var newRoundButton = document.getElementById("newRoundButton");
 
 // Map and location elements
 var guessButton = document.getElementById("guessButton");
@@ -50,8 +51,6 @@ const DIFFICULTRANGE = {
 };
 
 let imageIsLoaded = false;
-
-
 
 let gameState = GAMESTATES.optionsWindow;
 let usedLocations = {};
@@ -155,6 +154,7 @@ function restartGame() {
     roundCountInput.value > 0
   ) {
     totalRounds = Number(roundCountInput.value); // Convert to number
+  } else if (roundCountInput.value === "") {
   } else {
     alert("Please use a valid number for round count");
     return;
@@ -242,6 +242,12 @@ function update() {
       currentLocation[0] - shadePinImg.width / 2,
       currentLocation[1] - shadePinImg.height / 2,
     );
+  }
+
+  if (gameState === GAMESTATES.optionsWindow) {
+    newRoundButton.disabled = true;
+  } else {
+    newRoundButton.disabled = false;
   }
 
   // Draw knight at guessed spot
@@ -353,8 +359,11 @@ function checkNumberIntegrity(element, integer = true, updateIfInvalid = true) {
   if (integer) element.value = parseInt(element.value);
   return false;
 }
-
-function checkWhetherYouShouldShowTheDifficultySelectorDiv() {
+/*
+Old function name:
+checkWhetherYouShouldShowTheDifficultySelectorDivIWonderHowLongICanMakeThisFunctionNameOhTheEndlessExpanseOfCodeStretchingFarAndWideAFunctionNameSoLongItCannotHideThroughLoopsAndLogicItWeavesItsTaleASagaOfProgrammingDestinedToPrevailTheDifficultySelectorAHumbleDivToShowOrNotToShowThatIsTheQueryIGiveWhenTheUserSelectsCustomFromTheDropdownThisFunctionAwakensItsPurposeWellKnownLikeAPoetLostInTheLabyrinthOfThoughtThisFunctionRamblesItsNameOverwroughtYetInItsMadnessThereLiesAPlanToToggleTheVisibilityAsOnlyItCanSoHereWeStandAtTheEdgeOfReasonAFunctionNameDefyingEverySeasonForInTheChaosTheresBeautyToFindATestamentToTheProgrammersMindNowBackToTheTaskLetsNotDelayTheDivMustBeShownComeWhatMayAlsoIfYouReadAllOfThisYouAreMentallyInsaneAnywayHowsYourDayBeen :)
+ */
+function shouldShowCustomDifficultySelection() {
   if (difficultySelector.value === "custom") {
     customDifficultyDiv.style.display = "flex";
   } else {
@@ -362,16 +371,11 @@ function checkWhetherYouShouldShowTheDifficultySelectorDiv() {
   }
 }
 
-/*
-Old function name:
-checkWhetherYouShouldShowTheDifficultySelectorDivIWonderHowLongICanMakeThisFunctionNameOhTheEndlessExpanseOfCodeStretchingFarAndWideAFunctionNameSoLongItCannotHideThroughLoopsAndLogicItWeavesItsTaleASagaOfProgrammingDestinedToPrevailTheDifficultySelectorAHumbleDivToShowOrNotToShowThatIsTheQueryIGiveWhenTheUserSelectsCustomFromTheDropdownThisFunctionAwakensItsPurposeWellKnownLikeAPoetLostInTheLabyrinthOfThoughtThisFunctionRamblesItsNameOverwroughtYetInItsMadnessThereLiesAPlanToToggleTheVisibilityAsOnlyItCanSoHereWeStandAtTheEdgeOfReasonAFunctionNameDefyingEverySeasonForInTheChaosTheresBeautyToFindATestamentToTheProgrammersMindNowBackToTheTaskLetsNotDelayTheDivMustBeShownComeWhatMayAnywayHowsYourDayBeen
- */
-
 function addEventListeners() {
-  checkWhetherYouShouldShowTheDifficultySelectorDiv();
+  shouldShowCustomDifficultySelection();
   difficultySelector.addEventListener("change", () => {
     const selectedDifficulty = difficultySelector.value;
-    checkWhetherYouShouldShowTheDifficultySelectorDiv();
+    shouldShowCustomDifficultySelection();
   });
 
   let isDragging = false;
@@ -511,6 +515,7 @@ function openWindow(windowName) {
   switch (windowName) {
     case "options":
       gameOptionsWindow.style.display = "flex";
+      gameState = GAMESTATES.optionsWindow;
       break;
     case "gameover":
       gameOverWindow.style.display = "flex";

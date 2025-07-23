@@ -153,8 +153,9 @@ button:hover > img {
     filter: invert(1);
 }
 
-button:disabled {
-    background-color: #555;
+button:disabled,
+button[disabled] {
+    background-color: transparent;
     color: #999;
     border: 2px solid #999;
     cursor: not-allowed;
@@ -517,7 +518,7 @@ label {
     .contributors-table td {
         padding: 0.5rem;
     }
-    
+
     .last-updated {
         font-size: 0.7rem;
         margin-top: 0.3rem;

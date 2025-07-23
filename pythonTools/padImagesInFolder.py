@@ -4,14 +4,11 @@ import os
 import tkinter as tk
 from tkinter import filedialog
 
-# --- CONFIGURATION ---
-padding = 50  # Number of pixels to pad on each side
-output_folder = os.path.join(folder_path, "padded_images")
-os.makedirs(output_folder, exist_ok=True)
+
 # ---------------------
 
 
-# GUI 
+# GUI
 root = tk.Tk()
 root.withdraw()
 folder_path = filedialog.askdirectory(title="Select Folder Containing Images")
@@ -19,7 +16,10 @@ folder_path = filedialog.askdirectory(title="Select Folder Containing Images")
 if not folder_path:
     print("No folder selected. Exiting.")
     exit()
-
+# --- CONFIGURATION ---
+padding = 50  # Number of pixels to pad on each side
+output_folder = os.path.join(folder_path, "padded_images")
+os.makedirs(output_folder, exist_ok=True)
 valid_extensions = ('.png', '.jpg', '.jpeg', '.bmp', '.gif', '.tiff', '.webp')
 
 for filename in os.listdir(folder_path):

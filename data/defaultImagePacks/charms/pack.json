@@ -207,8 +207,8 @@
       "image": "images/charms_2054_839_5ef736.png"
     },
     {
-      "x": 2678,
-      "y": 641,
+      "x": 2483,
+      "y": 654,
       "difficulty": 3,
       "image": "images/charms_2678_641_77cd93.png"
     },
@@ -259,6 +259,24 @@
       "y": 1188,
       "difficulty": 5,
       "image": "images/charms_2110_1188_794e81.png"
+    },
+    {
+      "x": 1915,
+      "y": 620,
+      "difficulty": 5,
+      "image": "images/b2a5e434.png"
+    },
+    {
+      "x": 1915,
+      "y": 620,
+      "difficulty": 5,
+      "image": "images/f2eeb92b.png"
+    },
+    {
+      "x": 1915,
+      "y": 620,
+      "difficulty": 5,
+      "image": "images/79c476dd.png"
     }
   ]
 }

@@ -24,6 +24,9 @@
             >
                 &lt;- Back
             </button>
+            <button id="newRoundButton" onclick="openWindow('options')">
+                New Round
+            </button>
             <span id="round">0/5</span>
             <span id="timerDisplay"></span>
         </div>
@@ -129,8 +132,6 @@
                     min="1"
                     value="5"
                     placeholder="5"
-                    oninput="updateRoundCounter()"
-                    onchange="checkNumberIntegrity(this); updateRoundCounter()"
                 />
             </div>
             <div class="option">
@@ -159,7 +160,7 @@
             <hr />
             <button id="startButton" onclick="restartGame()">Start Game</button>
         </div>
-        <!-- defer notation grants the script will load AFTER the DOM -->
+        <!-- defer notation makes the script load AFTER the DOM -->
         <script src="script/game.js" defer></script>
         <script src="script/loadLocationData.js" defer></script>
     </body>

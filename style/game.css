@@ -13,7 +13,7 @@ hr {
 }
 
 #scoreContainer span {
-    text-align: right;
+    text-align: left;
     padding: 5px 15px;
 }
 
@@ -44,6 +44,8 @@ hr {
     margin-bottom: 15px;
 }
 
-#startButton, #restartButton, #optionsButton {
+#startButton,
+#restartButton,
+#optionsButton {
     margin: 15px 0px 0px 0px;
 }
