@@ -1,5 +1,5 @@
 // Single object to store all game mode data
-let gameModeData = {};
+window.gameModeData = {};
 
 const defaultImagePacks = ["normal", "charms"];
 const defaultImagePacksFolder = "data/defaultImagePacks/";
@@ -150,6 +150,7 @@ async function loadLocationData() {
   // Call the global dataLoaded function from script.js
   if (typeof window.dataLoaded === "function") {
     window.dataLoaded();
+    
   } else {
     console.error("dataLoaded function not found");
   }

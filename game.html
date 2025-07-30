@@ -24,8 +24,8 @@
             >
                 &lt;- Back
             </button>
-            <button id="newRoundButton" onclick="openWindow('options')">
-                New Round
+            <button id="newGameButton">
+                New Game
             </button>
             <span id="round">0/5</span>
             <span id="timerDisplay"></span>
@@ -34,23 +34,23 @@
             <canvas id="mapCanvas"></canvas>
             <br />
             <div id="buttonContainer">
-                <button id="guessButton" onclick="guessButtonClicked()">
+                <button id="guessButton">
                     Guess!
                 </button>
-                <button id="fullscreenButton" onclick="toggleFullscreen()">
+                <button id="fullscreenButton">
                     <img
                         src="images/fullscreen.png"
                         alt="FS"
                         style="scale: 0.7"
                     />
                 </button>
-                <button id="minimiseButton" onclick="setMinimapVisible(false)">
+                <button id="minimiseButton">
                     X
                 </button>
             </div>
         </div>
 
-        <button id="showMapButton" onclick="setMinimapVisible(true)">O</button>
+        <button id="showMapButton">O</button>
 
         <div id="gameOverWindow" class="window">
             <h2>Game Over</h2>
@@ -59,10 +59,10 @@
             <p id="totalRounds">Total Rounds:</p>
             <p id="timerLengthDisplay">Timer Length:</p>
             <hr />
-            <button id="restartButton" onclick="restartGame()">
+            <button id="playAgainButton">
                 Play Again
             </button>
-            <button id="optionsButton" onclick="openWindow('options')">
+            <button id="optionsButton">
                 Options
             </button>
         </div>
@@ -158,7 +158,7 @@
                 />
             </div>
             <hr />
-            <button id="startButton" onclick="restartGame()">Start Game</button>
+            <button id="startButton">Start Game</button>
         </div>
         <!-- defer notation makes the script load AFTER the DOM -->
         <script src="script/game.js" defer></script>

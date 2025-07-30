@@ -25,12 +25,13 @@ Some planned features for the future
 - [x] Timed Games
 - [x] Difficulty Settings
 - [x] 100+ Locations
+- [x] Custom Image Pack Creation
 - [ ] Sound Effects
-- [ ] Challenge Modes
+- [ ] More Image Packs
   - [x] Charms Mode
   - [ ] Greyscale Images
   - [ ] Hitbox Only
-  - [ ] [Suggest more!](https://github.com/logboy2000/HKGuessr/issues)
+  - [ ] Dialogue Guessing
 
 
 ## Installation For Developers
