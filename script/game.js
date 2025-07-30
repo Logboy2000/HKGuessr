@@ -225,41 +225,57 @@ function update() {
 
   mapCtx.drawImage(mapImg, 0, 0, mapImg.width, mapImg.height);
 
-  if (gameState === GAMESTATES.guessed || gameState === GAMESTATES.gameOver) {
-    // Draw line between guess and correct spot
-    if (guessPos) {
+  // Draws the line and two pins with scale independent of camera zoom
+  if (guessPos) {
+    if (gameState === GAMESTATES.guessed || gameState === GAMESTATES.gameOver) {
+      
+
+      // Save before drawing line and shade pin
+      mapCtx.save();
+
       mapCtx.beginPath();
       mapCtx.moveTo(guessPos.x, guessPos.y);
       mapCtx.lineTo(currentLocation[0], currentLocation[1]);
       mapCtx.strokeStyle = "red";
-      mapCtx.lineWidth = 10;
+      // Scale the line width by the inverse of the camera zoom
+      mapCtx.lineWidth = 10 / mapCamera.zoom;
       mapCtx.stroke();
-    }
 
-    // Draw shade at correct spot
+      // Draw shade pin with fixed size
+      mapCtx.save(); // Save again for the shade pin's specific transformation
+      mapCtx.translate(currentLocation[0], currentLocation[1]);
+      mapCtx.scale(0.5 / mapCamera.zoom, 0.5 / mapCamera.zoom);
+      mapCtx.drawImage(
+        shadePinImg,
+        -shadePinImg.width / 2,
+        -shadePinImg.height / 2
+      );
+      mapCtx.restore(); // Restore context after drawing the shade pin and line
+
+      mapCtx.restore(); // Restore the context back to the global zoom
+    }
+    // Make Pin size independent of zoom
+    mapCtx.save();
+    mapCtx.translate(guessPos.x, guessPos.y);
+    mapCtx.scale(0.5 / mapCamera.zoom, 0.5 / mapCamera.zoom);
     mapCtx.drawImage(
-      shadePinImg,
-      currentLocation[0] - shadePinImg.width / 2,
-      currentLocation[1] - shadePinImg.height / 2,
+      knightPinImg,
+      -knightPinImg.width / 2,
+      -knightPinImg.height / 2
     );
+    mapCtx.restore(); // Restore context after drawing the knight pin
   }
+
+  // Original code had a redundant mapCtx.restore() here, let's keep it clean
+  // and only use mapCtx.restore() where a mapCtx.save() was used.
+
+  mapCtx.restore(); // This restores the context from the initial save() at the start of the function
 
   if (gameState === GAMESTATES.optionsWindow) {
     newRoundButton.disabled = true;
   } else {
     newRoundButton.disabled = false;
   }
-
-  // Draw knight at guessed spot
-  if (guessPos) {
-    mapCtx.drawImage(
-      knightPinImg,
-      guessPos.x - knightPinImg.width / 2,
-      guessPos.y - knightPinImg.height / 2,
-    );
-  }
-
-  mapCtx.restore();
 
   mapCtx.font = "20px Trajan Pro Bold";
   if (
@@ -280,21 +296,21 @@ function update() {
       boxX + boxWidth,
       boxY,
       boxX + boxWidth,
-      boxY + cornerRadius,
+      boxY + cornerRadius
     );
     mapCtx.lineTo(boxX + boxWidth, boxY + boxHeight - cornerRadius);
     mapCtx.quadraticCurveTo(
       boxX + boxWidth,
       boxY + boxHeight,
       boxX + boxWidth - cornerRadius,
-      boxY + boxHeight,
+      boxY + boxHeight
     );
     mapCtx.lineTo(boxX + cornerRadius, boxY + boxHeight);
     mapCtx.quadraticCurveTo(
       boxX,
       boxY + boxHeight,
       boxX,
-      boxY + boxHeight - cornerRadius,
+      boxY + boxHeight - cornerRadius
     );
     mapCtx.lineTo(boxX, boxY + cornerRadius);
     mapCtx.quadraticCurveTo(boxX, boxY, boxX + cornerRadius, boxY);
@@ -311,7 +327,7 @@ function update() {
     mapCtx.fillText(
       `You earned ${roundScore} points`,
       mapCanvas.width / 2,
-      mapCanvas.height - 25,
+      mapCanvas.height - 25
     );
   }
 
@@ -324,7 +340,7 @@ function update() {
     mapCtx.fillText(
       `Guess: ${Math.round(guessPos.x)}, ${Math.round(guessPos.y)}`,
       10,
-      20,
+      20
     );
   }
   requestAnimationFrame(update);
@@ -462,7 +478,7 @@ function addEventListeners() {
       isDragging = false;
       pinchStartDistance = Math.hypot(
         event.touches[0].clientX - event.touches[1].clientX,
-        event.touches[0].clientY - event.touches[1].clientY,
+        event.touches[0].clientY - event.touches[1].clientY
       );
       initialZoom = mapCamera.targetZoom;
     }
@@ -493,7 +509,7 @@ function addEventListeners() {
     } else if (event.touches.length === 2) {
       const currentDistance = Math.hypot(
         event.touches[0].clientX - event.touches[1].clientX,
-        event.touches[0].clientY - event.touches[1].clientY,
+        event.touches[0].clientY - event.touches[1].clientY
       );
       const zoomFactor = currentDistance / pinchStartDistance;
       mapCamera.targetZoom = initialZoom * zoomFactor;
@@ -602,7 +618,7 @@ function guessButtonClicked() {
     mapCamera.targetZoom = Math.min(
       Math.max(requiredZoomX, 0.1),
       Math.max(requiredZoomY, 0.1),
-      2,
+      2
     );
   } else if (gameState === GAMESTATES.guessed) {
     if (currentRound < totalRounds) {
@@ -723,7 +739,7 @@ function filterByDifficulty(dataList, difficulty) {
 
   const range = DIFFICULTRANGE[difficulty];
   return dataList.filter(
-    (item) => item[2] >= range.min && item[2] <= range.max,
+    (item) => item[2] >= range.min && item[2] <= range.max
   );
 }
 
@@ -745,9 +761,6 @@ function nextRound() {
 
   // Reset if all locations are used
   if (usedList.length >= filteredDataList.length) {
-    alert(
-      "You've played every location in this gamemode/difficulty! Please suggest more from the title screen!",
-    );
     usedList.length = 0;
     gameState = GAMESTATES.gameOver;
     guessButtonClicked();
