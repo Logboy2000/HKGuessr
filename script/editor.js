@@ -1,934 +1,575 @@
-/**
- * Image Pack Editor Code
- * Used by editor.html
- */
-
-// State Management
-const STATE = {
-  gameModes: [], // All available image packs
-  currentGameMode: null, // Currently selected image pack
-  selectedLocationIndex: -1, // Currently selected location index
-  currentUploadedImage: null, // Current image being uploaded/edited
-  uploadedImages: new Map(), // Map of all uploaded images by filename
-
-  // Reset a location selection
-  resetLocationSelection() {
-    this.selectedLocationIndex = -1;
-    this.currentUploadedImage = null;
-  },
-
-  // Mark current game mode as modified
-  markCurrentGameModeModified() {
-    if (this.currentGameMode) {
-      this.currentGameMode.saved = false;
-    }
-  },
-};
-
-// Initialize game modes list
-async function loadGameModes() {
-  STATE.gameModes = [];
-  updateGameModeList();
+// --- 1. State Management ---
+// A single JavaScript object to hold all the data for the editor.
+const state = {
+	packName: 'MyNewPack',
+	gameModeId: 'my_new_pack',
+	author: '',
+	locations: [], // Array of location objects
+	uploadedFiles: {}, // Maps filename (e.g., '1.png') to File object
+	selectedLocationId: null, // ID of the currently selected location
+	nextLocationId: 1, // Counter for unique location IDs
+	isPlacingNewPin: false, // Flag for the "Add New Location" mode
 }
 
-/**
- * Updates the game mode list in the UI
- * Synchronizes the UI with the current state
- */
-function updateGameModeList() {
-  const list = document.getElementById("modeList");
-  const editorMain = document.getElementById("editorMain");
-  list.innerHTML = "";
+// --- 2. Leaflet Map Setup ---
+// The Hollow Knight map is 4498x2901 pixels.
+const mapImageWidth = 4498
+const mapImageHeight = 2901
+const hollowKnightMapUrl = 'images/map.png'
 
-  if (STATE.gameModes.length === 0) {
-    const span = document.createElement("span");
-    span.textContent =
-      "No image packs loaded. Create a new one or load from file.";
-    list.appendChild(span);
-    editorMain.classList.add("hidden");
-    return;
-  }
+const map = L.map('map', {
+	crs: L.CRS.Simple,
+	minZoom: -2,
+	maxZoom: 2,
+	zoomSnap: 0.25,
+	zoomDelta: 0,
+	scrollWheelZoom: true,
+	center: [mapImageHeight / 2, mapImageWidth / 2],
+	zoom: 0,
+	zoomAnimation: true,
+	attributionControl: false,
+	zoomControl: false,
+})
 
-  editorMain.classList.remove("hidden");
-  STATE.gameModes.forEach((mode) => {
-    const div = document.createElement("div");
-    div.className =
-      "list-item" + (mode === STATE.currentGameMode ? " selected" : "");
-    div.textContent = `${mode.name} [${mode.gameModeId}]${mode.saved ? "" : " (unsaved)"}`;
-    div.onclick = () => selectGameMode(mode);
-    list.appendChild(div);
-  });
+const bounds = [
+	[0, 0],
+	[mapImageHeight, mapImageWidth],
+]
+const imageOverlay = L.imageOverlay(hollowKnightMapUrl, bounds).addTo(map)
+
+imageOverlay.on('load', function () {
+	map.fitBounds(bounds)
+})
+
+// --- 3. UI Element and Event Handlers ---
+const sidebar = document.getElementById('sidebar')
+const packNameInput = document.getElementById('pack-name')
+const gameModeIdInput = document.getElementById('game-mode-id')
+const authorNameInput = document.getElementById('author-name')
+const locationsList = document.getElementById('locations-list')
+const addLocationBtn = document.getElementById('add-location-btn')
+const downloadPackBtn = document.getElementById('download-pack-btn')
+const importPackBtn = document.getElementById('import-pack-btn')
+const importFileInput = document.getElementById('import-file-input')
+
+const locationDetailsPanel = document.getElementById('location-details')
+const coordXSpan = document.getElementById('coord-x')
+const coordYSpan = document.getElementById('coord-y')
+const difficultySlider = document.getElementById('difficulty-slider')
+const difficultyValueSpan = document.getElementById('difficulty-value')
+const imageUploadInput = document.getElementById('image-upload')
+const imagePreview = document.getElementById('image-preview')
+const imageUploadLabel = document.getElementById('image-upload-label')
+const deleteLocationBtn = document.getElementById('delete-location-btn')
+const closeDetailsBtn = document.getElementById('close-details-btn')
+
+// --- 3.5. Sidebar Resizing Logic ---
+const resizer = document.getElementById('resizer')
+const minimum_size = 316 // Corresponds to min-width in CSS
+
+let original_width = 0
+let original_mouse_x = 0
+
+resizer.addEventListener('mousedown', (e) => {
+	e.preventDefault()
+	original_width = parseFloat(
+		getComputedStyle(sidebar, null).getPropertyValue('width').replace('px', '')
+	)
+	original_mouse_x = e.pageX
+	window.addEventListener('mousemove', resize)
+	window.addEventListener('mouseup', stopResize)
+})
+
+function resize(e) {
+	const width = original_width - (e.pageX - original_mouse_x)
+	if (width > minimum_size) {
+		sidebar.style.width = width + 'px'
+	}
 }
 
-/**
- * Selects a game mode and updates the UI accordingly
- * @param {Object} mode - The game mode to select
- */
-function selectGameMode(mode) {
-  STATE.currentGameMode = mode;
-  STATE.resetLocationSelection();
-
-  // Update form fields
-  document.getElementById("gameModeName").value = mode.name || "";
-  document.getElementById("gameModeId").value = mode.gameModeId || "";
-  document.getElementById("gameModeAuthor").value = mode.author || "";
-
-  // Clear location inputs
-  resetLocationInputs();
-
-  // Update UI elements
-  updateLocationList();
-  updateJsonPreview();
-  updateGameModeList();
+function stopResize() {
+	window.removeEventListener('mousemove', resize)
+	window.removeEventListener('mouseup', stopResize)
+	map.invalidateSize() // Important for Leaflet to re-render correctly
 }
 
-/**
- * Resets all location input fields
- */
-function resetLocationInputs() {
-  document.getElementById("locationX").value = "";
-  document.getElementById("locationY").value = "";
-  document.getElementById("locationDifficulty").value = "5"; // Default to medium difficulty
-  document.getElementById("imageFileName").textContent = "No image selected";
-  document.getElementById("imagePreview").style.display = "none";
-  document.getElementById("imageUrl").value = "";
-  document.getElementById("locationImage").value = "";
+// Initial UI state
+packNameInput.value = state.packName
+gameModeIdInput.value = state.gameModeId
+authorNameInput.value = state.author
+
+packNameInput.addEventListener('input', (e) => {
+	state.packName = e.target.value
+})
+
+gameModeIdInput.addEventListener('input', (e) => {
+	state.gameModeId = e.target.value
+})
+
+authorNameInput.addEventListener('input', (e) => {
+	state.author = e.target.value
+})
+
+addLocationBtn.addEventListener('click', () => {
+	state.isPlacingNewPin = true
+	map.getContainer().style.cursor = 'crosshair'
+	addLocationBtn.innerText = 'Click on map to place...'
+	addLocationBtn.disabled = true
+})
+
+closeDetailsBtn.addEventListener('click', () => {
+	closeLocationDetails()
+})
+
+importPackBtn.addEventListener('click', () => {
+	importFileInput.click()
+})
+
+// --- 4. Core Logic Functions ---
+function generateUniqueId() {
+	return `loc-${state.nextLocationId++}`
 }
 
-/**
- * Updates the JSON preview with the current game mode data
- * This keeps the UI synchronized with the state
- */
-function updateJsonPreview() {
-  if (!STATE.currentGameMode) {
-    document.getElementById("jsonPreview").textContent = "";
-    return;
-  }
-
-  // Transform locations for JSON format
-  const locationsForJson = transformLocationsForExport(
-    STATE.currentGameMode.locations,
-  );
-
-  // Create export object
-  const exportObject = {
-    name: STATE.currentGameMode.name,
-    gameModeId: STATE.currentGameMode.gameModeId,
-    author: STATE.currentGameMode.author || "",
-    locations: locationsForJson,
-  };
-
-  // Format JSON with indentation
-  document.getElementById("jsonPreview").textContent = JSON.stringify(
-    exportObject,
-    null,
-    2,
-  );
+function clearAllData() {
+	// Clear existing pins from the map
+	state.locations.forEach((loc) => {
+		if (loc.marker) map.removeLayer(loc.marker)
+	})
+	// Clear state
+	state.locations = []
+	state.uploadedFiles = {}
+	state.selectedLocationId = null
+	state.nextLocationId = 1
 }
 
-/**
- * Transforms locations for export format
- * @param {Array} locations - Array of location objects
- * @returns {Array} - Transformed locations
- */
-function transformLocationsForExport(locations) {
-  return locations.map((loc) => {
-    // For remote URLs or blob URLs, keep as-is
-    if (/^(https?:)?\/\//.test(loc.image) || loc.image.startsWith("blob:")) {
-      return {
-        x: loc.x,
-        y: loc.y,
-        difficulty: loc.difficulty,
-        image: loc.image,
-      };
-    }
-    // For local images, use new name if available
-    return {
-      x: loc.x,
-      y: loc.y,
-      difficulty: loc.difficulty,
-      image: loc._newImageName
-        ? `images/${loc._newImageName}`
-        : `images/${loc.image.split("/").pop()}`,
-    };
-  });
+function renderLocationsList() {
+	locationsList.innerHTML = ''
+	state.locations.forEach((location) => {
+		const listItem = document.createElement('div')
+		listItem.className = 'location-item'
+		if (location.id === state.selectedLocationId) {
+			listItem.classList.add('selected')
+		}
+
+		const locationNumber = location.id.split('-')[1]
+		listItem.innerHTML = `
+                    <span class="location-item-text">Location #${locationNumber}</span>
+                    <span class="location-subtext">Diff: ${location.difficulty}</span>
+                `
+		listItem.dataset.id = location.id
+		listItem.addEventListener('click', () => {
+			selectLocation(location.id)
+		})
+		locationsList.appendChild(listItem)
+	})
 }
 
-/**
- * Updates the location list in the UI
- * Synchronizes the list with the current game mode's locations
- */
-function updateLocationList() {
-  const list = document.getElementById("locationList");
-  list.innerHTML = "";
+function createPin(id, latlng) {
+	const pinIcon = L.divIcon({
+		className: 'pin-icon',
+		iconSize: [32, 32],
+	})
 
-  if (!STATE.currentGameMode) return;
+	const marker = L.marker(latlng, {
+		icon: pinIcon,
+		draggable: true,
+	}).addTo(map)
 
-  // If no locations, show a message
-  if (STATE.currentGameMode.locations.length === 0) {
-    const emptyMessage = document.createElement("div");
-    emptyMessage.className = "empty-message";
-    emptyMessage.textContent =
-      "No locations added yet. Add your first location using the form.";
-    list.appendChild(emptyMessage);
-    return;
-  }
+	marker.id = id
+	marker.on('click', () => {
+		selectLocation(id)
+	})
+	marker.on('dragend', (e) => {
+		const newCoords = e.target.getLatLng()
+		const location = state.locations.find((loc) => loc.id === id)
+		if (location) {
+			location.y = Math.round(newCoords.lat)
+			location.x = Math.round(newCoords.lng)
+			updateLocationDetailsUI()
+			renderLocationsList()
+		}
+	})
 
-  // Create a document fragment for better performance
-  const fragment = document.createDocumentFragment();
-
-  STATE.currentGameMode.locations.forEach((loc, index) => {
-    const div = document.createElement("div");
-    div.className =
-      "list-item" + (index === STATE.selectedLocationIndex ? " selected" : "");
-
-    const locationInfo = document.createElement("span");
-    locationInfo.textContent = `(${loc.x}, ${loc.y}) - Difficulty: ${loc.difficulty}`;
-    div.appendChild(locationInfo);
-
-    const deleteBtn = document.createElement("span");
-    deleteBtn.className = "delete-btn";
-    deleteBtn.textContent = "×";
-    deleteBtn.setAttribute("aria-label", "Delete location");
-    deleteBtn.onclick = (e) => {
-      e.stopPropagation(); // Prevent location selection
-      deleteLocation(index);
-    };
-    div.appendChild(deleteBtn);
-
-    div.onclick = () => selectLocation(index);
-    fragment.appendChild(div);
-  });
-
-  list.appendChild(fragment);
+	return marker
 }
 
-/**
- * Selects a location and updates the UI
- * @param {number} index - Index of the location to select
- */
-function selectLocation(index) {
-  if (!STATE.currentGameMode) return;
+function selectLocation(id) {
+	state.selectedLocationId = id
+	// Clear all active classes from markers and list items
+	map.eachLayer((layer) => {
+		if (layer instanceof L.Marker) {
+			if (layer._icon) {
+				layer._icon.classList.remove('active')
+			}
+		}
+	})
+	document.querySelectorAll('.location-item').forEach((item) => {
+		item.classList.remove('selected')
+	})
 
-  STATE.selectedLocationIndex = index;
-  const location = STATE.currentGameMode.locations[index];
-
-  // Update form fields with location data
-  document.getElementById("locationX").value = location.x;
-  document.getElementById("locationY").value = location.y;
-  document.getElementById("locationDifficulty").value = location.difficulty;
-
-  // Reset current upload image state
-  STATE.currentUploadedImage = null;
-
-  // Show image preview if available
-  updateImagePreview(location.image);
-
-  // Update UI to reflect selection
-  updateLocationList();
+	// Find and activate the selected marker and list item
+	const selectedLocation = state.locations.find((loc) => loc.id === id)
+	if (selectedLocation) {
+		const marker = selectedLocation.marker
+		if (marker && marker._icon) {
+			marker._icon.classList.add('active')
+		}
+		const listItem = document.querySelector(`.location-item[data-id="${id}"]`)
+		if (listItem) {
+			listItem.classList.add('selected')
+		}
+		updateLocationDetailsUI()
+		locationDetailsPanel.style.display = 'block'
+		renderLocationsList()
+	}
 }
 
-/**
- * Updates the image preview for a location
- * @param {string} imagePath - Path to the image
- */
-function updateImagePreview(imagePath) {
-  const preview = document.getElementById("imagePreview");
-  const fileNameElement = document.getElementById("imageFileName");
-
-  // Clean up any existing object URL to prevent memory leaks
-  if (preview.src && preview.src.startsWith("blob:")) {
-    URL.revokeObjectURL(preview.src);
-  }
-
-  if (!imagePath) {
-    preview.style.display = "none";
-    fileNameElement.textContent = "No image selected";
-    return;
-  }
-
-  // Get just the filename without path
-  const filename = imagePath.split("/").pop();
-
-  // Check if this is a loaded image from zip or new upload
-  const uploadedImage = STATE.uploadedImages.get(filename);
-  if (uploadedImage) {
-    // For uploaded/imported images, create a new object URL
-    preview.src = URL.createObjectURL(uploadedImage.file);
-    // Clean up when loaded
-    preview.onload = () => URL.revokeObjectURL(preview.src);
-  } else {
-    // For existing images, use the full path
-    preview.src = imagePath;
-  }
-
-  preview.style.display = "block";
-  fileNameElement.textContent = filename;
+function closeLocationDetails() {
+	state.selectedLocationId = null
+	locationDetailsPanel.style.display = 'none'
+	map.eachLayer((layer) => {
+		if (layer instanceof L.Marker) {
+			if (layer._icon) {
+				layer._icon.classList.remove('active')
+			}
+		}
+	})
+	renderLocationsList()
 }
 
-/**
- * Handles image URL preview and state update
- */
-async function previewImageUrl() {
-  const urlInput = document.getElementById("imageUrl");
-  const url = urlInput.value.trim();
-  if (!url) {
-    alert("Please enter an image URL or path");
-    return;
-  }
+function updateLocationDetailsUI() {
+	const location = state.locations.find(
+		(loc) => loc.id === state.selectedLocationId
+	)
+	if (!location) return
 
-  try {
-    // Store as current uploaded image in state
-    STATE.currentUploadedImage = {
-      url: url,
-      isUrl: true,
-    };
+	coordXSpan.textContent = location.x
+	// Invert y-axis for display
+	coordYSpan.textContent = mapImageHeight - location.y
+	difficultySlider.value = location.difficulty
+	difficultyValueSpan.textContent = location.difficulty
 
-    // Update UI
-    updateImagePreview(url);
-
-    // Clear file input to avoid confusion
-    document.getElementById("locationImage").value = "";
-  } catch (error) {
-    console.error("Error previewing image URL:", error);
-    alert("Error loading image from URL. Please check if the URL is correct.");
-  }
+	// Handle image preview
+	if (location.image) {
+		const filename = location.image.split('/').pop()
+		const file = state.uploadedFiles[filename]
+		if (file) {
+			imagePreview.src = URL.createObjectURL(file)
+			imageUploadLabel.textContent = `Change Image (${file.name})`
+		}
+	} else {
+		imagePreview.src =
+			'https://placehold.co/400x200/1f2937/d1d5db?text=Image+Preview'
+		imageUploadLabel.textContent = 'Upload Location Image (.png)'
+	}
 }
 
-/**
- * Handles image file uploads
- * Processes the file and updates both state and UI
- */
-document
-  .getElementById("locationImage")
-  .addEventListener("change", async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+difficultySlider.addEventListener('input', (e) => {
+	const location = state.locations.find(
+		(loc) => loc.id === state.selectedLocationId
+	)
+	if (location) {
+		location.difficulty = parseInt(e.target.value)
+		difficultyValueSpan.textContent = location.difficulty
+		renderLocationsList()
+	}
+})
 
-    try {
-      // Validate file type
-      if (!file.type.startsWith("image/")) {
-        alert("Please select a valid image file");
-        event.target.value = ""; // Clear input
-        return;
-      }
+imageUploadInput.addEventListener('change', (e) => {
+	const file = e.target.files[0]
+	if (!file) return
 
-      // Generate unique filename based on content hash
-      const buffer = await file.arrayBuffer();
-      const hashArray = new Uint8Array(
-        await crypto.subtle.digest("SHA-256", buffer),
-      );
-      const hash = Array.from(hashArray)
-        .map((b) => b.toString(16).padStart(2, "0"))
-        .join("")
-        .slice(0, 8); // Use first 8 characters of hash
+	const location = state.locations.find(
+		(loc) => loc.id === state.selectedLocationId
+	)
+	if (location) {
+		// Generate a unique filename for the new upload to avoid conflicts
+		const newFilename = `loc-${state.nextLocationId++}-${file.name.replace(
+			/[^a-zA-Z0-9.]/g,
+			'_'
+		)}`
+		location.image = `images/${newFilename}`
+		state.uploadedFiles[newFilename] = file
+		updateLocationDetailsUI()
+	}
+})
 
-      // Get file extension and create new filename
-      const ext = file.name.split(".").pop().toLowerCase();
-      const newFileName = `${hash}.${ext}`;
+deleteLocationBtn.addEventListener('click', () => {
+	const locationIndex = state.locations.findIndex(
+		(loc) => loc.id === state.selectedLocationId
+	)
+	if (locationIndex > -1) {
+		// Remove from map
+		const locationToRemove = state.locations[locationIndex]
+		if (locationToRemove.marker) {
+			map.removeLayer(locationToRemove.marker)
+		}
 
-      // Update state
-      STATE.currentUploadedImage = {
-        file,
-        newFileName,
-        isUrl: false,
-      };
+		// Remove the image file from the uploadedFiles map, if it exists
+		if (locationToRemove.image) {
+			const filename = locationToRemove.image.split('/').pop()
+			delete state.uploadedFiles[filename]
+		}
 
-      // Store in uploadedImages map using original filename as key
-      STATE.uploadedImages.set(file.name, STATE.currentUploadedImage);
+		// Remove from state
+		state.locations.splice(locationIndex, 1)
+		closeLocationDetails()
+	}
+})
 
-      // Create new object URL and update UI
-      const preview = document.getElementById("imagePreview");
+// --- 5. Map Interaction ---
+map.on('click', (e) => {
+	if (state.isPlacingNewPin) {
+		const y = Math.round(e.latlng.lat)
+		const x = Math.round(e.latlng.lng)
+		const newId = generateUniqueId()
+		const newLocation = {
+			id: newId,
+			x: x,
+			y: y,
+			difficulty: 5,
+			image: null,
+		}
+		const marker = createPin(newId, e.latlng)
+		newLocation.marker = marker
+		state.locations.push(newLocation)
 
-      // Clean up any existing object URL to prevent memory leaks
-      if (preview.src && preview.src.startsWith("blob:")) {
-        URL.revokeObjectURL(preview.src);
-      }
+		// Reset placement mode
+		state.isPlacingNewPin = false
+		map.getContainer().style.cursor = 'grab'
+		addLocationBtn.innerHTML = `
+                <img src="images/editor/add.svg" alt="" class="svg-icon">
+                Add New Location
+                `
+		addLocationBtn.disabled = false
 
-      // Update preview and filename
-      preview.src = URL.createObjectURL(file);
-      preview.style.display = "block";
-      document.getElementById("imageFileName").textContent = file.name;
+		selectLocation(newId)
+	}
+})
 
-      // Clean up object URL when image loads
-      preview.onload = () => {
-        // Do not revoke here as we need it for display
-        // It will be revoked when replaced or on page unload
-      };
+// --- 6. Import Pack Logic ---
+importFileInput.addEventListener('change', async (e) => {
+	const file = e.target.files[0]
+	if (!file) return
 
-      // Clear URL input to avoid confusion
-      document.getElementById("imageUrl").value = "";
-    } catch (error) {
-      console.error("Error processing image:", error);
-      alert("Error processing image. Please try another file.");
-      event.target.value = ""; // Clear input
-    }
-  });
+	const loadingAlert = showTemporaryAlert('Importing pack...')
 
-/**
- * Adds a new location to the current game mode
- * Validates inputs, updates state, and refreshes UI
- */
-function addLocation() {
-  if (!STATE.currentGameMode) {
-    alert("Please select or create a game mode first");
-    return;
-  }
+	try {
+		const zip = await JSZip.loadAsync(file)
+		const packJsonFile = zip.file('pack.json')
 
-  // Validate inputs
-  if (!validateLocationInputs()) {
-    return;
-  }
+		if (!packJsonFile) {
+			throw new Error('Invalid pack file: pack.json not found.')
+		}
 
-  // Get input values
-  const x = parseFloat(document.getElementById("locationX").value);
-  const y = parseFloat(document.getElementById("locationY").value);
-  const difficulty = parseInt(
-    document.getElementById("locationDifficulty").value,
-  );
+		const packJsonString = await packJsonFile.async('string')
+		const packData = JSON.parse(packJsonString)
 
-  // Create the new location object
-  const location = { x, y, difficulty };
+		// Reset state and UI
+		clearAllData()
+		closeLocationDetails()
 
-  // Add image information based on source
-  if (!STATE.currentUploadedImage) {
-    alert("Please select an image");
-    return;
-  }
+		// Update state with imported data
+		state.packName = packData.name || ''
+		state.gameModeId = packData.gameModeId || ''
+		state.author = packData.author || ''
 
-  if (STATE.currentUploadedImage.isUrl) {
-    // For URLs, use the URL directly
-    location.image = STATE.currentUploadedImage.url;
-  } else {
-    // For uploaded files, use original name and store new name
-    location.image = STATE.currentUploadedImage.file.name;
-    location._newImageName = STATE.currentUploadedImage.newFileName;
-  }
+		packNameInput.value = state.packName
+		gameModeIdInput.value = state.gameModeId
+		authorNameInput.value = state.author
 
-  // Add location to current game mode
-  STATE.currentGameMode.locations.push(location);
-  STATE.selectedLocationIndex = STATE.currentGameMode.locations.length - 1;
+		// Load locations and images
+		const imagesFolder = zip.folder('images')
+		if (imagesFolder) {
+			await Promise.all(
+				packData.locations.map(async (locData) => {
+					const filename = locData.image.split('/').pop()
+					const imageFile = imagesFolder.file(filename)
 
-  // Mark as unsaved
-  STATE.markCurrentGameModeModified();
+					if (imageFile) {
+						const blob = await imageFile.async('blob')
+						const fileObject = new File([blob], filename, { type: blob.type })
+						state.uploadedFiles[filename] = fileObject
+					}
 
-  // Reset form for next location
-  resetLocationInputs();
-  STATE.currentUploadedImage = null;
+					// Correct the inverted y-axis from the pack data for the map
+					const correctedY = mapImageHeight - locData.y
 
-  // Update UI
-  updateLocationList();
-  updateJsonPreview();
-  updateGameModeList();
+					// Create a new location object for our state
+					const newId = generateUniqueId()
+					const newLocation = {
+						id: newId,
+						x: locData.x,
+						y: correctedY,
+						difficulty: locData.difficulty,
+						image: locData.image, // Store the original image path from the imported pack
+					}
+					const marker = createPin(newId, [correctedY, locData.x])
+					newLocation.marker = marker
+					state.locations.push(newLocation)
+				})
+			)
+		}
+
+		renderLocationsList()
+		// Hide the loading alert on success
+		hideAlert(loadingAlert)
+		showTemporaryAlert('Pack imported successfully!', 3000)
+	} catch (error) {
+		console.error('Error importing pack:', error)
+		// Hide the loading alert on error
+		hideAlert(loadingAlert)
+		showTemporaryAlert('Error importing pack: ' + error.message, 5000)
+	} finally {
+		// Clear the file input so the same file can be imported again
+		importFileInput.value = ''
+	}
+})
+
+// --- 7. Download Pack Logic with JSZip ---
+downloadPackBtn.addEventListener('click', async () => {
+	if (state.locations.length === 0) {
+		showTemporaryAlert(
+			'Please add at least one location to download a pack.',
+			5000
+		)
+		return
+	}
+
+	// Check for missing images
+	const missingImages = []
+	for (const loc of state.locations) {
+		// Use the stored image path to get the filename, which is consistent with how we loaded it
+		const filename = loc.image ? loc.image.split('/').pop() : null
+		const file = filename ? state.uploadedFiles[filename] : null
+		if (!file) {
+			missingImages.push(loc.id)
+		}
+	}
+
+	if (missingImages.length > 0) {
+		const message = `Please upload an image for the following locations before downloading: <br><br><b>${missingImages.join(
+			', '
+		)}</b>`
+		showTemporaryAlert(message, 7000)
+		return
+	}
+
+	const loadingAlert = showTemporaryAlert(
+		'Generating and zipping your pack...',
+		0
+	)
+
+	try {
+		// 1. Prepare JSON data
+		const packData = {
+			name: state.packName,
+			gameModeId: state.gameModeId,
+			author: state.author, // Include the new author field
+			locations: state.locations.map((loc) => {
+				return {
+					x: loc.x,
+					// Invert the y-coordinate back to the game's coordinate system
+					y: mapImageHeight - loc.y,
+					difficulty: loc.difficulty,
+					image: loc.image, // Use the original image path from the state
+				}
+			}),
+		}
+		const packJsonString = JSON.stringify(packData, null, 2)
+
+		// 2. Create the zip file
+		const zip = new JSZip()
+		zip.file('pack.json', packJsonString)
+		const imagesFolder = zip.folder('images')
+
+		for (const loc of state.locations) {
+			const filename = loc.image.split('/').pop()
+			const file = state.uploadedFiles[filename]
+			imagesFolder.file(filename, file)
+		}
+
+		// 3. Generate the download
+		const blob = await zip.generateAsync({ type: 'blob' })
+		const downloadLink = document.createElement('a')
+		const url = URL.createObjectURL(blob)
+		downloadLink.href = url
+		downloadLink.download = `${state.packName.replace(/\s/g, '')}.zip`
+		document.body.appendChild(downloadLink)
+		downloadLink.click()
+		document.body.removeChild(downloadLink)
+		URL.revokeObjectURL(url)
+
+		hideAlert(loadingAlert)
+		showTemporaryAlert('Pack downloaded successfully!', 3000)
+	} catch (error) {
+		console.error('Error during pack generation:', error)
+		hideAlert(loadingAlert)
+		showTemporaryAlert(
+			'An unexpected error occurred during pack generation.',
+			5000
+		)
+	}
+})
+
+// Initial render of the locations list (it will be empty)
+renderLocationsList()
+
+// --- Custom Alert Box functions ---
+// A simple function to create a modal-like alert message.
+function alert(message) {
+	const modal = document.createElement('div')
+	modal.style.position = 'fixed'
+	modal.style.inset = '0'
+	modal.style.backgroundColor = 'rgba(0, 0, 0, 0.75)'
+	modal.style.display = 'flex'
+	modal.style.alignItems = 'center'
+	modal.style.justifyContent = 'center'
+	modal.style.padding = '1rem'
+	modal.style.zIndex = '9999'
+	modal.innerHTML = `
+                <div style="background-color: #1f2937; padding: 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); max-width: 24rem; width: 100%;">
+                    <p style="color: #fff;">${message}</p>
+                    <button class="btn btn-primary btn-full-width" style="margin-top: 1rem;" onclick="this.parentElement.parentElement.remove()">OK</button>
+                </div>
+            `
+	document.body.appendChild(modal)
 }
 
-/**
- * Validates location input fields
- * @returns {boolean} - Whether inputs are valid
- */
-function validateLocationInputs() {
-  const x = parseFloat(document.getElementById("locationX").value);
-  const y = parseFloat(document.getElementById("locationY").value);
-  const difficulty = parseInt(
-    document.getElementById("locationDifficulty").value,
-  );
+// A function to show a temporary alert box that can be dismissed
+function showTemporaryAlert(message, duration = 0) {
+	const alertBox = document.createElement('div')
+	alertBox.style.position = 'fixed'
+	alertBox.style.inset = '0'
+	alertBox.style.display = 'flex'
+	alertBox.style.alignItems = 'center'
+	alertBox.style.justifyContent = 'center'
+	alertBox.style.zIndex = '2000'
+	alertBox.style.backgroundColor = 'rgba(0,0,0,0.7)'
+	alertBox.innerHTML = `
+                <div style="background-color: #1f2937; padding: 1.5rem; border-radius: 0.5rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1); text-align: center; max-width: 28rem;">
+                    <p style="color: #fff; font-size: 1.125rem;">${message}</p>
+                    ${
+											duration > 0
+												? `<button class="btn btn-primary" style="margin-top: 1rem;" onclick="document.body.removeChild(this.parentElement.parentElement)">Close</button>`
+												: ''
+										}
+                </div>
+            `
+	document.body.appendChild(alertBox)
 
-  if (isNaN(x) || isNaN(y)) {
-    alert("Please enter valid numbers for X and Y coordinates");
-    return false;
-  }
-
-  if (isNaN(difficulty) || difficulty < 1 || difficulty > 10) {
-    alert("Please select a difficulty between 1 and 10");
-    return false;
-  }
-
-  return true;
+	if (duration > 0) {
+		setTimeout(() => {
+			if (document.body.contains(alertBox)) {
+				document.body.removeChild(alertBox)
+			}
+		}, duration)
+	}
+	return alertBox
 }
 
-/**
- * Updates an existing location with current form values
- * Validates inputs, updates state, and refreshes UI
- */
-function updateLocation() {
-  if (!STATE.currentGameMode) {
-    alert("Please select or create a game mode first");
-    return;
-  }
-
-  if (STATE.selectedLocationIndex === -1) {
-    alert("Please select a location to update");
-    return;
-  }
-
-  // Validate inputs
-  if (!validateLocationInputs()) {
-    return;
-  }
-
-  // Get input values
-  const x = parseFloat(document.getElementById("locationX").value);
-  const y = parseFloat(document.getElementById("locationY").value);
-  const difficulty = parseInt(
-    document.getElementById("locationDifficulty").value,
-  );
-
-  // Get the location being updated
-  const oldLocation =
-    STATE.currentGameMode.locations[STATE.selectedLocationIndex];
-
-  // Create updated location object
-  const newLocation = {
-    x,
-    y,
-    difficulty,
-  };
-
-  // Handle image update
-  if (STATE.currentUploadedImage) {
-    if (STATE.currentUploadedImage.isUrl) {
-      // For URLs, use the URL directly
-      newLocation.image = STATE.currentUploadedImage.url;
-      // Remove any old _newImageName if it existed
-      delete newLocation._newImageName;
-    } else {
-      // For uploaded files, use original name and store new name
-      newLocation.image = STATE.currentUploadedImage.file.name;
-      newLocation._newImageName = STATE.currentUploadedImage.newFileName;
-    }
-  } else {
-    // Keep existing image info
-    newLocation.image = oldLocation.image;
-    if (oldLocation._newImageName) {
-      newLocation._newImageName = oldLocation._newImageName;
-    }
-  }
-
-  // Update the location in the state
-  STATE.currentGameMode.locations[STATE.selectedLocationIndex] = newLocation;
-
-  // Mark as unsaved
-  STATE.markCurrentGameModeModified();
-
-  // Reset upload state
-  STATE.currentUploadedImage = null;
-  document.getElementById("locationImage").value = "";
-  document.getElementById("imageUrl").value = "";
-
-  // Update UI
-  updateLocationList();
-  updateJsonPreview();
-  updateGameModeList();
+function hideAlert(alertBox) {
+	if (alertBox && document.body.contains(alertBox)) {
+		document.body.removeChild(alertBox)
+	}
 }
-
-/**
- * Deletes a location from the current game mode
- * @param {number} index - Index of the location to delete
- */
-function deleteLocation(index) {
-  if (!STATE.currentGameMode) return;
-
-  const confirmDelete = confirm(
-    "Are you sure you want to delete this location?",
-  );
-  if (!confirmDelete) return;
-
-  // Remove location from array
-  STATE.currentGameMode.locations.splice(index, 1);
-
-  // Reset selection
-  STATE.resetLocationSelection();
-  resetLocationInputs();
-
-  // Mark as unsaved
-  STATE.markCurrentGameModeModified();
-
-  // Update UI
-  updateLocationList();
-  updateJsonPreview();
-  updateGameModeList();
-}
-
-/**
- * Creates a new image pack/game mode
- */
-function createNew() {
-  // Generate a unique ID based on timestamp
-  const timestamp = Date.now().toString(36);
-  const uniqueId = `pack_${timestamp}`;
-
-  // Create a new game mode with default values
-  const newMode = {
-    name: "New Image Pack",
-    gameModeId: uniqueId,
-    author: "",
-    locations: [],
-    path: null,
-    saved: false,
-  };
-
-  // Add to game modes and select it
-  STATE.gameModes.push(newMode);
-  selectGameMode(newMode);
-
-  // Focus the name input for immediate editing
-  document.getElementById("gameModeName").focus();
-  document.getElementById("gameModeName").select();
-}
-
-/**
- * Loads an image pack from the given path
- * @param {string} path - Path to the JSON file
- */
-async function loadFile(path) {
-  try {
-    // Show loading indicator
-    document.getElementById("modeList").innerHTML =
-      "<span>Loading image pack...</span>";
-
-    // Load from JSON file
-    const response = await fetch(path);
-    if (!response.ok) throw new Error(`Failed to load ${path}`);
-    const data = await response.json();
-
-    // Validate required fields
-    if (!data.name || !data.gameModeId || !Array.isArray(data.locations)) {
-      throw new Error("Invalid image pack format");
-    }
-
-    const mode = {
-      name: data.name,
-      gameModeId: data.gameModeId,
-      author: data.author || "",
-      locations: data.locations,
-      path: `imagePacks/${data.gameModeId}/pack.json`,
-      saved: true,
-    };
-
-    // Add to game modes
-    STATE.gameModes.push(mode);
-    selectGameMode(mode);
-  } catch (error) {
-    console.error("Error loading file:", error);
-    alert(`Error loading file: ${error.message}`);
-    // Reset the loading message
-    updateGameModeList();
-  }
-}
-
-/**
- * Loads an image pack from a local file (JSON or ZIP)
- * @param {Event} event - The file input change event
- */
-async function loadLocalFile(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  try {
-    // Show loading indicator
-    document.getElementById("modeList").innerHTML =
-      "<span>Loading image pack...</span>";
-
-    let data;
-
-    // Check if it's a zip file
-    if (file.name.endsWith(".zip")) {
-      // Load the zip
-      const zipData = await file.arrayBuffer();
-      const zip = await JSZip.loadAsync(zipData);
-
-      // Get the pack.json file
-      const jsonFile = zip.file("pack.json");
-      if (!jsonFile) throw new Error("pack.json not found in zip");
-      data = JSON.parse(await jsonFile.async("text"));
-
-      // Load all images into our uploadedImages map
-      const imagesFolder = zip.folder("images");
-      if (imagesFolder) {
-        // Clear any previous images with the same names to prevent conflicts
-        const files = await imagesFolder.files;
-
-        for (const location of data.locations) {
-          const imagePath = location.image;
-          if (!imagePath) continue;
-
-          const imageName = imagePath.split("/").pop();
-          const imageFile =
-            imagesFolder.file(`images/${imageName}`) ||
-            imagesFolder.file(imageName);
-
-          if (imageFile) {
-            const blob = new Blob([await imageFile.async("arraybuffer")], {
-              type: guessImageMimeType(imageName),
-            });
-            STATE.uploadedImages.set(imageName, {
-              file: new File([blob], imageName, { type: blob.type }),
-              newFileName: imageName, // Keep same name for existing files
-            });
-          }
-        }
-      }
-    } else {
-      // Regular JSON file
-      data = JSON.parse(await file.text());
-    }
-
-    // Validate the JSON structure
-    if (!data.name || !data.gameModeId || !Array.isArray(data.locations)) {
-      throw new Error(
-        "Invalid JSON format: must have name, gameModeId, and locations array",
-      );
-    }
-
-    // Check for duplicate game mode ID
-    const existingModeIndex = STATE.gameModes.findIndex(
-      (mode) => mode.gameModeId === data.gameModeId,
-    );
-    if (existingModeIndex !== -1) {
-      const existingMode = STATE.gameModes[existingModeIndex];
-      if (
-        !confirm(
-          `An image pack with ID "${data.gameModeId}" already exists.\n\nReplace "${existingMode.name}" with "${data.name}"?`,
-        )
-      ) {
-        // User cancelled, reset file input
-        event.target.value = "";
-        updateGameModeList();
-        return;
-      }
-      // Remove the existing mode
-      STATE.gameModes.splice(existingModeIndex, 1);
-    }
-
-    const mode = {
-      name: data.name,
-      gameModeId: data.gameModeId,
-      author: data.author || "",
-      locations: data.locations,
-      path: `locationData/${data.gameModeId}.zip`, // Use .zip extension
-      saved: false,
-    };
-
-    // Add to game modes
-    STATE.gameModes.push(mode);
-    selectGameMode(mode);
-  } catch (error) {
-    console.error("Error reading local file:", error);
-    alert(`Error reading file: ${error.message}`);
-  } finally {
-    // Clear the file input so the same file can be loaded again
-    event.target.value = "";
-  }
-}
-
-/**
- * Guesses the MIME type of an image from its filename
- * @param {string} filename - The image filename
- * @returns {string} - The guessed MIME type
- */
-function guessImageMimeType(filename) {
-  const ext = filename.split(".").pop().toLowerCase();
-  switch (ext) {
-    case "jpg":
-    case "jpeg":
-      return "image/jpeg";
-    case "png":
-      return "image/png";
-    case "gif":
-      return "image/gif";
-    case "webp":
-      return "image/webp";
-    default:
-      return "image/jpeg"; // Default fallback
-  }
-}
-
-/**
- * Saves the current image pack to a ZIP file
- * Updates state and performs all necessary transformations
- */
-async function saveFile() {
-  if (!STATE.currentGameMode) {
-    alert("No image pack selected");
-    return;
-  }
-
-  try {
-    // Update from form values
-    updateCurrentGameModeFromForm();
-
-    // Create a zip file containing the JSON and all images
-    const zip = new JSZip();
-
-    // Prepare locations with correct image paths for the JSON
-    const locationsForJson = transformLocationsForExport(
-      STATE.currentGameMode.locations,
-    );
-
-    // Create the export object with author information
-    const exportObject = {
-      name: STATE.currentGameMode.name,
-      gameModeId: STATE.currentGameMode.gameModeId,
-      author: STATE.currentGameMode.author || "",
-      locations: locationsForJson,
-    };
-
-    // Add the JSON file with new image paths
-    const jsonString = JSON.stringify(exportObject, null, 2);
-    zip.file("pack.json", jsonString);
-
-    // Add the images folder
-    const imagesFolder = zip.folder("images");
-
-    // Show progress indication
-    const statusMessage = document.createElement("div");
-    statusMessage.className = "status-message";
-    statusMessage.textContent = "Packaging images...";
-    document.body.appendChild(statusMessage);
-
-    // Process all images
-    let processedCount = 0;
-    const totalImages = STATE.currentGameMode.locations.length;
-
-    // Add only local images (skip remote URLs and blobs)
-    for (const location of STATE.currentGameMode.locations) {
-      processedCount++;
-      statusMessage.textContent = `Packaging images... (${processedCount}/${totalImages})`;
-
-      if (
-        /^(https?:)?\/\//.test(location.image) ||
-        location.image.startsWith("blob:")
-      ) {
-        continue; // skip remote/blobs
-      }
-
-      const imagePath = location.image;
-      const imageFileName = imagePath.split("/").pop(); // Get just the filename
-
-      // Check if this is a newly uploaded image
-      const uploadedImage = STATE.uploadedImages.get(imageFileName);
-      if (uploadedImage) {
-        // Use the new image file and name
-        const imageData = await uploadedImage.file.arrayBuffer();
-        const targetName = location._newImageName || imageFileName;
-        imagesFolder.file(targetName, imageData);
-      } else {
-        // This is an existing image, copy it as-is
-        try {
-          const response = await fetch(imagePath);
-          if (response.ok) {
-            const imageData = await response.arrayBuffer();
-            imagesFolder.file(imageFileName, imageData);
-          } else {
-            console.warn(
-              `Could not fetch image: ${imagePath} - HTTP ${response.status}`,
-            );
-          }
-        } catch (error) {
-          console.error(`Failed to fetch image: ${imagePath}`, error);
-        }
-      }
-    }
-
-    // Generate the zip file
-    statusMessage.textContent = "Generating ZIP file...";
-    const content = await zip.generateAsync({ type: "blob" });
-
-    // Create a download link for the zip
-    const url = URL.createObjectURL(content);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${STATE.currentGameMode.gameModeId}.zip`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
-    // Mark as saved
-    STATE.currentGameMode.saved = true;
-
-    // Clean up status message
-    document.body.removeChild(statusMessage);
-
-    // Update UI
-    updateGameModeList();
-  } catch (error) {
-    console.error("Error saving file:", error);
-    alert(`Error saving file: ${error.message}`);
-  }
-}
-
-/**
- * Updates the current game mode with values from the form
- */
-function updateCurrentGameModeFromForm() {
-  if (!STATE.currentGameMode) return;
-
-  STATE.currentGameMode.name = document.getElementById("gameModeName").value;
-  STATE.currentGameMode.gameModeId =
-    document.getElementById("gameModeId").value;
-  STATE.currentGameMode.author =
-    document.getElementById("gameModeAuthor").value;
-  STATE.currentGameMode.path = `imagePacks/${STATE.currentGameMode.gameModeId}/pack.json`;
-}
-
-// Add input change handlers
-document.getElementById("gameModeName").addEventListener("input", () => {
-  if (!STATE.currentGameMode) return;
-  STATE.currentGameMode.name = document.getElementById("gameModeName").value;
-  STATE.markCurrentGameModeModified();
-  updateGameModeList();
-});
-
-document.getElementById("gameModeId").addEventListener("input", () => {
-  if (!STATE.currentGameMode) return;
-  STATE.currentGameMode.gameModeId =
-    document.getElementById("gameModeId").value;
-  STATE.currentGameMode.path = `locationData/${STATE.currentGameMode.gameModeId}.json`;
-  STATE.markCurrentGameModeModified();
-  updateGameModeList();
-});
-
-document.getElementById("gameModeAuthor").addEventListener("input", () => {
-  if (!STATE.currentGameMode) return;
-  STATE.currentGameMode.author =
-    document.getElementById("gameModeAuthor").value;
-  STATE.markCurrentGameModeModified();
-  updateJsonPreview();
-});
-
-// Handle page unload to prevent accidental data loss
-window.addEventListener("beforeunload", (event) => {
-  // Check if any game mode is unsaved
-  const hasUnsavedChanges = STATE.gameModes.some(
-    (mode) => mode.saved === false,
-  );
-  if (hasUnsavedChanges) {
-    // Standard way to show a confirmation dialog
-    event.preventDefault();
-    event.returnValue =
-      "You have unsaved changes. Are you sure you want to leave?";
-    return event.returnValue;
-  }
-});
-
-// Cleanup function to prevent memory leaks
-window.addEventListener("unload", () => {
-  // Revoke any blob URLs to prevent memory leaks
-  const preview = document.getElementById("imagePreview");
-  if (preview.src && preview.src.startsWith("blob:")) {
-    URL.revokeObjectURL(preview.src);
-  }
-});
-
-// Initialize the UI
-loadGameModes();
-
-// Add keyboard shortcuts
-document.addEventListener("keydown", (event) => {
-  // Ctrl+S to save
-  if (event.ctrlKey && event.key === "s") {
-    event.preventDefault();
-    saveFile();
-  }
-});

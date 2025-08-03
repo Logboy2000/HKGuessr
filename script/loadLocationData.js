@@ -1,3 +1,9 @@
+import { dataLoaded, GameManager } from "./game.js";
+
+
+
+document.body.onload = loadLocationData;
+
 // Single object to store all game mode data
 window.gameModeData = {};
 
@@ -33,7 +39,7 @@ async function loadCustomImagePack(file) {
         const blob = new Blob([await imageFile.async("arraybuffer")]);
         const imageUrl = URL.createObjectURL(blob);
         return [loc.x, loc.y, loc.difficulty, imageUrl];
-      }),
+      })
     );
 
     // Add to game modes
@@ -42,20 +48,20 @@ async function loadCustomImagePack(file) {
       locations: locations,
     };
 
-    // Initialize usedLocations for this game mode
-    if (typeof usedLocations !== "undefined") {
-      usedLocations[data.gameModeId] = [];
+    // Initialize GameManager.usedLocations for this game mode
+    if (typeof GameManager.usedLocations !== "undefined") {
+      GameManager.usedLocations[data.gameModeId] = [];
     } else {
       console.warn(
-        "usedLocations not initialized yet, waiting for script.js to load",
+        "GameManager.usedLocations not initialized yet, waiting for script.js to load"
       );
       // Create a small delay to allow script.js to initialize
       await new Promise((resolve) => setTimeout(resolve, 100));
-      if (typeof usedLocations !== "undefined") {
-        usedLocations[data.gameModeId] = [];
+      if (typeof GameManager.usedLocations !== "undefined") {
+        GameManager.usedLocations[data.gameModeId] = [];
       } else {
         throw new Error(
-          "usedLocations is not available. Make sure script.js is loaded first.",
+          "GameManager.usedLocations is not available. Make sure script.js is loaded first."
         );
       }
     }
@@ -90,7 +96,7 @@ async function loadLocationData() {
       try {
         // Load the pack.json file from the image pack folder
         const response = await fetch(
-          `${defaultImagePacksFolder}${packName}/pack.json`,
+          `${defaultImagePacksFolder}${packName}/pack.json`
         );
         if (!response.ok) {
           console.error(`Failed to load ${packName} pack.json`);
@@ -125,9 +131,9 @@ async function loadLocationData() {
           locations: locations,
         };
 
-        // Initialize usedLocations for this game mode
-        if (typeof usedLocations !== "undefined") {
-          usedLocations[data.gameModeId] = [];
+        // Initialize GameManager.usedLocations for this game mode
+        if (typeof GameManager.usedLocations !== "undefined") {
+          GameManager.usedLocations[data.gameModeId] = [];
         }
 
         // Add option to game mode select
@@ -148,15 +154,12 @@ async function loadLocationData() {
   }
 
   // Call the global dataLoaded function from script.js
-  if (typeof window.dataLoaded === "function") {
-    window.dataLoaded();
-    
+  if (typeof dataLoaded === "function") {
+    dataLoaded();
   } else {
     console.error("dataLoaded function not found");
   }
 }
-
-loadLocationData();
 
 // Add event listener for custom image pack upload
 const customImagePackInput = document.getElementById("customImagePack");

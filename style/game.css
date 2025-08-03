@@ -12,6 +12,16 @@ hr {
     padding: 8px 16px;
 }
 
+#fullscreenButton,
+#minimiseButton {
+  max-width: 60px;
+  padding: 0;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+}
+
 #scoreContainer span {
     text-align: left;
     padding: 5px 15px;

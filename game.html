@@ -1,167 +1,155 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link
-            rel="shortcut icon"
-            href="images/favicon.png"
-            type="image/x-icon"
-        />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-        <title>Hollow Guessr</title>
-        <link rel="stylesheet" href="style/style.css?v=1.1.0" />
-        <link rel="stylesheet" href="style/game.css" />
-    </head>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+		<title>Hollow Guessr</title>
+		<link rel="stylesheet" href="style/style.css?v=1.1.0" />
+		<link rel="stylesheet" href="style/game.css" />
+	</head>
 
-    <body>
-        <img src="" alt="" id="locationImg" />
-        <p id="loadingText">Getting Image...</p>
-        <div id="scoreContainer">
-            <button
-                id="back-button"
-                onclick="window.location.href='index.html'"
-            >
-                &lt;- Back
-            </button>
-            <button id="newGameButton">
-                New Game
-            </button>
-            <span id="round">0/5</span>
-            <span id="timerDisplay"></span>
-        </div>
-        <div id="mapContainer">
-            <canvas id="mapCanvas"></canvas>
-            <br />
-            <div id="buttonContainer">
-                <button id="guessButton">
-                    Guess!
-                </button>
-                <button id="fullscreenButton">
-                    <img
-                        src="images/fullscreen.png"
-                        alt="FS"
-                        style="scale: 0.7"
-                    />
-                </button>
-                <button id="minimiseButton">
-                    X
-                </button>
-            </div>
-        </div>
+	<body>
+		<img src="" alt="" id="locationImg" />
+		<p id="loadingText">Getting Image...</p>
+		<div id="scoreContainer">
+			<button id="back-button" onclick="window.location.href='index.html'">
+				&lt;- Back
+			</button>
+			<button id="newGameButton">New Game</button>
+			<span id="round">0/5</span>
+			<span id="timerDisplay"></span>
+		</div>
+		<div id="mapContainer">
+			<canvas id="mapCanvas"></canvas>
+			<br />
+			<div id="buttonContainer">
+				<button id="guessButton">Guess!</button>
+				<button id="fullscreenButton">
+					<img
+						src="images/game/fullscreen.svg"
+						alt="FS"
+						style="max-width: 100%; padding: 3px"
+					/>
+				</button>
 
-        <button id="showMapButton">O</button>
+				<button id="minimiseButton">
+					<img
+						src="images/game/arrow-down.svg"
+						alt="X"
+						style="max-width: 100%; padding: 3px"
+					/>
+				</button>
+			</div>
+		</div>
+		<button id="showMapButton">
+			<img
+				src="images/game/arrow-up.svg"
+				alt="X"
+				style="max-width: 100%; padding: 3px; "
+			/>
+		</button>
 
-        <div id="gameOverWindow" class="window">
-            <h2>Game Over</h2>
-            <p id="finalScore">Final Score:</p>
-            <p id="accuracy">Accuracy:</p>
-            <p id="totalRounds">Total Rounds:</p>
-            <p id="timerLengthDisplay">Timer Length:</p>
-            <hr />
-            <button id="playAgainButton">
-                Play Again
-            </button>
-            <button id="optionsButton">
-                Options
-            </button>
-        </div>
+		<div id="gameOverWindow" class="window">
+			<h2>Game Over</h2>
+			<p id="finalScore">Final Score:</p>
+			<p id="accuracy">Accuracy:</p>
+			<p id="totalRounds">Total Rounds:</p>
+			<p id="timerLengthDisplay">Timer Length:</p>
+			<hr />
+			<button id="playAgainButton">Play Again</button>
+			<button id="optionsButton">Options</button>
+		</div>
 
-        <div id="gameOptionsWindow" class="window">
-            <h2>Game Options</h2>
-            <div class="option">
-                <label for="gameMode">Image Pack:</label>
-                <div style="display: flex; gap: 8px; align-items: center">
-                    <select id="gameMode">
-                        <!--should be filled using the json files-->
-                    </select>
-                    <label class="custom-file-upload">
-                        <input
-                            type="file"
-                            id="customImagePack"
-                            accept=".zip"
-                            style="display: none"
-                        />
-                        <button
-                            id="loadPackButton"
-                            onclick="document.getElementById('customImagePack').click()"
-                        >
-                            Load Pack (.zip)
-                        </button>
-                    </label>
-                </div>
-            </div>
-            <div class="option">
-                <label for="difficultySelector">Difficulty:</label>
-                <select id="difficultySelector">
-                    <option value="all">All</option>
-                    <option value="easy">Attuned</option>
-                    <option value="normal">Ascended</option>
-                    <option value="hard">Radiant</option>
-                    <option value="custom">Custom</option>
-                </select>
-            </div>
-            <div class="option" id="customDifficultyDiv" style="display: none">
-                <label for="minDifficulty">Min:</label>
-                <input
-                    type="text"
-                    id="minDifficulty"
-                    min="1"
-                    max="10"
-                    placeholder="1"
-                    value="1"
-                    onchange="checkNumberIntegrity(this)"
-                />
-                <label for="maxDifficulty">Max:</label>
-                <input
-                    type="text"
-                    id="maxDifficulty"
-                    min="1"
-                    max="10"
-                    placeholder="10"
-                    value="10"
-                    onchange="checkNumberIntegrity(this)"
-                />
-            </div>
-            <div class="option">
-                <label for="roundCount">Round count: </label>
-                <input
-                    type="text"
-                    id="roundCount"
-                    name="roundCount"
-                    min="1"
-                    value="5"
-                    placeholder="5"
-                />
-            </div>
-            <div class="option">
-                <label for="timerEnabled">Timer enabled?: </label>
-                <input
-                    type="checkbox"
-                    id="timerEnabled"
-                    name="timerEnabled"
-                    onchange="timerInputDisplay(this)"
-                />
-            </div>
-            <div class="option">
-                <label for="timerLength">Timer length: </label>
-                <input
-                    type="text"
-                    id="timerLength"
-                    name="timerLength"
-                    placeholder="60"
-                    value="60"
-                    min="1"
-                    max="3600"
-                    oninput="checkNumberIntegrity(this)"
-                    disabled
-                />
-            </div>
-            <hr />
-            <button id="startButton">Start Game</button>
-        </div>
-        <!-- defer notation makes the script load AFTER the DOM -->
-        <script src="script/game.js" defer></script>
-        <script src="script/loadLocationData.js" defer></script>
-    </body>
+		<div id="gameOptionsWindow" class="window">
+			<h2>Game Options</h2>
+			<div class="option">
+				<label for="gameMode">Image Pack:</label>
+				<div style="display: flex; gap: 8px; align-items: center">
+					<select id="gameMode">
+						<!--should be filled using the json files-->
+					</select>
+					<label class="custom-file-upload">
+						<input
+							type="file"
+							id="customImagePack"
+							accept=".zip"
+							style="display: none"
+						/>
+						<button
+							id="loadPackButton"
+							onclick="document.getElementById('customImagePack').click()"
+						>
+							Load Pack (.zip)
+						</button>
+					</label>
+				</div>
+			</div>
+			<div class="option">
+				<label for="difficultySelector">Difficulty:</label>
+				<select id="difficultySelector">
+					<option value="all">All</option>
+					<option value="easy">Attuned</option>
+					<option value="normal">Ascended</option>
+					<option value="hard">Radiant</option>
+					<option value="custom">Custom</option>
+				</select>
+			</div>
+			<div class="option" id="customDifficultyDiv" style="display: none">
+				<label for="minDifficulty">Min:</label>
+				<input
+					type="text"
+					id="minDifficulty"
+					min="1"
+					max="10"
+					placeholder="1"
+					value="1"
+					onchange="checkNumberIntegrity(this)"
+				/>
+				<label for="maxDifficulty">Max:</label>
+				<input
+					type="text"
+					id="maxDifficulty"
+					min="1"
+					max="10"
+					placeholder="10"
+					value="10"
+					onchange="checkNumberIntegrity(this)"
+				/>
+			</div>
+			<div class="option">
+				<label for="roundCount">Round count: </label>
+				<input
+					type="text"
+					id="roundCount"
+					name="roundCount"
+					min="1"
+					value="5"
+					placeholder="5"
+				/>
+			</div>
+			<div class="option">
+				<label for="timerEnabled">Timer enabled?: </label>
+				<input type="checkbox" id="timerEnabled" name="timerEnabled" />
+			</div>
+			<div class="option">
+				<label for="timerLength">Timer length: </label>
+				<input
+					type="text"
+					id="timerLength"
+					name="timerLength"
+					placeholder="60"
+					value="60"
+					min="1"
+					max="3600"
+					disabled
+				/>
+			</div>
+			<hr />
+			<button id="startButton">Start Game</button>
+		</div>
+		<script src="script/game.js" type="module"></script>
+		<script src="script/loadLocationData.js" type="module"></script>
+	</body>
 </html>
