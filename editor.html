@@ -264,7 +264,7 @@
 			.preview-img {
 				width: 100%;
 				height: 10rem;
-				object-fit: cover;
+				object-fit: scale-down;
 				border-radius: 0.5rem;
 				margin-top: 1rem;
 				border: 1px solid #4b5563;
@@ -411,17 +411,17 @@
 					</div>
 					<div class="input-group">
 						<label for="image-upload" class="file-label">
-							<span id="image-upload-label">Upload Location Image (.png)</span>
+							<span id="image-upload-label">Upload Location Image</span>
 						</label>
 						<input
 							type="file"
 							id="image-upload"
 							style="display: none"
-							accept=".png"
+							accept=".png, .jpg, .jpeg, .webp, .gif, .svg, .bmp, .tiff, .ico, .heic, .heif"
 						/>
 						<img
 							id="image-preview"
-							src="https://placehold.co/400x200/1f2937/d1d5db?text=Image+Preview"
+							src="images/editor/imagePreview.svg"
 							alt="Image Preview"
 							class="preview-img"
 						/>

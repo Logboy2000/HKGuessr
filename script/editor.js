@@ -260,7 +260,7 @@ function updateLocationDetailsUI() {
 	} else {
 		imagePreview.src =
 			'https://placehold.co/400x200/1f2937/d1d5db?text=Image+Preview'
-		imageUploadLabel.textContent = 'Upload Location Image (.png)'
+		imageUploadLabel.textContent = 'Upload Location Image'
 	}
 }
 
