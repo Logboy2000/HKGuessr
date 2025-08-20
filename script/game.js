@@ -112,6 +112,12 @@ export const GameManager = {
 
 			if (remainingTime <= 0) {
 				DOM.timerDisplay.innerText = '0.00'
+				if (!gameMap.guessPosition) {
+					gameMap.updateGuessPos(
+						gameMap.mouseXRelative,
+						gameMap.mouseYRelative
+					)
+				}
 				GameManager.guessButtonClicked()
 			} else {
 				DOM.timerDisplay.innerText = (remainingTime / 1000).toFixed(2)
@@ -148,9 +154,6 @@ export const GameManager = {
 			'input',
 			this.updateRoundCounter.bind(this)
 		)
-		DOM.timerLengthInput.addEventListener('input', () =>
-			this.checkNumberIntegrity(DOM.timerLengthInput, true, true)
-		)
 		DOM.customDifficultyDiv
 			.querySelector('#minDifficulty')
 			.addEventListener('input', () =>
@@ -179,9 +182,6 @@ export const GameManager = {
 		)
 		DOM.minimiseButton.addEventListener('click', () =>
 			this.setMinimapVisible(false)
-		)
-		DOM.timerLengthInput.addEventListener('input', () =>
-			this.checkNumberIntegrity(DOM.timerLengthInput, true, true)
 		)
 		document
 			.getElementById('timerEnabled')
@@ -255,10 +255,7 @@ export const GameManager = {
 
 		this.timerEnabled = document.getElementById('timerEnabled').checked
 		if (this.timerEnabled) {
-			if (
-				!this.checkNumberIntegrity(DOM.timerLengthInput, true, false) ||
-				Number(DOM.timerLengthInput.value) <= 0
-			) {
+			if (Number(DOM.timerLengthInput.value) <= 0) {
 				console.error(
 					'Please use a valid number for timer length (greater than 0).'
 				)
@@ -390,6 +387,7 @@ export const GameManager = {
 	 * Handles the guess button click logic based on current game state.
 	 */
 	guessButtonClicked() {
+		if (DOM.guessButton.disabled) return
 		if (this.gameState === GAMESTATES.guessing) {
 			// If no guess was made but timer ran out, set score to 0
 			if (!gameMap.guessPosition) {
@@ -442,9 +440,8 @@ export const GameManager = {
 			}
 
 			this.openWindow('gameover')
-			DOM.finalScoreDisplay.innerText = `Final Score: ${this.totalScore}/${
-				this.totalRounds * this.maxScore
-			}`
+			DOM.finalScoreDisplay.innerText = `Final Score: ${this.totalScore}/${this.totalRounds * this.maxScore
+				}`
 			let accuracyPercent = (
 				(this.totalScore / (this.totalRounds * this.maxScore)) *
 				100

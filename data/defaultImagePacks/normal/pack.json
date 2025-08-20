@@ -751,6 +751,192 @@
       "y": 2016,
       "difficulty": 4,
       "image": "images/80abc0c3.png"
+    },
+    {
+      "x": 1329,
+      "y": 461,
+      "difficulty": 9,
+      "image": "images/loc-4-20250819174436_1.jpg"
+    },
+    {
+      "x": 2241,
+      "y": 1903,
+      "difficulty": 7,
+      "image": "images/loc-22-20250819182050_1.jpg"
+    },
+    {
+      "x": 984,
+      "y": 1964,
+      "difficulty": 8,
+      "image": "images/loc-34-20250819183201_1.jpg"
+    },
+    {
+      "x": 2206,
+      "y": 2166,
+      "difficulty": 8,
+      "image": "images/loc-28-20250819182636_1.jpg"
+    },
+    {
+      "x": 3347,
+      "y": 2703,
+      "difficulty": 7,
+      "image": "images/loc-32-20250819182958_1.jpg"
+    },
+    {
+      "x": 552,
+      "y": 2093,
+      "difficulty": 7,
+      "image": "images/loc-36-20250819183304_1.jpg"
+    },
+    {
+      "x": 2130,
+      "y": 990,
+      "difficulty": 9,
+      "image": "images/loc-62-20250819193157_1.jpg"
+    },
+    {
+      "x": 1718,
+      "y": 1595,
+      "difficulty": 10,
+      "image": "images/loc-32-20250819194132_1.jpg"
+    },
+    {
+      "x": 3224,
+      "y": 988,
+      "difficulty": 7,
+      "image": "images/loc-50-20250819184605_1.jpg"
+    },
+    {
+      "x": 3688,
+      "y": 798,
+      "difficulty": 6,
+      "image": "images/loc-52-20250819184721_1.jpg"
+    },
+    {
+      "x": 1985,
+      "y": 980,
+      "difficulty": 8,
+      "image": "images/loc-60-20250819193046_1.jpg"
+    },
+    {
+      "x": 1146,
+      "y": 358,
+      "difficulty": 8,
+      "image": "images/loc-2-20250819174301_1.jpg"
+    },
+    {
+      "x": 2459,
+      "y": 1346,
+      "difficulty": 8,
+      "image": "images/loc-18-20250819181442_1.jpg"
+    },
+    {
+      "x": 2930,
+      "y": 1942,
+      "difficulty": 7,
+      "image": "images/loc-26-20250819182337_1.jpg"
+    },
+    {
+      "x": 2076,
+      "y": 2360,
+      "difficulty": 8,
+      "image": "images/loc-30-20250819182727_1.jpg"
+    },
+    {
+      "x": 3717,
+      "y": 1321,
+      "difficulty": 7,
+      "image": "images/loc-40-20250819183929_1.jpg"
+    },
+    {
+      "x": 3351,
+      "y": 436,
+      "difficulty": 7,
+      "image": "images/loc-46-20250819184422_1.jpg"
+    },
+    {
+      "x": 1846,
+      "y": 811,
+      "difficulty": 6,
+      "image": "images/loc-58-20250819192804_1.jpg"
+    },
+    {
+      "x": 793,
+      "y": 749,
+      "difficulty": 9,
+      "image": "images/loc-8-20250819174542_1.jpg"
+    },
+    {
+      "x": 1962,
+      "y": 1183,
+      "difficulty": 7,
+      "image": "images/loc-14-20250819175235_1.jpg"
+    },
+    {
+      "x": 3278,
+      "y": 1408,
+      "difficulty": 6,
+      "image": "images/loc-24-20250819182157_1.jpg"
+    },
+    {
+      "x": 4136,
+      "y": 1911,
+      "difficulty": 7,
+      "image": "images/loc-38-20250819183722_1.jpg"
+    },
+    {
+      "x": 690,
+      "y": 1378,
+      "difficulty": 6,
+      "image": "images/loc-56-20250819185059_1.jpg"
+    },
+    {
+      "x": 3029,
+      "y": 619,
+      "difficulty": 6,
+      "image": "images/loc-44-20250819184329_1.jpg"
+    },
+    {
+      "x": 3338,
+      "y": 998,
+      "difficulty": 5,
+      "image": "images/loc-48-20250819184534_1.jpg"
+    },
+    {
+      "x": 1441,
+      "y": 737,
+      "difficulty": 7,
+      "image": "images/loc-6-20250819174500_1.jpg"
+    },
+    {
+      "x": 1282,
+      "y": 1131,
+      "difficulty": 9,
+      "image": "images/loc-10-20250819175009_1.jpg"
+    },
+    {
+      "x": 4031,
+      "y": 1384,
+      "difficulty": 7,
+      "image": "images/loc-42-20250819184035_1.jpg"
+    },
+    {
+      "x": 825,
+      "y": 1033,
+      "difficulty": 6,
+      "image": "images/loc-54-20250819184932_1.jpg"
+    },
+    {
+      "x": 1691,
+      "y": 1141,
+      "difficulty": 10,
+      "image": "images/loc-12-20250819175126_1.jpg"
+    },
+    {
+      "x": 3031,
+      "y": 1522,
+      "difficulty": 7,
+      "image": "images/loc-20-20250819181731_1.jpg"
     }
   ]
 }

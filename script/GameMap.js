@@ -142,7 +142,7 @@ export class GameMap {
    */
   handleMouseUp() {
     if (!this.hasMoved && GameManager.gameState === GAMESTATES.guessing) {
-      this.updateGuessPos();
+      this.updateGuessPos(this.mouseXRelative, this.mouseYRelative);
     }
     this.isDragging = false;
   }
@@ -227,7 +227,7 @@ export class GameMap {
    */
   handleTouchEnd() {
     if (!this.hasMoved && GameManager.gameState === GAMESTATES.guessing) {
-      this.updateGuessPos();
+      this.updateGuessPos(this.mouseXRelative, this.mouseYRelative);
     }
     this.isDragging = false;
   }
@@ -247,10 +247,10 @@ export class GameMap {
   /**
    * Sets the user's guess position on the map.
    */
-  updateGuessPos() {
+  updateGuessPos(x, y) {
     this.guessPosition = {
-      x: this.mouseXRelative,
-      y: this.mouseYRelative,
+      x: x,
+      y: y,
     };
     DOM.guessButton.disabled = false;
   }
