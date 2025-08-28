@@ -4,12 +4,10 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Image Pack Editor | Hollow Guessr</title>
-		<!-- Inter font import -->
 		<link
 			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
 			rel="stylesheet"
 		/>
-		<!-- Leaflet CSS for map functionality -->
 		<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 		<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
 		<style>
@@ -322,12 +320,9 @@
 
 	<body>
 		<div id="app-container">
-			<!-- Main Map Area -->
 			<div id="map"></div>
 
-			<!-- Sidebar / Control Panel -->
 			<div id="sidebar">
-				<!-- This div is the draggable handle for resizing the sidebar -->
 				<div id="resizer"></div>
 
 				<button
@@ -339,7 +334,6 @@
 				<h1 class="main-heading">Image Pack Editor</h1>
 				<h2 class="sub-heading">Beta v0.1</h2>
 
-				<!-- Pack Details -->
 				<div class="sidebar-section">
 					<h2 class="section-heading">Pack Details</h2>
 					<div class="input-group">
@@ -371,19 +365,31 @@
 					</div>
 				</div>
 
-				<!-- Locations List & Actions -->
+				<div class="sidebar-section">
+					<h2 class="section-heading">Map Image</h2>
+					<div class="input-group">
+						<label for="map-image-upload" class="file-label">
+							<span id="map-image-upload-label">Upload Custom Map Image (map.png)</span>
+						</label>
+						<input
+							type="file"
+							id="map-image-upload"
+							style="display: none"
+							accept="image/png"
+						/>
+					</div>
+				</div>
+
 				<div class="sidebar-section">
 					<h2 class="section-heading">Locations</h2>
 					<div id="locations-list" class="location-list">
-						<!-- Location items will be dynamically inserted here -->
-					</div>
+						</div>
 					<button id="add-location-btn" class="btn btn-primary btn-full-width">
                         <img src="images/editor/add.svg" alt="" class="svg-icon">
 						Add New Location
 					</button>
 				</div>
 
-				<!-- Location Details (Hidden by default) -->
 				<div
 					id="location-details"
 					class="sidebar-section"
@@ -439,7 +445,6 @@
 					</div>
 				</div>
 
-				<!-- Download and Import Buttons -->
 				<div
 					class="flex-row"
 					style="
@@ -466,7 +471,6 @@
 			</div>
 		</div>
 
-		<!-- Leaflet and JSZip Libraries -->
 		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 		<script src="script/editor.js"></script>

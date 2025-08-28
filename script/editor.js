@@ -9,6 +9,8 @@ const state = {
 	selectedLocationId: null, // ID of the currently selected location
 	nextLocationId: 1, // Counter for unique location IDs
 	isPlacingNewPin: false, // Flag for the "Add New Location" mode
+	customMapFile: null, // Holds the File object for the custom map.
+	customMapUrl: 'images/map.png', // URL for the currently displayed map image.
 }
 
 // --- 2. Leaflet Map Setup ---
@@ -35,7 +37,8 @@ const bounds = [
 	[0, 0],
 	[mapImageHeight, mapImageWidth],
 ]
-const imageOverlay = L.imageOverlay(hollowKnightMapUrl, bounds).addTo(map)
+// Use the state's customMapUrl for the initial image overlay
+const imageOverlay = L.imageOverlay(state.customMapUrl, bounds).addTo(map)
 
 imageOverlay.on('load', function () {
 	map.fitBounds(bounds)
@@ -62,6 +65,10 @@ const imagePreview = document.getElementById('image-preview')
 const imageUploadLabel = document.getElementById('image-upload-label')
 const deleteLocationBtn = document.getElementById('delete-location-btn')
 const closeDetailsBtn = document.getElementById('close-details-btn')
+
+// Map Image UI Elements
+const mapImageUploadInput = document.getElementById('map-image-upload')
+const mapImageUploadLabel = document.getElementById('map-image-upload-label')
 
 // --- 3.5. Sidebar Resizing Logic ---
 const resizer = document.getElementById('resizer')
@@ -110,6 +117,25 @@ authorNameInput.addEventListener('input', (e) => {
 	state.author = e.target.value
 })
 
+// Map Image Upload handler
+mapImageUploadInput.addEventListener('change', (e) => {
+	const file = e.target.files[0]
+	if (!file) return
+
+	// Revoke the previous URL to free up memory
+	if (state.customMapFile && state.customMapUrl) {
+		URL.revokeObjectURL(state.customMapUrl)
+	}
+
+	state.customMapFile = file
+	state.customMapUrl = URL.createObjectURL(file)
+
+	// Update the image overlay on the map
+	imageOverlay.setUrl(state.customMapUrl)
+	map.fitBounds(bounds) // Re-fit bounds to the new image
+	mapImageUploadLabel.textContent = file.name
+})
+
 addLocationBtn.addEventListener('click', () => {
 	state.isPlacingNewPin = true
 	map.getContainer().style.cursor = 'crosshair'
@@ -140,6 +166,13 @@ function clearAllData() {
 	state.uploadedFiles = {}
 	state.selectedLocationId = null
 	state.nextLocationId = 1
+	state.customMapFile = null
+	state.customMapUrl = 'images/map.png'
+
+	// Update UI to reflect cleared state
+	mapImageUploadLabel.textContent = 'Upload Map Image (map.png)'
+	imageOverlay.setUrl(state.customMapUrl)
+	map.fitBounds(bounds)
 }
 
 function renderLocationsList() {
@@ -375,8 +408,24 @@ importFileInput.addEventListener('change', async (e) => {
 		state.author = packData.author || ''
 
 		packNameInput.value = state.packName
-		gameModeIdInput.value = state.gameModeId
-		authorNameInput.value = state.author
+		gameModeIdInput.value = packData.gameModeId
+		authorNameInput.value = packData.author
+
+		// Load custom map image if it exists in the zip
+		const mapFileInZip = zip.file(packData.map.mapImage)
+		if (packData.map && packData.map.useCustomMap && mapFileInZip) {
+			const mapBlob = await mapFileInZip.async('blob')
+			state.customMapFile = new File([mapBlob], packData.map.mapImage, { type: 'image/png' })
+			state.customMapUrl = URL.createObjectURL(state.customMapFile)
+			imageOverlay.setUrl(state.customMapUrl)
+			mapImageUploadLabel.textContent = packData.map.mapImage
+		} else {
+			// If no custom map is specified or found, revert to the default
+			state.customMapFile = null
+			state.customMapUrl = 'images/map.png'
+			imageOverlay.setUrl(state.customMapUrl)
+			mapImageUploadLabel.textContent = 'Upload Map Image (map.png)'
+		}
 
 		// Load locations and images
 		const imagesFolder = zip.folder('images')
@@ -476,11 +525,22 @@ downloadPackBtn.addEventListener('click', async () => {
 				}
 			}),
 		}
-		const packJsonString = JSON.stringify(packData, null, 2)
 
-		// 2. Create the zip file
 		const zip = new JSZip()
-		zip.file('pack.json', packJsonString)
+		
+		if (state.customMapFile) {
+			zip.file('map.png', state.customMapFile)
+			packData.map = {
+				useCustomMap: true,
+				mapImage: 'map.png'
+			}
+		} else {
+			packData.map = {
+				useCustomMap: false
+			}
+		}
+
+		zip.file('pack.json', JSON.stringify(packData, null, 2))
 		const imagesFolder = zip.folder('images')
 
 		for (const loc of state.locations) {
