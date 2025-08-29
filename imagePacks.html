@@ -1,320 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<link rel="manifest" href="manifest.json" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
-		<title>Create Image Pack | Hollow Guessr</title>
-		<link rel="stylesheet" href="style/style.css" />
-		<link rel="stylesheet" href="style/locationRequest.css" />
+
+<head>
+	<meta charset="UTF-8" />
+	<link rel="manifest" href="manifest.json" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+	<title>Create Image Pack | Hollow Guessr</title>
+	<link rel="stylesheet" href="style/style.css" />
+	<link rel="stylesheet" href="style/locationRequest.css" />
+	<script>
+		// Constants for contributors data
+		const CONTRIBUTORS_DATA_URL = 'data/packContributors.json'
+		const MAX_RETRIES = 3
+		const RETRY_DELAY = 1000 // ms
+		const VERSION = '1.0' // Increment this when making changes to the data format
+	</script>
+</head>
+
+<body>
+	<main class="location-request-content">
+		<nav class="back-nav">
+			<button onclick="window.location.href='index.html'">
+				&lt;- Back to Title
+			</button>
+		</nav>
+
+		<h1>How to Create an Image Pack</h1>
+		<ol>
+			<li>Open The Image Pack Editor</li>
+			<button onclick="window.open('editor.html', '_blank')">Open Editor</button>
+			<li>Give your pack a unique ID, name, and author (you!)</li>
+			<img src="images/editorTutorial/1.png" alt="Giving the game mode a unique ID and name" />
+			<li>
+				Add locations by clicking the button and then clicking on the map to place a pin.
+				<br>
+
+				<i>(You can change pin's position at anytime by dragging them around the map)</i>
+			</li>
+			<img src="images/editorTutorial/2.png" alt="Adding locations" />
+			<li>Upload an image and set the difficulty rating for that location</li>
+			<img src="images/editorTutorial/3.png" alt="Final location box" />
+			<li>Continue to add locations until you're done!</li>
+			<img src="images/editorTutorial/4.png" alt="Final location list" />
+			<li>Download your pack as a ZIP file!</li>
+			<img src="images/editorTutorial/5.png" alt="Saving the pack" />
+			<li>You can test your pack by loading it in the game now!</li>
+			<img src="images/editorTutorial/6.png" alt="Loading the pack">
+		</ol>
+
+		<h1>I made a pack, now what?</h1>
+		<h2>Your pack can be merged into the main game!</h2>
+		Here's some ways to submit it:
+		<ul class="suggestions-list">
+			<li class="preferred">
+				<a href="https://discord.gg/cr2CU4eFgg" target="_blank">Join the new Discord server</a>
+				and create a post with a link to your pack
+			</li>
+			<li class="preferred">
+				<a href="https://github.com/Logboy2000/HKGuessr/issues/new" target="_blank">Create a new issue</a>
+				on GitHub with the title "Image Pack Submission: [Your Pack Name]" and
+				attach your ZIP file
+			</li>
+			<li class="alternative">
+				Message me on Discord: @logboy2000 with your pack ZIP file
+			</li>
+			<li class="alternative">
+				Email the ZIP file to me at
+				<a href="mailto:loganhowarth@icloud.com">loganhowarth@icloud.com</a>
+				with the subject "HKGuessr Image Pack Submission"
+			</li>
+		</ul>
+		<h2>
+			Submission Requirements:
+		</h2>
+		All community packs that meet these criteria
+		can be added to the main game:
+		<ul class="contributors-list">
+			<li class="alternative">
+				No player character visible in the screenshots
+			</li>
+			<li class="alternative">
+				Roughly 16:9 aspect ratio images (1920x1080 recommended)
+			</li>
+			<li class="alternative">No UI elements or HUD visible</li>
+			<li class="alternative">PNG or JPG format</li>
+			<li class="alternative">Accurate map coordinates for each location</li>
+			<li class="alternative">Reasonable difficulty ratings</li>
+		</ul>
+
+		<h2>Top Image Pack Contributors</h2>
+		Your name will be added here once your pack is merged!
+		<div class="table-container">
+			<table class="contributors-table" id="contributorsTable">
+				<thead>
+					<tr>
+						<th>Place</th>
+						<th>Images</th>
+						<th>Name</th>
+						<th>Notes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Contributors will be loaded here dynamically -->
+				</tbody>
+			</table>
+			<div id="lastUpdated" class="last-updated"></div>
+		</div>
+
 		<script>
-			// Constants for contributors data
-			const CONTRIBUTORS_DATA_URL = 'data/packContributors.json'
-			const MAX_RETRIES = 3
-			const RETRY_DELAY = 1000 // ms
-			const VERSION = '1.0' // Increment this when making changes to the data format
-		</script>
-	</head>
+			/**
+			 * Gets the ordinal suffix for a number (1st, 2nd, 3rd, etc.)
+			 * @param {number} i - The number to get the suffix for
+			 * @return {string} The number with its ordinal suffix
+			 */
+			function getOrdinalSuffix(i) {
+				const j = i % 10
+				const k = i % 100
 
-	<body>
-		<main class="location-request-content">
-			<nav class="back-nav">
-				<button onclick="window.location.href='index.html'">
-					&lt;- Back to Title
-				</button>
-			</nav>
-			
-			<h1>How to Create an Image Pack</h1>
-			<ol>
-				<li>Open The Image Pack Editor</li>
-				<button onclick="window.open('editor.html', '_blank')">Open Editor</button>
-				<li>Give your pack a unique ID, name, and author (you!)</li>
-				<img
-					src="images/editorTutorial/1.png"
-					alt="Giving the game mode a unique ID and name"
-				/>
-				<li>
-					Add locations by clicking the button and then clicking on the map to place a pin. 
-					<br>
-					
-					<i>(You can change pin's position at anytime by dragging them around the map)</i>
-				</li>
-				<img src="images/editorTutorial/2.png" alt="Adding locations" />
-				<li>Upload an image and set the difficulty rating for that location</li>
-				<img src="images/editorTutorial/3.png" alt="Final location box" />
-				<li>Continue to add locations until you're done!</li>
-				<img src="images/editorTutorial/4.png" alt="Final location list" />
-				<li>Download your pack as a ZIP file!</li>
-				<img src="images/editorTutorial/5.png" alt="Saving the pack" />
-				<li>You can test your pack by loading it in the game now!</li>
-				<img src="images/editorTutorial/6.png" alt="Loading the pack">
-			</ol>
+				if (j === 1 && k !== 11) {
+					return i + 'st'
+				} else if (j === 2 && k !== 12) {
+					return i + 'nd'
+				} else if (j === 3 && k !== 13) {
+					return i + 'rd'
+				} else {
+					return i + 'th'
+				}
+			}
 
-			<h1>I made a pack, now what?</h1>
-			<h2>Your pack can be merged into the main game!</h2>
-			Here's 3 ways to submit it:
-			<ul class="suggestions-list">
-				<li class="preferred">
-					<a
-						href="https://github.com/Logboy2000/HKGuessr/issues/new"
-						target="_blank"
-						>Create a new issue</a
-					>
-					on GitHub with the title "Image Pack Submission: [Your Pack Name]" and
-					attach your ZIP file
-				</li>
+			/**
+			 * Creates a row element for a contributor
+			 * @param {Object} contributor - The contributor data
+			 * @param {number} place - The place/rank of the contributor
+			 * @return {HTMLElement} The table row element
+			 */
+			function createContributorRow(contributor, place) {
+				const row = document.createElement('tr')
 
-				<li class="alternative">
-					Message me on Discord: @logboy2000 with your pack ZIP file
-				</li>
-				<li class="alternative">
-					Email the ZIP file to me at
-					<a href="mailto:loganhowarth@icloud.com">loganhowarth@icloud.com</a>
-					with the subject "HKGuessr Image Pack Submission"
-				</li>
-			</ul>
-			<h2>
-				Submission Requirements: 
-			</h2>
-			All community packs that meet these criteria
-				can be added to the main game:
-			<ul class="contributors-list">
-				<li class="alternative">
-					No player character visible in the screenshots
-				</li>
-				<li class="alternative">
-					Roughly 16:9 aspect ratio images (1920x1080 recommended)
-				</li>
-				<li class="alternative">No UI elements or HUD visible</li>
-				<li class="alternative">PNG or JPG format</li>
-				<li class="alternative">Accurate map coordinates for each location</li>
-				<li class="alternative">Reasonable difficulty ratings</li>
-			</ul>
-
-			<h2>Top Image Pack Contributors</h2>
-			Your name will be added here once your pack is merged!
-			<div class="table-container">
-				<table class="contributors-table" id="contributorsTable">
-					<thead>
-						<tr>
-							<th>Place</th>
-							<th>Images</th>
-							<th>Name</th>
-							<th>Notes</th>
-						</tr>
-					</thead>
-					<tbody>
-						<!-- Contributors will be loaded here dynamically -->
-					</tbody>
-				</table>
-				<div id="lastUpdated" class="last-updated"></div>
-			</div>
-
-			<script>
-				/**
-				 * Gets the ordinal suffix for a number (1st, 2nd, 3rd, etc.)
-				 * @param {number} i - The number to get the suffix for
-				 * @return {string} The number with its ordinal suffix
-				 */
-				function getOrdinalSuffix(i) {
-					const j = i % 10
-					const k = i % 100
-
-					if (j === 1 && k !== 11) {
-						return i + 'st'
-					} else if (j === 2 && k !== 12) {
-						return i + 'nd'
-					} else if (j === 3 && k !== 13) {
-						return i + 'rd'
-					} else {
-						return i + 'th'
-					}
+				// Add medal class for top positions
+				if (place === 1) {
+					row.classList.add('gold-medal')
+				} else if (place === 2) {
+					row.classList.add('silver-medal')
+				} else if (place === 3) {
+					row.classList.add('bronze-medal')
 				}
 
-				/**
-				 * Creates a row element for a contributor
-				 * @param {Object} contributor - The contributor data
-				 * @param {number} place - The place/rank of the contributor
-				 * @return {HTMLElement} The table row element
-				 */
-				function createContributorRow(contributor, place) {
-					const row = document.createElement('tr')
+				// Format position text
+				const positionText = getOrdinalSuffix(place)
 
-					// Add medal class for top positions
-					if (place === 1) {
-						row.classList.add('gold-medal')
-					} else if (place === 2) {
-						row.classList.add('silver-medal')
-					} else if (place === 3) {
-						row.classList.add('bronze-medal')
-					}
+				// Create cells safely with textContent to prevent XSS
+				const placeCell = document.createElement('td')
+				placeCell.textContent = positionText
 
-					// Format position text
-					const positionText = getOrdinalSuffix(place)
+				const imagesCell = document.createElement('td')
+				imagesCell.textContent = contributor.images
 
-					// Create cells safely with textContent to prevent XSS
-					const placeCell = document.createElement('td')
-					placeCell.textContent = positionText
+				const nameCell = document.createElement('td')
+				nameCell.textContent = contributor.name
 
-					const imagesCell = document.createElement('td')
-					imagesCell.textContent = contributor.images
+				const notesCell = document.createElement('td')
+				notesCell.textContent = contributor.notes || ''
 
-					const nameCell = document.createElement('td')
-					nameCell.textContent = contributor.name
+				// Append cells to row
+				row.appendChild(placeCell)
+				row.appendChild(imagesCell)
+				row.appendChild(nameCell)
+				row.appendChild(notesCell)
 
-					const notesCell = document.createElement('td')
-					notesCell.textContent = contributor.notes || ''
+				return row
+			}
 
-					// Append cells to row
-					row.appendChild(placeCell)
-					row.appendChild(imagesCell)
-					row.appendChild(nameCell)
-					row.appendChild(notesCell)
+			/**
+			 * Shows a message in the contributors table
+			 * @param {string} message - The message to display
+			 * @param {boolean} showReloadButton - Whether to show a reload button
+			 */
+			function showTableMessage(message, showReloadButton = false) {
+				const tbody = document.querySelector('#contributorsTable tbody')
+				tbody.innerHTML = ''
 
-					return row
+				const row = document.createElement('tr')
+				const cell = document.createElement('td')
+
+				cell.setAttribute('colspan', '4')
+				cell.style.textAlign = 'center'
+				cell.style.padding = '20px'
+
+				if (showReloadButton) {
+					const messageSpan = document.createElement('span')
+					messageSpan.textContent = message
+
+					const reloadButton = document.createElement('button')
+					reloadButton.textContent = 'Reload Data'
+					reloadButton.style.marginLeft = '15px'
+					reloadButton.addEventListener('click', () => loadContributors())
+
+					cell.appendChild(messageSpan)
+					cell.appendChild(reloadButton)
+				} else {
+					cell.textContent = message
 				}
 
-				/**
-				 * Shows a message in the contributors table
-				 * @param {string} message - The message to display
-				 * @param {boolean} showReloadButton - Whether to show a reload button
-				 */
-				function showTableMessage(message, showReloadButton = false) {
+				row.appendChild(cell)
+				tbody.appendChild(row)
+			}
+
+			/**
+			 * Loads and displays the contributors
+			 * @param {number} retryCount - Current retry attempt (default 0)
+			 */
+			async function loadContributors(retryCount = 0) {
+				try {
+					// Show loading state
+					showTableMessage('Loading contributors data...')
+
+					// Fetch the contributors data with cache-busting
+					const response = await fetch(
+						`${CONTRIBUTORS_DATA_URL}?v=${VERSION}&t=${Date.now()}`
+					)
+
+					if (!response.ok) {
+						throw new Error(
+							`Failed to load data: ${response.status} ${response.statusText}`
+						)
+					}
+
+					const data = await response.json()
+
+					if (!data || !Array.isArray(data.contributors)) {
+						throw new Error('Invalid data format')
+					}
+
+					// Create a local copy of the contributors and sort by images (descending)
+					const contributors = [...data.contributors].sort(
+						(a, b) => b.images - a.images
+					)
+
+					// Get table element and prepare for new content
 					const tbody = document.querySelector('#contributorsTable tbody')
 					tbody.innerHTML = ''
 
-					const row = document.createElement('tr')
-					const cell = document.createElement('td')
-
-					cell.setAttribute('colspan', '4')
-					cell.style.textAlign = 'center'
-					cell.style.padding = '20px'
-
-					if (showReloadButton) {
-						const messageSpan = document.createElement('span')
-						messageSpan.textContent = message
-
-						const reloadButton = document.createElement('button')
-						reloadButton.textContent = 'Reload Data'
-						reloadButton.style.marginLeft = '15px'
-						reloadButton.addEventListener('click', () => loadContributors())
-
-						cell.appendChild(messageSpan)
-						cell.appendChild(reloadButton)
-					} else {
-						cell.textContent = message
+					if (contributors.length === 0) {
+						showTableMessage('No contributors found.', true)
+						return
 					}
 
-					row.appendChild(cell)
-					tbody.appendChild(row)
-				}
+					// Track the place/rank
+					let currentPlace = 1
+					let previousImages = null
+					const fragment = document.createDocumentFragment()
 
-				/**
-				 * Loads and displays the contributors
-				 * @param {number} retryCount - Current retry attempt (default 0)
-				 */
-				async function loadContributors(retryCount = 0) {
-					try {
-						// Show loading state
-						showTableMessage('Loading contributors data...')
+					// Add each contributor to the table
+					contributors.forEach((contributor, index) => {
+						// Update the place/rank when the image count changes
+						if (
+							previousImages !== null &&
+							previousImages !== contributor.images
+						) {
+							currentPlace = index + 1
+						}
+						previousImages = contributor.images
 
-						// Fetch the contributors data with cache-busting
-						const response = await fetch(
-							`${CONTRIBUTORS_DATA_URL}?v=${VERSION}&t=${Date.now()}`
+						// Create and add the row
+						const row = createContributorRow(contributor, currentPlace)
+						fragment.appendChild(row)
+					})
+
+					// Add all rows to the table at once (better performance)
+					tbody.appendChild(fragment)
+
+					// Update the last updated timestamp
+					updateLastUpdatedTimestamp()
+				} catch (error) {
+					console.error(
+						`Error loading contributors (attempt ${retryCount + 1}/${MAX_RETRIES + 1
+						}):`,
+						error
+					)
+
+					// Retry loading if we haven't exceeded max retries
+					if (retryCount < MAX_RETRIES) {
+						showTableMessage(
+							`Loading contributors data... (Retry ${retryCount + 1
+							}/${MAX_RETRIES})`
 						)
 
-						if (!response.ok) {
-							throw new Error(
-								`Failed to load data: ${response.status} ${response.statusText}`
-							)
-						}
-
-						const data = await response.json()
-
-						if (!data || !Array.isArray(data.contributors)) {
-							throw new Error('Invalid data format')
-						}
-
-						// Create a local copy of the contributors and sort by images (descending)
-						const contributors = [...data.contributors].sort(
-							(a, b) => b.images - a.images
-						)
-
-						// Get table element and prepare for new content
-						const tbody = document.querySelector('#contributorsTable tbody')
-						tbody.innerHTML = ''
-
-						if (contributors.length === 0) {
-							showTableMessage('No contributors found.', true)
-							return
-						}
-
-						// Track the place/rank
-						let currentPlace = 1
-						let previousImages = null
-						const fragment = document.createDocumentFragment()
-
-						// Add each contributor to the table
-						contributors.forEach((contributor, index) => {
-							// Update the place/rank when the image count changes
-							if (
-								previousImages !== null &&
-								previousImages !== contributor.images
-							) {
-								currentPlace = index + 1
-							}
-							previousImages = contributor.images
-
-							// Create and add the row
-							const row = createContributorRow(contributor, currentPlace)
-							fragment.appendChild(row)
-						})
-
-						// Add all rows to the table at once (better performance)
-						tbody.appendChild(fragment)
-
-						// Update the last updated timestamp
-						updateLastUpdatedTimestamp()
-					} catch (error) {
-						console.error(
-							`Error loading contributors (attempt ${retryCount + 1}/${
-								MAX_RETRIES + 1
-							}):`,
-							error
-						)
-
-						// Retry loading if we haven't exceeded max retries
-						if (retryCount < MAX_RETRIES) {
-							showTableMessage(
-								`Loading contributors data... (Retry ${
-									retryCount + 1
-								}/${MAX_RETRIES})`
-							)
-
-							// Wait before retrying
-							await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY))
-							return loadContributors(retryCount + 1)
-						}
-
-						showTableMessage('Error loading contributors data.', true)
+						// Wait before retrying
+						await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY))
+						return loadContributors(retryCount + 1)
 					}
-				}
 
-				/**
-				 * Updates the timestamp showing when the data was last loaded
-				 */
-				function updateLastUpdatedTimestamp() {
-					const lastUpdatedElement = document.getElementById('lastUpdated')
-					const now = new Date()
-					const formattedDate = now.toLocaleDateString()
-					const formattedTime = now.toLocaleTimeString()
-					lastUpdatedElement.textContent = `Last updated: ${formattedDate} ${formattedTime}`
+					showTableMessage('Error loading contributors data.', true)
 				}
+			}
 
-				// Initialize when the document is ready
-				document.addEventListener('DOMContentLoaded', loadContributors)
-			</script>
-		</main>
-	</body>
+			/**
+			 * Updates the timestamp showing when the data was last loaded
+			 */
+			function updateLastUpdatedTimestamp() {
+				const lastUpdatedElement = document.getElementById('lastUpdated')
+				const now = new Date()
+				const formattedDate = now.toLocaleDateString()
+				const formattedTime = now.toLocaleTimeString()
+				lastUpdatedElement.textContent = `Last updated: ${formattedDate} ${formattedTime}`
+			}
+
+			// Initialize when the document is ready
+			document.addEventListener('DOMContentLoaded', loadContributors)
+		</script>
+	</main>
+</body>
+
 </html>
