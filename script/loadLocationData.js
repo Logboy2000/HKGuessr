@@ -1,7 +1,5 @@
 import { dataLoaded, GameManager } from "./game.js";
 
-
-
 document.body.onload = loadLocationData;
 
 // Single object to store all game mode data
@@ -42,10 +40,34 @@ async function loadCustomImagePack(file) {
       })
     );
 
+    // Handle custom map
+    let mapInfo = { 
+      useCustomMap: false,
+      defaultMap: "hollowKnight",
+    };
+    if (data.map) {
+      if (data.map.useCustomMap) {
+        const mapImageFile = zip.file(data.map.mapImage);
+        if (!mapImageFile)
+          throw new Error(`Map image ${data.map.mapImage} not found in zip`);
+        const blob = new Blob([await mapImageFile.async("arraybuffer")]);
+        const mapUrl = URL.createObjectURL(blob);
+        mapInfo = {
+          useCustomMap: true,
+          mapUrl: mapUrl,
+        };
+      } else if (data.map.defaultMap) {
+        mapInfo.defaultMap = data.map.defaultMap;
+      } 
+    }
+
+
+
     // Add to game modes
     gameModeData[data.gameModeId] = {
       name: data.name,
       locations: locations,
+      map: mapInfo,
     };
 
     // Initialize GameManager.usedLocations for this game mode
@@ -125,10 +147,20 @@ async function loadLocationData() {
           ];
         });
 
+        // Handle map from default pack
+        let mapInfo = { useCustomMap: false };
+        if (data.map && data.map.useCustomMap) {
+          mapInfo = {
+            useCustomMap: true,
+            mapUrl: `${defaultImagePacksFolder}${packName}/${data.map.mapImage}`,
+          };
+        }
+
         // Store data using gameModeId as the key
         gameModeData[data.gameModeId] = {
           name: data.name,
           locations: locations,
+          map: mapInfo,
         };
 
         // Initialize GameManager.usedLocations for this game mode

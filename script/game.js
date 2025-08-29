@@ -6,6 +6,9 @@ import { randIRange } from './Utils.js'
 
 //BEWARE THIS SOURCE CODE IS NOW LESS OF AN ABSOLUTE MESS THAN IT USED TO BE//
 
+
+export const DEFAULT_MAP_URL = "images/game/defaultMaps/hallownest.png"
+
 // --- Constants ---
 export const GAMESTATES = {
 	guessing: 0,
@@ -124,7 +127,6 @@ export const GameManager = {
 				DOM.timerDisplay.innerText = (remainingTime / 1000).toFixed(2)
 			}
 		}
-		console.log(GameMap)
 		// Draw map and UI
 		GameMap.draw()
 
@@ -205,6 +207,10 @@ export const GameManager = {
 			.addEventListener('click', () => this.openWindow('options'))
 
 		document
+			.getElementById('gameMode')
+			.addEventListener('change', this.onGameModeChange.bind(this))
+
+		document
 			.getElementById('fullscreenButton')
 			.addEventListener('click', () => this.toggleFullscreen())
 
@@ -225,9 +231,30 @@ export const GameManager = {
 	},
 
 	/**
+	 * Handles when the game mode is changed in the options.
+	 * It updates the map image if the new pack has a custom map.
+	 */
+	async onGameModeChange() {
+		const selectedGameModeId = DOM.gameMode.value
+		const gameMode = this.gameModeData[selectedGameModeId]
+
+		if (gameMode && gameMode.map && gameMode.map.useCustomMap && gameMode.map.mapUrl) {
+			await GameMap.changeMapImage(gameMode.map.mapUrl)
+		} else {
+			await GameMap.changeMapImage(DEFAULT_MAP_URL) // default
+		}
+
+		// Update the background location image for the options screen
+		if (gameMode?.locations?.length > 0) {
+			this.setLocation(randIRange(0, gameMode.locations.length - 1), selectedGameModeId)
+		}
+	},
+
+	/**
 	 * Starts or restarts the game.
 	 */
-	restartGame() {
+	async restartGame() {
+		document.getElementById('startButton').innerText = 'Loading Map...'
 		// Validate round count
 		this.updateRoundCounter()
 
@@ -255,6 +282,18 @@ export const GameManager = {
 				return
 			}
 			this.timerLengthSeconds = Number(DOM.timerLengthInput.value)
+		}
+
+		// Set the map for the selected game mode
+		const selectedGameModeId = DOM.gameMode.value
+		const gameMode = this.gameModeData[selectedGameModeId]
+		if (gameMode && gameMode.map && gameMode.map.useCustomMap && gameMode.map.mapUrl) {
+			await GameMap.changeMapImage(gameMode.map.mapUrl)
+		} else if (gameMode.map.defaultMap){
+			// Default map if not specified or custom map is turned off
+			await GameMap.changeMapImage(gameMode.map.defaultMap)
+		} else {
+			await GameMap.changeMapImage(DEFAULT_MAP_URL)
 		}
 
 		this.gameState = GAMESTATES.guessing
@@ -435,7 +474,7 @@ export const GameManager = {
 			} else {
 				DOM.timerLengthDisplay.style.display = 'none'
 			}
-
+			document.getElementById('startButton').innerText = 'Start Game'
 			this.openWindow('gameover')
 			DOM.finalScoreDisplay.innerText = `Final Score: ${this.totalScore}/${this.totalRounds * this.maxScore
 				}`
@@ -679,7 +718,6 @@ export let dataLoaded = function () {
 	DOM.showMapButton = document.getElementById('showMapButton')
 	DOM.minimiseButton = document.getElementById('minimiseButton')
 	DOM.gameMode = document.getElementById('gameMode')
-
 	
 	GameManager.init()
 }

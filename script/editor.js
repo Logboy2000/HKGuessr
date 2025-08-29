@@ -9,16 +9,15 @@ const state = {
 	selectedLocationId: null, // ID of the currently selected location
 	nextLocationId: 1, // Counter for unique location IDs
 	isPlacingNewPin: false, // Flag for the "Add New Location" mode
+	defaultMapUrl: 'images/game/defaultMaps/hallownest.png',
 	customMapFile: null, // Holds the File object for the custom map.
-	customMapUrl: 'images/map.png', // URL for the currently displayed map image.
+	customMapUrl: 'images/game/defaultMaps/hallownest.png', // URL for the currently displayed map image.
+	mapImageWidth: 4498,
+	mapImageHeight: 2901,
 }
 
 // --- 2. Leaflet Map Setup ---
-// The Hollow Knight map is 4498x2901 pixels.
-const mapImageWidth = 4498
-const mapImageHeight = 2901
-const hollowKnightMapUrl = 'images/map.png'
-
+// Default map dimensions are in the state object.
 const map = L.map('map', {
 	crs: L.CRS.Simple,
 	minZoom: -2,
@@ -26,7 +25,7 @@ const map = L.map('map', {
 	zoomSnap: 0.25,
 	zoomDelta: 0,
 	scrollWheelZoom: true,
-	center: [mapImageHeight / 2, mapImageWidth / 2],
+	center: [state.mapImageHeight / 2, state.mapImageWidth / 2],
 	zoom: 0,
 	zoomAnimation: true,
 	attributionControl: false,
@@ -35,13 +34,26 @@ const map = L.map('map', {
 
 const bounds = [
 	[0, 0],
-	[mapImageHeight, mapImageWidth],
+	[state.mapImageHeight, state.mapImageWidth],
 ]
 // Use the state's customMapUrl for the initial image overlay
 const imageOverlay = L.imageOverlay(state.customMapUrl, bounds).addTo(map)
 
 imageOverlay.on('load', function () {
-	map.fitBounds(bounds)
+	// `this` is the imageOverlay
+	const img = this._image
+	state.mapImageWidth = img.naturalWidth
+	state.mapImageHeight = img.naturalHeight
+
+	const newBounds = [[0, 0], [state.mapImageHeight, state.mapImageWidth]]
+
+	// Update the overlay's bounds and fit the map to them
+	this.setBounds(newBounds)
+	// Change minZoom based on new img dimensions (banger math)
+	map.options.minZoom = Math.floor(Math.log(Math.max(map.getSize().x, map.getSize().y) /Math.max(state.mapImageWidth, state.mapImageHeight)) / Math.log(2))
+	
+	map.fitBounds(newBounds)
+	map.setMaxBounds(newBounds) // Constrain map panning
 })
 
 // --- 3. UI Element and Event Handlers ---
@@ -65,6 +77,8 @@ const imagePreview = document.getElementById('image-preview')
 const imageUploadLabel = document.getElementById('image-upload-label')
 const deleteLocationBtn = document.getElementById('delete-location-btn')
 const closeDetailsBtn = document.getElementById('close-details-btn')
+const defaultMapSelector = document.getElementById('default-map-selector')
+
 
 // Map Image UI Elements
 const mapImageUploadInput = document.getElementById('map-image-upload')
@@ -123,16 +137,15 @@ mapImageUploadInput.addEventListener('change', (e) => {
 	if (!file) return
 
 	// Revoke the previous URL to free up memory
-	if (state.customMapFile && state.customMapUrl) {
+	if (state.customMapFile && state.customMapUrl.startsWith('blob:')) {
 		URL.revokeObjectURL(state.customMapUrl)
 	}
 
 	state.customMapFile = file
 	state.customMapUrl = URL.createObjectURL(file)
 
-	// Update the image overlay on the map
+	// Update the image overlay on the map. The 'load' event will handle resizing.
 	imageOverlay.setUrl(state.customMapUrl)
-	map.fitBounds(bounds) // Re-fit bounds to the new image
 	mapImageUploadLabel.textContent = file.name
 })
 
@@ -167,12 +180,14 @@ function clearAllData() {
 	state.selectedLocationId = null
 	state.nextLocationId = 1
 	state.customMapFile = null
-	state.customMapUrl = 'images/map.png'
+	state.customMapUrl = 'images/map.png' // Revert to default map
+	state.mapImageWidth = 4498 // Revert to default width
+	state.mapImageHeight = 2901 // Revert to default height
 
 	// Update UI to reflect cleared state
+	// Setting the URL will trigger the 'load' event, which will correctly set the bounds
 	mapImageUploadLabel.textContent = 'Upload Map Image (map.png)'
 	imageOverlay.setUrl(state.customMapUrl)
-	map.fitBounds(bounds)
 }
 
 function renderLocationsList() {
@@ -278,7 +293,7 @@ function updateLocationDetailsUI() {
 
 	coordXSpan.textContent = location.x
 	// Invert y-axis for display
-	coordYSpan.textContent = mapImageHeight - location.y
+	coordYSpan.textContent = state.mapImageHeight - location.y
 	difficultySlider.value = location.difficulty
 	difficultyValueSpan.textContent = location.difficulty
 
@@ -350,6 +365,14 @@ deleteLocationBtn.addEventListener('click', () => {
 	}
 })
 
+defaultMapSelector.addEventListener('change', (e) => {
+	const newValue = e.target.value
+	state.customMapFile = null // Clear any custom map file
+	state.defaultMapUrl = `images/game/defaultMaps/${newValue}`
+	imageOverlay.setUrl(state.defaultMapUrl)
+	
+})
+
 // --- 5. Map Interaction ---
 map.on('click', (e) => {
 	if (state.isPlacingNewPin) {
@@ -397,6 +420,8 @@ importFileInput.addEventListener('change', async (e) => {
 
 		const packJsonString = await packJsonFile.async('string')
 		const packData = JSON.parse(packJsonString)
+		console.log('Imported pack data:', packData)
+
 
 		// Reset state and UI
 		clearAllData()
@@ -412,20 +437,30 @@ importFileInput.addEventListener('change', async (e) => {
 		authorNameInput.value = packData.author
 
 		// Load custom map image if it exists in the zip
-		const mapFileInZip = zip.file(packData.map.mapImage)
-		if (packData.map && packData.map.useCustomMap && mapFileInZip) {
+		if (packData.map && packData.map.useCustomMap && packData.map.mapImage) {
+			const mapFileInZip = zip.file(packData.map.mapImage)
+			if (!mapFileInZip) {
+				console.warn(`Map image '${packData.map.mapImage}' not found in zip. Using default map.`)
+				packData.map.useCustomMap = false // Force default
+			}
+		}
+
+		if (packData.map?.useCustomMap) {
+			const mapFileInZip = zip.file(packData.map.mapImage)
 			const mapBlob = await mapFileInZip.async('blob')
 			state.customMapFile = new File([mapBlob], packData.map.mapImage, { type: 'image/png' })
 			state.customMapUrl = URL.createObjectURL(state.customMapFile)
-			imageOverlay.setUrl(state.customMapUrl)
 			mapImageUploadLabel.textContent = packData.map.mapImage
 		} else {
 			// If no custom map is specified or found, revert to the default
 			state.customMapFile = null
-			state.customMapUrl = 'images/map.png'
-			imageOverlay.setUrl(state.customMapUrl)
+			state.customMapUrl = state.defaultMapUrl
 			mapImageUploadLabel.textContent = 'Upload Map Image (map.png)'
 		}
+
+		// Set the map URL and wait for it to load so we have the correct dimensions
+		imageOverlay.setUrl(state.customMapUrl)
+		await new Promise(resolve => imageOverlay.once('load', resolve));
 
 		// Load locations and images
 		const imagesFolder = zip.folder('images')
@@ -442,7 +477,7 @@ importFileInput.addEventListener('change', async (e) => {
 					}
 
 					// Correct the inverted y-axis from the pack data for the map
-					const correctedY = mapImageHeight - locData.y
+					const correctedY = state.mapImageHeight - locData.y
 
 					// Create a new location object for our state
 					const newId = generateUniqueId()
@@ -519,7 +554,7 @@ downloadPackBtn.addEventListener('click', async () => {
 				return {
 					x: loc.x,
 					// Invert the y-coordinate back to the game's coordinate system
-					y: mapImageHeight - loc.y,
+					y: state.mapImageHeight - loc.y,
 					difficulty: loc.difficulty,
 					image: loc.image, // Use the original image path from the state
 				}
@@ -536,7 +571,8 @@ downloadPackBtn.addEventListener('click', async () => {
 			}
 		} else {
 			packData.map = {
-				useCustomMap: false
+				useCustomMap: false,
+				defaultMap: state.defaultMapUrl
 			}
 		}
 

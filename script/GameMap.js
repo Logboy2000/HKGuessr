@@ -1,5 +1,5 @@
 import { lerp } from "./Utils.js";
-import { GameManager, GAMESTATES, DOM } from "./game.js"
+import { GameManager, GAMESTATES, DOM, DEFAULT_MAP_URL} from "./game.js"
 
 // --- Constants for the default map ---
 const DEFAULT_MAP_WIDTH = 4498;
@@ -21,10 +21,10 @@ export const GameMap = {
   shadePinImg: new Image(),
 
   camera: {
-    x: -mapCenter().x, // Initial map offset
-    y: -mapCenter().y, // Initial map offset
-    targetX: -mapCenter.x,
-    targetY: -mapCenter.y,
+    x: 0, // Initial map offset
+    y: 0, // Initial map offset
+    targetX: 0,
+    targetY: 0,
     zoom: 0.125, // Initial zoom level
     targetZoom: 0.125,
   },
@@ -55,7 +55,7 @@ export const GameMap = {
     this.shadePinImg.src = "images/shadePin.png";
 
     // Set and load the initial map image
-    this.changeMapImage("images/map.png");
+    this.changeMapImage(DEFAULT_MAP_URL);
 
     // Ensure pin images are loaded before attempting to draw them
     Promise.all([
@@ -71,6 +71,7 @@ export const GameMap = {
       });
 
     this.addEventListeners();
+    this.resetCamera();
   },
 
   /**
@@ -442,7 +443,9 @@ export const GameMap = {
    * Resets the map camera to its default position and zoom (centered).
    */
   resetCamera() {
-    this.camera.targetY = -1450;
+    this.camera.targetX = -this.mapCenter.x;
+    
+    this.camera.targetY = -this.mapCenter.y;
     this.camera.targetZoom = 0.125;
   },
 
