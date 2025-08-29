@@ -931,6 +931,156 @@
       "y": 1522,
       "difficulty": 7,
       "image": "images/loc-20-20250819181731_1.jpg"
+    },
+    {
+      "x": 302,
+      "y": 1905,
+      "difficulty": 3,
+      "image": "images/loc-2-distantvillage1.jpg"
+    },
+    {
+      "x": 1522,
+      "y": 658,
+      "difficulty": 3,
+      "image": "images/loc-4-kingspass1.jpg"
+    },
+    {
+      "x": 2366,
+      "y": 2769,
+      "difficulty": 2,
+      "image": "images/loc-6-abyss1.jpg"
+    },
+    {
+      "x": 1662,
+      "y": 1033,
+      "difficulty": 3,
+      "image": "images/loc-8-greenpath1.jpg"
+    },
+    {
+      "x": 504,
+      "y": 1149,
+      "difficulty": 5,
+      "image": "images/loc-10-gardens1.jpg"
+    },
+    {
+      "x": 3734,
+      "y": 979,
+      "difficulty": 2,
+      "image": "images/loc-12-grounds1.jpg"
+    },
+    {
+      "x": 1419,
+      "y": 2073,
+      "difficulty": 4,
+      "image": "images/loc-14-deepnest1.jpg"
+    },
+    {
+      "x": 2550,
+      "y": 703,
+      "difficulty": 5,
+      "image": "images/loc-16-crossroads1.jpg"
+    },
+    {
+      "x": 980,
+      "y": 1939,
+      "difficulty": 7,
+      "image": "images/loc-18-deepnest2.jpg"
+    },
+    {
+      "x": 3696,
+      "y": 2114,
+      "difficulty": 4,
+      "image": "images/loc-20-hive1.jpg"
+    },
+    {
+      "x": 3401,
+      "y": 1891,
+      "difficulty": 7,
+      "image": "images/loc-22-ismasgrove1.jpg"
+    },
+    {
+      "x": 3468,
+      "y": 1630,
+      "difficulty": 4,
+      "image": "images/loc-24-city1.jpg"
+    },
+    {
+      "x": 2553,
+      "y": 1029,
+      "difficulty": 4,
+      "image": "images/loc-26-crossroads2.jpg"
+    },
+    {
+      "x": 1406,
+      "y": 389,
+      "difficulty": 6,
+      "image": "images/loc-28-cliffs1.jpg"
+    },
+    {
+      "x": 1062,
+      "y": 581,
+      "difficulty": 3,
+      "image": "images/loc-30-cliffs2.jpg"
+    },
+    {
+      "x": 1317,
+      "y": 1054,
+      "difficulty": 8,
+      "image": "images/loc-32-greenpath2.jpg"
+    },
+    {
+      "x": 3001,
+      "y": 1443,
+      "difficulty": 8,
+      "image": "images/loc-34-city2.jpg"
+    },
+    {
+      "x": 2932,
+      "y": 1943,
+      "difficulty": 5,
+      "image": "images/loc-36-waterways1.jpg"
+    },
+    {
+      "x": 944,
+      "y": 1474,
+      "difficulty": 7,
+      "image": "images/loc-38-gardens2.jpg"
+    },
+    {
+      "x": 768,
+      "y": 1192,
+      "difficulty": 1,
+      "image": "images/loc-40-gardens3.jpg"
+    },
+    {
+      "x": 2995,
+      "y": 702,
+      "difficulty": 5,
+      "image": "images/loc-42-peaks1.jpg"
+    },
+    {
+      "x": 2699,
+      "y": 1601,
+      "difficulty": 9,
+      "image": "images/loc-44-city3.jpg"
+    },
+    {
+      "x": 1340,
+      "y": 1928,
+      "difficulty": 10,
+      "image": "images/loc-46-deepnest3.jpg"
+    },
+    {
+      "x": 3323,
+      "y": 2069,
+      "difficulty": 4,
+      "image": "images/loc-48-kedge1.jpg"
+    },
+    {
+      "x": 3870,
+      "y": 1852,
+      "difficulty": 10,
+      "image": "images/loc-50-kedge2.jpg"
     }
   ]
 }
