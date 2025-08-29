@@ -101,3 +101,16 @@ body {
     margin: 2px;
     text-align: left;
 }
+
+
+#silksongMessage {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    margin: 2px;
+    text-align: left;
+    width: 500px;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 8px;
+    padding: 10px;
+}
