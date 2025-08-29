@@ -91,6 +91,11 @@ body {
         padding: 12px 50px;
         font-size: 24px;
     }
+    #silksongMessage {
+        font-size: 10px;
+        max-width: 100%;
+        left: 0.5;
+    }
 }
 
 #versionLabel {
@@ -105,12 +110,12 @@ body {
 
 #silksongMessage {
     position: absolute;
-    left: 1rem;
-    top: 1rem;
     margin: 2px;
     text-align: left;
-    width: 500px;
+    width: 600px;
     background: rgba(0, 0, 0, 0.9);
     border-radius: 8px;
     padding: 10px;
+    top: 0;
+    left: 0;
 }

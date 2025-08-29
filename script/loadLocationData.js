@@ -1,26 +1,75 @@
-import { dataLoaded, GameManager } from "./game.js";
+import { dataLoaded, GameManager, DEFAULT_MAP_URL } from "./game.js";
 
 document.body.onload = loadLocationData;
 
 // Single object to store all game mode data
 window.gameModeData = {};
 
-const defaultImagePacks = ["normal", "charms"];
+let defaultImagePacks = [];
 const defaultImagePacksFolder = "data/defaultImagePacks/";
+
+/**
+ * Registers a processed pack by adding it to the game's data,
+ * updating the UI, and preparing the game manager.
+ * @param {object} data - The parsed pack.json data.
+ * @param {Array} locations - The processed array of location data.
+ * @param {object} mapInfo - The processed map information.
+ * @param {boolean} [isCustom=false] - Flag for custom packs that require special handling.
+ */
+async function registerPack(data, locations, mapInfo, isCustom = false) {
+  // Add to game modes
+  window.gameModeData[data.gameModeId] = {
+    name: data.name,
+    locations: locations,
+    map: mapInfo,
+  };
+
+  // For custom packs loaded after initial setup, we need to initialize usedLocations.
+  // For default packs, GameManager.init() will handle this after all packs are loaded.
+  if (isCustom) {
+    if (typeof GameManager.usedLocations !== "undefined") {
+      GameManager.usedLocations[data.gameModeId] = [];
+    } else {
+      // This logic is a fallback for potential race conditions on very fast user interaction.
+      console.warn(
+        "GameManager.usedLocations not initialized yet, attempting to wait..."
+      );
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      if (typeof GameManager.usedLocations !== "undefined") {
+        GameManager.usedLocations[data.gameModeId] = [];
+      } else {
+        throw new Error(
+          "GameManager.usedLocations is not available. Ensure the game has fully loaded."
+        );
+      }
+    }
+  }
+
+  // Update game mode select options
+  const gameModeSelect = document.getElementById("gameMode");
+  const option = document.createElement("option");
+  option.value = data.gameModeId;
+  option.textContent = isCustom ? `${data.name} (Custom)` : data.name;
+  gameModeSelect.appendChild(option);
+
+  if (isCustom) {
+    gameModeSelect.value = data.gameModeId;
+    // Trigger change event to update the game map and background image
+    gameModeSelect.dispatchEvent(new Event("change"));
+  }
+}
+
 
 // Handle loading custom image packs from ZIP files
 async function loadCustomImagePack(file) {
   try {
-    // Load the zip
-    const zipData = await file.arrayBuffer();
-    const zip = await JSZip.loadAsync(zipData);
-
-    // Get the pack.json file
+    // Load and parse the zip and pack.json
+    const zip = await JSZip.loadAsync(await file.arrayBuffer());
     const jsonFile = zip.file("pack.json");
     if (!jsonFile) throw new Error("pack.json not found in zip");
     const data = JSON.parse(await jsonFile.async("text"));
 
-    // Create object URLs for all images
+    // Create object URLs for all location images
     const locations = await Promise.all(
       data.locations.map(async (loc) => {
         // If it's a remote URL (http/https/blob), use as is
@@ -30,74 +79,33 @@ async function loadCustomImagePack(file) {
         ) {
           return [loc.x, loc.y, loc.difficulty, loc.image];
         }
-        // Otherwise, treat as local image in zip
         const imageName = loc.image.split("/").pop();
         const imageFile = zip.file(`images/${imageName}`);
         if (!imageFile) throw new Error(`Image ${imageName} not found in zip`);
         const blob = new Blob([await imageFile.async("arraybuffer")]);
-        const imageUrl = URL.createObjectURL(blob);
-        return [loc.x, loc.y, loc.difficulty, imageUrl];
+        return [loc.x, loc.y, loc.difficulty, URL.createObjectURL(blob)];
       })
     );
 
-    // Handle custom map
-    let mapInfo = { 
-      useCustomMap: false,
-      defaultMap: "hollowKnight",
-    };
+    // Handle custom or default map from the pack
+    let mapInfo = { useCustomMap: false, defaultMap: DEFAULT_MAP_URL };
     if (data.map) {
       if (data.map.useCustomMap) {
         const mapImageFile = zip.file(data.map.mapImage);
         if (!mapImageFile)
           throw new Error(`Map image ${data.map.mapImage} not found in zip`);
         const blob = new Blob([await mapImageFile.async("arraybuffer")]);
-        const mapUrl = URL.createObjectURL(blob);
         mapInfo = {
           useCustomMap: true,
-          mapUrl: mapUrl,
+          mapUrl: URL.createObjectURL(blob),
         };
       } else if (data.map.defaultMap) {
         mapInfo.defaultMap = data.map.defaultMap;
-      } 
-    }
-
-
-
-    // Add to game modes
-    gameModeData[data.gameModeId] = {
-      name: data.name,
-      locations: locations,
-      map: mapInfo,
-    };
-
-    // Initialize GameManager.usedLocations for this game mode
-    if (typeof GameManager.usedLocations !== "undefined") {
-      GameManager.usedLocations[data.gameModeId] = [];
-    } else {
-      console.warn(
-        "GameManager.usedLocations not initialized yet, waiting for script.js to load"
-      );
-      // Create a small delay to allow script.js to initialize
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      if (typeof GameManager.usedLocations !== "undefined") {
-        GameManager.usedLocations[data.gameModeId] = [];
-      } else {
-        throw new Error(
-          "GameManager.usedLocations is not available. Make sure script.js is loaded first."
-        );
       }
     }
 
-    // Update game mode select options
-    const gameModeSelect = document.getElementById("gameMode");
-    const option = document.createElement("option");
-    option.value = data.gameModeId;
-    option.textContent = `${data.name} (Custom)`;
-    gameModeSelect.appendChild(option);
-    gameModeSelect.value = data.gameModeId;
-
-    // Trigger change event to update the game
-    gameModeSelect.dispatchEvent(new Event("change"));
+    // Register the pack with the game
+    await registerPack(data, locations, mapInfo, true);
   } catch (error) {
     console.error("Error loading custom image pack:", error);
     alert(`Error loading image pack: ${error.message}`);
@@ -105,18 +113,30 @@ async function loadCustomImagePack(file) {
 }
 
 async function loadLocationData() {
+  // Loads the list of packs from 'packList.json'
   try {
-    // Clear existing data
-    gameModeData = {};
+      const response = await fetch('data/defaultImagePacks/packList.json');
+      if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const dataArray = await response.json();
+      defaultImagePacks = dataArray;
+  } catch (error) {
+      console.error("Failed to load or parse data:", error);
+      defaultImagePacks = [];
+  }
 
-    // Update game mode select options
+  // Loads packs from the defaultImagePacks list
+  try {
+    // Clear existing data and UI
+    window.gameModeData = {};
     const gameModeSelect = document.getElementById("gameMode");
     gameModeSelect.innerHTML = "";
 
-    // Load each image pack
+    // Load each default image pack
     for (const packName of defaultImagePacks) {
       try {
-        // Load the pack.json file from the image pack folder
+        // Load the pack.json file
         const response = await fetch(
           `${defaultImagePacksFolder}${packName}/pack.json`
         );
@@ -124,20 +144,16 @@ async function loadLocationData() {
           console.error(`Failed to load ${packName} pack.json`);
           continue;
         }
-
-        // Parse the JSON data
         const data = await response.json();
 
-        // Process the locations, updating image paths to use the image pack folder
+        // Process locations, creating full image paths
         const locations = data.locations.map((loc) => {
-          // If it's a remote URL (http/https/blob), use as is
           if (
             /^(https?:)?\/\//.test(loc.image) ||
             loc.image.startsWith("blob:")
           ) {
             return [loc.x, loc.y, loc.difficulty, loc.image];
           }
-          // Otherwise, use local image path
           const imageName = loc.image.split("/").pop();
           return [
             loc.x,
@@ -147,32 +163,21 @@ async function loadLocationData() {
           ];
         });
 
-        // Handle map from default pack
-        let mapInfo = { useCustomMap: false };
-        if (data.map && data.map.useCustomMap) {
-          mapInfo = {
-            useCustomMap: true,
-            mapUrl: `${defaultImagePacksFolder}${packName}/${data.map.mapImage}`,
-          };
+        // Handle custom or default map from the pack
+        let mapInfo = { useCustomMap: false, defaultMap: DEFAULT_MAP_URL };
+        if (data.map) {
+          if (data.map.useCustomMap) {
+            mapInfo = {
+              useCustomMap: true,
+              mapUrl: `${defaultImagePacksFolder}${packName}/${data.map.mapImage}`,
+            };
+          } else if (data.map.defaultMap) {
+            mapInfo.defaultMap = data.map.defaultMap;
+          }
         }
 
-        // Store data using gameModeId as the key
-        gameModeData[data.gameModeId] = {
-          name: data.name,
-          locations: locations,
-          map: mapInfo,
-        };
-
-        // Initialize GameManager.usedLocations for this game mode
-        if (typeof GameManager.usedLocations !== "undefined") {
-          GameManager.usedLocations[data.gameModeId] = [];
-        }
-
-        // Add option to game mode select
-        const option = document.createElement("option");
-        option.value = data.gameModeId;
-        option.textContent = data.name;
-        gameModeSelect.appendChild(option);
+        // Register the pack with the game
+        await registerPack(data, locations, mapInfo, false);
       } catch (error) {
         console.error(`Error loading ${packName} pack:`, error);
       }
@@ -181,17 +186,19 @@ async function loadLocationData() {
     console.log("Location data loaded successfully!");
   } catch (error) {
     console.error("Error loading location data:", error);
-    // Fallback to empty object if loading fails
-    gameModeData = {};
+    window.gameModeData = {}; // Fallback to empty object
   }
 
-  // Call the global dataLoaded function from script.js
+  // Signal that all data is loaded and the game can initialize
   if (typeof dataLoaded === "function") {
     dataLoaded();
   } else {
     console.error("dataLoaded function not found");
   }
 }
+
+
+
 
 // Add event listener for custom image pack upload
 const customImagePackInput = document.getElementById("customImagePack");

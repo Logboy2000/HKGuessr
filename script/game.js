@@ -522,12 +522,14 @@ export const GameManager = {
 
 		const imgSrc = this.currentLocation[3]
 		DOM.locationImgElement.src = '' // Clear previous image
+		DOM.locationImgElement.style.display = 'none'
 		DOM.loadingText.style.display = 'flex'
 
 		const img = new Image()
 		img.onload = () => {
 			this.imageIsLoaded = true
 			DOM.loadingText.style.display = 'none'
+			DOM.locationImgElement.style.display = 'block'
 			DOM.locationImgElement.src = imgSrc
 			if (GameMap.guessPosition) {
 				// Only enable guess button if a guess was made

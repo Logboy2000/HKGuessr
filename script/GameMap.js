@@ -1,5 +1,5 @@
 import { lerp } from "./Utils.js";
-import { GameManager, GAMESTATES, DOM, DEFAULT_MAP_URL} from "./game.js"
+import { GameManager, GAMESTATES, DOM, DEFAULT_MAP_URL } from "./game.js"
 
 // --- Constants for the default map ---
 const DEFAULT_MAP_WIDTH = 4498;
@@ -333,18 +333,6 @@ export const GameMap = {
 
     // Draw pins and line if a guess has been made
     if (this.guessPosition) {
-      // Draw the guess pin (knightPinImg)
-      this.ctx.save(); // Save context before drawing guess pin
-      this.ctx.translate(this.guessPosition.x, this.guessPosition.y);
-      // Apply inverse scale to keep pin size constant regardless of map zoom
-      this.ctx.scale(0.5 / this.camera.zoom, 0.5 / this.camera.zoom);
-      this.ctx.drawImage(
-        this.knightPinImg,
-        -this.knightPinImg.width / 2,
-        -this.knightPinImg.height / 2
-      );
-      this.ctx.restore(); // Restore context after drawing guess pin
-
       if (
         GameManager.gameState === GAMESTATES.guessed ||
         GameManager.gameState === GAMESTATES.gameOver
@@ -376,6 +364,17 @@ export const GameMap = {
         );
         this.ctx.restore(); // Restore context after drawing shade pin
       }
+      // Draw the guess pin (knightPinImg)
+      this.ctx.save(); // Save context before drawing guess pin
+      this.ctx.translate(this.guessPosition.x, this.guessPosition.y);
+      // Apply inverse scale to keep pin size constant regardless of map zoom
+      this.ctx.scale(0.5 / this.camera.zoom, 0.5 / this.camera.zoom);
+      this.ctx.drawImage(
+        this.knightPinImg,
+        -this.knightPinImg.width / 2,
+        -this.knightPinImg.height / 2
+      );
+      this.ctx.restore(); // Restore context after drawing guess pin
     }
 
     this.ctx.restore(); // Restore to initial state (before global transformations)
@@ -444,7 +443,7 @@ export const GameMap = {
    */
   resetCamera() {
     this.camera.targetX = -this.mapCenter.x;
-    
+
     this.camera.targetY = -this.mapCenter.y;
     this.camera.targetZoom = 0.125;
   },
