@@ -1,474 +1,451 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Image Pack Editor | Hollow Guessr</title>
-		<!-- Inter font import -->
-		<link
-			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
-			rel="stylesheet"
-		/>
-		<!-- Leaflet CSS for map functionality -->
-		<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-		<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
-		<style>
-			@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
-			
-			body {
-				font-family: 'Inter', sans-serif;
-				background-color: #0c0a0c;
-				color: #d1d5db;
-				margin: 0;
-				padding: 0;
-			}
 
-			#app-container {
-				display: flex;
-				height: 100dvh;
-				overflow: hidden;
-			}
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Image Pack Editor | Hollow Guessr</title>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
-			#map {
-				flex-grow: 1;
-				background-color: #1a1a1a;
-				position: relative;
-			}
+		body {
+			font-family: 'Inter', sans-serif;
+			background-color: #0c0a0c;
+			color: #d1d5db;
+			margin: 0;
+			padding: 0;
+		}
 
-			#sidebar {
-				min-width: 316px;
-				width: 450px; /* Adjusted initial width */
-				max-height: 100dvh;
-				overflow-y: auto;
-				background-color: #121013;
-				box-shadow: -6px 0 15px rgba(0, 0, 0, 0.5);
-				padding: 2rem;
-				display: flex;
-				flex-direction: column;
-				gap: 2rem;
-				position: relative; /* Needed for the resizer */
-			}
+		#app-container {
+			display: flex;
+			height: 100dvh;
+			overflow: hidden;
+		}
 
-			#resizer {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 8px; /* A slightly larger, easier-to-grab area */
-				height: 100%;
-				cursor: col-resize;
-				z-index: 10;
-			}
+		#map {
+			flex-grow: 1;
+			background-color: #1a1a1a;
+			position: relative;
+		}
 
-			/* Custom scrollbar styling for a cleaner look */
-			#sidebar::-webkit-scrollbar {
-				width: 8px;
-			}
+		#sidebar {
+			min-width: 316px;
+			width: 450px;
+			/* Adjusted initial width */
+			max-height: 100dvh;
+			overflow-y: auto;
+			background-color: #121013;
+			box-shadow: -6px 0 15px rgba(0, 0, 0, 0.5);
+			padding: 2rem;
+			display: flex;
+			flex-direction: column;
+			gap: 2rem;
+			position: relative;
+			/* Needed for the resizer */
+		}
 
-			#sidebar::-webkit-scrollbar-track {
-				background: #1f1d21;
-			}
+		#resizer {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 8px;
+			/* A slightly larger, easier-to-grab area */
+			height: 100%;
+			cursor: col-resize;
+			z-index: 10;
+		}
 
-			#sidebar::-webkit-scrollbar-thumb {
-				background: #4a4a5a;
-				border-radius: 4px;
-			}
+		/* Custom scrollbar styling for a cleaner look */
+		#sidebar::-webkit-scrollbar {
+			width: 8px;
+		}
 
-			#sidebar::-webkit-scrollbar-thumb:hover {
-				background: #5d5d6d;
-			}
+		#sidebar::-webkit-scrollbar-track {
+			background: #1f1d21;
+		}
 
-			.main-heading {
-				font-size: 2.25rem;
-				font-weight: 700;
-				text-align: center;
-				color: #60a5fa;
-				text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-				padding: 0;
-				margin: 0;
-			}
+		#sidebar::-webkit-scrollbar-thumb {
+			background: #4a4a5a;
+			border-radius: 4px;
+		}
 
-			.sub-heading {
-				font-size: 1rem;
-				font-weight: 700;
-				text-align: center;
-				color: #7d7d7d;
-				text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-				padding: 0;
-				margin: 0;
-			}
+		#sidebar::-webkit-scrollbar-thumb:hover {
+			background: #5d5d6d;
+		}
 
-			.sidebar-section {
-				background-color: #0d0a0d;
-				padding: 1.5rem;
-				border-radius: 1rem;
-				box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-					0 4px 6px -2px rgba(0, 0, 0, 0.05);
-			}
+		.main-heading {
+			font-size: 2.25rem;
+			font-weight: 700;
+			text-align: center;
+			color: #60a5fa;
+			text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+			padding: 0;
+			margin: 0;
+		}
 
-			.section-heading {
-				font-size: 1.5rem;
-				font-weight: 600;
-				color: #e5e7eb;
-				border-bottom: 1px solid #374151;
-				padding-bottom: 0.75rem;
-				margin-bottom: 1.25rem;
-			}
+		.sub-heading {
+			font-size: 1rem;
+			font-weight: 700;
+			text-align: center;
+			color: #7d7d7d;
+			text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+			padding: 0;
+			margin: 0;
+		}
 
-			.input-group {
-				margin-bottom: 1rem;
-			}
+		.sidebar-section {
+			background-color: #0d0a0d;
+			padding: 1.5rem;
+			border-radius: 1rem;
+			box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+				0 4px 6px -2px rgba(0, 0, 0, 0.05);
+		}
 
-			.input-label {
-				display: block;
-				font-size: 0.875rem;
-				font-weight: 500;
-				margin-bottom: 0.5rem;
-			}
+		.section-heading {
+			font-size: 1.5rem;
+			font-weight: 600;
+			color: #e5e7eb;
+			border-bottom: 1px solid #374151;
+			padding-bottom: 0.75rem;
+			margin-bottom: 1.25rem;
+		}
 
-			.text-input {
-				width: calc(100% - 1.5rem);
-				background-color: #1f2937;
-				color: #e5e7eb;
-				border-radius: 0.5rem;
-				padding: 0.5rem 1rem;
-				border: 1px solid #4b5563;
-				transition: all 0.2s ease-in-out;
-			}
+		.input-group {
+			margin-bottom: 1rem;
+		}
 
-			.text-input:focus {
-				outline: none;
-				border-color: #3b82f6;
-				box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-			}
+		.input-label {
+			display: block;
+			font-size: 0.875rem;
+			font-weight: 500;
+			margin-bottom: 0.5rem;
+		}
 
-			.slider-input {
-				-webkit-appearance: none;
-				appearance: none;
-				width: 100%;
-				height: 8px;
-				background-color: #4b5563;
-				border-radius: 4px;
-				cursor: pointer;
-			}
+		.text-input {
+			width: calc(100% - 1.5rem);
+			background-color: #1f2937;
+			color: #e5e7eb;
+			border-radius: 0.5rem;
+			padding: 0.5rem 1rem;
+			border: 1px solid #4b5563;
+			transition: all 0.2s ease-in-out;
+		}
 
-			.slider-input::-webkit-slider-thumb {
-				-webkit-appearance: none;
-				width: 16px;
-				height: 16px;
-				background-color: #3b82f6;
-				border-radius: 50%;
-				cursor: pointer;
-				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-			}
+		.text-input:focus {
+			outline: none;
+			border-color: #3b82f6;
+			box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+		}
 
-			.slider-input::-moz-range-thumb {
-				width: 16px;
-				height: 16px;
-				background-color: #3b82f6;
-				border-radius: 50%;
-				cursor: pointer;
-				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-			}
+		.slider-input {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 100%;
+			height: 8px;
+			background-color: #4b5563;
+			border-radius: 4px;
+			cursor: pointer;
+		}
 
-			.btn {
-				font-weight: 700;
-				padding: 0.75rem 1.5rem;
-				border-radius: 0.5rem;
-				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-				transition: all 0.2s ease-in-out;
-				border: none;
-				cursor: pointer;
-                align-items: center;
-                align-content: center;
-                justify-content: center;
-                text-align: center;
-                display: flex;
-                gap: 0.5rem;
-			}
+		.slider-input::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			width: 16px;
+			height: 16px;
+			background-color: #3b82f6;
+			border-radius: 50%;
+			cursor: pointer;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+		}
 
-			.btn-primary {
-				background-color: #2563eb;
-				color: #fff;
-				background-image: linear-gradient(to right, #3b82f6, #2563eb);
-			}
+		.slider-input::-moz-range-thumb {
+			width: 16px;
+			height: 16px;
+			background-color: #3b82f6;
+			border-radius: 50%;
+			cursor: pointer;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+		}
 
-			.btn-primary:hover {
-				background-color: #1d4ed8;
-				background-image: none;
-			}
+		.btn {
+			font-weight: 700;
+			padding: 0.75rem 1.5rem;
+			border-radius: 0.5rem;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			transition: all 0.2s ease-in-out;
+			border: none;
+			cursor: pointer;
+			align-items: center;
+			align-content: center;
+			justify-content: center;
+			text-align: center;
+			display: flex;
+			gap: 0.5rem;
+		}
 
-			.btn-danger {
-				background-color: #dc2626;
-				color: #fff;
-			}
+		.btn-primary {
+			background-color: #2563eb;
+			color: #fff;
+			background-image: linear-gradient(to right, #3b82f6, #2563eb);
+		}
 
-			.btn-danger:hover {
-				background-color: #b91c1c;
-			}
+		.btn-primary:hover {
+			background-color: #1d4ed8;
+			background-image: none;
+		}
 
-			.btn-secondary {
-				background-color: #4b5563;
-				color: #fff;
-			}
+		.btn-danger {
+			background-color: #dc2626;
+			color: #fff;
+		}
 
-			.btn-secondary:hover {
-				background-color: #374151;
-			}
+		.btn-danger:hover {
+			background-color: #b91c1c;
+		}
 
-			.btn-full-width {
-				width: 100%;
-			}
+		.btn-secondary {
+			background-color: #4b5563;
+			color: #fff;
+		}
 
-			.location-list {
-				max-height: 240px;
-				overflow-y: auto;
-				padding-right: 0.5rem;
-				display: flex;
-				flex-direction: column;
-				gap: 0.75rem;
-			}
+		.btn-secondary:hover {
+			background-color: #374151;
+		}
 
-			.location-item {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				background-color: #1f2937;
-				padding: 1rem;
-				border-radius: 0.5rem;
-				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-				transition: background-color 0.2s;
-				cursor: pointer;
-				border: 1px solid #4b5563;
-			}
+		.btn-full-width {
+			width: 100%;
+		}
 
-			.location-item:hover {
-				background-color: #374151;
-			}
+		.btn-disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
 
-			.location-item.selected {
-				background-color: #2563eb;
-				border-color: #3b82f6;
-				color: #fff;
-				font-weight: 700;
-			}
 
-			.location-item.selected .location-subtext {
-				color: #bfdbfe;
-			}
+		.location-list {
+			max-height: 240px;
+			overflow-y: auto;
+			padding-right: 0.5rem;
+			display: flex;
+			flex-direction: column;
+			gap: 0.75rem;
+		}
 
-			.location-subtext {
-				font-size: 0.875rem;
-				color: #9ca3af;
-			}
+		.location-item {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			background-color: #1f2937;
+			padding: 1rem;
+			border-radius: 0.5rem;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			transition: background-color 0.2s;
+			cursor: pointer;
+			border: 1px solid #4b5563;
+		}
 
-			.preview-img {
-				width: 100%;
-				height: 10rem;
-				object-fit: scale-down;
-				border-radius: 0.5rem;
-				margin-top: 1rem;
-				border: 1px solid #4b5563;
-				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-			}
+		.location-item:hover {
+			background-color: #374151;
+		}
 
-			.file-label {
-				display: block;
-				text-align: center;
-				background-color: #1f2937;
-				padding: 1rem;
-				border-radius: 0.5rem;
-				cursor: pointer;
-				transition: background-color 0.2s;
-				border: 1px solid #4b5563;
-				box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
-			}
+		.location-item.selected {
+			background-color: #2563eb;
+			border-color: #3b82f6;
+			color: #fff;
+			font-weight: 700;
+		}
 
-			.file-label:hover {
-				background-color: #374151;
-			}
+		.location-item.selected .location-subtext {
+			color: #bfdbfe;
+		}
 
-			.leaflet-container {
-				background-color: #1a1a1a !important;
-			}
+		.location-subtext {
+			font-size: 0.875rem;
+			color: #9ca3af;
+		}
 
-			.leaflet-marker-icon.pin-icon {
-				background-image: url('images/shadePin.png');
-				background-size: contain;
-                background-repeat: no-repeat;
-                background-position: center;
-				width: 32px !important;
-				height: 32px !important;
-				will-change: transform;
-			}
+		.preview-img {
+			width: 100%;
+			height: 10rem;
+			object-fit: scale-down;
+			border-radius: 0.5rem;
+			margin-top: 1rem;
+			border: 1px solid #4b5563;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
 
-			.leaflet-marker-icon.pin-icon.active {
-                background-color: #1d4ed8;
-			}
+		.file-label {
+			display: block;
+			text-align: center;
+			background-color: #1f2937;
+			padding: 1rem;
+			border-radius: 0.5rem;
+			cursor: pointer;
+			transition: background-color 0.2s;
+			border: 1px solid #4b5563;
+			box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+		}
 
-			.flex-row {
-				display: flex;
-				gap: 0.75rem;
-			}
+		.file-label:hover {
+			background-color: #374151;
+		}
 
-			.flex-grow-1 {
-				flex: 1 1 0%;
-			}
-            .svg-icon {
-                width: 1.5rem;
-                height: 1.5rem;
-            }
-		</style>
-	</head>
+		.leaflet-container {
+			background-color: #1a1a1a !important;
+		}
 
-	<body>
-		<div id="app-container">
-			<!-- Main Map Area -->
-			<div id="map"></div>
+		.leaflet-marker-icon.pin-icon {
+			background-image: url('images/shadePin.png');
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
+			width: 32px !important;
+			height: 32px !important;
+			will-change: transform;
+		}
 
-			<!-- Sidebar / Control Panel -->
-			<div id="sidebar">
-				<!-- This div is the draggable handle for resizing the sidebar -->
-				<div id="resizer"></div>
+		.leaflet-marker-icon.pin-icon.active {
+			background-color: #1d4ed8;
+		}
 
-				<button
-					onclick="window.location.href='locationRequest.html'"
-					class="btn btn-secondary"
-				>
-					&lt;- Back
-				</button>
-				<h1 class="main-heading">Image Pack Editor</h1>
-				<h2 class="sub-heading">Beta v0.1</h2>
+		.flex-row {
+			display: flex;
+			gap: 0.75rem;
+		}
 
-				<!-- Pack Details -->
-				<div class="sidebar-section">
-					<h2 class="section-heading">Pack Details</h2>
-					<div class="input-group">
-						<label for="pack-name" class="input-label">Pack Name</label>
-						<input
-							type="text"
-							id="pack-name"
-							class="text-input"
-							placeholder="e.g., My Awesome Pack"
-						/>
-					</div>
-					<div class="input-group">
-						<label for="game-mode-id" class="input-label">Game Mode ID</label>
-						<input
-							type="text"
-							id="game-mode-id"
-							class="text-input"
-							placeholder="e.g., my_awesome_pack"
-						/>
-					</div>
-					<div class="input-group">
-						<label for="author-name" class="input-label">Author</label>
-						<input
-							type="text"
-							id="author-name"
-							class="text-input"
-							placeholder="e.g., Your Name"
-						/>
-					</div>
+		.flex-grow-1 {
+			flex: 1 1 0%;
+		}
+
+		.svg-icon {
+			width: 1.5rem;
+			height: 1.5rem;
+		}
+
+		.dropdown {
+			width: 100%;
+			background-color: #1f2937;
+			color: #e5e7eb;
+			border-radius: 0.5rem;
+			padding: 0.5rem 1rem;
+			border: 1px solid #4b5563;
+			transition: all 0.2s ease-in-out;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app-container">
+		<div id="map"></div>
+
+		<div id="sidebar">
+			<div id="resizer"></div>
+
+			<button onclick="window.location.href='locationRequest.html'" class="btn btn-secondary">
+				&lt;- Back
+			</button>
+			<h1 class="main-heading">Image Pack Editor</h1>
+			<h2 class="sub-heading">Beta v0.1</h2>
+
+			<div class="sidebar-section">
+				<h2 class="section-heading">Pack Details</h2>
+				<div class="input-group">
+					<label for="pack-name" class="input-label">Pack Name</label>
+					<input type="text" id="pack-name" class="text-input" placeholder="e.g., My Awesome Pack" />
 				</div>
+				<div class="input-group">
+					<label for="game-mode-id" class="input-label">Game Mode ID</label>
+					<input type="text" id="game-mode-id" class="text-input" placeholder="e.g., my_awesome_pack" />
+				</div>
+				<div class="input-group">
+					<label for="author-name" class="input-label">Author</label>
+					<input type="text" id="author-name" class="text-input" placeholder="e.g., Your Name" />
+				</div>
+			</div>
 
-				<!-- Locations List & Actions -->
-				<div class="sidebar-section">
-					<h2 class="section-heading">Locations</h2>
-					<div id="locations-list" class="location-list">
-						<!-- Location items will be dynamically inserted here -->
-					</div>
-					<button id="add-location-btn" class="btn btn-primary btn-full-width">
-                        <img src="images/editor/add.svg" alt="" class="svg-icon">
-						Add New Location
+			<div class="sidebar-section">
+				<h2 class="section-heading">Map Image</h2>
+				<select name="map-image" class="dropdown" id="default-map-selector">
+					<option value="hallownest.png">Hallownest</option>
+					<option value="pharloom.jpg">Pharloom (Placeholder)</option>
+				</select>
+				<p style="text-align: center; margin: 1rem 0; color: #9ca3af;">OR</p>
+
+
+				<div class="input-group">
+					<label for="map-image-upload" class="file-label">
+						<span id="map-image-upload-label">Upload Custom Map Image</span>
+					</label>
+					<input type="file" id="map-image-upload" style="display: none"
+						accept=".png, .jpg, .jpeg, .webp, .gif, .svg, .bmp, .tiff, .ico, .heic, .heif" />
+				</div>
+			</div>
+
+			<div class="sidebar-section">
+				<h2 class="section-heading">Locations</h2>
+				<div id="locations-list" class="location-list">
+				</div>
+				<button id="add-location-btn" class="btn btn-primary btn-full-width">
+					<img src="images/editor/add.svg" alt="" class="svg-icon">
+					Add New Location
+				</button>
+			</div>
+
+			<div id="location-details" class="sidebar-section" style="display: none">
+				<h2 class="section-heading">Location Details</h2>
+				<div class="input-group">
+					<label class="input-label">Coordinates</label>
+					<p class="text-lg" style="font-family: monospace; color: #9ca3af">
+						X: <span id="coord-x">...</span>, Y: <span id="coord-y">...</span>
+					</p>
+				</div>
+				<div class="input-group">
+					<label for="difficulty-slider" class="input-label">Difficulty: <span
+							id="difficulty-value">5</span></label>
+					<input type="range" id="difficulty-slider" min="1" max="10" value="5" class="slider-input" />
+				</div>
+				<div class="input-group">
+					<label for="image-upload" class="file-label">
+						<span id="image-upload-label">Upload Location Image</span>
+					</label>
+					<input type="file" id="image-upload" style="display: none"
+						accept=".png, .jpg, .jpeg, .webp, .gif, .svg, .bmp, .tiff, .ico, .heic, .heif" />
+					<img id="image-preview" src="images/editor/imagePreview.svg" alt="Image Preview"
+						class="preview-img" />
+				</div>
+				<div class="flex-row">
+					<button id="delete-location-btn" class="btn btn-danger flex-grow-1">
+						Delete
+					</button>
+					<button id="close-details-btn" class="btn btn-secondary flex-grow-1">
+						Close
 					</button>
 				</div>
+			</div>
 
-				<!-- Location Details (Hidden by default) -->
-				<div
-					id="location-details"
-					class="sidebar-section"
-					style="display: none"
-				>
-					<h2 class="section-heading">Location Details</h2>
-					<div class="input-group">
-						<label class="input-label">Coordinates</label>
-						<p class="text-lg" style="font-family: monospace; color: #9ca3af">
-							X: <span id="coord-x">...</span>, Y: <span id="coord-y">...</span>
-						</p>
-					</div>
-					<div class="input-group">
-						<label for="difficulty-slider" class="input-label"
-							>Difficulty: <span id="difficulty-value">5</span></label
-						>
-						<input
-							type="range"
-							id="difficulty-slider"
-							min="1"
-							max="10"
-							value="5"
-							class="slider-input"
-						/>
-					</div>
-					<div class="input-group">
-						<label for="image-upload" class="file-label">
-							<span id="image-upload-label">Upload Location Image</span>
-						</label>
-						<input
-							type="file"
-							id="image-upload"
-							style="display: none"
-							accept=".png, .jpg, .jpeg, .webp, .gif, .svg, .bmp, .tiff, .ico, .heic, .heif"
-						/>
-						<img
-							id="image-preview"
-							src="images/editor/imagePreview.svg"
-							alt="Image Preview"
-							class="preview-img"
-						/>
-					</div>
-					<div class="flex-row">
-						<button id="delete-location-btn" class="btn btn-danger flex-grow-1">
-							Delete
-						</button>
-						<button
-							id="close-details-btn"
-							class="btn btn-secondary flex-grow-1"
-						>
-							Close
-						</button>
-					</div>
-				</div>
-
-				<!-- Download and Import Buttons -->
-				<div
-					class="flex-row"
-					style="
+			<div class="flex-row" style="
 						padding-top: 1.5rem;
 						border-top: 1px solid #4b5563;
 						margin-top: auto;
-					"
-				>
-					<button id="import-pack-btn" class="btn btn-secondary flex-grow-1">
-						<img src="images/editor/upload.svg" alt="" class="svg-icon">
-						Import Pack
-					</button>
-					<button id="download-pack-btn" class="btn btn-primary flex-grow-1">
-						<img src="images/editor/download.svg" alt="" class="svg-icon">
-						Download Pack
-					</button>
-					<input
-						type="file"
-						id="import-file-input"
-						style="display: none"
-						accept=".zip"
-					/>
-				</div>
+					">
+				<button id="import-pack-btn" class="btn btn-secondary flex-grow-1">
+					<img src="images/editor/upload.svg" alt="" class="svg-icon">
+					Import Pack
+				</button>
+				<button id="download-pack-btn" class="btn btn-primary flex-grow-1">
+					<img src="images/editor/download.svg" alt="" class="svg-icon">
+					Download Pack
+				</button>
+				<input type="file" id="import-file-input" style="display: none" accept=".zip" />
 			</div>
 		</div>
+	</div>
 
-		<!-- Leaflet and JSZip Libraries -->
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-		<script src="script/editor.js"></script>
-	</body>
+	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+	<script src="script/editor.js"></script>
+</body>
+
 </html>

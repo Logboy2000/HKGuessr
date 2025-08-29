@@ -179,14 +179,6 @@ button[disabled] {
 }
 
 @media (max-width: 768px) {
-  #versionLabel {
-    top: 0;
-    right: 0;
-    left: auto;
-    /* Reset conflicting left */
-    bottom: auto;
-    /* Reset conflicting bottom */
-  }
 
   #mapContainer {
     width: 100%;
@@ -228,8 +220,8 @@ button[disabled] {
 .fullscreen {
   transition: all 0.5s ease;
   opacity: 0.9;
-  width: calc(100% - 4rem) !important;
-  height: calc(100% - 4rem) !important;
+  width: calc(100% - 2rem) !important;
+  height: calc(100% - 2rem) !important;
   right: 0 !important;
   bottom: 0 !important;
 }

@@ -6,6 +6,9 @@ import { randIRange } from './Utils.js'
 
 //BEWARE THIS SOURCE CODE IS NOW LESS OF AN ABSOLUTE MESS THAN IT USED TO BE//
 
+
+export const DEFAULT_MAP_URL = "images/game/defaultMaps/hallownest.png"
+
 // --- Constants ---
 export const GAMESTATES = {
 	guessing: 0,
@@ -23,7 +26,7 @@ export const DIFFICULTRANGE = {
 // --- DOM Elements (Grouped for better organization) ---
 // Properties are assigned in dataLoaded().
 export const DOM = {}
-const gameMap = new GameMap()
+
 
 // --- GameManager Object ---
 // Manages all game state, flow, scoring, and UI updates.
@@ -52,6 +55,7 @@ export const GameManager = {
 		// This ensures GameManager has access to all loaded data and can initialize its usedLocations.
 		// This line must execute AFTER loadLocationData has populated the global `gameModeData`.
 		this.gameModeData = window.gameModeData // Use window.gameModeData for clarity
+		GameMap.init(DOM.mapCanvas)
 
 		// Initialize usedLocations for all game modes that have been loaded
 		Object.keys(this.gameModeData).forEach((modeId) => {
@@ -112,10 +116,10 @@ export const GameManager = {
 
 			if (remainingTime <= 0) {
 				DOM.timerDisplay.innerText = '0.00'
-				if (!gameMap.guessPosition) {
-					gameMap.updateGuessPos(
-						gameMap.mouseXRelative,
-						gameMap.mouseYRelative
+				if (!GameMap.guessPosition) {
+					GameMap.updateGuessPos(
+						GameMap.mouseXRelative,
+						GameMap.mouseYRelative
 					)
 				}
 				GameManager.guessButtonClicked()
@@ -123,9 +127,10 @@ export const GameManager = {
 				DOM.timerDisplay.innerText = (remainingTime / 1000).toFixed(2)
 			}
 		}
-
 		// Draw map and UI
-		gameMap.draw()
+		GameMap.draw()
+
+		
 
 		// Update UI elements that depend on game state
 		DOM.newGameButton.disabled =
@@ -202,6 +207,10 @@ export const GameManager = {
 			.addEventListener('click', () => this.openWindow('options'))
 
 		document
+			.getElementById('gameMode')
+			.addEventListener('change', this.onGameModeChange.bind(this))
+
+		document
 			.getElementById('fullscreenButton')
 			.addEventListener('click', () => this.toggleFullscreen())
 
@@ -222,21 +231,32 @@ export const GameManager = {
 	},
 
 	/**
+	 * Handles when the game mode is changed in the options.
+	 * It updates the map image if the new pack has a custom map.
+	 */
+	async onGameModeChange() {
+		const selectedGameModeId = DOM.gameMode.value
+		const gameMode = this.gameModeData[selectedGameModeId]
+
+		if (gameMode && gameMode.map && gameMode.map.useCustomMap && gameMode.map.mapUrl) {
+			await GameMap.changeMapImage(gameMode.map.mapUrl)
+		} else {
+			await GameMap.changeMapImage(DEFAULT_MAP_URL) // default
+		}
+
+		// Update the background location image for the options screen
+		if (gameMode?.locations?.length > 0) {
+			this.setLocation(randIRange(0, gameMode.locations.length - 1), selectedGameModeId)
+		}
+	},
+
+	/**
 	 * Starts or restarts the game.
 	 */
-	restartGame() {
+	async restartGame() {
+		document.getElementById('startButton').innerText = 'Loading Map...'
 		// Validate round count
-		if (
-			!this.checkNumberIntegrity(DOM.roundCountInput, true, false) ||
-			Number(DOM.roundCountInput.value) <= 0
-		) {
-			console.error(
-				'Please use a valid number for round count (greater than 0).'
-			)
-			// Consider adding a simple UI message instead of just console.error
-			return
-		}
-		this.totalRounds = Number(DOM.roundCountInput.value)
+		this.updateRoundCounter()
 
 		// Validate difficulty range
 		this.minDifficulty = Number(
@@ -264,6 +284,18 @@ export const GameManager = {
 			this.timerLengthSeconds = Number(DOM.timerLengthInput.value)
 		}
 
+		// Set the map for the selected game mode
+		const selectedGameModeId = DOM.gameMode.value
+		const gameMode = this.gameModeData[selectedGameModeId]
+		if (gameMode && gameMode.map && gameMode.map.useCustomMap && gameMode.map.mapUrl) {
+			await GameMap.changeMapImage(gameMode.map.mapUrl)
+		} else if (gameMode.map.defaultMap){
+			// Default map if not specified or custom map is turned off
+			await GameMap.changeMapImage(gameMode.map.defaultMap)
+		} else {
+			await GameMap.changeMapImage(DEFAULT_MAP_URL)
+		}
+
 		this.gameState = GAMESTATES.guessing
 		this.totalScore = 0
 		this.currentRound = 0
@@ -280,9 +312,13 @@ export const GameManager = {
 	 */
 	updateRoundCounter() {
 		// Ensure roundCountInput is valid first
-		if (this.checkNumberIntegrity(DOM.roundCountInput, true, true)) {
-			this.totalRounds = Number(DOM.roundCountInput.value)
+		var value = Number(DOM.roundCountInput.value)
+
+		if (value <= 0 || isNaN(value)){
+			value = DOM.roundCountInput.placeholder
 		}
+		this.totalRounds = value
+
 		DOM.roundElement.textContent = `${this.currentRound}/${this.totalRounds}`
 	},
 
@@ -390,7 +426,7 @@ export const GameManager = {
 		if (DOM.guessButton.disabled) return
 		if (this.gameState === GAMESTATES.guessing) {
 			// If no guess was made but timer ran out, set score to 0
-			if (!gameMap.guessPosition) {
+			if (!GameMap.guessPosition) {
 				this.roundScore = 0
 			} else {
 				this.calculateScore()
@@ -400,14 +436,14 @@ export const GameManager = {
 			DOM.guessButton.disabled = false
 
 			// Adjust camera to show both guess and correct location
-			if (gameMap.guessPosition && this.currentLocation) {
-				gameMap.fitPointsInView(gameMap.guessPosition, {
+			if (GameMap.guessPosition && this.currentLocation) {
+				GameMap.fitPointsInView(GameMap.guessPosition, {
 					x: this.currentLocation[0],
 					y: this.currentLocation[1],
 				})
 			} else if (this.currentLocation) {
 				// If no guess, just zoom to correct location
-				gameMap.setCameraTarget(
+				GameMap.setCameraTarget(
 					this.currentLocation[0],
 					this.currentLocation[1],
 					1
@@ -438,7 +474,7 @@ export const GameManager = {
 			} else {
 				DOM.timerLengthDisplay.style.display = 'none'
 			}
-
+			document.getElementById('startButton').innerText = 'Start Game'
 			this.openWindow('gameover')
 			DOM.finalScoreDisplay.innerText = `Final Score: ${this.totalScore}/${this.totalRounds * this.maxScore
 				}`
@@ -458,7 +494,7 @@ export const GameManager = {
 	 */
 	setLocation(i, gameMode) {
 		this.imageIsLoaded = false
-		gameMap.guessPosition = null // Clear previous guess
+		GameMap.guessPosition = null // Clear previous guess
 
 		const modeData = this.gameModeData[gameMode] // Use this.gameModeData
 		if (
@@ -486,14 +522,16 @@ export const GameManager = {
 
 		const imgSrc = this.currentLocation[3]
 		DOM.locationImgElement.src = '' // Clear previous image
+		DOM.locationImgElement.style.display = 'none'
 		DOM.loadingText.style.display = 'flex'
 
 		const img = new Image()
 		img.onload = () => {
 			this.imageIsLoaded = true
 			DOM.loadingText.style.display = 'none'
+			DOM.locationImgElement.style.display = 'block'
 			DOM.locationImgElement.src = imgSrc
-			if (gameMap.guessPosition) {
+			if (GameMap.guessPosition) {
 				// Only enable guess button if a guess was made
 				DOM.guessButton.disabled = false
 			}
@@ -543,7 +581,7 @@ export const GameManager = {
 	 */
 	nextRound() {
 		this.gameState = GAMESTATES.guessing
-		gameMap.resetCamera() // Reset map camera for new round
+		GameMap.resetCamera() // Reset map camera for new round
 		this.currentRound++
 		this.updateRoundCounter()
 
@@ -629,7 +667,7 @@ export const GameManager = {
 		this.setLocation(originalIndex, selectedGameMode)
 
 		DOM.guessButton.disabled = true
-		gameMap.guessPosition = null // Clear guess for new round
+		GameMap.guessPosition = null // Clear guess for new round
 
 		// Reset and start the timer
 		if (this.timerEnabled) {
@@ -641,12 +679,12 @@ export const GameManager = {
 	 * Calculates the round score based on guess distance.
 	 */
 	calculateScore() {
-		if (!gameMap.guessPosition || !this.currentLocation) {
+		if (!GameMap.guessPosition || !this.currentLocation) {
 			this.roundScore = 0
 			return
 		}
-		const dx = gameMap.guessPosition.x - this.currentLocation[0]
-		const dy = gameMap.guessPosition.y - this.currentLocation[1]
+		const dx = GameMap.guessPosition.x - this.currentLocation[0]
+		const dy = GameMap.guessPosition.y - this.currentLocation[1]
 		const distance = Math.sqrt(dx * dx + dy * dy)
 		const leniency = 50 // Distance in which you get the max score
 		const dropOffRate = 0.001 // How quickly the score drops off when guessing farther aue aue! (away)
@@ -682,7 +720,6 @@ export let dataLoaded = function () {
 	DOM.showMapButton = document.getElementById('showMapButton')
 	DOM.minimiseButton = document.getElementById('minimiseButton')
 	DOM.gameMode = document.getElementById('gameMode')
-
-	gameMap.init(DOM.mapCanvas, GameManager)
+	
 	GameManager.init()
 }

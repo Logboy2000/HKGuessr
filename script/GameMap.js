@@ -1,64 +1,106 @@
 import { lerp } from "./Utils.js";
-import { GameManager, GAMESTATES, DOM } from "./game.js"
+import { GameManager, GAMESTATES, DOM, DEFAULT_MAP_URL } from "./game.js"
+
+// --- Constants for the default map ---
+const DEFAULT_MAP_WIDTH = 4498;
+const DEFAULT_MAP_HEIGHT = 2901;
+
 // --- MapRenderer Object ---
 // Manages all canvas drawing, camera, and map interactions.
-export class GameMap {
-  constructor() {
-    this.canvas = null;
-    this.ctx = null;
-    this.mapImg = new Image();
-    this.knightPinImg = new Image();
-    this.shadePinImg = new Image();
-    this.camera = {
-      x: -2249, // Initial map offset
-      y: -1450, // Initial map offset
-      targetX: -2249,
-      targetY: -1450,
-      zoom: 0.125, // Initial zoom level
-      targetZoom: 0.125,
-    };
-    this.mousePos = { x: 0, y: 0 }; // Mouse position relative to canvas
-    this.mouseXRelative = 0; // Mouse X position relative to camera and zoom
-    this.mouseYRelative = 0; // Mouse Y position relative to camera and zoom
-    this.isDragging = false;
-    this.dragStart = { x: 0, y: 0 };
-    this.hasMoved = false;
-    this.initialZoom = 0;
-    this.pinchStartDistance = 0;
-    this.guessPosition = null; // The user's guessed position on the map
-  }
+export const GameMap = {
 
+  canvas: null,
+  ctx: null,
+
+  mapWidth: DEFAULT_MAP_WIDTH,
+  mapHeight: DEFAULT_MAP_HEIGHT,
+
+
+  mapImg: new Image(),
+  knightPinImg: new Image(),
+  shadePinImg: new Image(),
+
+  camera: {
+    x: 0, // Initial map offset
+    y: 0, // Initial map offset
+    targetX: 0,
+    targetY: 0,
+    zoom: 0.125, // Initial zoom level
+    targetZoom: 0.125,
+  },
+  mousePos: { x: 0, y: 0 }, // Mouse position relative to canvas
+  mouseXRelative: 0, // Mouse X position relative to camera and zoom
+  mouseYRelative: 0, // Mouse Y position relative to camera and zoom
+  isDragging: false,
+  dragStart: { x: 0, y: 0 },
+  hasMoved: false,
+  initialZoom: 0,
+  pinchStartDistance: 0,
+  guessPosition: null, // The user's guessed position on the map
+
+  get mapCenter() {
+    return { x: this.mapWidth / 2, y: this.mapHeight / 2 };
+  },
   /**
    * Initializes the MapRenderer, setting up canvas and loading images.
    * @param {HTMLCanvasElement} canvasElement - The canvas DOM element.
    */
   init(canvasElement) {
-    
+
     this.canvas = canvasElement;
     this.ctx = this.canvas.getContext("2d");
 
-    this.mapImg.src = "images/map.png";
+    // Load static pin images
     this.knightPinImg.src = "images/knightPin.png";
     this.shadePinImg.src = "images/shadePin.png";
 
-    // Ensure images are loaded before attempting to draw them
+    // Set and load the initial map image
+    this.changeMapImage(DEFAULT_MAP_URL);
+
+    // Ensure pin images are loaded before attempting to draw them
     Promise.all([
-      this.loadImage(this.mapImg),
       this.loadImage(this.knightPinImg),
       this.loadImage(this.shadePinImg),
     ])
       .then(() => {
-        console.log("All map images loaded.");
-        // Initial draw call after images are loaded
-        this.draw();
+        console.log("All pin images loaded.");
       })
       .catch((error) => {
-        console.error("Failed to load one or more map images:", error);
+        console.error("Failed to load one or more pin images:", error);
         // Fallback or error handling for image loading
       });
 
     this.addEventListeners();
-  }
+    this.resetCamera();
+  },
+
+  /**
+   * Changes the map image, loads it, and resets the camera to the center.
+   * @param {string} imageUrl - The URL of the new map image.
+   */
+  async changeMapImage(imageUrl) {
+    try {
+      this.mapImg.src = imageUrl;
+      await this.loadImage(this.mapImg);
+
+      // Update map dimensions and center based on the new image
+      this.mapWidth = this.mapImg.width;
+      this.mapHeight = this.mapImg.height;
+
+      console.log(
+        `Image loaded: ${imageUrl} (${this.mapWidth}x${this.mapHeight})`
+      );
+
+      // Reset camera to center on the new map
+      this.resetCamera();
+
+      // Initial draw call after the new map is loaded
+      this.draw();
+    } catch (error) {
+      console.error("Failed to load map image:", error);
+      // Fallback or error handling for image loading
+    }
+  },
 
   /**
    * Helper to load an image and return a Promise.
@@ -67,11 +109,16 @@ export class GameMap {
    */
   loadImage(img) {
     return new Promise((resolve, reject) => {
+      // If image is already loaded and has dimensions, resolve immediately
+      if (img.complete && img.naturalWidth !== 0) {
+        resolve(img);
+        return;
+      }
       img.onload = () => resolve(img);
       img.onerror = (e) =>
         reject(new Error(`Failed to load image: ${img.src}, ${e}`));
     });
-  }
+  },
 
   /**
    * Adds all necessary event listeners for map interaction.
@@ -93,7 +140,7 @@ export class GameMap {
     );
     this.canvas.addEventListener("touchmove", this.handleTouchMove.bind(this));
     this.canvas.addEventListener("touchend", this.handleTouchEnd.bind(this));
-  }
+  },
 
   /**
    * Handles mouse down events on the canvas.
@@ -109,7 +156,7 @@ export class GameMap {
     this.hasMoved = false;
     this.dragStart.x = event.clientX;
     this.dragStart.y = event.clientY;
-  }
+  },
 
   /**
    * Handles mouse move events on the canvas.
@@ -135,7 +182,7 @@ export class GameMap {
       this.dragStart.x = event.clientX;
       this.dragStart.y = event.clientY;
     }
-  }
+  },
 
   /**
    * Handles mouse up events on the canvas.
@@ -145,14 +192,14 @@ export class GameMap {
       this.updateGuessPos(this.mouseXRelative, this.mouseYRelative);
     }
     this.isDragging = false;
-  }
+  },
 
   /**
    * Handles mouse leave events from the canvas.
    */
   handleMouseLeave() {
     this.isDragging = false;
-  }
+  },
 
   /**
    * Handles mouse wheel (zoom) events on the canvas.
@@ -163,7 +210,7 @@ export class GameMap {
     let zoomFactor = Math.exp(-event.deltaY * 0.001);
     this.camera.targetZoom *= zoomFactor;
     this.camera.targetZoom = Math.min(Math.max(this.camera.targetZoom, 0.1), 5);
-  }
+  },
 
   /**
    * Handles touch start events for mobile.
@@ -183,7 +230,7 @@ export class GameMap {
       );
       this.initialZoom = this.camera.targetZoom;
     }
-  }
+  },
 
   /**
    * Handles touch move events for mobile.
@@ -220,7 +267,7 @@ export class GameMap {
         5
       );
     }
-  }
+  },
 
   /**
    * Handles touch end events for mobile.
@@ -230,7 +277,7 @@ export class GameMap {
       this.updateGuessPos(this.mouseXRelative, this.mouseYRelative);
     }
     this.isDragging = false;
-  }
+  },
 
   /**
    * Updates the mouse position relative to the camera and zoom.
@@ -242,7 +289,7 @@ export class GameMap {
     this.mouseYRelative =
       (this.mousePos.y - this.canvas.height / 2) / this.camera.zoom -
       this.camera.y;
-  }
+  },
 
   /**
    * Sets the user's guess position on the map.
@@ -253,7 +300,7 @@ export class GameMap {
       y: y,
     };
     DOM.guessButton.disabled = false;
-  }
+  },
 
   /**
    * Draws all elements on the map canvas.
@@ -280,24 +327,12 @@ export class GameMap {
       this.mapImg,
       0,
       0,
-      this.mapImg.width,
-      this.mapImg.height
+      this.mapWidth,
+      this.mapHeight
     );
 
     // Draw pins and line if a guess has been made
     if (this.guessPosition) {
-      // Draw the guess pin (knightPinImg)
-      this.ctx.save(); // Save context before drawing guess pin
-      this.ctx.translate(this.guessPosition.x, this.guessPosition.y);
-      // Apply inverse scale to keep pin size constant regardless of map zoom
-      this.ctx.scale(0.5 / this.camera.zoom, 0.5 / this.camera.zoom);
-      this.ctx.drawImage(
-        this.knightPinImg,
-        -this.knightPinImg.width / 2,
-        -this.knightPinImg.height / 2
-      );
-      this.ctx.restore(); // Restore context after drawing guess pin
-
       if (
         GameManager.gameState === GAMESTATES.guessed ||
         GameManager.gameState === GAMESTATES.gameOver
@@ -329,6 +364,17 @@ export class GameMap {
         );
         this.ctx.restore(); // Restore context after drawing shade pin
       }
+      // Draw the guess pin (knightPinImg)
+      this.ctx.save(); // Save context before drawing guess pin
+      this.ctx.translate(this.guessPosition.x, this.guessPosition.y);
+      // Apply inverse scale to keep pin size constant regardless of map zoom
+      this.ctx.scale(0.5 / this.camera.zoom, 0.5 / this.camera.zoom);
+      this.ctx.drawImage(
+        this.knightPinImg,
+        -this.knightPinImg.width / 2,
+        -this.knightPinImg.height / 2
+      );
+      this.ctx.restore(); // Restore context after drawing guess pin
     }
 
     this.ctx.restore(); // Restore to initial state (before global transformations)
@@ -390,16 +436,17 @@ export class GameMap {
         this.canvas.height - 25
       );
     }
-  }
+  },
 
   /**
-   * Resets the map camera to its default position and zoom.
+   * Resets the map camera to its default position and zoom (centered).
    */
   resetCamera() {
-    this.camera.targetX = -2249;
-    this.camera.targetY = -1450;
+    this.camera.targetX = -this.mapCenter.x;
+
+    this.camera.targetY = -this.mapCenter.y;
     this.camera.targetZoom = 0.125;
-  }
+  },
 
   /**
    * Adjusts the camera to center and zoom on a specific location.
@@ -411,14 +458,15 @@ export class GameMap {
     this.camera.targetX = -x;
     this.camera.targetY = -y;
     this.camera.targetZoom = zoom;
-  }
+  },
 
   /**
    * Adjusts the camera to fit two points on the screen.
    * @param {object} point1 - {x, y} of the first point.
    * @param {object} point2 - {x, y} of the second point.
+   * @param {number} [padding=30] - The padding around the edges of the screen.
    */
-  fitPointsInView(point1, point2) {
+  fitPointsInView(point1, point2, padding = 30) {
     const midX = (point1.x + point2.x) / 2;
     const midY = (point1.y + point2.y) / 2;
     this.camera.targetX = -midX;
@@ -427,7 +475,6 @@ export class GameMap {
     const dx = Math.abs(point1.x - point2.x);
     const dy = Math.abs(point1.y - point2.y);
     const distance = Math.sqrt(dx * dx + dy * dy);
-    const padding = 30; // Extra padding around the points
 
     // Calculate the required zoom level to fit both points
     // Ensure we don't divide by zero if distance is 0
