@@ -192,14 +192,15 @@ function clearAllData() {
 
 function renderLocationsList() {
 	locationsList.innerHTML = ''
-	state.locations.forEach((location) => {
+	state.locations.forEach((location, index) => {
 		const listItem = document.createElement('div')
 		listItem.className = 'location-item'
 		if (location.id === state.selectedLocationId) {
 			listItem.classList.add('selected')
 		}
 
-		const locationNumber = location.id.split('-')[1]
+		// Use the array index for a user-friendly, sequential number.
+		const locationNumber = index + 1
 		listItem.innerHTML = `
                     <span class="location-item-text">Location #${locationNumber}</span>
                     <span class="location-subtext">Diff: ${location.difficulty}</span>
@@ -331,8 +332,9 @@ imageUploadInput.addEventListener('change', (e) => {
 		(loc) => loc.id === state.selectedLocationId
 	)
 	if (location) {
-		// Generate a unique filename for the new upload to avoid conflicts
-		const newFilename = `loc-${state.nextLocationId++}-${file.name.replace(
+		// Generate a unique filename using the location's own ID to avoid conflicts
+		// and prevent incrementing the global location ID counter.
+		const newFilename = `${location.id}-${file.name.replace(
 			/[^a-zA-Z0-9.]/g,
 			'_'
 		)}`
