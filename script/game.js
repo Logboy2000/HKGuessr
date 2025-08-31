@@ -1,13 +1,12 @@
 import { GameMap } from './GameMap.js'
-import { randIRange } from './Utils.js'
+import { randIRange, isNumber } from './Utils.js'
 ///////////////////////////////////////////////
 ////// Geoguessr Clone for Hollow Knight //////
 ///////////////////////////////////////////////
 
 //BEWARE THIS SOURCE CODE IS NOW LESS OF AN ABSOLUTE MESS THAN IT USED TO BE//
 
-
-export const DEFAULT_MAP_URL = "images/game/defaultMaps/hallownest.png"
+export const DEFAULT_MAP_URL = 'images/game/defaultMaps/hallownest.png'
 
 // --- Constants ---
 export const GAMESTATES = {
@@ -26,7 +25,6 @@ export const DIFFICULTRANGE = {
 // --- DOM Elements (Grouped for better organization) ---
 // Properties are assigned in dataLoaded().
 export const DOM = {}
-
 
 // --- GameManager Object ---
 // Manages all game state, flow, scoring, and UI updates.
@@ -117,10 +115,7 @@ export const GameManager = {
 			if (remainingTime <= 0) {
 				DOM.timerDisplay.innerText = '0.00'
 				if (!GameMap.guessPosition) {
-					GameMap.updateGuessPos(
-						GameMap.mouseXRelative,
-						GameMap.mouseYRelative
-					)
+					GameMap.updateGuessPos(GameMap.mouseXRelative, GameMap.mouseYRelative)
 				}
 				GameManager.guessButtonClicked()
 			} else {
@@ -129,8 +124,6 @@ export const GameManager = {
 		}
 		// Draw map and UI
 		GameMap.draw()
-
-		
 
 		// Update UI elements that depend on game state
 		DOM.newGameButton.disabled =
@@ -159,24 +152,11 @@ export const GameManager = {
 			'input',
 			this.updateRoundCounter.bind(this)
 		)
-		DOM.customDifficultyDiv
-			.querySelector('#minDifficulty')
-			.addEventListener('input', () =>
-				this.checkNumberIntegrity(
-					DOM.customDifficultyDiv.querySelector('#minDifficulty'),
-					true,
-					true
-				)
-			)
-		DOM.customDifficultyDiv
-			.querySelector('#maxDifficulty')
-			.addEventListener('input', () =>
-				this.checkNumberIntegrity(
-					DOM.customDifficultyDiv.querySelector('#maxDifficulty'),
-					true,
-					true
-				)
-			)
+		DOM.roundCountInput.addEventListener('input', this.validaiteForm.bind(this))
+		DOM.timerLengthInput.addEventListener(
+			'input',
+			this.validaiteForm.bind(this)
+		)
 
 		DOM.guessButton.addEventListener(
 			'click',
@@ -188,10 +168,21 @@ export const GameManager = {
 		DOM.minimiseButton.addEventListener('click', () =>
 			this.setMinimapVisible(false)
 		)
-		document
-			.getElementById('timerEnabled')
-			.addEventListener('change', (event) =>
+
+		DOM.timerEnabled.addEventListener(
+			'change',
+			(event) => {
 				this.timerInputDisplay(event.target)
+				this.validaiteForm()
+			},
+			DOM.minDifficultyInput.addEventListener(
+				'input',
+				this.validaiteForm.bind(this)
+			)
+		),
+			DOM.maxDifficultyInput.addEventListener(
+				'input',
+				this.validaiteForm.bind(this)
 			)
 		document
 			.getElementById('playAgainButton')
@@ -238,7 +229,12 @@ export const GameManager = {
 		const selectedGameModeId = DOM.gameMode.value
 		const gameMode = this.gameModeData[selectedGameModeId]
 
-		if (gameMode && gameMode.map && gameMode.map.useCustomMap && gameMode.map.mapUrl) {
+		if (
+			gameMode &&
+			gameMode.map &&
+			gameMode.map.useCustomMap &&
+			gameMode.map.mapUrl
+		) {
 			await GameMap.changeMapImage(gameMode.map.mapUrl)
 		} else {
 			await GameMap.changeMapImage(DEFAULT_MAP_URL) // default
@@ -246,7 +242,10 @@ export const GameManager = {
 
 		// Update the background location image for the options screen
 		if (gameMode?.locations?.length > 0) {
-			this.setLocation(randIRange(0, gameMode.locations.length - 1), selectedGameModeId)
+			this.setLocation(
+				randIRange(0, gameMode.locations.length - 1),
+				selectedGameModeId
+			)
 		}
 	},
 
@@ -275,21 +274,20 @@ export const GameManager = {
 
 		this.timerEnabled = document.getElementById('timerEnabled').checked
 		if (this.timerEnabled) {
-			if (Number(DOM.timerLengthInput.value) <= 0) {
-				console.error(
-					'Please use a valid number for timer length (greater than 0).'
-				)
-				return
-			}
 			this.timerLengthSeconds = Number(DOM.timerLengthInput.value)
 		}
 
 		// Set the map for the selected game mode
 		const selectedGameModeId = DOM.gameMode.value
 		const gameMode = this.gameModeData[selectedGameModeId]
-		if (gameMode && gameMode.map && gameMode.map.useCustomMap && gameMode.map.mapUrl) {
+		if (
+			gameMode &&
+			gameMode.map &&
+			gameMode.map.useCustomMap &&
+			gameMode.map.mapUrl
+		) {
 			await GameMap.changeMapImage(gameMode.map.mapUrl)
-		} else if (gameMode.map.defaultMap){
+		} else if (gameMode.map.defaultMap) {
 			// Default map if not specified or custom map is turned off
 			await GameMap.changeMapImage(gameMode.map.defaultMap)
 		} else {
@@ -314,41 +312,12 @@ export const GameManager = {
 		// Ensure roundCountInput is valid first
 		var value = Number(DOM.roundCountInput.value)
 
-		if (value <= 0 || isNaN(value)){
+		if (value <= 0 || isNaN(value)) {
 			value = DOM.roundCountInput.placeholder
 		}
 		this.totalRounds = value
 
 		DOM.roundElement.textContent = `${this.currentRound}/${this.totalRounds}`
-	},
-
-	/**
-	 * Checks the integrity of a number input field.
-	 * @param {HTMLInputElement} element - The input element.
-	 * @param {boolean} integer - True if the value should be an integer.
-	 * @param {boolean} updateIfInvalid - True to revert to default value if invalid.
-	 * @returns {boolean} True if the value is valid, false otherwise.
-	 */
-	checkNumberIntegrity(element, integer = true, updateIfInvalid = true) {
-		let maxValue = Number(element.getAttribute('max')) || Infinity
-		let minValue = Number(element.getAttribute('min')) || 1
-
-		if (
-			!isNaN(element.value) &&
-			element.value !== '' &&
-			Number(element.value) >= minValue
-		) {
-			if (Number(element.value) > maxValue) element.value = maxValue
-			if (integer) element.value = parseInt(element.value)
-			return true
-		}
-
-		if (updateIfInvalid) {
-			element.value = Number(element.getAttribute('value'))
-		}
-
-		if (integer) element.value = parseInt(element.value)
-		return false
 	},
 
 	/**
@@ -373,6 +342,7 @@ export const GameManager = {
 			case 'options':
 				DOM.gameOptionsWindow.style.display = 'flex'
 				this.gameState = GAMESTATES.optionsWindow
+				document.getElementById('startButton').innerText = 'Start Game'
 				break
 			case 'gameover':
 				DOM.gameOverWindow.style.display = 'flex'
@@ -414,9 +384,12 @@ export const GameManager = {
 	 */
 	toggleFullscreen() {
 		DOM.mapContainer.classList.toggle('fullscreen')
-		if (DOM.mapContainer.classList.contains('fullscreen')) {
-			document.getElementById('fullscreenButton')
-		}
+	},
+	enableFullscreen() {
+		DOM.mapContainer.classList.add('fullscreen')
+	},
+	disableFullscreen() {
+		DOM.mapContainer.classList.remove('fullscreen')
 	},
 
 	/**
@@ -474,7 +447,6 @@ export const GameManager = {
 			} else {
 				DOM.timerLengthDisplay.style.display = 'none'
 			}
-			document.getElementById('startButton').innerText = 'Start Game'
 			this.openWindow('gameover')
 			DOM.finalScoreDisplay.innerText = `Final Score: ${this.totalScore}/${this.totalRounds * this.maxScore
 				}`
@@ -693,6 +665,79 @@ export const GameManager = {
 		this.roundScore = Math.round(Math.min(this.roundScore, this.maxScore))
 		this.totalScore += this.roundScore
 	},
+
+	validaiteForm() {
+		console.log('Form Valdating')
+		this.hideFormWarning()
+		let formValid = true
+		if (DOM.timerEnabled.checked) {
+			if (
+				Number(DOM.timerLengthInput.value) <= 0 ||
+				isNaN(DOM.timerLengthInput.value)
+			) {
+				this.displayFormWarning(
+					'Please use a valid number for timer length (greater than 0).'
+				)
+				formValid = false
+			}
+		}
+
+		if (
+			Number(DOM.roundCountInput.value) <= 0 ||
+			isNaN(DOM.roundCountInput.value)
+		) {
+			this.displayFormWarning(
+				'Please use a valid number for rounds (greater than 0).'
+			)
+			formValid = false
+		}
+		if (DOM.difficultySelector.value === 'custom') {
+			if (
+				Number(DOM.minDifficultyInput.value) <= 0 ||
+				Number(DOM.minDifficultyInput.value) > 10 ||
+				isNaN(Number(DOM.minDifficultyInput.value))
+			) {
+				this.displayFormWarning(
+					'Please use a valid number for minimum difficulty (1-10).'
+				)
+				formValid = false
+			}
+
+			if (
+				Number(DOM.maxDifficultyInput.value) <= 0 ||
+				Number(DOM.maxDifficultyInput.value) > 10 ||
+				isNaN(Number(DOM.maxDifficultyInput.value))
+			) {
+				this.displayFormWarning(
+					'Please use a valid number for maximum difficulty (1-10).'
+				)
+				formValid = false
+			}
+
+			if (
+				Number(DOM.minDifficultyInput.value) >
+				Number(DOM.maxDifficultyInput.value)
+			) {
+				this.displayFormWarning(
+					'Minimum difficulty cannot be greater than maximum difficulty.'
+				)
+				formValid = false
+			}
+		}
+		console.log('Form Valid: ', formValid)
+		if (formValid) {
+			DOM.startButton.disabled = false
+		} else {
+			DOM.startButton.disabled = true
+		}
+	},
+	displayFormWarning(string) {
+		DOM.formWarning.innerText = string
+		DOM.formWarning.style.display = 'block'
+	},
+	hideFormWarning() {
+		DOM.formWarning.style.display = 'none'
+	},
 }
 
 // First function to run, called from 'loadLocationData.js'
@@ -712,6 +757,11 @@ export let dataLoaded = function () {
 	DOM.totalRoundsElement = document.getElementById('totalRounds')
 	DOM.timerLengthDisplay = document.getElementById('timerLengthDisplay')
 	DOM.newGameButton = document.getElementById('newGameButton')
+	DOM.startButton = document.getElementById('startButton')
+	DOM.timerEnabled = document.getElementById('timerEnabled')
+	DOM.minDifficultyInput = document.getElementById('minDifficulty')
+	DOM.maxDifficultyInput = document.getElementById('maxDifficulty')
+	DOM.formWarning = document.getElementById('formWarning')
 
 	DOM.guessButton = document.getElementById('guessButton')
 	DOM.locationImgElement = document.getElementById('locationImg')
@@ -720,6 +770,6 @@ export let dataLoaded = function () {
 	DOM.showMapButton = document.getElementById('showMapButton')
 	DOM.minimiseButton = document.getElementById('minimiseButton')
 	DOM.gameMode = document.getElementById('gameMode')
-	
+
 	GameManager.init()
 }

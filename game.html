@@ -47,7 +47,7 @@
 			<img
 				src="images/game/arrow-up.svg"
 				alt="X"
-				style="max-width: 100%; padding: 3px; "
+				style="max-width: 100%; padding: 3px"
 			/>
 		</button>
 
@@ -99,23 +99,21 @@
 			<div class="option" id="customDifficultyDiv" style="display: none">
 				<label for="minDifficulty">Min:</label>
 				<input
-					type="text"
+					type="range"
 					id="minDifficulty"
 					min="1"
 					max="10"
 					placeholder="1"
 					value="1"
-					onchange="checkNumberIntegrity(this)"
 				/>
 				<label for="maxDifficulty">Max:</label>
 				<input
-					type="text"
+					type="range"
 					id="maxDifficulty"
 					min="1"
 					max="10"
 					placeholder="10"
 					value="10"
-					onchange="checkNumberIntegrity(this)"
 				/>
 			</div>
 			<div class="option">
@@ -136,7 +134,7 @@
 			<div class="option">
 				<label for="timerLength">Timer length: </label>
 				<input
-					type="text"
+					type="number"
 					id="timerLength"
 					name="timerLength"
 					placeholder="60"
@@ -147,6 +145,10 @@
 				/>
 			</div>
 			<hr />
+			<p
+				id="formWarning"
+				style="font-size: 15px; display: none; padding: 0; margin: 1px"
+			></p>
 			<button id="startButton">Start Game</button>
 		</div>
 		<script src="script/game.js" type="module"></script>
