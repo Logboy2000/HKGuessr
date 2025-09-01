@@ -66,6 +66,7 @@ const addLocationBtn = document.getElementById('add-location-btn')
 const downloadPackBtn = document.getElementById('download-pack-btn')
 const importPackBtn = document.getElementById('import-pack-btn')
 const importFileInput = document.getElementById('import-file-input')
+const newPackBtn = document.getElementById('new-pack-btn')
 
 const locationDetailsPanel = document.getElementById('location-details')
 const coordXSpan = document.getElementById('coord-x')
@@ -164,7 +165,21 @@ importPackBtn.addEventListener('click', () => {
 	importFileInput.click()
 })
 
+newPackBtn.addEventListener('click', () => {
+	createNewPack()
+})
+
 // --- 4. Core Logic Functions ---
+async function createNewPack() {
+	const confirmed = await showConfirmationDialog(
+		'Are you sure you want to create a new pack? All unsaved changes will be lost.'
+	)
+	if (confirmed) {
+		clearAllData()
+		
+	}
+}
+
 function generateUniqueId() {
 	return `loc-${state.nextLocationId++}`
 }
@@ -174,24 +189,54 @@ function clearAllData() {
 	state.locations.forEach((loc) => {
 		if (loc.marker) map.removeLayer(loc.marker)
 	})
-	// Clear state
+
+	// Revoke any blob URLs to prevent memory leaks
+	if (state.customMapFile && state.customMapUrl.startsWith('blob:')) {
+		URL.revokeObjectURL(state.customMapUrl)
+	}
+
+	// Reset state to default values
+	state.packName = 'MyNewPack'
+	state.gameModeId = 'my_new_pack'
+	state.author = ''
 	state.locations = []
 	state.uploadedFiles = {}
 	state.selectedLocationId = null
 	state.nextLocationId = 1
+	state.isPlacingNewPin = false
+	state.defaultMapUrl = 'images/game/defaultMaps/hallownest.png'
 	state.customMapFile = null
-	state.customMapUrl = 'images/map.png' // Revert to default map
-	state.mapImageWidth = 4498 // Revert to default width
-	state.mapImageHeight = 2901 // Revert to default height
+	state.customMapUrl = state.defaultMapUrl
 
 	// Update UI to reflect cleared state
-	// Setting the URL will trigger the 'load' event, which will correctly set the bounds
-	mapImageUploadLabel.textContent = 'Upload Map Image (map.png)'
+	packNameInput.value = state.packName
+	gameModeIdInput.value = state.gameModeId
+	authorNameInput.value = state.author
+	defaultMapSelector.value = 'hallownest.png'
+	mapImageUploadLabel.textContent = 'Upload Custom Map Image'
 	imageOverlay.setUrl(state.customMapUrl)
+
+	// Reset UI components
+	closeLocationDetails()
+	renderLocationsList()
+	addLocationBtn.disabled = false
+	addLocationBtn.innerHTML = `
+        <img src="images/editor/add.svg" alt="" class="svg-icon">
+        Add New Location
+    `
+	map.getContainer().style.cursor = 'grab'
 }
 
 function renderLocationsList() {
 	locationsList.innerHTML = ''
+	if (state.locations.length === 0) {
+		locationsList.innerHTML = `
+            <div class="empty-list-message">
+                <p>No locations yet.</p>
+                <p>Click "Add New Location" to start placing pins on the map.</p>
+            </div>`
+		return
+	}
 	state.locations.forEach((location, index) => {
 		const listItem = document.createElement('div')
 		listItem.className = 'location-item'
@@ -202,9 +247,9 @@ function renderLocationsList() {
 		// Use the array index for a user-friendly, sequential number.
 		const locationNumber = index + 1
 		listItem.innerHTML = `
-                    <span class="location-item-text">Location #${locationNumber}</span>
-                    <span class="location-subtext">Diff: ${location.difficulty}</span>
-                `
+                     <span class="location-item-text">Location #${locationNumber}</span>
+                     <span class="location-subtext">Diff: ${location.difficulty}</span>
+                 `
 		listItem.dataset.id = location.id
 		listItem.addEventListener('click', () => {
 			selectLocation(location.id)
@@ -260,8 +305,15 @@ function selectLocation(id) {
 	const selectedLocation = state.locations.find((loc) => loc.id === id)
 	if (selectedLocation) {
 		const marker = selectedLocation.marker
-		if (marker && marker._icon) {
-			marker._icon.classList.add('active')
+		if (marker) {
+			if (marker._icon) {
+				marker._icon.classList.add('active')
+			}
+			// Pan the map to the selected pin for better context
+			map.flyTo(marker.getLatLng(), map.getZoom(), {
+				animate: true,
+				duration: 0.5,
+			})
 		}
 		const listItem = document.querySelector(`.location-item[data-id="${id}"]`)
 		if (listItem) {
@@ -427,7 +479,6 @@ importFileInput.addEventListener('change', async (e) => {
 
 		// Reset state and UI
 		clearAllData()
-		closeLocationDetails()
 
 		// Update state with imported data
 		state.packName = packData.name || ''
@@ -670,4 +721,38 @@ function hideAlert(alertBox) {
 	if (alertBox && document.body.contains(alertBox)) {
 		document.body.removeChild(alertBox)
 	}
+}
+
+function showConfirmationDialog(message) {
+	return new Promise((resolve) => {
+		const dialogBox = document.createElement('div')
+		dialogBox.style.position = 'fixed'
+		dialogBox.style.inset = '0'
+		dialogBox.style.display = 'flex'
+		dialogBox.style.alignItems = 'center'
+		dialogBox.style.justifyContent = 'center'
+		dialogBox.style.zIndex = '2000'
+		dialogBox.style.backgroundColor = 'rgba(0,0,0,0.7)'
+		dialogBox.innerHTML = `
+            <div style="background-color: #1f2937; padding: 1.5rem; border-radius: 0.5rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1); text-align: center; max-width: 28rem;">
+                <p style="color: #fff; font-size: 1.125rem; margin-bottom: 1.5rem;">${message}</p>
+                <div class="flex-row" style="justify-content: center;">
+                    <button id="confirm-dialog-btn" class="btn btn-primary">Confirm</button>
+                    <button id="cancel-dialog-btn" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        `
+		document.body.appendChild(dialogBox)
+
+		const confirmBtn = dialogBox.querySelector('#confirm-dialog-btn')
+		const cancelBtn = dialogBox.querySelector('#cancel-dialog-btn')
+
+		const closeDialog = (result) => {
+			document.body.removeChild(dialogBox)
+			resolve(result)
+		}
+
+		confirmBtn.addEventListener('click', () => closeDialog(true))
+		cancelBtn.addEventListener('click', () => closeDialog(false))
+	})
 }

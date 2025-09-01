@@ -233,6 +233,23 @@
 			gap: 0.75rem;
 		}
 
+		.empty-list-message {
+			color: #9ca3af;
+			padding: 2rem 1rem;
+			border: 2px dashed #374151;
+			border-radius: 0.5rem;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+		}
+
+		.empty-list-message p {
+			margin: 0.25rem 0;
+		}
+
 		.location-item {
 			display: flex;
 			justify-content: space-between;
@@ -347,7 +364,7 @@
 				&lt;- Back
 			</button>
 			<h1 class="main-heading">Image Pack Editor</h1>
-			<h2 class="sub-heading">v0.2.0</h2>
+			<h2 class="sub-heading">v0.2.1</h2>
 
 			<div class="sidebar-section">
 				<h2 class="section-heading">Pack Details</h2>
@@ -430,6 +447,10 @@
 						border-top: 1px solid #4b5563;
 						margin-top: auto;
 					">
+				<button id="new-pack-btn" class="btn btn-secondary flex-grow-1">
+					<img src="images/editor/add.svg" alt="" class="svg-icon">
+					New Pack
+				</button>
 				<button id="import-pack-btn" class="btn btn-secondary flex-grow-1">
 					<img src="images/editor/upload.svg" alt="" class="svg-icon">
 					Import Pack
