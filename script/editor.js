@@ -30,6 +30,11 @@ const map = L.map('map', {
 	zoomAnimation: true,
 	attributionControl: false,
 	zoomControl: false,
+	maxBoundsViscosity: 0.5,
+	preferCanvas: true,
+	renderer: L.canvas(),
+	
+	
 })
 
 const bounds = [
@@ -309,11 +314,6 @@ function selectLocation(id) {
 			if (marker._icon) {
 				marker._icon.classList.add('active')
 			}
-			// Pan the map to the selected pin for better context
-			map.flyTo(marker.getLatLng(), map.getZoom(), {
-				animate: true,
-				duration: 0.5,
-			})
 		}
 		const listItem = document.querySelector(`.location-item[data-id="${id}"]`)
 		if (listItem) {

@@ -2,6 +2,28 @@ body {
 	overflow: hidden;
 }
 
+#roundScoreDisplay {
+	position: absolute;
+	bottom: calc(10% + 20px); /* Position above the button container */
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: rgba(0, 0, 0, 0.7);
+	padding: 8px 25px;
+	border-radius: 10px;
+	border: 2px solid white;
+	font-size: 20px;
+	z-index: 10;
+	pointer-events: none; /* Prevent it from blocking map clicks */
+	display: none; /* Hidden by default */
+	min-width: 250px;
+	white-space: nowrap; /* Prevent text from wrapping */
+	text-align: center;
+}
+
+body {
+	overflow: hidden;
+}
+
 hr {
 	width: 100%;
 	border-color: white;

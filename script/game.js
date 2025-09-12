@@ -408,6 +408,10 @@ export const GameManager = {
 			this.gameState = GAMESTATES.guessed
 			DOM.guessButton.disabled = false
 
+			// Show score display
+			DOM.roundScoreDisplay.innerText = `You earned ${this.roundScore} points`
+			DOM.roundScoreDisplay.style.display = 'block'
+
 			// Adjust camera to show both guess and correct location
 			if (GameMap.guessPosition && this.currentLocation) {
 				GameMap.fitPointsInView(GameMap.guessPosition, {
@@ -437,6 +441,12 @@ export const GameManager = {
 				this.nextRound()
 				DOM.guessButton.disabled = true
 				DOM.guessButton.innerText = 'Guess!'
+			} else {
+				// This handles the case where the user clicks "End Game"
+				// after the last round is guessed.
+				this.gameState = GAMESTATES.gameOver
+				this.guessButtonClicked() // Recurse to trigger the gameOver logic
+
 			}
 		} else if (this.gameState === GAMESTATES.gameOver) {
 			DOM.guessButton.disabled = true
@@ -552,6 +562,9 @@ export const GameManager = {
 	 * Advances the game to the next round.
 	 */
 	nextRound() {
+		// Hide score display for the new round
+		DOM.roundScoreDisplay.style.display = 'none'
+
 		this.gameState = GAMESTATES.guessing
 		GameMap.resetCamera() // Reset map camera for new round
 		this.currentRound++
@@ -767,6 +780,7 @@ export let dataLoaded = function () {
 	DOM.locationImgElement = document.getElementById('locationImg')
 	DOM.mapCanvas = document.getElementById('mapCanvas')
 	DOM.mapContainer = document.getElementById('mapContainer')
+	DOM.roundScoreDisplay = document.getElementById('roundScoreDisplay')
 	DOM.showMapButton = document.getElementById('showMapButton')
 	DOM.minimiseButton = document.getElementById('minimiseButton')
 	DOM.gameMode = document.getElementById('gameMode')

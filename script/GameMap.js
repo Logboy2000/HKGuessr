@@ -36,6 +36,8 @@ export const GameMap = {
   hasMoved: false,
   initialZoom: 0,
   pinchStartDistance: 0,
+  zoomFocus: { x: 0, y: 0 }, // The screen point to zoom towards
+  isProgrammaticZoom: false, // Flag to disable zoom-to-cursor during animations
   guessPosition: null, // The user's guessed position on the map
 
   get mapCenter() {
@@ -49,6 +51,7 @@ export const GameMap = {
 
     this.canvas = canvasElement;
     this.ctx = this.canvas.getContext("2d");
+    this.ctx.imageSmoothingEnabled = true;
 
     // Load static pin images
     this.knightPinImg.src = "images/knightPin.png";
@@ -207,9 +210,22 @@ export const GameMap = {
    */
   handleWheel(event) {
     event.preventDefault();
-    let zoomFactor = Math.exp(-event.deltaY * 0.001);
-    this.camera.targetZoom *= zoomFactor;
-    this.camera.targetZoom = Math.min(Math.max(this.camera.targetZoom, 0.1), 5);
+
+    const rect = this.canvas.getBoundingClientRect();
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+
+    // Store the mouse position as the focus point for the zoom
+    this.zoomFocus.x = mouseX;
+    this.zoomFocus.y = mouseY;
+
+    // Calculate and set the new target zoom level
+    const zoomFactor = Math.exp(-event.deltaY * 0.001);
+    const newZoom = Math.min(Math.max(this.camera.targetZoom * zoomFactor, 0.1), 5);
+
+    // If the zoom is actually changing, disable programmatic zoom mode
+    if (newZoom !== this.camera.targetZoom) this.isProgrammaticZoom = false;
+    this.camera.targetZoom = newZoom;
   },
 
   /**
@@ -256,16 +272,25 @@ export const GameMap = {
       this.dragStart.x = event.touches[0].clientX;
       this.dragStart.y = event.touches[0].clientY;
     } else if (event.touches.length === 2) {
-      const currentDistance = Math.hypot(
-        event.touches[0].clientX - event.touches[1].clientX,
-        event.touches[0].clientY - event.touches[1].clientY
-      );
+      // Pinch-to-zoom logic
+      const rect = this.canvas.getBoundingClientRect();
+      const touch1 = event.touches[0];
+      const touch2 = event.touches[1];
+
+      // Get world coordinates of the pinch center before zoom
+      const pinchCenterX = (touch1.clientX + touch2.clientX) / 2 - rect.left;
+      const pinchCenterY = (touch1.clientY + touch2.clientY) / 2 - rect.top;
+      this.zoomFocus.x = pinchCenterX;
+      this.zoomFocus.y = pinchCenterY;
+
+      // Calculate new zoom
+      const currentDistance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
       const zoomFactor = currentDistance / this.pinchStartDistance;
-      this.camera.targetZoom = this.initialZoom * zoomFactor;
-      this.camera.targetZoom = Math.min(
-        Math.max(this.camera.targetZoom, 0.1),
-        5
-      );
+      const newZoom = Math.min(Math.max(this.initialZoom * zoomFactor, 0.1), 5);
+
+      // If the zoom is actually changing, disable programmatic zoom mode
+      if (newZoom !== this.camera.targetZoom) this.isProgrammaticZoom = false;
+      this.camera.targetZoom = newZoom;
     }
   },
 
@@ -283,12 +308,11 @@ export const GameMap = {
    * Updates the mouse position relative to the camera and zoom.
    */
   updateRelativeMousePos() {
+    const rect = this.canvas.getBoundingClientRect();
     this.mouseXRelative =
-      (this.mousePos.x - this.canvas.width / 2) / this.camera.zoom -
-      this.camera.x;
+      (this.mousePos.x - rect.width / 2) / this.camera.zoom - this.camera.x;
     this.mouseYRelative =
-      (this.mousePos.y - this.canvas.height / 2) / this.camera.zoom -
-      this.camera.y;
+      (this.mousePos.y - rect.height / 2) / this.camera.zoom - this.camera.y;
   },
 
   /**
@@ -306,19 +330,47 @@ export const GameMap = {
    * Draws all elements on the map canvas.
    */
   draw() {
-    this.canvas.width = this.canvas.clientWidth;
-    this.canvas.height = this.canvas.clientHeight;
+    // --- High-DPI Canvas Scaling for crisp rendering ---
+    const dpr = window.devicePixelRatio || 1;
+    const rect = this.canvas.getBoundingClientRect();
+    const cssWidth = rect.width;
+    const cssHeight = rect.height;
+
+    // Set the canvas backing store size to match the device's pixel ratio
+    if (this.canvas.width !== cssWidth * dpr || this.canvas.height !== cssHeight * dpr) {
+      this.canvas.width = cssWidth * dpr;
+      this.canvas.height = cssHeight * dpr;
+    }
+
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.save(); // Save initial state (untransformed)
+    this.ctx.scale(dpr, dpr); // Scale all drawing operations by the device pixel ratio
 
     // Smoothly interpolate camera position and zoom
+    const oldZoom = this.camera.zoom;
     this.camera.x = lerp(this.camera.x, this.camera.targetX, 0.5);
     this.camera.y = lerp(this.camera.y, this.camera.targetY, 0.5);
     this.camera.zoom = lerp(this.camera.zoom, this.camera.targetZoom, 0.25);
 
+    // If zoom has changed, adjust camera position to zoom towards the focus point.
+    // This synchronizes the pan and zoom animations for a smooth effect.
+    if (oldZoom !== this.camera.zoom && !this.isProgrammaticZoom) {
+      // Get world coordinates of the focus point at the old zoom level
+      const worldX = (this.zoomFocus.x - cssWidth / 2) / oldZoom - this.camera.x;
+      const worldY = (this.zoomFocus.y - cssHeight / 2) / oldZoom - this.camera.y;
+
+      // Calculate the new camera position to keep the world point under the focus point
+      this.camera.x = (this.zoomFocus.x - cssWidth / 2) / this.camera.zoom - worldX;
+      this.camera.y = (this.zoomFocus.y - cssHeight / 2) / this.camera.zoom - worldY;
+
+      // Also update the target to prevent the camera from drifting back
+      this.camera.targetX = this.camera.x;
+      this.camera.targetY = this.camera.y;
+    }
+
     // Apply global camera transformations
-    this.ctx.translate(this.canvas.width / 2, this.canvas.height / 2); // Center of canvas
+    this.ctx.translate(cssWidth / 2, cssHeight / 2); // Center of canvas (using CSS dimensions)
     this.ctx.scale(this.camera.zoom, this.camera.zoom); // Apply zoom
     this.ctx.translate(this.camera.x, this.camera.y); // Apply camera pan
 
@@ -379,63 +431,7 @@ export const GameMap = {
 
     this.ctx.restore(); // Restore to initial state (before global transformations)
 
-    // --- Draw UI elements that are NOT affected by camera zoom ---
-    // These elements are drawn after restoring the context, so they are relative to the canvas itself.
-    this.ctx.font = "20px Trajan Pro Bold"; // Font for UI elements
-
-    // Display round score box
-    if (
-      GameManager.gameState !== GAMESTATES.guessing &&
-      GameManager.gameState !== GAMESTATES.optionsWindow
-    ) {
-      const boxWidth = 300;
-      const boxHeight = 25;
-      const boxX = (this.canvas.width - boxWidth) / 2;
-      const boxY = this.canvas.height - boxHeight - 20;
-      const cornerRadius = 10;
-
-      this.ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
-      this.ctx.beginPath();
-      this.ctx.moveTo(boxX + cornerRadius, boxY);
-      this.ctx.lineTo(boxX + boxWidth - cornerRadius, boxY);
-      this.ctx.quadraticCurveTo(
-        boxX + boxWidth,
-        boxY,
-        boxX + boxWidth,
-        boxY + cornerRadius
-      );
-      this.ctx.lineTo(boxX + boxWidth, boxY + boxHeight - cornerRadius);
-      this.ctx.quadraticCurveTo(
-        boxX + boxWidth,
-        boxY + boxHeight,
-        boxX + boxWidth - cornerRadius,
-        boxY + boxHeight
-      );
-      this.ctx.lineTo(boxX + cornerRadius, boxY + boxHeight);
-      this.ctx.quadraticCurveTo(
-        boxX,
-        boxY + boxHeight,
-        boxX,
-        boxY + boxHeight - cornerRadius
-      );
-      this.ctx.lineTo(boxX, boxY + cornerRadius);
-      this.ctx.quadraticCurveTo(boxX, boxY, boxX + cornerRadius, boxY);
-      this.ctx.closePath();
-      this.ctx.fill();
-
-      // Add white border
-      this.ctx.strokeStyle = "white";
-      this.ctx.lineWidth = 2;
-      this.ctx.stroke();
-
-      this.ctx.fillStyle = "#FFF";
-      this.ctx.textAlign = "center";
-      this.ctx.fillText(
-        `You earned ${GameManager.roundScore} points`,
-        this.canvas.width / 2,
-        this.canvas.height - 25
-      );
-    }
+    // UI elements are now handled as HTML overlays, so no UI drawing is needed here.
   },
 
   /**
@@ -466,7 +462,10 @@ export const GameMap = {
    * @param {object} point2 - {x, y} of the second point.
    * @param {number} [padding=30] - The padding around the edges of the screen.
    */
-  fitPointsInView(point1, point2, padding = 30) {
+  fitPointsInView(point1, point2, padding = 100) {
+    // Enable programmatic zoom to prevent interference from zoom-to-cursor logic
+    this.isProgrammaticZoom = true;
+
     const midX = (point1.x + point2.x) / 2;
     const midY = (point1.y + point2.y) / 2;
     this.camera.targetX = -midX;
@@ -474,24 +473,22 @@ export const GameMap = {
 
     const dx = Math.abs(point1.x - point2.x);
     const dy = Math.abs(point1.y - point2.y);
-    const distance = Math.sqrt(dx * dx + dy * dy);
 
-    // Calculate the required zoom level to fit both points
-    // Ensure we don't divide by zero if distance is 0
-    const requiredZoomX =
-      distance > 0
-        ? this.canvas.width / (distance + padding)
-        : this.camera.targetZoom;
-    const requiredZoomY =
-      distance > 0
-        ? this.canvas.height / (distance + padding)
-        : this.camera.targetZoom;
+    // Get the CSS dimensions of the canvas for correct zoom calculation
+    const rect = this.canvas.getBoundingClientRect();
+    const cssWidth = rect.width;
+    const cssHeight = rect.height;
 
-    // Take the minimum of the two required zooms to ensure both dimensions fit
-    // Clamp the zoom to reasonable values
+    // Calculate the required zoom to fit the points based on width and height separately.
+    // Add padding to both sides, so multiply by 2.
+    const requiredZoomX = cssWidth / (dx + padding * 2);
+    const requiredZoomY = cssHeight / (dy + padding * 2);
+
+    // Use the smaller of the two zoom levels to ensure both points are visible.
+    // Also clamp the zoom to a maximum value to prevent extreme zooming on close points.
     this.camera.targetZoom = Math.min(
-      Math.max(requiredZoomX, 0.1),
-      Math.max(requiredZoomY, 0.1),
+      requiredZoomX,
+      requiredZoomY,
       2 // Max zoom to prevent over-zooming on close points
     );
   }
