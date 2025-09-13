@@ -1,5 +1,6 @@
 import { GameMap } from './GameMap.js'
 import { randIRange, isNumber } from './Utils.js'
+import { loadInitialData } from './loadLocationData.js'
 ///////////////////////////////////////////////
 ////// Geoguessr Clone for Hollow Knight //////
 ///////////////////////////////////////////////
@@ -23,7 +24,7 @@ export const DIFFICULTRANGE = {
 }
 
 // --- DOM Elements (Grouped for better organization) ---
-// Properties are assigned in dataLoaded().
+// Properties are assigned in initializeDOM().
 export const DOM = {}
 
 // --- GameManager Object ---
@@ -48,11 +49,9 @@ export const GameManager = {
 	/**
 	 * Initializes the game manager.
 	 */
-	init() {
-		// IMPORTANT: Copy the global gameModeData into GameManager's internal state
-		// This ensures GameManager has access to all loaded data and can initialize its usedLocations.
-		// This line must execute AFTER loadLocationData has populated the global `gameModeData`.
-		this.gameModeData = window.gameModeData // Use window.gameModeData for clarity
+	init(gameData) {
+		this.gameModeData = gameData;
+
 		GameMap.init(DOM.mapCanvas)
 
 		// Initialize usedLocations for all game modes that have been loaded
@@ -95,7 +94,7 @@ export const GameManager = {
 	 * @param {object} data - The game mode data containing 'name' and 'locations'.
 	 */
 	addGameModeData(gameModeId, data) {
-		this.gameModeData[gameModeId] = data // Changed to use this.gameModeData
+		this.gameModeData[gameModeId] = data
 		this.usedLocations[gameModeId] = [] // Initialize used locations for this new game mode
 	},
 
@@ -753,8 +752,7 @@ export const GameManager = {
 	},
 }
 
-// First function to run, called from 'loadLocationData.js'
-export let dataLoaded = function () {
+function initializeDOM() {
 	DOM.customDifficultyDiv = document.getElementById('customDifficultyDiv')
 	DOM.difficultySelector = document.getElementById('difficultySelector')
 	DOM.roundCountInput = document.getElementById('roundCount')
@@ -784,6 +782,13 @@ export let dataLoaded = function () {
 	DOM.showMapButton = document.getElementById('showMapButton')
 	DOM.minimiseButton = document.getElementById('minimiseButton')
 	DOM.gameMode = document.getElementById('gameMode')
-
-	GameManager.init()
 }
+
+// Main entry point for the game
+async function main() {
+	initializeDOM();
+	const gameData = await loadInitialData();
+	GameManager.init(gameData);
+}
+
+document.addEventListener('DOMContentLoaded', main);

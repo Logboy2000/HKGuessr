@@ -1,5 +1,6 @@
 import json
 import re
+import ast
 
 def extract_data_from_js(file_path):
     with open(file_path, 'r') as file:
@@ -12,9 +13,13 @@ def extract_data_from_js(file_path):
     if not location_match or not charm_match:
         raise ValueError("Could not find location or charm data in the file")
     
-    # Convert the array strings to actual lists
-    location_data = eval(f"[{location_match.group(1)}]")
-    charm_data = eval(f"[{charm_match.group(1)}]")
+    # Safely parse the string content of the arrays into Python lists
+    # ast.literal_eval is a safe alternative to eval() for literal structures
+    location_data_str = f"[{location_match.group(1)}]"
+    charm_data_str = f"[{charm_match.group(1)}]"
+
+    location_data = ast.literal_eval(location_data_str)
+    charm_data = ast.literal_eval(charm_data_str)
     
     return location_data, charm_data
 

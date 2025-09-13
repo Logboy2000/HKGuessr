@@ -1,9 +1,6 @@
-import { dataLoaded, GameManager, DEFAULT_MAP_URL } from "./game.js";
-
-document.body.onload = loadLocationData;
+import { GameManager, DEFAULT_MAP_URL } from "./game.js";
 
 // Single object to store all game mode data
-window.gameModeData = {};
 
 let defaultImagePacks = [];
 const defaultImagePacksFolder = "data/defaultImagePacks/";
@@ -17,8 +14,7 @@ const defaultImagePacksFolder = "data/defaultImagePacks/";
  * @param {boolean} [isCustom=false] - Flag for custom packs that require special handling.
  */
 async function registerPack(data, locations, mapInfo, isCustom = false) {
-  // Add to game modes
-  window.gameModeData[data.gameModeId] = {
+  const packData = {
     name: data.name,
     locations: locations,
     map: mapInfo,
@@ -57,6 +53,8 @@ async function registerPack(data, locations, mapInfo, isCustom = false) {
     // Trigger change event to update the game map and background image
     gameModeSelect.dispatchEvent(new Event("change"));
   }
+
+  return packData;
 }
 
 
@@ -105,14 +103,15 @@ async function loadCustomImagePack(file) {
     }
 
     // Register the pack with the game
-    await registerPack(data, locations, mapInfo, true);
+    const packData = await registerPack(data, locations, mapInfo, true);
+    GameManager.addGameModeData(data.gameModeId, packData);
   } catch (error) {
     console.error("Error loading custom image pack:", error);
     alert(`Error loading image pack: ${error.message}`);
   }
 }
 
-async function loadLocationData() {
+export async function loadInitialData() {
   // Loads the list of packs from 'packList.json'
   try {
       const response = await fetch('data/defaultImagePacks/packList.json');
@@ -126,10 +125,10 @@ async function loadLocationData() {
       defaultImagePacks = [];
   }
 
+  const loadedGameModes = {};
+
   // Loads packs from the defaultImagePacks list
   try {
-    // Clear existing data and UI
-    window.gameModeData = {};
     const gameModeSelect = document.getElementById("gameMode");
     gameModeSelect.innerHTML = "";
 
@@ -177,23 +176,18 @@ async function loadLocationData() {
         }
 
         // Register the pack with the game
-        await registerPack(data, locations, mapInfo, false);
+        const packData = await registerPack(data, locations, mapInfo, false);
+        loadedGameModes[data.gameModeId] = packData;
       } catch (error) {
         console.error(`Error loading ${packName} pack:`, error);
       }
     }
 
     console.log("Location data loaded successfully!");
+    return loadedGameModes;
   } catch (error) {
     console.error("Error loading location data:", error);
-    window.gameModeData = {}; // Fallback to empty object
-  }
-
-  // Signal that all data is loaded and the game can initialize
-  if (typeof dataLoaded === "function") {
-    dataLoaded();
-  } else {
-    console.error("dataLoaded function not found");
+    return {}; // Fallback to empty object
   }
 }
 
