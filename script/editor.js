@@ -345,8 +345,8 @@ function updateLocationDetailsUI() {
 	if (!location) return
 
 	coordXSpan.textContent = location.x
-	// Invert y-axis for display
-	coordYSpan.textContent = state.mapImageHeight - location.y
+	// Display the y-axis directly.
+	coordYSpan.textContent = location.y
 	difficultySlider.value = location.difficulty
 	difficultyValueSpan.textContent = location.difficulty
 
@@ -602,12 +602,12 @@ downloadPackBtn.addEventListener('click', async () => {
 		const packData = {
 			name: state.packName,
 			gameModeId: state.gameModeId,
-			author: state.author, // Include the new author field
+			author: state.author,
 			locations: state.locations.map((loc) => {
 				return {
 					x: loc.x,
-					// Invert the y-coordinate back to the game's coordinate system
-					y: state.mapImageHeight - loc.y,
+					// Save the y-coordinate directly without inversion.
+					y: loc.y,
 					difficulty: loc.difficulty,
 					image: loc.image, // Use the original image path from the state
 				}
