@@ -11,7 +11,7 @@ body {
 	padding: 8px 25px;
 	border-radius: 10px;
 	border: 2px solid white;
-	font-size: 20px;
+	font-size: 1.25rem; /* 20px */
 	z-index: 10;
 	pointer-events: none; /* Prevent it from blocking map clicks */
 	display: none; /* Hidden by default */
@@ -68,7 +68,7 @@ hr {
 	height: 36px;
 	line-height: 20px;
 	border-radius: 4px;
-	font-size: 20px;
+	font-size: 1rem;
 }
 
 .window > h2:first-child {
@@ -79,13 +79,23 @@ hr {
 #startButton,
 #restartButton,
 #optionsButton {
-	margin: 15px 0px 0px 0px;
+	margin-top: 15px;
 }
+
 #customDifficultyDiv {
+	gap: 1rem;
+}
+
+.custom-difficulty-inputs {
 	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	width: 100%;
+}
+
+.range-container {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
 	align-items: center;
-	justify-content: center;
-	height: 36px;
-	line-height: 20px;
-	font-size: 20px;
 }

@@ -28,52 +28,32 @@
 </head>
 
 <body>
-	<div id="silksongMessage">
-		<h3>SILKSONG INFO</h3>
-		<br />
-
-		The Hollow Knight: Silksong map has been added to the <a href="imagePacks.html">Image Pack Editor</a> for those
-		who want to create silksong image packs.
-		<br>
-		<br>
-		<b>
-			You will not encounter any Silksong locations/spoilers if you select the classic Hollow Knight image
-			pack.
-		</b>
-
-
-	</div>
 	<img src="images/logo.png" alt="Hollow Guessr logo - A Hollow Knight GeoGuessing Game" id="title-image" />
-	<button class="play-button" onclick="window.location.href = 'game.html';">
-		Play
-	</button>
-	<p id="versionLabel">
-		<span>v1.8.6</span>
-		<br />
-		<br />
-
-		<a href="https://discord.gg/cr2CU4eFgg">
-			Join the Discord!
-		</a>
-		<br />
-		<br />
-
+	<div class="button-container">
+		<button class="play-button" onclick="window.location.href = 'game.html';">
+			Play
+		</button>
+		<button class="play-button" onclick="window.location.href = 'editor.html';">
+			Pack Editor
+		</button>
+		<button class="play-button" onclick="window.open('https://discord.gg/cr2CU4eFgg', '_blank');">
+			Discord
+		</button>
+		<button class="play-button" onclick="window.open('https://github.com/Logboy2000/HKGuessr', '_blank');">
+			GitHub
+		</button>
+	</div>
+	<div id="silksong-promo">
+		<p>Be the first to create a Silksong image pack!</p>
+		<p>
+			<a href="editor.html">Get started with the editor</a>
+		</p>
+	</div>
+	<div id="footer-info">
+		<span>v1.8.7</span>
 		<span>A game by
-			<a href="https://loganhowarth.pages.dev/">Logboy2000</a></span>
-
-		<br />
-		<br />
-
-		<a href="imagePacks.html" title="Add your own locations to the game">
-			Add your own locations to the game
-		</a>
-		<br />
-		<br />
-
-		<a href="https://github.com/Logboy2000/HKGuessr" title="Contribute to Hollow Guessr on GitHub">
-			Contribute to Hollow Guessr on GitHub!
-		</a>
-	</p>
+			<a href="https://loganhowarth.pages.dev/" target="_blank" rel="noopener noreferrer">Logboy2000</a></span>
+	</div>
 </body>
 
 </html>

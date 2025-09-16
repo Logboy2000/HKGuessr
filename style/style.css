@@ -1,5 +1,6 @@
 @font-face {
 	font-family: 'Trajan Pro Bold';
+	font-display: swap;
 	font-style: normal;
 	font-weight: normal;
 	src: local('Trajan Pro Bold'), url('TrajanPro-Bold.woff') format('woff');
@@ -15,10 +16,12 @@
 
 hr {
 	width: 95%;
+	border-color: rgba(255, 255, 255, 0.3);
 }
 
 body {
 	background-color: #000;
+	font-size: 16px; /* Establish a base font size for rem units */
 }
 
 #locationImg {
@@ -54,30 +57,38 @@ img {
 }
 
 .window {
+	transition: all 0.3s ease;
 	position: fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background-color: rgba(0, 0, 0, 0.863);
+	background-color: rgba(0, 0, 0, 0.9);
 	color: #fff;
 	padding: 2rem;
-	border-radius: 1rem;
+	border-radius: 8px;
+	border: 2px solid rgba(255, 255, 255, 0.5);
+	box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
 	text-align: center;
-	font-size: 2rem;
+	font-size: 1.5rem; /* Standardized window title size */
 	z-index: 1000;
 	height: min-content;
-	width: 20%;
-	min-width: 800px;
+	max-height: 90vh;
+	max-width: 600px;
+	width: 90vw; /* Use viewport width for responsiveness */
 	display: none;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: flex-start; /* Align content to the top for scrolling */
+	gap: 1.5rem;
+	overflow-y: auto; /* Allow vertical scrolling when content overflows */
+	overflow-x: hidden;
+
 }
 .option {
-	display: grid;
-	grid-template-columns: 1.5fr 2fr; /* Label takes 1 part, input takes 2 parts */
-	gap: 10px; /* Spacing between label and input */
-	margin-bottom: 10px;
+	display: flex;
+	justify-content: space-between;
 	align-items: center;
+	gap: 1rem;
+	width: 100%;
 }
 
 #loadingText {
@@ -108,10 +119,10 @@ p {
 	border-color: #000;
 	border-style: solid;
 	border-width: 1rem;
-	image-rendering: optimizeSpeed;
 	display: flex;
 	flex-direction: column;
 	align-items: end;
+	transform-origin: bottom right; /* Set origin for scaling */
 }
 
 #mapContainer:hover {
@@ -140,7 +151,7 @@ p {
 }
 
 button {
-	font-size: 2rem;
+	font-size: 1.25rem; /* Standardized button font size */
 	background-color: transparent;
 	color: #fff;
 	border: 2px solid #fff;
@@ -169,7 +180,6 @@ button[disabled] {
 	color: #999;
 	border: 2px solid #999;
 	cursor: not-allowed;
-	height: min-content;
 }
 
 #showMapButton {
@@ -205,44 +215,58 @@ button[disabled] {
 		font-size: 1.5rem;
 	}
 
-	.window {
-		width: 80%;
-		padding: 1rem;
-		font-size: 1.5rem;
-	}
-
-	#loadingText {
-		font-size: 1.5rem;
-	}
-
 	button {
-		font-size: 1.5rem;
+		font-size: 1rem;
 		padding: 0.5rem;
 	}
 
 	p {
-		font-size: 1rem;
+		font-size: 0.9rem;
+	}
+
+	.window {
+		transition: all 0.3s ease;
+		font-size: 1.2rem; /* Readable font size for mobile window titles */
+		max-width: 95%;
+	}
+
+	.option {
+		flex-direction: column; /* Stack label and input on mobile */
+		align-items: flex-start;
+		gap: 0.5rem;
+		font-size: 1rem; /* Set a base size for the option container */
 	}
 }
 
 .fullscreen {
 	transition: all 0.5s ease;
-	opacity: 0.9;
-	width: calc(100% - 2rem) !important;
-	height: calc(100% - 2rem) !important;
+	opacity: 0.95; /* Make it slightly more opaque in fullscreen */
+	width: 100% !important;
+	height: 100% !important;
+	top: 0 !important;
+	left: 0 !important;
 	right: 0 !important;
 	bottom: 0 !important;
+	margin: 0 !important;
+	border-radius: 0 !important;
+	border-width: 0 !important;
+}
+
+input[type='range'] {
+	padding: 0;
+	border: none;
+	background: transparent;
 }
 
 input[type='text'],
 select,
 input[type='number'] {
-	background-color: #000;
+	background-color: #111;
 	color: #fff;
-	padding: 5px;
+	padding: 8px 12px;
 	border: 2px solid #818181;
-	border-radius: 5px;
-	font-size: 20px;
+	font-size: 1rem; /* Explicitly set a readable font size */
+	border-radius: 4px;
 }
 
 input[type='text']:focus,
@@ -279,6 +303,7 @@ input[type='checkbox']:checked {
 
 label {
 	text-align: left;
+	margin-bottom: 0;
 	cursor: text;
 }
 

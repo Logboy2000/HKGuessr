@@ -157,6 +157,14 @@ export const GameManager = {
 			this.validaiteForm.bind(this)
 		)
 
+		// Listeners for custom difficulty range sliders to update value displays
+		DOM.minDifficultyInput.addEventListener('input', (e) => {
+			DOM.minDifficultyValue.textContent = e.target.value;
+		});
+		DOM.maxDifficultyInput.addEventListener('input', (e) => {
+			DOM.maxDifficultyValue.textContent = e.target.value;
+		});
+
 		DOM.guessButton.addEventListener(
 			'click',
 			this.guessButtonClicked.bind(this)
@@ -772,6 +780,8 @@ function initializeDOM() {
 	DOM.timerEnabled = document.getElementById('timerEnabled')
 	DOM.minDifficultyInput = document.getElementById('minDifficulty')
 	DOM.maxDifficultyInput = document.getElementById('maxDifficulty')
+	DOM.minDifficultyValue = document.getElementById('minDifficultyValue')
+	DOM.maxDifficultyValue = document.getElementById('maxDifficultyValue')
 	DOM.formWarning = document.getElementById('formWarning')
 
 	DOM.guessButton = document.getElementById('guessButton')

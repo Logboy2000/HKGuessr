@@ -34,24 +34,71 @@ body {
     margin-bottom: 20px;
 }
 
+/* Button container */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 /* Play button */
 .play-button {
-    font-family: 'Trajan Pro Bold', serif;
-    font-size: 30px;
-    font-weight: bold;
-    padding: 15px 60px;
-    transition: 0.3s;
+	font-family: 'Trajan Pro Bold', serif;
+	font-size: 1rem;
+	font-weight: bold;
+	padding: 10px 0;
+	transition: color 0.3s, text-shadow 0.3s;
 	max-height: none;
-    flex-grow: 0;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    border-radius: 5px;
+	flex-grow: 0;
+	text-transform: uppercase;
+	letter-spacing: 3px;
+	width: 350px;
+	/* Remove default button appearance */
+	background: transparent;
+	border: none;
+	color: rgba(255, 255, 255, 0.7);
+	position: relative;
+	/* Ensure cursors are positioned relative to the button */
 }
 
 .play-button:hover {
-    background: white;
-    color: black;
-    text-shadow: none;
+	color: #fff;
+	text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+	background-color: transparent; /* Override the global button hover style */
+}
+
+/* Hollow Knight-style selection cursors */
+.play-button::before,
+.play-button::after {
+	content: ''; /* Use empty content for background images */
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 20px;
+	height: 20px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.play-button::before {
+	background-image: url('../images/leftArrow.png');
+	left: -10px; /* Initial position */
+	transform: translateY(-60%) translateX(-20px) scale(1); /* Start off-screen */
+}
+
+.play-button::after {
+	background-image: url('../images/rightArrow.png');
+	right: -10px; /* Initial position */
+	transform: translateY(-60%) translateX(20px) scale(1); /* Start off-screen */
+}
+
+.play-button:hover::before,
+.play-button:hover::after {
+	opacity: 1;
+	transform: translateY(-60%) translateX(0) scale(2); /* Animate to final position */
 }
 
 /* Fade-in animation */
@@ -77,7 +124,7 @@ body {
 }
 
 #title-image,
-.play-button {
+.button-container {
     animation: fadeIn 1.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
@@ -89,34 +136,55 @@ body {
 
     .play-button {
         padding: 12px 50px;
-        font-size: 24px;
-    }
-    #silksongMessage {
-        font-size: 10px;
-        max-width: 100%;
-        left: 0.5;
+        font-size: 1.5rem; /* 24px */
     }
 }
 
-#versionLabel {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    user-select: none;
-    margin: 2px;
-    text-align: left;
-}
-
-
-#silksongMessage {
-    position: absolute;
-    margin: 2px;
-    text-align: left;
-    width: 600px;
-    background: rgba(0, 0, 0, 0.9);
+#silksong-promo {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.6);
     border-radius: 8px;
-    padding: 10px;
-    top: 0;
-    left: 0;
-    font-size: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    max-width: 350px;
+    text-align: left;
+}
+
+#silksong-promo p {
+    margin: 5px 0;
+    font-size: 0.75rem; /* 16px */
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+#silksong-promo a {
+    color: #a0cff8;
+    text-decoration: none;
+    transition: color 0.3s;
+    text-shadow: none;
+}
+
+#footer-info {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    user-select: none;
+    text-align: left;
+    font-size: 0.875rem; /* 14px */
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#footer-info a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+#footer-info a:hover {
+    color: white;
 }
