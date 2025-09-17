@@ -9,19 +9,21 @@ A game inspired by GeoGuessr, but set in the world of Hollow Knight.
 4. Submit your guess and see how close you were!
 
 ## Features
-- **Score System**: Earn points based on how close your guess is to the actual location.
-- **Timed Mode**: Race the timer for more difficult gameplay
-- **Touch Support**: Playable on desktop or mobile devices.
+- **Multiple Game Modes**: Play with the classic location pack, or try new challenges with community-created packs like guessing all grub or bench locations.
+- **Custom Image Packs**: Create, share, and play your own image packs using the in-browser [Image Pack Editor](https://hollowguessr.pages.dev/editor.html).
+- **Advanced Game Options**: Tailor your game with custom difficulty ranges, a configurable number of rounds, and an optional timer for an extra challenge.
+- **Score System**: Earn up to 5000 points per round based on the accuracy of your guess.
+- **Mobile Friendly**: Fully playable on both desktop and mobile devices with touch support.
 
 ## Contributing
 I welcome contributions from anybody! Here's how you can help:
-- **Create Image Packs**: Build your own collection of locations that can be merged into the main game! Visit the [Image Pack Creator](https://hollowguessr.pages.dev/imagePacks) page to get started.
+- **Create Image Packs**: Build your own collection of locations that can be merged into the main game! Visit the [Image Pack Guide](https://hollowguessr.pages.dev/imagePacks.html) to get started.
 - **Add Individual Locations**: Submit single locations via a [GitHub Issue](https://github.com/logboy2000/HKGuessr/issues/new?template=location-request.md).
 - **Report Bugs**: Found a bug? Open an issue on [GitHub](https://github.com/logboy2000/HKGuessr/issues).
 
 ## Roadmap
 Some planned features for the future
-- [x] Easy Location Suggestion
+- [x] Individual Location Suggestions
 - [x] Timed Games
 - [x] Difficulty Settings
 - [x] 100+ Locations
@@ -29,6 +31,8 @@ Some planned features for the future
 - [ ] Sound Effects
 - [ ] More Image Packs
   - [x] Charms Mode
+  - [x] All Grubs
+  - [x] All Benches
   - [ ] Greyscale Images
   - [ ] Hitbox Only
   - [ ] Dialogue Guessing
@@ -58,7 +62,7 @@ python -m http.server 8000
 - **[The HK Wiki](https://hollowknight.wiki/)**: Provided 54 of the screenshots in game
 - **[HK Title Generator](https://prashantmohta.github.io/TitleGenerator.HollowKnight/)**: Used to make the game's logo
 - **[GeoGuessr](https://www.geoguessr.com/)**: Inspired by the mechanics of GeoGuessr.
-- **Community Contributors**: Special thanks to everyone who has contributed image packs and locations! See the full list of contributors on the [Image Pack Creator](https://logboy2000.github.io/HKGuessr/locationRequest.html) page.
+- **Community Contributors**: Special thanks to everyone who has contributed image packs and locations! See the full list of contributors on the [Image Pack Guide](https://hollowguessr.pages.dev/imagePacks.html) page.
 
 ## Support Me
 I don't want your money. Donate to charity or something.

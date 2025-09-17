@@ -339,7 +339,6 @@ label {
 .location-request-content {
 	display: flex;
 	flex-direction: column;
-	gap: 2rem;
 }
 
 .location-request-content h1 {
