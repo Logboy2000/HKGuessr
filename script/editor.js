@@ -606,8 +606,8 @@ downloadPackBtn.addEventListener('click', async () => {
 			locations: state.locations.map((loc) => {
 				return {
 					x: loc.x,
-					// Save the y-coordinate directly without inversion.
-					y: loc.y,
+					// Invert the y-coordinate for game compatibility (game's y=0 is at the bottom)
+					y: state.mapImageHeight - loc.y,
 					difficulty: loc.difficulty,
 					image: loc.image, // Use the original image path from the state
 				}
