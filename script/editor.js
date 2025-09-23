@@ -33,8 +33,6 @@ const map = L.map('map', {
 	maxBoundsViscosity: 0.5,
 	preferCanvas: true,
 	renderer: L.canvas(),
-	
-	
 })
 
 const bounds = [
@@ -59,6 +57,7 @@ imageOverlay.on('load', function () {
 	
 	map.fitBounds(newBounds)
 	map.setMaxBounds(newBounds) // Constrain map panning
+	map.invalidateSize() // Force map to re-render with correct dimensions
 })
 
 // --- 3. UI Element and Event Handlers ---
@@ -457,6 +456,20 @@ map.on('click', (e) => {
 	}
 })
 
+/**
+ * Sets the map's image URL and returns a promise that resolves when the image has loaded.
+ * This ensures that map dimensions are updated before proceeding.
+ * @param {string} url The URL of the image to load.
+ * @returns {Promise<void>}
+ */
+function setMapUrlAndWaitForLoad(url) {
+	return new Promise((resolve) => {
+		// Use .once() to ensure this listener only fires for the current load operation.
+		imageOverlay.once('load', () => resolve());
+		imageOverlay.setUrl(url);
+	});
+}
+
 // --- 6. Import Pack Logic ---
 importFileInput.addEventListener('change', async (e) => {
 	const file = e.target.files[0]
@@ -489,21 +502,26 @@ importFileInput.addEventListener('change', async (e) => {
 		gameModeIdInput.value = packData.gameModeId
 		authorNameInput.value = packData.author
 
-		// Load custom map image if it exists in the zip
-		if (packData.map && packData.map.useCustomMap && packData.map.mapImage) {
-			const mapFileInZip = zip.file(packData.map.mapImage)
-			if (!mapFileInZip) {
-				console.warn(`Map image '${packData.map.mapImage}' not found in zip. Using default map.`)
-				packData.map.useCustomMap = false // Force default
-			}
-		}
-
 		if (packData.map?.useCustomMap) {
 			const mapFileInZip = zip.file(packData.map.mapImage)
-			const mapBlob = await mapFileInZip.async('blob')
-			state.customMapFile = new File([mapBlob], packData.map.mapImage, { type: 'image/png' })
-			state.customMapUrl = URL.createObjectURL(state.customMapFile)
-			mapImageUploadLabel.textContent = packData.map.mapImage
+			if (mapFileInZip) {
+				const mapBlob = await mapFileInZip.async('blob')
+				state.customMapFile = new File([mapBlob], packData.map.mapImage, { type: 'image/png' })
+				state.customMapUrl = URL.createObjectURL(state.customMapFile)
+				mapImageUploadLabel.textContent = packData.map.mapImage
+				defaultMapSelector.value = 'hallownest.png' // Reset dropdown
+			} else {
+				console.warn(`Map image '${packData.map.mapImage}' not found in zip. Using default map.`)
+				state.customMapFile = null
+				state.customMapUrl = state.defaultMapUrl
+				mapImageUploadLabel.textContent = 'Upload Custom Map Image'
+			}
+		} else if (packData.map?.defaultMap) {
+			state.customMapFile = null
+			state.customMapUrl = packData.map.defaultMap
+			state.defaultMapUrl = packData.map.defaultMap
+			defaultMapSelector.value = packData.map.defaultMap.split('/').pop()
+			mapImageUploadLabel.textContent = 'Upload Custom Map Image'
 		} else {
 			// If no custom map is specified or found, revert to the default
 			state.customMapFile = null
@@ -511,47 +529,46 @@ importFileInput.addEventListener('change', async (e) => {
 			mapImageUploadLabel.textContent = 'Upload Map Image (map.png)'
 		}
 
-		// Set the map URL and wait for it to load so we have the correct dimensions
-		imageOverlay.setUrl(state.customMapUrl)
-		await new Promise(resolve => imageOverlay.once('load', resolve));
+		// Set the map URL and explicitly wait for it to load before processing locations.
+		await setMapUrlAndWaitForLoad(state.customMapUrl);
 
-		// Load locations and images
-		const imagesFolder = zip.folder('images')
-		if (imagesFolder) {
+		// Now that the map is loaded and dimensions are correct, process locations.
+		const imagesFolder = zip.folder('images');
+		if (imagesFolder && packData.locations) {
 			await Promise.all(
 				packData.locations.map(async (locData) => {
-					const filename = locData.image.split('/').pop()
-					const imageFile = imagesFolder.file(filename)
+					const filename = locData.image.split('/').pop();
+					const imageFile = imagesFolder.file(`images/${filename}`);
 
 					if (imageFile) {
-						const blob = await imageFile.async('blob')
-						const fileObject = new File([blob], filename, { type: blob.type })
-						state.uploadedFiles[filename] = fileObject
+						const blob = await imageFile.async('blob');
+						const fileObject = new File([blob], filename, { type: blob.type });
+						// Use the original filename from the pack as the key
+						state.uploadedFiles[filename] = fileObject;
 					}
 
 					// Correct the inverted y-axis from the pack data for the map
-					const correctedY = state.mapImageHeight - locData.y
+					const correctedY = state.mapImageHeight - locData.y;
 
 					// Create a new location object for our state
-					const newId = generateUniqueId()
+					const newId = generateUniqueId();
 					const newLocation = {
 						id: newId,
 						x: locData.x,
-						y: correctedY,
+						y: correctedY, // Use the corrected Y for the editor's coordinate system
 						difficulty: locData.difficulty,
 						image: locData.image, // Store the original image path from the imported pack
-					}
-					const marker = createPin(newId, [correctedY, locData.x])
-					newLocation.marker = marker
-					state.locations.push(newLocation)
+					};
+					const marker = createPin(newId, [correctedY, locData.x]);
+					newLocation.marker = marker;
+					state.locations.push(newLocation);
 				})
-			)
+			);
 		}
 
-		renderLocationsList()
-		// Hide the loading alert on success
-		hideAlert(loadingAlert)
-		showTemporaryAlert('Pack imported successfully!', 3000)
+		renderLocationsList();
+		hideAlert(loadingAlert);
+		showTemporaryAlert('Pack imported successfully!', 3000);
 	} catch (error) {
 		console.error('Error importing pack:', error)
 		// Hide the loading alert on error
@@ -561,7 +578,7 @@ importFileInput.addEventListener('change', async (e) => {
 		// Clear the file input so the same file can be imported again
 		importFileInput.value = ''
 	}
-})
+});
 
 // --- 7. Download Pack Logic with JSZip ---
 downloadPackBtn.addEventListener('click', async () => {
