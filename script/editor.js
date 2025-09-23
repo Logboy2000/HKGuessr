@@ -537,8 +537,9 @@ importFileInput.addEventListener('change', async (e) => {
 		if (imagesFolder && packData.locations) {
 			await Promise.all(
 				packData.locations.map(async (locData) => {
+					// The path in pack.json is "images/filename.png", but the file in the zip is just "filename.png" inside the "images" folder.
 					const filename = locData.image.split('/').pop();
-					const imageFile = imagesFolder.file(`images/${filename}`);
+					const imageFile = imagesFolder.file(filename);
 
 					if (imageFile) {
 						const blob = await imageFile.async('blob');
