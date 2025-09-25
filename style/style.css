@@ -573,3 +573,20 @@ label {
 #guessButton {
 	flex-grow: 1; /* Allow guess button to fill space */
 }
+
+.spoiler {
+	background-color: #818181;
+	color: #818181;
+	transition: all 0.3s ease;
+	border-radius: 0.25rem;
+	padding: 0.1rem 0.25rem;
+	text-shadow: none;
+	width: fit-content;
+	cursor: pointer;
+}
+
+.spoiler:hover {
+	color: #fff;
+	text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+	background-color: transparent;
+}

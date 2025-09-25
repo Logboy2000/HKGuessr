@@ -5,7 +5,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100dvh; /* Use dynamic viewport height */
-    background: url('../images/bg.jpg') no-repeat center center fixed;
+    background: url('../images/bg3.png') no-repeat center center fixed;
     background-size: cover;
     text-align: center;
     font-family: 'Trajan Pro Bold', serif;
@@ -42,7 +42,7 @@ body {
 }
 
 /* Play button */
-.play-button {
+.hk-button {
 	font-family: 'Trajan Pro Bold', serif;
 	font-size: 1rem;
 	font-weight: bold;
@@ -53,23 +53,23 @@ body {
 	text-transform: uppercase;
 	letter-spacing: 3px;
 	width: 350px;
-	/* Remove default button appearance */
 	background: transparent;
 	border: none;
 	color: rgba(255, 255, 255, 0.7);
 	position: relative;
-	/* Ensure cursors are positioned relative to the button */
+    cursor: pointer;
+    text-decoration: none;
 }
 
-.play-button:hover {
+.hk-button:hover {
 	color: #fff;
 	text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
 	background-color: transparent; /* Override the global button hover style */
 }
 
 /* Hollow Knight-style selection cursors */
-.play-button::before,
-.play-button::after {
+.hk-button::before,
+.hk-button::after {
 	content: ''; /* Use empty content for background images */
 	position: absolute;
 	top: 50%;
@@ -83,20 +83,20 @@ body {
 	transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-.play-button::before {
+.hk-button::before {
 	background-image: url('../images/leftArrow.png');
 	left: -10px; /* Initial position */
 	transform: translateY(-60%) translateX(-20px) scale(1); /* Start off-screen */
 }
 
-.play-button::after {
+.hk-button::after {
 	background-image: url('../images/rightArrow.png');
 	right: -10px; /* Initial position */
 	transform: translateY(-60%) translateX(20px) scale(1); /* Start off-screen */
 }
 
-.play-button:hover::before,
-.play-button:hover::after {
+.hk-button:hover::before,
+.hk-button:hover::after {
 	opacity: 1;
 	transform: translateY(-60%) translateX(0) scale(2); /* Animate to final position */
 }
@@ -134,7 +134,7 @@ body {
         max-width: 80%;
     }
 
-    .play-button {
+    .hk-button {
         padding: 12px 50px;
         font-size: 1.5rem;
     }
