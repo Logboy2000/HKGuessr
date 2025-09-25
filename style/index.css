@@ -136,7 +136,7 @@ body {
 
     .play-button {
         padding: 12px 50px;
-        font-size: 1.5rem; /* 24px */
+        font-size: 1.5rem;
     }
 }
 
@@ -148,15 +148,18 @@ body {
     background-color: rgba(0, 0, 0, 0.6);
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.15);
-    max-width: 350px;
+    max-width: 440px;
     text-align: left;
 }
 
-#silksong-promo p {
+#silksong-promo p, #silksong-promo ul{
     margin: 5px 0;
-    font-size: 0.75rem; /* 16px */
-    letter-spacing: 1.5px;
+    font-size: 0.7rem;
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+#silksong-promo li {
+    margin-left: 2rem;
 }
 
 #silksong-promo a {

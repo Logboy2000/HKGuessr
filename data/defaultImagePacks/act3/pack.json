@@ -1,0 +1,815 @@
+{
+  "name": "Silksong (Act 3)",
+  "gameModeId": "act3",
+  "author": "Biticalifi",
+  "locations": [
+    {
+      "x": 2499,
+      "y": 2152,
+      "difficulty": 10,
+      "image": "images/loc-119-Screenshot_2025_09_23_203926.png"
+    },
+    {
+      "x": 586,
+      "y": 2599,
+      "difficulty": 1,
+      "image": "images/loc-13-Screenshot_2025_09_23_161451.png"
+    },
+    {
+      "x": 1614,
+      "y": 2424,
+      "difficulty": 3,
+      "image": "images/loc-21-Screenshot_2025_09_23_162656.png"
+    },
+    {
+      "x": 2431,
+      "y": 2677,
+      "difficulty": 9,
+      "image": "images/loc-36-Screenshot_2025_09_23_164607.png"
+    },
+    {
+      "x": 2022,
+      "y": 2656,
+      "difficulty": 7,
+      "image": "images/loc-27-Screenshot_2025_09_23_163233.png"
+    },
+    {
+      "x": 1104,
+      "y": 2760,
+      "difficulty": 3,
+      "image": "images/loc-2-Screenshot_2025_09_23_160120.png"
+    },
+    {
+      "x": 1316,
+      "y": 2339,
+      "difficulty": 5,
+      "image": "images/loc-18-Screenshot_2025_09_23_162229.png"
+    },
+    {
+      "x": 2558,
+      "y": 2679,
+      "difficulty": 7,
+      "image": "images/loc-37-Screenshot_2025_09_23_164758.png"
+    },
+    {
+      "x": 3026,
+      "y": 2033,
+      "difficulty": 8,
+      "image": "images/loc-115-Screenshot_2025_09_23_203306.png"
+    },
+    {
+      "x": 1394,
+      "y": 2489,
+      "difficulty": 5,
+      "image": "images/loc-56-Screenshot_2025_09_23_173004.png"
+    },
+    {
+      "x": 1439,
+      "y": 2536,
+      "difficulty": 7,
+      "image": "images/loc-58-Screenshot_2025_09_23_173222.png"
+    },
+    {
+      "x": 1500,
+      "y": 2446,
+      "difficulty": 6,
+      "image": "images/loc-53-Screenshot_2025_09_23_172705.png"
+    },
+    {
+      "x": 3411,
+      "y": 2395,
+      "difficulty": 2,
+      "image": "images/loc-105-Screenshot_2025_09_23_202004.png"
+    },
+    {
+      "x": 2996,
+      "y": 2135,
+      "difficulty": 3,
+      "image": "images/loc-113-Screenshot_2025_09_23_203036.png"
+    },
+    {
+      "x": 2048,
+      "y": 2198,
+      "difficulty": 10,
+      "image": "images/loc-132-Screenshot_2025_09_23_205512.png"
+    },
+    {
+      "x": 1549,
+      "y": 2517,
+      "difficulty": 7,
+      "image": "images/loc-59-Screenshot_2025_09_23_173318.png"
+    },
+    {
+      "x": 1172,
+      "y": 2512,
+      "difficulty": 6,
+      "image": "images/loc-15-Screenshot_2025_09_23_161728.png"
+    },
+    {
+      "x": 3380,
+      "y": 2710,
+      "difficulty": 4,
+      "image": "images/loc-97-Screenshot_2025_09_23_200958.png"
+    },
+    {
+      "x": 1063,
+      "y": 2385,
+      "difficulty": 1,
+      "image": "images/loc-76-Screenshot_2025_09_23_192728.png"
+    },
+    {
+      "x": 1894,
+      "y": 2777,
+      "difficulty": 2,
+      "image": "images/loc-28-Screenshot_2025_09_23_163346.png"
+    },
+    {
+      "x": 1986,
+      "y": 2175,
+      "difficulty": 1,
+      "image": "images/loc-130-Screenshot_2025_09_23_205212.png"
+    },
+    {
+      "x": 1001,
+      "y": 2686,
+      "difficulty": 3,
+      "image": "images/loc-4-Screenshot_2025_09_23_160410.png"
+    },
+    {
+      "x": 1532,
+      "y": 2360,
+      "difficulty": 6,
+      "image": "images/loc-20-Screenshot_2025_09_23_162600.png"
+    },
+    {
+      "x": 2543,
+      "y": 2526,
+      "difficulty": 8,
+      "image": "images/loc-85-Screenshot_2025_09_23_195250.png"
+    },
+    {
+      "x": 1604,
+      "y": 2493,
+      "difficulty": 2,
+      "image": "images/loc-22-Screenshot_2025_09_23_162742.png"
+    },
+    {
+      "x": 2205,
+      "y": 2298,
+      "difficulty": 4,
+      "image": "images/loc-50-Screenshot_2025_09_23_171506.png"
+    },
+    {
+      "x": 2688,
+      "y": 2510,
+      "difficulty": 6,
+      "image": "images/loc-79-Screenshot_2025_09_23_193024.png"
+    },
+    {
+      "x": 2681,
+      "y": 2605,
+      "difficulty": 3,
+      "image": "images/loc-89-Screenshot_2025_09_23_195605.png"
+    },
+    {
+      "x": 2339,
+      "y": 2635,
+      "difficulty": 4,
+      "image": "images/loc-38-Screenshot_2025_09_23_164925.png"
+    },
+    {
+      "x": 2714,
+      "y": 2646,
+      "difficulty": 5,
+      "image": "images/loc-90-Screenshot_2025_09_23_195651.png"
+    },
+    {
+      "x": 2431,
+      "y": 2114,
+      "difficulty": 3,
+      "image": "images/loc-120-Screenshot_2025_09_23_204016.png"
+    },
+    {
+      "x": 2526,
+      "y": 2395,
+      "difficulty": 3,
+      "image": "images/loc-46-Screenshot_2025_09_23_165900.png"
+    },
+    {
+      "x": 2864,
+      "y": 2519,
+      "difficulty": 8,
+      "image": "images/loc-100-Screenshot_2025_09_23_201326.png"
+    },
+    {
+      "x": 1447,
+      "y": 2435,
+      "difficulty": 4,
+      "image": "images/loc-54-Screenshot_2025_09_23_172824.png"
+    },
+    {
+      "x": 2940,
+      "y": 2611,
+      "difficulty": 4,
+      "image": "images/loc-94-Screenshot_2025_09_23_200512.png"
+    },
+    {
+      "x": 2817,
+      "y": 2556,
+      "difficulty": 8,
+      "image": "images/loc-99-Screenshot_2025_09_23_201219.png"
+    },
+    {
+      "x": 2740,
+      "y": 2450,
+      "difficulty": 1,
+      "image": "images/loc-101-Screenshot_2025_09_23_201443.png"
+    },
+    {
+      "x": 1692,
+      "y": 2455,
+      "difficulty": 3,
+      "image": "images/loc-55-Screenshot_2025_09_23_172034.png"
+    },
+    {
+      "x": 1037,
+      "y": 2402,
+      "difficulty": 5,
+      "image": "images/loc-77-Screenshot_2025_09_23_192815.png"
+    },
+    {
+      "x": 2173,
+      "y": 2116,
+      "difficulty": 1,
+      "image": "images/loc-125-Screenshot_2025_09_23_204540.png"
+    },
+    {
+      "x": 2003,
+      "y": 2864,
+      "difficulty": 3,
+      "image": "images/loc-29-Screenshot_2025_09_23_163502.png"
+    },
+    {
+      "x": 1843,
+      "y": 2393,
+      "difficulty": 6,
+      "image": "images/loc-52-Screenshot_2025_09_23_171815.png"
+    },
+    {
+      "x": 2424,
+      "y": 2081,
+      "difficulty": 5,
+      "image": "images/loc-118-Screenshot_2025_09_23_203822.png"
+    },
+    {
+      "x": 1802,
+      "y": 2555,
+      "difficulty": 3,
+      "image": "images/loc-24-Screenshot_2025_09_23_162927.png"
+    },
+    {
+      "x": 1152,
+      "y": 2356,
+      "difficulty": 1,
+      "image": "images/loc-19-Screenshot_2025_09_23_162319.png"
+    },
+    {
+      "x": 1931,
+      "y": 2203,
+      "difficulty": 1,
+      "image": "images/loc-133-Screenshot_2025_09_23_205553.png"
+    },
+    {
+      "x": 1959,
+      "y": 2474,
+      "difficulty": 5,
+      "image": "images/loc-42-Screenshot_2025_09_23_165442.png"
+    },
+    {
+      "x": 2237,
+      "y": 2355,
+      "difficulty": 1,
+      "image": "images/loc-47-Screenshot_2025_09_23_165948.png"
+    },
+    {
+      "x": 877,
+      "y": 2660,
+      "difficulty": 2,
+      "image": "images/loc-11-Screenshot_2025_09_23_161318.png"
+    },
+    {
+      "x": 2980,
+      "y": 1944,
+      "difficulty": 2,
+      "image": "images/loc-114-Screenshot_2025_09_23_203205.png"
+    },
+    {
+      "x": 2377,
+      "y": 2032,
+      "difficulty": 7,
+      "image": "images/loc-123-Screenshot_2025_09_23_204327.png"
+    },
+    {
+      "x": 1832,
+      "y": 2224,
+      "difficulty": 3,
+      "image": "images/loc-134-Screenshot_2025_09_23_205631.png"
+    },
+    {
+      "x": 683,
+      "y": 2614,
+      "difficulty": 1,
+      "image": "images/loc-12-Screenshot_2025_09_23_161413.png"
+    },
+    {
+      "x": 1310,
+      "y": 2511,
+      "difficulty": 3,
+      "image": "images/loc-17-Screenshot_2025_09_23_162030.png"
+    },
+    {
+      "x": 2521,
+      "y": 2449,
+      "difficulty": 5,
+      "image": "images/loc-84-Screenshot_2025_09_23_195102.png"
+    },
+    {
+      "x": 2950,
+      "y": 2136,
+      "difficulty": 1,
+      "image": "images/loc-112-Screenshot_2025_09_23_202908.png"
+    },
+    {
+      "x": 972,
+      "y": 2439,
+      "difficulty": 1,
+      "image": "images/loc-63-Screenshot_2025_09_23_173740.png"
+    },
+    {
+      "x": 915,
+      "y": 2368,
+      "difficulty": 1,
+      "image": "images/loc-75-Screenshot_2025_09_23_192608.png"
+    },
+    {
+      "x": 3501,
+      "y": 2711,
+      "difficulty": 6,
+      "image": "images/loc-98-Screenshot_2025_09_23_201038.png"
+    },
+    {
+      "x": 2760,
+      "y": 2096,
+      "difficulty": 2,
+      "image": "images/loc-111-Screenshot_2025_09_23_202823.png"
+    },
+    {
+      "x": 1795,
+      "y": 2058,
+      "difficulty": 4,
+      "image": "images/loc-128-Screenshot_2025_09_23_204823.png"
+    },
+    {
+      "x": 562,
+      "y": 2717,
+      "difficulty": 2,
+      "image": "images/loc-8-Screenshot_2025_09_23_160925.png"
+    },
+    {
+      "x": 650,
+      "y": 2547,
+      "difficulty": 3,
+      "image": "images/loc-14-Screenshot_2025_09_23_161551.png"
+    },
+    {
+      "x": 2171,
+      "y": 1965,
+      "difficulty": 4,
+      "image": "images/loc-124-Screenshot_2025_09_23_204446.png"
+    },
+    {
+      "x": 976,
+      "y": 2740,
+      "difficulty": 1,
+      "image": "images/loc-3-Screenshot_2025_09_23_160035.png"
+    },
+    {
+      "x": 2247,
+      "y": 2107,
+      "difficulty": 1,
+      "image": "images/loc-121-Screenshot_2025_09_23_204134.png"
+    },
+    {
+      "x": 2779,
+      "y": 2598,
+      "difficulty": 4,
+      "image": "images/loc-92-Screenshot_2025_09_23_195842.png"
+    },
+    {
+      "x": 2742,
+      "y": 2330,
+      "difficulty": 8,
+      "image": "images/loc-107-Screenshot_2025_09_23_202418.png"
+    },
+    {
+      "x": 2877,
+      "y": 2097,
+      "difficulty": 7,
+      "image": "images/loc-116-Screenshot_2025_09_23_203407.png"
+    },
+    {
+      "x": 2099,
+      "y": 2161,
+      "difficulty": 2,
+      "image": "images/loc-126-Screenshot_2025_09_23_204629.png"
+    },
+    {
+      "x": 1248,
+      "y": 2704,
+      "difficulty": 4,
+      "image": "images/loc-5-Screenshot_2025_09_23_160618.png"
+    },
+    {
+      "x": 2382,
+      "y": 2425,
+      "difficulty": 7,
+      "image": "images/loc-45-Screenshot_2025_09_23_165820.png"
+    },
+    {
+      "x": 1523,
+      "y": 2493,
+      "difficulty": 5,
+      "image": "images/loc-57-Screenshot_2025_09_23_173126.png"
+    },
+    {
+      "x": 437,
+      "y": 2587,
+      "difficulty": 2,
+      "image": "images/loc-69-Screenshot_2025_09_23_191628.png"
+    },
+    {
+      "x": 2747,
+      "y": 1990,
+      "difficulty": 5,
+      "image": "images/loc-117-Screenshot_2025_09_23_203614.png"
+    },
+    {
+      "x": 1074,
+      "y": 2571,
+      "difficulty": 1,
+      "image": "images/loc-61-Screenshot_2025_09_23_173501.png"
+    },
+    {
+      "x": 2350,
+      "y": 2490,
+      "difficulty": 5,
+      "image": "images/loc-82-Screenshot_2025_09_23_194903.png"
+    },
+    {
+      "x": 847,
+      "y": 2572,
+      "difficulty": 1,
+      "image": "images/loc-68-Screenshot_2025_09_23_191453.png"
+    },
+    {
+      "x": 2103,
+      "y": 2888,
+      "difficulty": 7,
+      "image": "images/loc-32-Screenshot_2025_09_23_164045.png"
+    },
+    {
+      "x": 512,
+      "y": 2547,
+      "difficulty": 3,
+      "image": "images/loc-71-Screenshot_2025_09_23_192134.png"
+    },
+    {
+      "x": 1912,
+      "y": 2173,
+      "difficulty": 4,
+      "image": "images/loc-131-Screenshot_2025_09_23_205328.png"
+    },
+    {
+      "x": 1718,
+      "y": 2570,
+      "difficulty": 4,
+      "image": "images/loc-23-Screenshot_2025_09_23_162824.png"
+    },
+    {
+      "x": 1814,
+      "y": 2386,
+      "difficulty": 4,
+      "image": "images/loc-53-Screenshot_2025_09_23_171851.png"
+    },
+    {
+      "x": 2643,
+      "y": 2308,
+      "difficulty": 3,
+      "image": "images/loc-109-Screenshot_2025_09_23_202632.png"
+    },
+    {
+      "x": 832,
+      "y": 2402,
+      "difficulty": 2,
+      "image": "images/loc-74-Screenshot_2025_09_23_192526.png"
+    },
+    {
+      "x": 2291,
+      "y": 2584,
+      "difficulty": 3,
+      "image": "images/loc-81-Screenshot_2025_09_23_194809.png"
+    },
+    {
+      "x": 871,
+      "y": 2504,
+      "difficulty": 7,
+      "image": "images/loc-66-Screenshot_2025_09_23_191307.png"
+    },
+    {
+      "x": 3109,
+      "y": 2419,
+      "difficulty": 9,
+      "image": "images/loc-103-Screenshot_2025_09_23_201704.png"
+    },
+    {
+      "x": 2440,
+      "y": 2545,
+      "difficulty": 9,
+      "image": "images/loc-86-Screenshot_2025_09_23_195331.png"
+    },
+    {
+      "x": 2459,
+      "y": 2345,
+      "difficulty": 7,
+      "image": "images/loc-108-Screenshot_2025_09_23_202533.png"
+    },
+    {
+      "x": 2140,
+      "y": 2638,
+      "difficulty": 1,
+      "image": "images/loc-39-Screenshot_2025_09_23_165036.png"
+    },
+    {
+      "x": 1136,
+      "y": 2414,
+      "difficulty": 6,
+      "image": "images/loc-78-Screenshot_2025_09_23_192906.png"
+    },
+    {
+      "x": 3184,
+      "y": 2652,
+      "difficulty": 2,
+      "image": "images/loc-96-Screenshot_2025_09_23_200828.png"
+    },
+    {
+      "x": 2951,
+      "y": 2398,
+      "difficulty": 6,
+      "image": "images/loc-102-Screenshot_2025_09_23_201616.png"
+    },
+    {
+      "x": 2626,
+      "y": 2115,
+      "difficulty": 1,
+      "image": "images/loc-110-Screenshot_2025_09_23_202720.png"
+    },
+    {
+      "x": 722,
+      "y": 2506,
+      "difficulty": 10,
+      "image": "images/loc-72-Screenshot_2025_09_23_192309.png"
+    },
+    {
+      "x": 2100,
+      "y": 2590,
+      "difficulty": 1,
+      "image": "images/loc-26-Screenshot_2025_09_23_163150.png"
+    },
+    {
+      "x": 2287,
+      "y": 2429,
+      "difficulty": 2,
+      "image": "images/loc-44-Screenshot_2025_09_23_165731.png"
+    },
+    {
+      "x": 985,
+      "y": 2489,
+      "difficulty": 4,
+      "image": "images/loc-67-Screenshot_2025_09_23_191327.png"
+    },
+    {
+      "x": 3205,
+      "y": 2313,
+      "difficulty": 7,
+      "image": "images/loc-106-Screenshot_2025_09_23_202219.png"
+    },
+    {
+      "x": 2038,
+      "y": 2110,
+      "difficulty": 5,
+      "image": "images/loc-127-Screenshot_2025_09_23_204710.png"
+    },
+    {
+      "x": 2064,
+      "y": 2494,
+      "difficulty": 1,
+      "image": "images/loc-41-Screenshot_2025_09_23_165338.png"
+    },
+    {
+      "x": 2259,
+      "y": 2835,
+      "difficulty": 1,
+      "image": "images/loc-30-Screenshot_2025_09_23_163705.png"
+    },
+    {
+      "x": 2232,
+      "y": 2483,
+      "difficulty": 6,
+      "image": "images/loc-43-Screenshot_2025_09_23_165557.png"
+    },
+    {
+      "x": 2445,
+      "y": 2513,
+      "difficulty": 6,
+      "image": "images/loc-83-Screenshot_2025_09_23_195016.png"
+    },
+    {
+      "x": 2233,
+      "y": 2722,
+      "difficulty": 5,
+      "image": "images/loc-34-Screenshot_2025_09_23_164339.png"
+    },
+    {
+      "x": 1276,
+      "y": 2430,
+      "difficulty": 2,
+      "image": "images/loc-55-Screenshot_2025_09_23_172925.png"
+    },
+    {
+      "x": 818,
+      "y": 2458,
+      "difficulty": 3,
+      "image": "images/loc-65-Screenshot_2025_09_23_173926.png"
+    },
+    {
+      "x": 2064,
+      "y": 2539,
+      "difficulty": 7,
+      "image": "images/loc-40-Screenshot_2025_09_23_165218.png"
+    },
+    {
+      "x": 1036,
+      "y": 2510,
+      "difficulty": 6,
+      "image": "images/loc-62-Screenshot_2025_09_23_173546.png"
+    },
+    {
+      "x": 924,
+      "y": 2459,
+      "difficulty": 2,
+      "image": "images/loc-64-Screenshot_2025_09_23_173844.png"
+    },
+    {
+      "x": 2379,
+      "y": 2361,
+      "difficulty": 1,
+      "image": "images/loc-48-Screenshot_2025_09_23_170048.png"
+    },
+    {
+      "x": 366,
+      "y": 2572,
+      "difficulty": 4,
+      "image": "images/loc-70-Screenshot_2025_09_23_192015.png"
+    },
+    {
+      "x": 743,
+      "y": 2434,
+      "difficulty": 3,
+      "image": "images/loc-73-Screenshot_2025_09_23_192406.png"
+    },
+    {
+      "x": 1809,
+      "y": 2604,
+      "difficulty": 5,
+      "image": "images/loc-25-Screenshot_2025_09_23_163038.png"
+    },
+    {
+      "x": 1260,
+      "y": 2574,
+      "difficulty": 3,
+      "image": "images/loc-16-Screenshot_2025_09_23_161905.png"
+    },
+    {
+      "x": 2370,
+      "y": 2743,
+      "difficulty": 8,
+      "image": "images/loc-35-Screenshot_2025_09_23_164447.png"
+    },
+    {
+      "x": 3184,
+      "y": 2491,
+      "difficulty": 3,
+      "image": "images/loc-104-Screenshot_2025_09_23_201759.png"
+    },
+    {
+      "x": 2103,
+      "y": 2758,
+      "difficulty": 6,
+      "image": "images/loc-33-Screenshot_2025_09_23_164211.png"
+    },
+    {
+      "x": 2758,
+      "y": 2661,
+      "difficulty": 2,
+      "image": "images/loc-91-Screenshot_2025_09_23_195724.png"
+    },
+    {
+      "x": 3105,
+      "y": 2614,
+      "difficulty": 4,
+      "image": "images/loc-95-Screenshot_2025_09_23_200718.png"
+    },
+    {
+      "x": 2031,
+      "y": 2408,
+      "difficulty": 5,
+      "image": "images/loc-51-Screenshot_2025_09_23_171653.png"
+    },
+    {
+      "x": 2555,
+      "y": 2580,
+      "difficulty": 6,
+      "image": "images/loc-80-Screenshot_2025_09_23_194539.png"
+    },
+    {
+      "x": 2647,
+      "y": 2660,
+      "difficulty": 5,
+      "image": "images/loc-88-Screenshot_2025_09_23_195529.png"
+    },
+    {
+      "x": 686,
+      "y": 2674,
+      "difficulty": 7,
+      "image": "images/loc-9-Screenshot_2025_09_23_161128.png"
+    },
+    {
+      "x": 1810,
+      "y": 2448,
+      "difficulty": 4,
+      "image": "images/loc-54-Screenshot_2025_09_23_171937.png"
+    },
+    {
+      "x": 2217,
+      "y": 1983,
+      "difficulty": 10,
+      "image": "images/loc-122-Screenshot_2025_09_23_204234.png"
+    },
+    {
+      "x": 2588,
+      "y": 2634,
+      "difficulty": 8,
+      "image": "images/loc-87-Screenshot_2025_09_23_195450.png"
+    },
+    {
+      "x": 2053,
+      "y": 2012,
+      "difficulty": 4,
+      "image": "images/loc-129-Screenshot_2025_09_23_205108.png"
+    },
+    {
+      "x": 768,
+      "y": 2723,
+      "difficulty": 1,
+      "image": "images/loc-7-Screenshot_2025_09_23_160757.png"
+    },
+    {
+      "x": 1426,
+      "y": 2574,
+      "difficulty": 1,
+      "image": "images/loc-60-Screenshot_2025_09_23_173410.png"
+    },
+    {
+      "x": 2138,
+      "y": 2324,
+      "difficulty": 3,
+      "image": "images/loc-49-Screenshot_2025_09_23_170137.png"
+    },
+    {
+      "x": 2885,
+      "y": 2637,
+      "difficulty": 1,
+      "image": "images/loc-93-Screenshot_2025_09_23_200037.png"
+    },
+    {
+      "x": 736,
+      "y": 2647,
+      "difficulty": 9,
+      "image": "images/loc-10-Screenshot_2025_09_23_161230.png"
+    }
+  ],
+  "map": {
+    "useCustomMap": false,
+    "defaultMap": "images/game/defaultMaps/pharloom.png"
+  }
+}
