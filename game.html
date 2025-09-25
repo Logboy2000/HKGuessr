@@ -25,7 +25,7 @@
 			<canvas id="mapCanvas"></canvas>
 			<div id="roundScoreDisplay"></div>
 			<br />
-			<div id="buttonContainer">
+			<div id="controlsContainer">
 				<button id="guessButton">Guess!</button>
 				<button id="fullscreenButton">
 					<img
@@ -34,23 +34,11 @@
 						style="max-width: 100%; padding: 3px"
 					/>
 				</button>
-
-				<button id="minimiseButton">
-					<img
-						src="images/game/arrow-down.svg"
-						alt="X"
-						style="max-width: 100%; padding: 3px"
-					/>
-				</button>
 			</div>
+			<button id="minimiseButton">
+				<img src="images/game/arrow-down.svg" alt="V" style="max-width: 100%; padding: 3px" id="minimiseIcon" />
+			</button>
 		</div>
-		<button id="showMapButton">
-			<img
-				src="images/game/arrow-up.svg"
-				alt="X"
-				style="max-width: 100%; padding: 3px"
-			/>
-		</button>
 
 		<div id="gameOverWindow" class="window">
 			<h2>Game Over</h2>

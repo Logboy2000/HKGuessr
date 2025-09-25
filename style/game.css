@@ -31,17 +31,33 @@ hr {
 }
 
 #minimiseButton {
-	padding: 8px 16px;
+	position: absolute;
+	right: 0.5rem;
+	bottom: 0.3rem;
+	z-index: 10;
+
+	transition: transform 0.3s ease; /* Smooth rotation for the button itself */
 }
 
 #fullscreenButton,
 #minimiseButton {
-	max-width: 60px;
+	flex-shrink: 0; /* Prevent icon buttons from shrinking */
+}
+#fullscreenButton,
+#minimiseButton {
+	width: 50px;
+	height: 50px;
+	min-width: 50px;
 	padding: 0;
 	align-items: center;
 	align-content: center;
 	justify-content: center;
-	margin-left: 0.5rem;
+	margin-left: 0;
+}
+
+#minimiseButton.rotate180 {
+	transform: rotate(180deg);
+	background-color: #fff; /* Optional: Add a background on minimize */
 }
 
 #scoreContainer span {
@@ -69,6 +85,7 @@ hr {
 	line-height: 20px;
 	border-radius: 4px;
 	font-size: 1rem;
+	min-width: 176px;
 }
 
 .window > h2:first-child {
@@ -98,4 +115,9 @@ hr {
 	flex-direction: column;
 	gap: 0.5rem;
 	align-items: center;
+}
+
+#minimiseIcon {
+
+	transition: transform 0.3s ease;
 }

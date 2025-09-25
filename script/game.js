@@ -50,7 +50,7 @@ export const GameManager = {
 	 * Initializes the game manager.
 	 */
 	init(gameData) {
-		this.gameModeData = gameData;
+		this.gameModeData = gameData
 
 		GameMap.init(DOM.mapCanvas)
 
@@ -159,22 +159,27 @@ export const GameManager = {
 
 		// Listeners for custom difficulty range sliders to update value displays
 		DOM.minDifficultyInput.addEventListener('input', (e) => {
-			DOM.minDifficultyValue.textContent = e.target.value;
-		});
+			DOM.minDifficultyValue.textContent = e.target.value
+		})
 		DOM.maxDifficultyInput.addEventListener('input', (e) => {
-			DOM.maxDifficultyValue.textContent = e.target.value;
-		});
+			DOM.maxDifficultyValue.textContent = e.target.value
+		})
 
 		DOM.guessButton.addEventListener(
 			'click',
 			this.guessButtonClicked.bind(this)
 		)
-		DOM.showMapButton.addEventListener('click', () =>
-			this.setMinimapVisible(true)
-		)
-		DOM.minimiseButton.addEventListener('click', () =>
-			this.setMinimapVisible(false)
-		)
+		DOM.minimiseButton.addEventListener('click', () => {
+			if (DOM.minimiseIcon.classList.contains('rotate180')) {
+				DOM.minimiseIcon.classList.remove('rotate180')
+				DOM.mapCanvas.classList.remove('minimise')
+				DOM.mapContainer.classList.remove('minimise')				
+			} else {
+				DOM.minimiseIcon.classList.add('rotate180')
+				DOM.mapCanvas.classList.add('minimise')
+				DOM.mapContainer.classList.add('minimise')
+			}
+		})
 
 		DOM.timerEnabled.addEventListener(
 			'change',
@@ -359,20 +364,6 @@ export const GameManager = {
 	},
 
 	/**
-	 * Sets the visibility of the minimap container.
-	 * @param {boolean} visible - True to show, false to hide.
-	 */
-	setMinimapVisible(visible) {
-		if (visible) {
-			DOM.mapContainer.style.display = 'flex'
-			DOM.showMapButton.style.display = 'none'
-		} else {
-			DOM.mapContainer.style.display = 'none'
-			DOM.showMapButton.style.display = 'flex'
-		}
-	},
-
-	/**
 	 * Toggles the disabled state of the timer length input based on timer enabled checkbox.
 	 * @param {HTMLInputElement} element - The timer enabled checkbox.
 	 */
@@ -453,7 +444,6 @@ export const GameManager = {
 				// after the last round is guessed.
 				this.gameState = GAMESTATES.gameOver
 				this.guessButtonClicked() // Recurse to trigger the gameOver logic
-
 			}
 		} else if (this.gameState === GAMESTATES.gameOver) {
 			DOM.guessButton.disabled = true
@@ -465,8 +455,9 @@ export const GameManager = {
 				DOM.timerLengthDisplay.style.display = 'none'
 			}
 			this.openWindow('gameover')
-			DOM.finalScoreDisplay.innerText = `Final Score: ${this.totalScore}/${this.totalRounds * this.maxScore
-				}`
+			DOM.finalScoreDisplay.innerText = `Final Score: ${this.totalScore}/${
+				this.totalRounds * this.maxScore
+			}`
 			let accuracyPercent = (
 				(this.totalScore / (this.totalRounds * this.maxScore)) *
 				100
@@ -789,16 +780,17 @@ function initializeDOM() {
 	DOM.mapCanvas = document.getElementById('mapCanvas')
 	DOM.mapContainer = document.getElementById('mapContainer')
 	DOM.roundScoreDisplay = document.getElementById('roundScoreDisplay')
-	DOM.showMapButton = document.getElementById('showMapButton')
 	DOM.minimiseButton = document.getElementById('minimiseButton')
 	DOM.gameMode = document.getElementById('gameMode')
+	DOM.minimiseIcon = document.getElementById('minimiseIcon')
+	DOM.fullscreenButton = document.getElementById('fullscreenButton')
 }
 
 // Main entry point for the game
 async function main() {
-	initializeDOM();
-	const gameData = await loadInitialData();
-	GameManager.init(gameData);
+	initializeDOM()
+	const gameData = await loadInitialData()
+	GameManager.init(gameData)
 }
 
-document.addEventListener('DOMContentLoaded', main);
+document.addEventListener('DOMContentLoaded', main)
