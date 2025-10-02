@@ -128,18 +128,6 @@ body {
     animation: fadeIn 1.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
-/* Mobile responsiveness */
-@media (max-width: 600px) {
-    #title-image {
-        max-width: 80%;
-    }
-
-    .hk-button {
-        padding: 12px 50px;
-        font-size: 1.5rem;
-    }
-}
-
 #silksong-promo {
 	position: absolute;
 	top: 10px;
@@ -151,6 +139,28 @@ body {
     max-width: 440px;
     text-align: left;
 }
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    #title-image {
+        max-width: 80%;
+    }
+
+    .hk-button {
+        padding: 12px 50px;
+        font-size: 1.5rem;
+    }
+    #silksong-promo {
+        font-size: 0.4rem;
+        padding: 10px;
+        max-width: 90%;
+    }
+    #silksong-promo p, #silksong-promo ul {
+        font-size: 0.5rem !important; 
+    }
+}
+
+
 
 #silksong-promo p, #silksong-promo ul{
     margin: 5px 0;
