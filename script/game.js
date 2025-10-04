@@ -17,12 +17,13 @@ export const GAMESTATES = {
 	gameOver: 2,
 	optionsWindow: 3,
 }
-function _showCopyToast(message) {
+// General-purpose toast helper. Call as showToast(message, durationMs)
+function showToast(message, duration = 1200) {
 	try {
-		let toast = document.getElementById('hk_toast_copy')
+		let toast = document.getElementById('hk_toast')
 		if (!toast) {
 			toast = document.createElement('div')
-			toast.id = 'hk_toast_copy'
+			toast.id = 'hk_toast'
 			toast.style.position = 'fixed'
 			toast.style.bottom = '1rem'
 			toast.style.right = '1rem'
@@ -32,13 +33,21 @@ function _showCopyToast(message) {
 			toast.style.borderRadius = '6px'
 			toast.style.zIndex = 9999
 			toast.style.fontSize = '14px'
+			toast.style.pointerEvents = 'none'
 			document.body.appendChild(toast)
 		}
-		toast.innerText = message
+		// Use textContent to avoid accidental HTML injection
+		toast.textContent = message
+		// Reset opacity and ensure any prior hide timeout is cleared
+		toast.style.transition = ''
 		toast.style.opacity = '1'
-		setTimeout(() => {
-			try { toast.style.transition = 'opacity 350ms'; toast.style.opacity = '0' } catch (e) { }
-		}, 1200)
+		if (toast._hideTimeout) clearTimeout(toast._hideTimeout)
+		toast._hideTimeout = setTimeout(() => {
+			try {
+				toast.style.transition = 'opacity 350ms'
+				toast.style.opacity = '0'
+			} catch (e) { /* ignore */ }
+		}, duration)
 	} catch (e) {
 		console.log('Toast failed', e)
 	}
@@ -284,7 +293,7 @@ export const GameManager = {
 					}
 
 					if (copied) {
-						_showCopyToast('Seed copied')
+						showToast('Seed copied')
 						console.log('Seed copied to clipboard')
 					}
 
@@ -955,14 +964,10 @@ export const GameManager = {
 				formValid = false
 			}
 		}
+
+		// Seed validation + easter eggs
 		if (DOM.enableSeed && DOM.enableSeed.checked) {
-
-
 			const seedVal = (DOM.seedInput?.value || '').toString().trim()
-
-
-
-
 
 			const disallowedBrainrot = [
 				'brainrot',
@@ -1021,8 +1026,9 @@ export const GameManager = {
 				this.displayFormMessage('Nice.')
 			}
 
+
 			if (seedVal.toLowerCase().includes('yalikejazz')) {
-				this.displayFormMessage(egg)
+				this.displayFormMessage(egg) 
 			}
 
 			if (seedVal.toLowerCase().includes('biticalifi')) {
@@ -1030,13 +1036,20 @@ export const GameManager = {
 				formValid = false
 			}
 
-			
-
-
 			if (seedVal === 'rickroll') {
 				this.displayFormMessage('gottem')
 				window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')
 			}
+
+			if (seedVal.toLowerCase().includes('squirrel')) {
+				this.displayFormMessage('🐿️')
+			}
+
+			if (seedVal.toLowerCase().includes('dawndishsoap')) {
+				this.displayFormMessage('<img src="images/soap.jpeg" style="width:100%; border-radius:8px;" alt="dawn dish soap" />')
+			}
+
+
 		}
 
 		if (formValid) {
@@ -1048,7 +1061,7 @@ export const GameManager = {
 		}
 	},
 	displayFormMessage(string) {
-		DOM.formWarning.innerText = string
+		DOM.formWarning.innerHTML = string
 		DOM.formWarning.style.display = 'block'
 	},
 	hideFormWarning() {
