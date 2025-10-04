@@ -906,7 +906,7 @@ export const GameManager = {
 				Number(DOM.timerLengthInput.value) <= 0 ||
 				isNaN(DOM.timerLengthInput.value)
 			) {
-				this.displayFormWarning(
+				this.displayFormMessage(
 					'Please use a valid number for timer length (greater than 0).'
 				)
 				formValid = false
@@ -917,7 +917,7 @@ export const GameManager = {
 			Number(DOM.roundCountInput.value) <= 0 ||
 			isNaN(DOM.roundCountInput.value)
 		) {
-			this.displayFormWarning(
+			this.displayFormMessage(
 				'Please use a valid number for rounds (greater than 0).'
 			)
 			formValid = false
@@ -928,7 +928,7 @@ export const GameManager = {
 				Number(DOM.minDifficultyInput.value) > 10 ||
 				isNaN(Number(DOM.minDifficultyInput.value))
 			) {
-				this.displayFormWarning(
+				this.displayFormMessage(
 					'Please use a valid number for minimum difficulty (1-10).'
 				)
 				formValid = false
@@ -939,7 +939,7 @@ export const GameManager = {
 				Number(DOM.maxDifficultyInput.value) > 10 ||
 				isNaN(Number(DOM.maxDifficultyInput.value))
 			) {
-				this.displayFormWarning(
+				this.displayFormMessage(
 					'Please use a valid number for maximum difficulty (1-10).'
 				)
 				formValid = false
@@ -949,7 +949,7 @@ export const GameManager = {
 				Number(DOM.minDifficultyInput.value) >
 				Number(DOM.maxDifficultyInput.value)
 			) {
-				this.displayFormWarning(
+				this.displayFormMessage(
 					'Minimum difficulty cannot be greater than maximum difficulty.'
 				)
 				formValid = false
@@ -992,18 +992,18 @@ export const GameManager = {
 			];
 
 			if (seedVal.length <= 0) {
-				this.displayFormWarning('Seed cannot be empty.')
+				this.displayFormMessage('Seed cannot be empty.')
 				formValid = false
 			}
 
 			// Disallow seeds with spaces
 			if (seedVal.includes(' ')) {
-				this.displayFormWarning('Seed cannot contain spaces.')
+				this.displayFormMessage('Seed cannot contain spaces.')
 				formValid = false
 			}
 			// Disallow seeds longer than 100 characters 
 			if (seedVal.length > 100) {
-				this.displayFormWarning('Seed cannot be longer than 100 characters.')
+				this.displayFormMessage('Seed cannot be longer than 100 characters.')
 				formValid = false
 
 			}
@@ -1013,16 +1013,29 @@ export const GameManager = {
 				disallowedBrainrot.some(word => seedVal.toLowerCase().includes(word.toLowerCase())) ||
 				seedVal === '67'
 			) {
-				this.displayFormWarning('Seed cannot contain brainrot.')
+				this.displayFormMessage('Seed cannot contain brainrot.')
 				formValid = false
 			}
 
 			if (seedVal === '69') {
-				this.displayFormWarning('Nice.')
+				this.displayFormMessage('Nice.')
 			}
 
-			if (seedVal.includes('yalikejazz')) {
-				this.displayFormWarning(egg)
+			if (seedVal.toLowerCase().includes('yalikejazz')) {
+				this.displayFormMessage(egg)
+			}
+
+			if (seedVal.toLowerCase().includes('biticalifi')) {
+				this.displayFormMessage('Seed cannot contain cool people.')
+				formValid = false
+			}
+
+			
+
+
+			if (seedVal === 'rickroll') {
+				this.displayFormMessage('gottem')
+				window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')
 			}
 		}
 
@@ -1034,8 +1047,8 @@ export const GameManager = {
 			DOM.startButton.style.opacity = '0.5'
 		}
 	},
-	displayFormWarning(string) {
-		DOM.formWarning.innerHTML = string
+	displayFormMessage(string) {
+		DOM.formWarning.innerText = string
 		DOM.formWarning.style.display = 'block'
 	},
 	hideFormWarning() {
