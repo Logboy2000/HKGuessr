@@ -49,15 +49,80 @@ img {
 }
 
 #scoreContainer {
-	font-size: 2rem;
-	color: #fff;
+ 	font-size: 2rem;
+ 	color: #fff;
+ 	position: absolute;
+ 	top: 0.5rem;
+ 	left: 50%;
+ 	transform: translateX(-50%);
+ 	display: flex;
+ 	align-items: center;
+ 	gap: 1rem;
+}
+
+/* Separate container for the back button so it can sit above the modal overlay */
+#backContainer {
 	position: absolute;
-	top: 0;
-	left: 0;
+	top: 0.5rem;
+	left: 0.5rem;
+	z-index: 1100; /* above modal-overlay (900) and windows (1000) */
+}
+
+#backContainer button {
+	/* keep visual consistent with other buttons */
+	font-size: 1.25rem;
+	background-color: transparent;
+	color: #fff;
+	border: 2px solid #fff;
+	border-radius: 0.5rem;
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+}
+
+/* Ensure the back button hover works even if other rules change generic buttons */
+#backContainer button {
+	transition: all 0.12s ease-in-out;
+	pointer-events: auto;
+}
+
+#backContainer button:hover {
+	background-color: #fff;
+	color: #000;
+	box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+	transform: translateY(-1px);
+}
+
+/* Top-right controls (New Game etc.) */
+#topRightContainer {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	z-index: 100; /* keep under overlay so modals cover it */
+	display: flex;
+	gap: 0.5rem;
+}
+#bottomLeftContainer {
+	position: absolute;
+	bottom: 0.5rem;
+	left: 0.5rem;
+	z-index: 100; /* keep under overlay so modals cover it */
+	display: flex;
+	gap: 0.5rem;
+	font-size: 1.5rem;
+	color: rgba(255, 255, 255, 0.7);
+	text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+	
+}
+
+/* keep the top-center score elements below the overlay when modal open */
+.modal-open #scoreContainer,
+.modal-open #topRightContainer {
+	filter: blur(2px) saturate(0.8);
+	opacity: 0.4;
 }
 
 .window {
-	transition: all 0.3s ease;
+	transition: all 0.28s cubic-bezier(.2,.9,.2,1);
 	position: fixed;
 	top: 50%;
 	left: 50%;
@@ -75,6 +140,7 @@ img {
 	max-height: 90vh;
 	max-width: 600px;
 	width: 90vw; /* Use viewport width for responsiveness */
+	/* start hidden; JS will toggle display + .visible for animation */
 	display: none;
 	flex-direction: column;
 	justify-content: flex-start; /* Align content to the top for scrolling */
@@ -82,6 +148,48 @@ img {
 	overflow-y: auto; /* Allow vertical scrolling when content overflows */
 	overflow-x: hidden;
 
+}
+
+.window.visible {
+	display: flex; /* ensure visible */
+	opacity: 1;
+	transform: translate(-50%, -50%) scale(1);
+	pointer-events: auto;
+}
+
+/* Hidden-by-default state for animation - JS should add 'visible' after setting display:flex */
+.window:not(.visible) {
+	opacity: 0;
+	transform: translate(-50%, -55%) scale(0.98);
+	pointer-events: none;
+}
+
+/* Dimming / backdrop effect when a modal is open */
+.modal-open #mapContainer,
+.modal-open #locationImg,
+.modal-open #scoreContainer,
+.modal-open #controlsContainer {
+	filter: blur(2px) saturate(0.8);
+	opacity: 0.4;
+	transition: all 0.28s ease;
+}
+
+/* Overlay that sits behind modals and blocks clicks */
+.modal-overlay {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.4);
+	display: none;
+}
+.modal-overlay.visible { display:block; }
+
+/* Improve visible focus state for keyboard users inside modals */
+.window :focus {
+	outline: 2px solid rgba(255,255,255,0.9);
+	outline-offset: 2px;
 }
 .option {
 	display: flex;
@@ -91,18 +199,26 @@ img {
 	width: 100%;
 }
 
+
 #loadingText {
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	transform: translate(-50%, -50%);
+	transform: translate(-50%, calc(-50%));
 	font-size: 2rem;
 	color: #fff;
 	z-index: 1;
 }
 
-p {
-	margin: 1rem;
+#mapLoadingText {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, calc(-50%));
+	font-size: 2rem;
+	color: #fff;
+	z-index: 2;
+	display: none;
 }
 
 #mapContainer {
@@ -293,18 +409,61 @@ input[type='number']:disabled {
 	cursor: not-allowed;
 }
 
-/* Style the checkbox */
+/* Style the checkbox - prettier, accessible, no HTML changes required */
 input[type='checkbox'] {
-	width: 20px;
-	height: 20px;
+	/* remove native appearance so we can style it consistently */
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+
+	width: 22px;
+	height: 22px;
 	margin-right: 10px;
+	border: 2px solid rgba(255,255,255,0.95);
+	border-radius: 6px;
+	background-color: transparent;
+	display: inline-block;
+	vertical-align: middle;
 	cursor: pointer;
+	position: relative;
+	transition: all 0.12s ease-in-out;
 }
 
-/* Style when the checkbox is checked */
+/* checkmark created with ::after — widely supported when appearance is removed */
+input[type='checkbox']::after {
+	/* draw the two-segment check using rotated borders and center it */
+	content: '';
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 8px;
+	height: 12px;
+	transform: translate(-50%, -55%) rotate(45deg) scale(0);
+	transform-origin: center;
+	border-right: 2px solid transparent;
+	border-bottom: 2px solid transparent;
+	transition: transform 0.12s ease-in-out, border-color 0.12s ease-in-out;
+}
+
 input[type='checkbox']:checked {
-	background-color: #4caf50;
-	border-color: #4caf50;
+	background-color: #fff;
+	border-color: #fff;
+}
+
+input[type='checkbox']:checked::after {
+	border-right-color: #000;
+	border-bottom-color: #000;
+	transform: translate(-50%, -55%) rotate(45deg) scale(1);
+}
+
+input[type='checkbox']:focus {
+	outline: 3px solid rgb(171, 171, 171);
+	outline-offset: 2px;
+}
+
+/* Make labels inside option rows clickable and show pointer */
+.option label {
+	cursor: pointer;
 }
 
 label {
@@ -589,4 +748,65 @@ label {
 	color: #fff;
 	text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
 	background-color: transparent;
+}
+
+
+/* Play button */
+.hk-button {
+	font-family: 'Trajan Pro Bold', serif;
+	font-size: 1rem;
+	font-weight: bold;
+	padding: 10px 0;
+	transition: color 0.3s, text-shadow 0.3s;
+	max-height: none;
+	flex-grow: 0;
+	text-transform: uppercase;
+	letter-spacing: 3px;
+	width: 350px;
+	background: transparent;
+	border: none;
+	color: rgba(255, 255, 255, 0.7);
+	position: relative;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.hk-button:hover {
+	color: #fff;
+	text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+	background-color: transparent; /* Override the global button hover style */
+}
+
+/* Hollow Knight-style selection cursors */
+.hk-button::before,
+.hk-button::after {
+	content: ''; /* Use empty content for background images */
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 20px;
+	height: 20px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.hk-button::before {
+	background-image: url('../images/leftArrow.png');
+	left: -10px; /* Initial position */
+	transform: translateY(-60%) translateX(-20px) scale(1); /* Start off-screen */
+}
+
+.hk-button::after {
+	background-image: url('../images/rightArrow.png');
+	right: -10px; /* Initial position */
+	transform: translateY(-60%) translateX(20px) scale(1); /* Start off-screen */
+}
+
+.hk-button:hover::before,
+.hk-button:hover::after {
+	opacity: 1;
+	transform: translateY(-60%) translateX(0) scale(2); /* Animate to final position */
 }

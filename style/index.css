@@ -41,65 +41,6 @@ body {
     align-items: center;
 }
 
-/* Play button */
-.hk-button {
-	font-family: 'Trajan Pro Bold', serif;
-	font-size: 1rem;
-	font-weight: bold;
-	padding: 10px 0;
-	transition: color 0.3s, text-shadow 0.3s;
-	max-height: none;
-	flex-grow: 0;
-	text-transform: uppercase;
-	letter-spacing: 3px;
-	width: 350px;
-	background: transparent;
-	border: none;
-	color: rgba(255, 255, 255, 0.7);
-	position: relative;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.hk-button:hover {
-	color: #fff;
-	text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
-	background-color: transparent; /* Override the global button hover style */
-}
-
-/* Hollow Knight-style selection cursors */
-.hk-button::before,
-.hk-button::after {
-	content: ''; /* Use empty content for background images */
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	width: 20px;
-	height: 20px;
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center;
-	opacity: 0;
-	transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-
-.hk-button::before {
-	background-image: url('../images/leftArrow.png');
-	left: -10px; /* Initial position */
-	transform: translateY(-60%) translateX(-20px) scale(1); /* Start off-screen */
-}
-
-.hk-button::after {
-	background-image: url('../images/rightArrow.png');
-	right: -10px; /* Initial position */
-	transform: translateY(-60%) translateX(20px) scale(1); /* Start off-screen */
-}
-
-.hk-button:hover::before,
-.hk-button:hover::after {
-	opacity: 1;
-	transform: translateY(-60%) translateX(0) scale(2); /* Animate to final position */
-}
 
 /* Fade-in animation */
 @keyframes fadeIn {

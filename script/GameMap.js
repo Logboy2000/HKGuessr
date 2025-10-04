@@ -58,7 +58,8 @@ export const GameMap = {
     this.shadePinImg.src = "images/shadePin.png";
 
     // Set and load the initial map image
-    this.changeMapImage(DEFAULT_MAP_URL);
+  // Do not load a map image automatically here. The map will be loaded when a game starts
+  // to avoid unnecessary network/image loading on page load.
 
     // Ensure pin images are loaded before attempting to draw them
     Promise.all([
@@ -150,6 +151,8 @@ export const GameMap = {
    * @param {MouseEvent} event
    */
   handleMouseDown(event) {
+    // Prevent interaction when a modal/menu is open
+    if (document.body.classList.contains('modal-open')) return;
     const rect = this.canvas.getBoundingClientRect();
     this.mousePos.x = event.clientX - rect.left;
     this.mousePos.y = event.clientY - rect.top;
@@ -166,6 +169,7 @@ export const GameMap = {
    * @param {MouseEvent} event
    */
   handleMouseMove(event) {
+    if (document.body.classList.contains('modal-open')) return;
     const rect = this.canvas.getBoundingClientRect();
     this.mousePos.x = event.clientX - rect.left;
     this.mousePos.y = event.clientY - rect.top;
@@ -191,6 +195,10 @@ export const GameMap = {
    * Handles mouse up events on the canvas.
    */
   handleMouseUp() {
+    if (document.body.classList.contains('modal-open')) {
+      this.isDragging = false
+      return
+    }
     if (!this.hasMoved && GameManager.gameState === GAMESTATES.guessing) {
       this.updateGuessPos(this.mouseXRelative, this.mouseYRelative);
     }
@@ -209,6 +217,7 @@ export const GameMap = {
    * @param {WheelEvent} event
    */
   handleWheel(event) {
+    if (document.body.classList.contains('modal-open')) return;
     event.preventDefault();
 
     const rect = this.canvas.getBoundingClientRect();
@@ -233,6 +242,7 @@ export const GameMap = {
    * @param {TouchEvent} event
    */
   handleTouchStart(event) {
+    if (document.body.classList.contains('modal-open')) return;
     if (event.touches.length === 1) {
       this.isDragging = true;
       this.hasMoved = false;
@@ -253,6 +263,7 @@ export const GameMap = {
    * @param {TouchEvent} event
    */
   handleTouchMove(event) {
+    if (document.body.classList.contains('modal-open')) return;
     if (event.touches.length === 1 && this.isDragging) {
       const rect = this.canvas.getBoundingClientRect();
       this.mousePos.x = event.touches[0].clientX - rect.left;
@@ -298,6 +309,10 @@ export const GameMap = {
    * Handles touch end events for mobile.
    */
   handleTouchEnd() {
+    if (document.body.classList.contains('modal-open')) {
+      this.isDragging = false
+      return
+    }
     if (!this.hasMoved && GameManager.gameState === GAMESTATES.guessing) {
       this.updateGuessPos(this.mouseXRelative, this.mouseYRelative);
     }
@@ -375,6 +390,12 @@ export const GameMap = {
     this.ctx.translate(this.camera.x, this.camera.y); // Apply camera pan
 
     // Draw the main map image
+    // If the map image hasn't finished loading yet, skip drawing the map and pins
+    if (!this.mapImg || !this.mapImg.complete || !this.mapImg.naturalWidth) {
+      this.ctx.restore();
+      return;
+    }
+
     this.ctx.drawImage(
       this.mapImg,
       0,
