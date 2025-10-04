@@ -13,21 +13,13 @@
 
 <body>
 	<img src="" alt="" id="locationImg" />
-	<div id="scoreContainer">
-		<span id="round">0/5</span>
-		<span id="timerDisplay"></span>
-	</div>
+
 	<div id="backContainer">
 		<button id="back-button" onclick="window.location.href='index.html'">
 			&lt;- Back
 		</button>
 	</div>
-	<div id="topRightContainer">
-		<button id="newGameButton">New Game</button>
-	</div>
-	<div id="bottomLeftContainer">
-		<span id="seededIndicator" style="opacity: 0.2; font-size: 1rem; display: none;">SEEDED RUN</span>
-	</div>
+
 
 	</div>
 	<div id="mapContainer">
@@ -49,6 +41,20 @@
 
 	<p id="loadingText" style="display: none;">Getting Image...</p>
 	<p id="mapLoadingText" style="display: none;">Loading Map...</p>
+
+	<div style="z-index: 1100;">
+		<div id="topRightContainer">
+			<button id="newGameButton">New Game</button>
+		</div>
+		<div id="bottomLeftContainer">
+			<span id="seededIndicator" style="opacity: 0.2; font-size: 1rem; display: none;">SEEDED RUN</span>
+		</div>
+		<div id="scoreContainer">
+			<span id="round">0/5</span>
+			<span id="timerDisplay"></span>
+		</div>
+	</div>
+
 
 	<div id="gameOverWindow" class="window">
 		<h2>Game Over</h2>

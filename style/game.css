@@ -65,10 +65,6 @@ hr {
 	padding: 5px 15px;
 }
 
-#back-button {
-	margin-bottom: 0;
-}
-
 #loadPackButton {
 	display: flex;
 	align-items: center;

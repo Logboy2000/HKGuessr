@@ -97,7 +97,6 @@ img {
 	position: absolute;
 	top: 0.5rem;
 	right: 0.5rem;
-	z-index: 100; /* keep under overlay so modals cover it */
 	display: flex;
 	gap: 0.5rem;
 }
@@ -105,20 +104,12 @@ img {
 	position: absolute;
 	bottom: 0.5rem;
 	left: 0.5rem;
-	z-index: 100; /* keep under overlay so modals cover it */
 	display: flex;
 	gap: 0.5rem;
 	font-size: 1.5rem;
 	color: rgba(255, 255, 255, 0.7);
 	text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 	
-}
-
-/* keep the top-center score elements below the overlay when modal open */
-.modal-open #scoreContainer,
-.modal-open #topRightContainer {
-	filter: blur(2px) saturate(0.8);
-	opacity: 0.4;
 }
 
 .window {
@@ -167,7 +158,6 @@ img {
 /* Dimming / backdrop effect when a modal is open */
 .modal-open #mapContainer,
 .modal-open #locationImg,
-.modal-open #scoreContainer,
 .modal-open #controlsContainer {
 	filter: blur(2px) saturate(0.8);
 	opacity: 0.4;
