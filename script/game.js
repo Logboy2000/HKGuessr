@@ -1,6 +1,7 @@
 import { GameMap } from './GameMap.js'
 import { randIRange, isNumber, makeSeededRandom } from './Utils.js'
 import { loadInitialData } from './loadLocationData.js'
+import { egg } from './egg.js'
 ///////////////////////////////////////////////
 ////// Geoguessr Clone for Hollow Knight //////
 ///////////////////////////////////////////////
@@ -1015,6 +1016,14 @@ export const GameManager = {
 				this.displayFormWarning('Seed cannot contain brainrot.')
 				formValid = false
 			}
+
+			if (seedVal === '69') {
+				this.displayFormWarning('Nice.')
+			}
+
+			if (seedVal.includes('yalikejazz')) {
+				this.displayFormWarning(egg)
+			}
 		}
 
 		if (formValid) {
@@ -1026,7 +1035,7 @@ export const GameManager = {
 		}
 	},
 	displayFormWarning(string) {
-		DOM.formWarning.innerText = string
+		DOM.formWarning.innerHTML = string
 		DOM.formWarning.style.display = 'block'
 	},
 	hideFormWarning() {
