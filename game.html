@@ -12,7 +12,13 @@
 </head>
 
 <body>
-	<img src="" alt="" id="locationImg" />
+	<div id="imageWrapper">
+		<div id="blurBg"></div>
+		<img id="locationImg" src="" alt=""></img>
+		
+	</div>
+
+
 
 	<div id="backContainer">
 		<button id="back-button" onclick="window.location.href='index.html'">
@@ -39,7 +45,7 @@
 
 	<div id="modalOverlay" class="modal-overlay"></div>
 
-	<p id="loadingText" style="display: none;">Getting Image...</p>
+	<p id="loadingText" style="display: none;">Loading Image...</p>
 	<p id="mapLoadingText" style="display: none;">Loading Map...</p>
 
 	<div style="z-index: 1100;">

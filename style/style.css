@@ -21,28 +21,10 @@ hr {
 
 body {
 	background-color: #000;
-	font-size: 16px; /* Establish a base font size for rem units */
+	font-size: 16px;
 }
 
-#locationImg {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	left: 0;
-	top: 0;
-	object-fit: contain;
-	max-width: 100%;
-	max-height: 100%;
-	overflow: hidden;
-	user-select: none;
-	padding: 0;
-	margin: 0;
-	pointer-events: none;
-}
 
-#locationImg::selection {
-	background: none;
-}
 
 img {
 	-webkit-user-drag: none;
@@ -190,7 +172,7 @@ img {
 }
 
 
-#loadingText {
+#loadingText, #mapLoadingText  {
 	position: fixed;
 	top: 50%;
 	left: 50%;
@@ -200,17 +182,6 @@ img {
 	z-index: 1;
 }
 
-#mapLoadingText {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, calc(-50%));
-	font-size: 2rem;
-	color: #fff;
-	z-index: 2;
-	display: none;
-}
-
 #mapContainer {
 	background-color: #000;
 	opacity: 0.6;
@@ -218,9 +189,8 @@ img {
 	position: fixed;
 	width: 30%;
 	height: 40%;	
-	right: 1rem;
-	bottom: 1rem;
-	margin: 0; /* Replaced margin with right/bottom to prevent overflow */
+	right: 0rem;
+	bottom: 0rem;
 	border-radius: 1rem;
 	border-color: #000;
 	border-style: solid;
@@ -264,11 +234,11 @@ img {
 	padding: 0;
 	font-size: 1.5rem;
 	text-align: center;	
-	align-items: center; /* Vertically center buttons */
+	align-items: center;
 }
 
 button {
-	font-size: 1.25rem; /* Standardized button font size */
+	font-size: 1.25rem;
 	background-color: transparent;
 	color: #fff;
 	border: 2px solid #fff;
@@ -276,8 +246,7 @@ button {
 	padding: 0.5rem 1rem;
 	cursor: pointer;
 	transition: all 0.1s ease-in-out;
-	max-height: 50px; /* Adjusted max-height */
-	margin: 0;
+	max-height: 50px; 
 	text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
 }
 
@@ -696,28 +665,7 @@ label {
 	transform: rotate(180deg);
 }
 
-#mapCanvas.minimise {
-	transition: all 0.5s ease;
-	opacity: 0;
-	transform: scale(0);
-	height: 0 !important;
-	width: 100% !important; /* Allow width to be flexible during transition */
-	pointer-events: none;
-}
 
-#mapContainer.minimise {
-	transition: all 0.5s ease;
-	width: 60px !important; /* Set a fixed width for the minimized state */
-	height: 60px !important; /* Set a fixed height for the minimized state */
-	border-width: 0;
-	background-color: transparent;
-	opacity: 1;
-}
-
-#mapContainer.minimise #controlsContainer {
-	opacity: 0;
-	pointer-events: none;
-}
 
 #guessButton {
 	flex-grow: 1; /* Allow guess button to fill space */

@@ -46,7 +46,9 @@ function showToast(message, duration = 1200) {
 			try {
 				toast.style.transition = 'opacity 350ms'
 				toast.style.opacity = '0'
-			} catch (e) { /* ignore */ }
+			} catch (e) {
+				/* ignore */
+			}
 		}, duration)
 	} catch (e) {
 		console.log('Toast failed', e)
@@ -180,7 +182,6 @@ export const GameManager = {
 		)
 		DOM.seedInput.addEventListener('input', this.validaiteForm.bind(this))
 
-
 		// Listeners for custom difficulty range sliders to update value displays
 		DOM.minDifficultyInput.addEventListener('input', (e) => {
 			DOM.minDifficultyValue.textContent = e.target.value
@@ -194,27 +195,13 @@ export const GameManager = {
 			this.guessButtonClicked.bind(this)
 		)
 		DOM.minimiseButton.addEventListener('click', () => {
-			if (DOM.minimiseIcon.classList.contains('rotate180')) {
-				DOM.minimiseIcon.classList.remove('rotate180')
-				DOM.mapCanvas.classList.remove('minimise')
-				DOM.mapContainer.classList.remove('minimise')
-			} else {
-				DOM.minimiseIcon.classList.add('rotate180')
-				DOM.mapCanvas.classList.add('minimise')
-				DOM.mapContainer.classList.add('minimise')
-			}
+			this.toggleMinimise()
 		})
 
-		DOM.timerEnabled.addEventListener(
-			'change',
-			(event) => {
-				this.timerInputDisplay(event.target)
-				this.validaiteForm()
-			},
-
-		),
-
-
+		DOM.timerEnabled.addEventListener('change', (event) => {
+			this.timerInputDisplay(event.target)
+			this.validaiteForm()
+		}),
 			DOM.minDifficultyInput.addEventListener(
 				'input',
 				this.validaiteForm.bind(this)
@@ -223,12 +210,7 @@ export const GameManager = {
 				'input',
 				this.validaiteForm.bind(this)
 			),
-			DOM.enableSeed.addEventListener(
-				'change',
-				this.validaiteForm.bind(this)
-			)
-
-
+			DOM.enableSeed.addEventListener('change', this.validaiteForm.bind(this))
 
 		document
 			.getElementById('playAgainButton')
@@ -248,12 +230,26 @@ export const GameManager = {
 			if (!document.body.classList.contains('modal-open')) return
 			// If focus is inside one of the visible modals, ok
 			const target = e.target
-			if (DOM.gameOptionsWindow.classList.contains('visible') && DOM.gameOptionsWindow.contains(target)) return
-			if (DOM.gameOverWindow.classList.contains('visible') && DOM.gameOverWindow.contains(target)) return
+			if (
+				DOM.gameOptionsWindow.classList.contains('visible') &&
+				DOM.gameOptionsWindow.contains(target)
+			)
+				return
+			if (
+				DOM.gameOverWindow.classList.contains('visible') &&
+				DOM.gameOverWindow.contains(target)
+			)
+				return
 			// Otherwise move focus to first focusable element inside the visible modal
-			let container = DOM.gameOptionsWindow.classList.contains('visible') ? DOM.gameOptionsWindow : (DOM.gameOverWindow.classList.contains('visible') ? DOM.gameOverWindow : null)
+			let container = DOM.gameOptionsWindow.classList.contains('visible')
+				? DOM.gameOptionsWindow
+				: DOM.gameOverWindow.classList.contains('visible')
+				? DOM.gameOverWindow
+				: null
 			if (!container) return
-			const focusable = container.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+			const focusable = container.querySelectorAll(
+				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+			)
 			if (focusable && focusable.length) {
 				focusable[0].focus()
 			}
@@ -263,16 +259,20 @@ export const GameManager = {
 		// EnableSeed toggle: when unchecked, disable seed input and copy button
 		if (DOM.enableSeed) {
 			// set initial UI state: show/hide seed option container
-			if (DOM.seedOption) DOM.seedOption.style.display = DOM.enableSeed.checked ? 'flex' : 'none'
-			if (DOM.copySeedButton) DOM.copySeedButton.disabled = !DOM.enableSeed.checked
+			if (DOM.seedOption)
+				DOM.seedOption.style.display = DOM.enableSeed.checked ? 'flex' : 'none'
+			if (DOM.copySeedButton)
+				DOM.copySeedButton.disabled = !DOM.enableSeed.checked
 			DOM.enableSeed.addEventListener('change', (e) => {
 				const enabled = e.target.checked
-				if (DOM.seedOption) DOM.seedOption.style.display = enabled ? 'flex' : 'none'
+				if (DOM.seedOption)
+					DOM.seedOption.style.display = enabled ? 'flex' : 'none'
 				if (DOM.copySeedButton) DOM.copySeedButton.disabled = !enabled
 			})
 		}
 
-		document.getElementById('copySeedButton')
+		document
+			.getElementById('copySeedButton')
 			.addEventListener('click', async () => {
 				try {
 					const val = (DOM.seedInput?.value || '').toString().trim()
@@ -282,7 +282,10 @@ export const GameManager = {
 					}
 					// Use Clipboard API if available
 					let copied = false
-					if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+					if (
+						navigator.clipboard &&
+						typeof navigator.clipboard.writeText === 'function'
+					) {
 						try {
 							await navigator.clipboard.writeText(val)
 							copied = true
@@ -296,7 +299,6 @@ export const GameManager = {
 						showToast('Seed copied')
 						console.log('Seed copied to clipboard')
 					}
-
 				} catch (e) {
 					console.warn('Failed to copy seed to clipboard', e)
 				}
@@ -317,8 +319,11 @@ export const GameManager = {
 		if (event.code === 'Space') {
 			this.guessButtonClicked()
 		}
-		if (event.key === 'f' || event.key === 'Escape') {
+		if (event.key === 'f') {
 			this.toggleFullscreen()
+		}
+		if (event.key === 'm') {
+			this.toggleMinimise()
 		}
 	},
 
@@ -328,8 +333,6 @@ export const GameManager = {
 	async restartGame() {
 		// Validate round count
 		this.updateRoundCounter()
-
-
 
 		// Validate difficulty range
 		this.minDifficulty = Number(
@@ -373,10 +376,14 @@ export const GameManager = {
 			if (mapLoadingEl) mapLoadingEl.style.display = 'none'
 			// Only hide overlay if no modal window is visible and no loading texts are shown
 			const anyWindowVisible =
-				(DOM.gameOptionsWindow && DOM.gameOptionsWindow.classList.contains('visible')) ||
+				(DOM.gameOptionsWindow &&
+					DOM.gameOptionsWindow.classList.contains('visible')) ||
 				(DOM.gameOverWindow && DOM.gameOverWindow.classList.contains('visible'))
-			const imageLoadingVisible = document.getElementById('loadingText') && document.getElementById('loadingText').style.display !== 'none'
-			const mapLoadingVisibleNow = mapLoadingEl && mapLoadingEl.style.display !== 'none'
+			const imageLoadingVisible =
+				document.getElementById('loadingText') &&
+				document.getElementById('loadingText').style.display !== 'none'
+			const mapLoadingVisibleNow =
+				mapLoadingEl && mapLoadingEl.style.display !== 'none'
 			if (!anyWindowVisible && !imageLoadingVisible && !mapLoadingVisibleNow) {
 				if (DOM.modalOverlay) DOM.modalOverlay.classList.remove('visible')
 				document.body.classList.remove('modal-open')
@@ -393,14 +400,16 @@ export const GameManager = {
 				this.seed = seedInputVal
 			} else {
 				// Generate a numeric seed and populate the input
-				generatedSeed = ((Date.now() ^ Math.floor(Math.random() * 0xffffffff)) >>> 0) >>> 0
+				generatedSeed =
+					((Date.now() ^ Math.floor(Math.random() * 0xffffffff)) >>> 0) >>> 0
 				this.seed = String(generatedSeed)
 				if (DOM.seedInput) DOM.seedInput.value = this.seed
 			}
 			if (DOM.copySeedButton) DOM.copySeedButton.disabled = false
 		} else {
 			// Ephemeral numeric seed (not shown to user)
-			generatedSeed = ((Date.now() ^ Math.floor(Math.random() * 0xffffffff)) >>> 0) >>> 0
+			generatedSeed =
+				((Date.now() ^ Math.floor(Math.random() * 0xffffffff)) >>> 0) >>> 0
 			this.seed = String(generatedSeed)
 			if (DOM.seedInput) DOM.seedInput.value = ''
 			if (DOM.copySeedButton) DOM.copySeedButton.disabled = true
@@ -409,25 +418,44 @@ export const GameManager = {
 		try {
 			this.rng = makeSeededRandom(this.seed)
 		} catch (e) {
-			console.warn('Failed to create seeded RNG, falling back to Math.random', e)
+			console.warn(
+				'Failed to create seeded RNG, falling back to Math.random',
+				e
+			)
 			this.rng = null
 		}
 
-		console.log(`Using seed: ${this.seed} (${DOM.enableSeed && DOM.enableSeed.checked ? 'user-provided or generated' : 'ephemeral'})`)
-		seededIndicator.style.display = (DOM.enableSeed && DOM.enableSeed.checked) ? 'block' : 'none'
+		console.log(
+			`Using seed: ${this.seed} (${
+				DOM.enableSeed && DOM.enableSeed.checked
+					? 'user-provided or generated'
+					: 'ephemeral'
+			})`
+		)
+		seededIndicator.style.display =
+			DOM.enableSeed && DOM.enableSeed.checked ? 'block' : 'none'
 		// Build a deterministic play order (array of original indices) for the selected game mode and difficulty
 		try {
 			const selectedDifficulty = DOM.difficultySelector.value
-			const filtered = this.filterByDifficulty(gameMode.locations, selectedDifficulty)
+			const filtered = this.filterByDifficulty(
+				gameMode.locations,
+				selectedDifficulty
+			)
 			if (!filtered || filtered.length === 0) {
-				console.error('No locations available for the selected difficulty; cannot start game.')
+				console.error(
+					'No locations available for the selected difficulty; cannot start game.'
+				)
 				return
 			}
 			// Map to original indices in gameMode.locations
-			const originalIndices = filtered.map((loc) => gameMode.locations.indexOf(loc))
+			const originalIndices = filtered.map((loc) =>
+				gameMode.locations.indexOf(loc)
+			)
 			// Shuffle deterministically using the seeded RNG
 			if (this.rng && typeof this.rng.shuffle === 'function') {
-				this.playOrders[selectedGameModeId] = this.rng.shuffle(originalIndices.slice())
+				this.playOrders[selectedGameModeId] = this.rng.shuffle(
+					originalIndices.slice()
+				)
 			} else {
 				// Fallback to Math.random shuffle (non-deterministic)
 				for (let i = originalIndices.length - 1; i > 0; i--) {
@@ -446,7 +474,6 @@ export const GameManager = {
 		this.gameState = GAMESTATES.guessing
 		this.totalScore = 0
 		this.currentRound = 0
-
 
 		DOM.guessButton.disabled = true
 		DOM.guessButton.innerText = 'Guess!'
@@ -489,8 +516,12 @@ export const GameManager = {
 		DOM.gameOptionsWindow.classList.remove('visible')
 		DOM.gameOverWindow.classList.remove('visible')
 		// Only remove modal state/overlay if no loading messages are visible
-		const imageLoadingVisible = document.getElementById('loadingText') && document.getElementById('loadingText').style.display !== 'none'
-		const mapLoadingVisible = document.getElementById('mapLoadingText') && document.getElementById('mapLoadingText').style.display !== 'none'
+		const imageLoadingVisible =
+			document.getElementById('loadingText') &&
+			document.getElementById('loadingText').style.display !== 'none'
+		const mapLoadingVisible =
+			document.getElementById('mapLoadingText') &&
+			document.getElementById('mapLoadingText').style.display !== 'none'
 		if (!imageLoadingVisible && !mapLoadingVisible) {
 			document.body.classList.remove('modal-open')
 			// hide overlay initially
@@ -519,8 +550,12 @@ export const GameManager = {
 				break
 			default:
 				// closing all - only remove modal state if no loading messages are visible
-				const imageLoadingVisibleDefault = document.getElementById('loadingText') && document.getElementById('loadingText').style.display !== 'none'
-				const mapLoadingVisibleDefault = document.getElementById('mapLoadingText') && document.getElementById('mapLoadingText').style.display !== 'none'
+				const imageLoadingVisibleDefault =
+					document.getElementById('loadingText') &&
+					document.getElementById('loadingText').style.display !== 'none'
+				const mapLoadingVisibleDefault =
+					document.getElementById('mapLoadingText') &&
+					document.getElementById('mapLoadingText').style.display !== 'none'
 				if (!imageLoadingVisibleDefault && !mapLoadingVisibleDefault) {
 					document.body.classList.remove('modal-open')
 				}
@@ -560,6 +595,18 @@ export const GameManager = {
 	toggleFullscreen() {
 		if (GameManager.gameState === GAMESTATES.optionsWindow) return
 		DOM.mapContainer.classList.toggle('fullscreen')
+	},
+
+	toggleMinimise() {
+		if (DOM.minimiseIcon.classList.contains('rotate180')) {
+			DOM.minimiseIcon.classList.remove('rotate180')
+			DOM.mapCanvas.classList.remove('minimise')
+			DOM.mapContainer.classList.remove('minimise')
+		} else {
+			DOM.minimiseIcon.classList.add('rotate180')
+			DOM.mapCanvas.classList.add('minimise')
+			DOM.mapContainer.classList.add('minimise')
+		}
 	},
 
 	/**
@@ -627,8 +674,9 @@ export const GameManager = {
 				DOM.timerLengthDisplay.style.display = 'none'
 			}
 			this.openWindow('gameover')
-			DOM.finalScoreDisplay.innerText = `Final Score: ${this.totalScore}/${this.totalRounds * this.maxScore
-				}`
+			DOM.finalScoreDisplay.innerText = `Final Score: ${this.totalScore}/${
+				this.totalRounds * this.maxScore
+			}`
 			let accuracyPercent = (
 				(this.totalScore / (this.totalRounds * this.maxScore)) *
 				100
@@ -676,14 +724,16 @@ export const GameManager = {
 		}
 
 		const imgSrc = this.currentLocation[3]
-		DOM.locationImgElement.src = '' // Clear previous image
-		DOM.locationImgElement.style.display = 'none'
+		// Hide image and apply blur while loading
+		DOM.locationImgElement.classList.add('hideLocationImg')
+		document.getElementById("blurBg").classList.add('hideLocationImg')
+		DOM.locationImgElement.style.opacity = '0'
+		DOM.locationImgElement.style.transition = 'opacity 0.4s ease'
+
 		// Show image loading text and keep overlay visible while the image loads
 		document.getElementById('loadingText').style.display = 'flex'
 		if (DOM.modalOverlay) DOM.modalOverlay.classList.add('visible')
 		document.body.classList.add('modal-open')
-		DOM.loadingText.innerText = 'Loading image...'
-
 
 		// Attach onload/onerror directly to the DOM image element to avoid double-downloads
 		const domImg = DOM.locationImgElement
@@ -695,14 +745,21 @@ export const GameManager = {
 			this.imageIsLoaded = true
 			document.getElementById('loadingText').style.display = 'none'
 			domImg.style.display = 'block'
-			// src is already set below; ensure we don't reassign unnecessarily
+			// Fade in the image and remove blur
+			setTimeout(() => {
+				domImg.style.opacity = '1'
+				domImg.classList.remove('hideLocationImg')
+				document.getElementById("blurBg").classList.remove('hideLocationImg')
+			}, 10)
 
 			// Only hide overlay if no windows or other loading messages are visible
 			const mapLoadingEl = document.getElementById('mapLoadingText')
 			const anyWindowVisible =
-				(DOM.gameOptionsWindow && DOM.gameOptionsWindow.classList.contains('visible')) ||
+				(DOM.gameOptionsWindow &&
+					DOM.gameOptionsWindow.classList.contains('visible')) ||
 				(DOM.gameOverWindow && DOM.gameOverWindow.classList.contains('visible'))
-			const mapLoadingVisibleNow = mapLoadingEl && mapLoadingEl.style.display !== 'none'
+			const mapLoadingVisibleNow =
+				mapLoadingEl && mapLoadingEl.style.display !== 'none'
 			if (!anyWindowVisible && !mapLoadingVisibleNow) {
 				if (DOM.modalOverlay) DOM.modalOverlay.classList.remove('visible')
 				document.body.classList.remove('modal-open')
@@ -725,9 +782,11 @@ export const GameManager = {
 			// hide overlay if map isn't loading and no windows are visible
 			const mapLoadingEl = document.getElementById('mapLoadingText')
 			const anyWindowVisible =
-				(DOM.gameOptionsWindow && DOM.gameOptionsWindow.classList.contains('visible')) ||
+				(DOM.gameOptionsWindow &&
+					DOM.gameOptionsWindow.classList.contains('visible')) ||
 				(DOM.gameOverWindow && DOM.gameOverWindow.classList.contains('visible'))
-			const mapLoadingVisibleNow = mapLoadingEl && mapLoadingEl.style.display !== 'none'
+			const mapLoadingVisibleNow =
+				mapLoadingEl && mapLoadingEl.style.display !== 'none'
 			if (!anyWindowVisible && !mapLoadingVisibleNow) {
 				if (DOM.modalOverlay) DOM.modalOverlay.classList.remove('visible')
 				document.body.classList.remove('modal-open')
@@ -735,7 +794,9 @@ export const GameManager = {
 		}
 
 		// Start loading into the visible DOM image (single network request)
-		domImg.src = imgSrc
+		document.getElementById('locationImg').src = imgSrc
+		document.getElementById('blurBg').style.backgroundImage = `url(${imgSrc})`
+		// Do not remove hideLocationImg here; wait for image to load
 	},
 
 	/**
@@ -769,7 +830,6 @@ export const GameManager = {
 	 * Advances the game to the next round.
 	 */
 	nextRound() {
-
 		// Hide score display for the new round
 		DOM.roundScoreDisplay.style.display = 'none'
 
@@ -802,7 +862,10 @@ export const GameManager = {
 		}
 
 		const selectedDifficulty = DOM.difficultySelector.value
-		const filteredDataList = this.filterByDifficulty(dataList, selectedDifficulty)
+		const filteredDataList = this.filterByDifficulty(
+			dataList,
+			selectedDifficulty
+		)
 
 		if (filteredDataList.length === 0) {
 			console.error(
@@ -993,8 +1056,7 @@ export const GameManager = {
 				'nocap',
 				'ong',
 				'bussin',
-
-			];
+			]
 
 			if (seedVal.length <= 0) {
 				this.displayFormMessage('Seed cannot be empty.')
@@ -1006,16 +1068,17 @@ export const GameManager = {
 				this.displayFormMessage('Seed cannot contain spaces.')
 				formValid = false
 			}
-			// Disallow seeds longer than 100 characters 
+			// Disallow seeds longer than 100 characters
 			if (seedVal.length > 100) {
 				this.displayFormMessage('Seed cannot be longer than 100 characters.')
 				formValid = false
-
 			}
 			// Disallow brainrot
 			//
 			if (
-				disallowedBrainrot.some(word => seedVal.toLowerCase().includes(word.toLowerCase())) ||
+				disallowedBrainrot.some((word) =>
+					seedVal.toLowerCase().includes(word.toLowerCase())
+				) ||
 				seedVal === '67'
 			) {
 				this.displayFormMessage('Seed cannot contain brainrot.')
@@ -1026,9 +1089,8 @@ export const GameManager = {
 				this.displayFormMessage('Nice.')
 			}
 
-
 			if (seedVal.toLowerCase().includes('yalikejazz')) {
-				this.displayFormMessage(egg) 
+				this.displayFormMessage(egg)
 			}
 
 			if (seedVal.toLowerCase().includes('biticalifi')) {
@@ -1046,10 +1108,10 @@ export const GameManager = {
 			}
 
 			if (seedVal.toLowerCase().includes('dawndishsoap')) {
-				this.displayFormMessage('<img src="images/soap.jpeg" style="width:100%; border-radius:8px;" alt="dawn dish soap" />')
+				this.displayFormMessage(
+					'<img src="images/soap.jpeg" style="width:100%; border-radius:8px;" alt="dawn dish soap" />'
+				)
 			}
-
-
 		}
 
 		if (formValid) {

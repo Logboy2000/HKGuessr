@@ -41,10 +41,6 @@ hr {
 
 #fullscreenButton,
 #minimiseButton {
-	flex-shrink: 0; /* Prevent icon buttons from shrinking */
-}
-#fullscreenButton,
-#minimiseButton {
 	width: 50px;
 	height: 50px;
 	min-width: 50px;
@@ -57,7 +53,7 @@ hr {
 
 #minimiseButton.rotate180 {
 	transform: rotate(180deg);
-	background-color: #fff; /* Optional: Add a background on minimize */
+	background-color: #fff;
 }
 
 #scoreContainer span {
@@ -74,7 +70,7 @@ hr {
 	line-height: 20px;
 	border-radius: 4px;
 	font-size: 1rem;
-	min-width: 176px;
+	min-width: 186px;
 }
 
 .window > h2:first-child {
@@ -107,7 +103,6 @@ hr {
 }
 
 #minimiseIcon {
-
 	transition: transform 0.3s ease;
 }
 
@@ -123,5 +118,86 @@ hr {
 		right: 0.5rem;
 		top: 0.75rem;
 	}
-	#backContainer { left: 0.5rem; top: 0.75rem; }
+	#backContainer {
+		left: 0.5rem;
+		top: 0.75rem;
+	}
+}
+
+#mapCanvas.minimise {
+	transition: all 0.5s ease;
+	opacity: 0;
+	transform: scale(0);
+	height: 0 !important;
+	width: 100% !important;
+	pointer-events: none;
+}
+
+#mapContainer.minimise {
+	transition: all 0.5s ease;
+	width: 60px !important;
+	height: 60px !important;
+	background-color: transparent;
+	opacity: 1;
+}
+
+#mapContainer.minimise #controlsContainer {
+	opacity: 0;
+	pointer-events: none;
+}
+
+img {
+	-webkit-user-drag: none;
+}
+
+#scoreContainer {
+	font-size: 2rem;
+	color: #fff;
+	position: absolute;
+	top: 0.5rem;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+#imageWrapper {
+	position: relative;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+}
+
+/* blurred background layer */
+#blurBg {
+	position: absolute;
+	inset: 0;
+	background: center/cover no-repeat;
+	filter: blur(20px) brightness(0.45);
+	z-index: 0;
+	pointer-events: none;
+}
+
+#locationImg {
+	background: center/cover no-repeat;
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	user-select: none;
+	pointer-events: none;
+	filter: none;
+	opacity: 1;
+	transition: opacity 0.4s ease;
+}
+
+.hideLocationImg {
+	filter: blur(20px) brightness(0.45);
+	opacity: 0;
+}
+
+#locationImg::selection {
+	background: none;
 }
