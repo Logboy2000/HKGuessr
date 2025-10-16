@@ -61,18 +61,65 @@ hr {
 	padding: 5px 15px;
 }
 
-#loadPackButton {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-left: 8px;
-	height: 36px;
-	line-height: 20px;
-	border-radius: 4px;
-	font-size: 1rem;
-	min-width: 186px;
+.choice-description {
+	font-size: 0.9rem;
+	color: #b0b0b0;
+	margin-top: 0.75rem;
+	font-family: sans-serif; /* Use a more readable font for descriptions */
+	font-weight: normal;
+	white-space: normal; /* Allow text to wrap */
 }
 
+.choice-info {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 0.75rem;
+	font-size: 0.8rem;
+	color: #9ca3af;
+	font-family: sans-serif;
+	font-weight: normal;
+}
+
+.choice-author {
+	text-align: left;
+}
+
+.choice-image-count {
+	text-align: right;
+}
+
+ #selected-packs-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	background-color: rgba(54, 54, 54, 0.55);
+	border-radius: 6px;
+	padding: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	min-height: 40px; /* Ensure it has some height even when empty */
+}
+
+.pack-tag {
+	display: inline-block;
+	background-color: #4b55637d;
+	color: #e5e7eb;
+	padding: 4px 10px;
+	border-radius: 6px;
+}
+
+#selected-packs-list:empty::before {
+	content: 'No packs selected.';
+	color: #6b7280;
+}
+
+.pack-selection-area {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 10px;
+	width: 100%;
+}
 .window > h2:first-child {
 	border-bottom: 2px solid white;
 	margin-bottom: 15px;

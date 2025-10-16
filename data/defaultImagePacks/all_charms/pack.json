@@ -1,6 +1,8 @@
 {
-  "name": "Charms",
+  "name": "Charms (HK)",
   "gameModeId": "charms",
+  "author": "rblashchuk",
+  "thumbnail": "images/thumbnail.png",
   "locations": [
     {
       "x": 3732,

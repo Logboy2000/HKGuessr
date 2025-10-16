@@ -1,6 +1,7 @@
 import { GameMap } from './GameMap.js'
 import { randIRange, isNumber, makeSeededRandom } from './Utils.js'
 import { loadInitialData } from './loadLocationData.js'
+import { MultipleChoice } from './multipleChoice.js'
 import { egg } from './egg.js'
 ///////////////////////////////////////////////
 ////// Geoguessr Clone for Hollow Knight //////
@@ -9,7 +10,7 @@ import { egg } from './egg.js'
 //BEWARE THIS SOURCE CODE IS NOW LESS OF AN ABSOLUTE MESS THAN IT USED TO BE//
 
 export const DEFAULT_MAP_URL = 'images/game/defaultMaps/hallownest.png'
-
+export const mc = new MultipleChoice(document.getElementById('packChoices'))
 // --- Constants ---
 export const GAMESTATES = {
 	guessing: 0,
@@ -56,9 +57,9 @@ function showToast(message, duration = 1200) {
 }
 
 export const DIFFICULTRANGE = {
-	easy: { min: 1, max: 3 },
+	easy: { min: 1, max: 4 },
 	normal: { min: 4, max: 7 },
-	hard: { min: 8, max: 10 },
+	hard: { min: 7, max: 10 },
 }
 
 // --- DOM Elements (Grouped for better organization) ---
@@ -107,6 +108,10 @@ export const GameManager = {
 		this.addEventListeners()
 		this.openWindow('options')
 		DOM.loadingText.style.display = 'none'
+		this.setLocation(
+			randIRange(0, this.gameModeData.normal.locations.length),
+			'normal'
+		)
 
 		this.gameLoop() // Start the main game loop
 	},
@@ -166,7 +171,11 @@ export const GameManager = {
 			)
 			return
 		}
-
+		document
+			.getElementById('packSelectBackButton')
+			.addEventListener('click', () => {
+				this.openWindow('options')
+			})
 		DOM.difficultySelector.addEventListener(
 			'change',
 			this.toggleCustomDifficultyDisplay.bind(this)
@@ -224,6 +233,9 @@ export const GameManager = {
 		document
 			.getElementById('optionsButton')
 			.addEventListener('click', () => this.openWindow('options'))
+		document
+			.getElementById('changePacksButton')
+			.addEventListener('click', () => this.openWindow('packChoices'))
 
 		// Focus trap: keep focus inside the visible modal while open
 		this._focusInHandler = (e) => {
@@ -309,6 +321,10 @@ export const GameManager = {
 			.addEventListener('click', () => this.toggleFullscreen())
 
 		document.addEventListener('keypress', this.handleKeyPress.bind(this))
+
+		DOM.changePacksButton.addEventListener('click', () => {
+			this.openWindow('packChoices')
+		})
 	},
 
 	/**
@@ -331,10 +347,8 @@ export const GameManager = {
 	 * Starts or restarts the game.
 	 */
 	async restartGame() {
-		// Validate round count
 		this.updateRoundCounter()
 
-		// Validate difficulty range
 		this.minDifficulty = Number(
 			DOM.customDifficultyDiv.querySelector('#minDifficulty').value
 		)
@@ -347,74 +361,74 @@ export const GameManager = {
 			this.timerLengthSeconds = Number(DOM.timerLengthInput.value)
 		}
 
+		const mapLoadingEl = document.getElementById('mapLoadingText')
+		if (mapLoadingEl) mapLoadingEl.style.display = 'block'
+		DOM.modalOverlay?.classList.add('visible')
+		document.body.classList.add('modal-open')
+
+		// --- MULTI-MODE SELECTION ---
+		const selectedGameModeIds = mc.getSelected()
+		if (selectedGameModeIds.length === 0) {
+			console.error('No game mode selected, cannot start game')
+			return
+		}
+
+		const validGameModes = selectedGameModeIds
+			.map((id) => this.gameModeData[id])
+			.filter(Boolean)
+
+		if (validGameModes.length === 0) {
+			console.error('No valid game modes selected, cannot start game')
+			return
+		}
+
 		// Close any open windows
 		this.openWindow(null)
 
-		const mapLoadingEl = document.getElementById('mapLoadingText')
-		if (mapLoadingEl) mapLoadingEl.style.display = 'block'
-		if (DOM.modalOverlay) DOM.modalOverlay.classList.add('visible')
-		document.body.classList.add('modal-open')
-
-		// Set the map for the selected game mode
-		const selectedGameModeId = DOM.gameMode.value
-		const gameMode = this.gameModeData[selectedGameModeId]
+		// Load the map image for the *first* valid mode
 		try {
-			if (
-				gameMode &&
-				gameMode.map &&
-				gameMode.map.useCustomMap &&
-				gameMode.map.mapUrl
-			) {
-				await GameMap.changeMapImage(gameMode.map.mapUrl)
-			} else if (gameMode.map.defaultMap) {
-				// Default map if not specified or custom map is turned off
-				await GameMap.changeMapImage(gameMode.map.defaultMap)
-			} else {
-				await GameMap.changeMapImage(DEFAULT_MAP_URL)
-			}
+			const firstMode = validGameModes[0]
+			const mapUrl =
+				firstMode.map?.useCustomMap && firstMode.map?.mapUrl
+					? firstMode.map.mapUrl
+					: firstMode.map?.defaultMap || DEFAULT_MAP_URL
+
+			await GameMap.changeMapImage(mapUrl)
 		} finally {
 			if (mapLoadingEl) mapLoadingEl.style.display = 'none'
-			// Only hide overlay if no modal window is visible and no loading texts are shown
 			const anyWindowVisible =
-				(DOM.gameOptionsWindow &&
-					DOM.gameOptionsWindow.classList.contains('visible')) ||
-				(DOM.gameOverWindow && DOM.gameOverWindow.classList.contains('visible'))
+				DOM.gameOptionsWindow?.classList.contains('visible') ||
+				DOM.gameOverWindow?.classList.contains('visible')
 			const imageLoadingVisible =
-				document.getElementById('loadingText') &&
-				document.getElementById('loadingText').style.display !== 'none'
-			const mapLoadingVisibleNow =
-				mapLoadingEl && mapLoadingEl.style.display !== 'none'
+				document.getElementById('loadingText')?.style.display !== 'none'
+			const mapLoadingVisibleNow = mapLoadingEl?.style.display !== 'none'
 			if (!anyWindowVisible && !imageLoadingVisible && !mapLoadingVisibleNow) {
-				if (DOM.modalOverlay) DOM.modalOverlay.classList.remove('visible')
+				DOM.modalOverlay?.classList.remove('visible')
 				document.body.classList.remove('modal-open')
 			}
 		}
 
-		// Seed handling: accept any user-provided seed string when enabled.
-		// If the user left the seed blank, generate a numeric seed (auto-generated seeds are numeric).
+		// --- SEED SETUP ---
 		let generatedSeed
 		const seedInputVal = (DOM.seedInput?.value || '').toString().trim()
 		if (DOM.enableSeed && DOM.enableSeed.checked) {
 			if (seedInputVal) {
-				// Use the exact user-provided string (allow any characters)
 				this.seed = seedInputVal
 			} else {
-				// Generate a numeric seed and populate the input
 				generatedSeed =
 					((Date.now() ^ Math.floor(Math.random() * 0xffffffff)) >>> 0) >>> 0
 				this.seed = String(generatedSeed)
 				if (DOM.seedInput) DOM.seedInput.value = this.seed
 			}
-			if (DOM.copySeedButton) DOM.copySeedButton.disabled = false
+			DOM.copySeedButton && (DOM.copySeedButton.disabled = false)
 		} else {
-			// Ephemeral numeric seed (not shown to user)
 			generatedSeed =
 				((Date.now() ^ Math.floor(Math.random() * 0xffffffff)) >>> 0) >>> 0
 			this.seed = String(generatedSeed)
 			if (DOM.seedInput) DOM.seedInput.value = ''
-			if (DOM.copySeedButton) DOM.copySeedButton.disabled = true
+			DOM.copySeedButton && (DOM.copySeedButton.disabled = true)
 		}
-		// Create seeded RNG using the seed (string or numeric string are supported)
+
 		try {
 			this.rng = makeSeededRandom(this.seed)
 		} catch (e) {
@@ -425,55 +439,63 @@ export const GameManager = {
 			this.rng = null
 		}
 
-		console.log(
-			`Using seed: ${this.seed} (${
-				DOM.enableSeed && DOM.enableSeed.checked
-					? 'user-provided or generated'
-					: 'ephemeral'
-			})`
-		)
+		console.log(`Using seed: ${this.seed}`)
 		seededIndicator.style.display =
 			DOM.enableSeed && DOM.enableSeed.checked ? 'block' : 'none'
-		// Build a deterministic play order (array of original indices) for the selected game mode and difficulty
+
+		// --- BUILD MULTI-MODE PLAY ORDER ---
 		try {
 			const selectedDifficulty = DOM.difficultySelector.value
-			const filtered = this.filterByDifficulty(
-				gameMode.locations,
-				selectedDifficulty
-			)
-			if (!filtered || filtered.length === 0) {
+			this.playOrders = {}
+			this.playOrderPointers = {}
+			this.combinedPlayOrder = []
+
+			for (const mode of validGameModes) {
+				const filtered = this.filterByDifficulty(
+					mode.locations,
+					selectedDifficulty
+				)
+				if (!filtered || filtered.length === 0) {
+					console.warn(
+						`No valid locations for ${mode.name} in selected difficulty.`
+					)
+					continue
+				}
+
+				const indices = filtered.map((loc) => mode.locations.indexOf(loc))
+				const shuffled = this.rng?.shuffle
+					? this.rng.shuffle(indices.slice())
+					: indices.sort(() => Math.random() - 0.5)
+
+				this.playOrders[mode.id] = shuffled
+				this.playOrderPointers[mode.id] = 0
+
+				// Merge into unified combined order (for alternating play)
+				for (const idx of shuffled) {
+					this.combinedPlayOrder.push({ modeId: mode.id, index: idx })
+				}
+			}
+
+			if (this.combinedPlayOrder.length === 0) {
 				console.error(
-					'No locations available for the selected difficulty; cannot start game.'
+					'No locations available for the selected modes/difficulty.'
 				)
 				return
 			}
-			// Map to original indices in gameMode.locations
-			const originalIndices = filtered.map((loc) =>
-				gameMode.locations.indexOf(loc)
-			)
-			// Shuffle deterministically using the seeded RNG
-			if (this.rng && typeof this.rng.shuffle === 'function') {
-				this.playOrders[selectedGameModeId] = this.rng.shuffle(
-					originalIndices.slice()
-				)
-			} else {
-				// Fallback to Math.random shuffle (non-deterministic)
-				for (let i = originalIndices.length - 1; i > 0; i--) {
-					const j = Math.floor(Math.random() * (i + 1))
-					const tmp = originalIndices[i]
-					originalIndices[i] = originalIndices[j]
-					originalIndices[j] = tmp
-				}
-				this.playOrders[selectedGameModeId] = originalIndices
-			}
-			this.playOrderPointers[selectedGameModeId] = 0
+
+			// Shuffle the combined pool so rounds are mixed between game modes
+			this.combinedPlayOrder = this.rng?.shuffle
+				? this.rng.shuffle(this.combinedPlayOrder)
+				: this.combinedPlayOrder.sort(() => Math.random() - 0.5)
+
+			this.totalRounds = this.combinedPlayOrder.length
+			this.currentRound = 0
 		} catch (e) {
 			console.warn('Failed to build deterministic play order:', e)
 		}
 
 		this.gameState = GAMESTATES.guessing
 		this.totalScore = 0
-		this.currentRound = 0
 
 		DOM.guessButton.disabled = true
 		DOM.guessButton.innerText = 'Guess!'
@@ -515,6 +537,7 @@ export const GameManager = {
 		// Close both and then animate the requested one open
 		DOM.gameOptionsWindow.classList.remove('visible')
 		DOM.gameOverWindow.classList.remove('visible')
+		DOM.packSelectWindow.classList.remove('visible')
 		// Only remove modal state/overlay if no loading messages are visible
 		const imageLoadingVisible =
 			document.getElementById('loadingText') &&
@@ -530,6 +553,7 @@ export const GameManager = {
 		switch (windowName) {
 			case 'options':
 				DOM.gameOptionsWindow.style.display = 'flex'
+				this.updateSelectedPacksDisplay()
 				setTimeout(() => DOM.gameOptionsWindow.classList.add('visible'), 10)
 				this.gameState = GAMESTATES.optionsWindow
 				document.getElementById('startButton').innerText = 'Start Game'
@@ -537,6 +561,7 @@ export const GameManager = {
 				if (DOM.modalOverlay) DOM.modalOverlay.classList.add('visible')
 				// focus first input for quick keyboard flow
 				if (DOM.gameMode) DOM.gameMode.focus()
+				this.validaiteForm()
 				break
 			case 'gameover':
 				DOM.gameOverWindow.style.display = 'flex'
@@ -547,6 +572,15 @@ export const GameManager = {
 				// focus Play Again for immediate keyboard action
 				const btn = document.getElementById('playAgainButton')
 				if (btn) btn.focus()
+				break
+			case 'packChoices':
+				DOM.packSelectWindow.style.display = 'flex'
+				setTimeout(() => DOM.packSelectWindow.classList.add('visible'), 10)
+				this.gameState = GAMESTATES.optionsWindow
+				document.body.classList.add('modal-open')
+				if (DOM.modalOverlay) DOM.modalOverlay.classList.add('visible')
+				// focus first input for quick keyboard flow
+				if (DOM.changePacksButton) DOM.changePacksButton.focus()
 				break
 			default:
 				// closing all - only remove modal state if no loading messages are visible
@@ -614,29 +648,21 @@ export const GameManager = {
 	 */
 	guessButtonClicked() {
 		if (DOM.guessButton.disabled) return
-		if (this.gameState === GAMESTATES.guessing) {
-			// If no guess was made but timer ran out, set score to 0
-			if (!GameMap.guessPosition) {
-				this.roundScore = 0
-			} else {
-				this.calculateScore()
-			}
 
+		if (this.gameState === GAMESTATES.guessing) {
+			this.calculateScore()
 			this.gameState = GAMESTATES.guessed
 			DOM.guessButton.disabled = false
 
-			// Show score display
 			DOM.roundScoreDisplay.innerText = `You earned ${this.roundScore} points`
 			DOM.roundScoreDisplay.style.display = 'block'
 
-			// Adjust camera to show both guess and correct location
 			if (GameMap.guessPosition && this.currentLocation) {
 				GameMap.fitPointsInView(GameMap.guessPosition, {
 					x: this.currentLocation[0],
 					y: this.currentLocation[1],
 				})
 			} else if (this.currentLocation) {
-				// If no guess, just zoom to correct location
 				GameMap.setCameraTarget(
 					this.currentLocation[0],
 					this.currentLocation[1],
@@ -652,17 +678,13 @@ export const GameManager = {
 			}
 		} else if (this.gameState === GAMESTATES.guessed) {
 			if (this.currentRound < this.totalRounds) {
-				if (DOM.mapContainer.classList.contains('fullscreen')) {
-					DOM.mapContainer.classList.remove('fullscreen')
-				}
+				DOM.mapContainer.classList.remove('fullscreen')
 				this.nextRound()
 				DOM.guessButton.disabled = true
 				DOM.guessButton.innerText = 'Guess!'
 			} else {
-				// This handles the case where the user clicks "End Game"
-				// after the last round is guessed.
 				this.gameState = GAMESTATES.gameOver
-				this.guessButtonClicked() // Recurse to trigger the gameOver logic
+				this.guessButtonClicked() // trigger gameOver logic
 			}
 		} else if (this.gameState === GAMESTATES.gameOver) {
 			DOM.guessButton.disabled = true
@@ -673,20 +695,19 @@ export const GameManager = {
 			} else {
 				DOM.timerLengthDisplay.style.display = 'none'
 			}
+
 			this.openWindow('gameover')
 			DOM.finalScoreDisplay.innerText = `Final Score: ${this.totalScore}/${
 				this.totalRounds * this.maxScore
 			}`
-			let accuracyPercent = (
+			const accuracyPercent = (
 				(this.totalScore / (this.totalRounds * this.maxScore)) *
 				100
 			).toFixed(2)
 			DOM.accuracyElement.innerText = `Accuracy: ${accuracyPercent}%`
 			DOM.totalRoundsElement.innerText = `Total Rounds: ${this.totalRounds}`
 
-			if (this.seed !== null) {
-				DOM.seedDisplay.innerText = `Seed: ${this.seed}`
-			}
+			if (this.seed != null) DOM.seedDisplay.innerText = `Seed: ${this.seed}`
 		}
 	},
 
@@ -726,7 +747,7 @@ export const GameManager = {
 		const imgSrc = this.currentLocation[3]
 		// Hide image and apply blur while loading
 		DOM.locationImgElement.classList.add('hideLocationImg')
-		document.getElementById("blurBg").classList.add('hideLocationImg')
+		document.getElementById('blurBg').classList.add('hideLocationImg')
 		DOM.locationImgElement.style.opacity = '0'
 		DOM.locationImgElement.style.transition = 'opacity 0.4s ease'
 
@@ -749,7 +770,7 @@ export const GameManager = {
 			setTimeout(() => {
 				domImg.style.opacity = '1'
 				domImg.classList.remove('hideLocationImg')
-				document.getElementById("blurBg").classList.remove('hideLocationImg')
+				document.getElementById('blurBg').classList.remove('hideLocationImg')
 			}, 10)
 
 			// Only hide overlay if no windows or other loading messages are visible
@@ -828,127 +849,139 @@ export const GameManager = {
 
 	/**
 	 * Advances the game to the next round.
+	 * Supports multiple selected game modes.
 	 */
-	nextRound() {
+	async nextRound() {
 		// Hide score display for the new round
 		DOM.roundScoreDisplay.style.display = 'none'
 
 		this.gameState = GAMESTATES.guessing
-		GameMap.resetCamera() // Reset map camera for new round
+		GameMap.resetCamera()
 		this.currentRound++
 		this.updateRoundCounter()
 
-		const selectedGameMode = DOM.gameMode.value // Assuming DOM.gameMode exists
-		const dataList = this.gameModeData[selectedGameMode]?.locations // Use this.gameModeData
-		if (!dataList) {
-			console.error(
-				'No locations found for selected game mode:',
-				selectedGameMode
-			)
-			this.gameState = GAMESTATES.gameOver // End game if no data
-			this.guessButtonClicked()
-			return
-		}
-
-		const usedList = this.usedLocations[selectedGameMode]
-		// Defensive check: Ensure usedList is initialized for this game mode
-		if (!usedList) {
-			console.error(
-				`usedLocations for game mode '${selectedGameMode}' is not initialized. Ending game.`
-			)
-			this.gameState = GAMESTATES.gameOver
-			this.guessButtonClicked()
+		const selectedGameModes = mc.getSelected()
+		if (!selectedGameModes || selectedGameModes.length === 0) {
+			console.error('No game modes selected.')
+			this.endGame()
 			return
 		}
 
 		const selectedDifficulty = DOM.difficultySelector.value
-		const filteredDataList = this.filterByDifficulty(
-			dataList,
-			selectedDifficulty
-		)
 
-		if (filteredDataList.length === 0) {
-			console.error(
-				'No locations available for the selected difficulty and game mode.'
-			)
-			this.gameState = GAMESTATES.gameOver
-			this.guessButtonClicked()
-			return
-		}
+		// --- Build unified pool of all possible locations across modes ---
+		let combinedPool = []
+		for (const modeId of selectedGameModes) {
+			const dataList = this.gameModeData[modeId]?.locations
+			if (!dataList) continue
 
-		// Reset used locations if all filtered locations have been used
-		if (usedList.length >= filteredDataList.length) {
-			usedList.length = 0
-			console.log(
-				'All filtered locations used, resetting used list for this game mode.'
-			)
-		}
+			// Initialize used list if missing
+			if (!this.usedLocations[modeId]) this.usedLocations[modeId] = []
 
-		// Get available indices from the filtered list (indices relative to filteredDataList)
-		const availableIndices = filteredDataList
-			.map((_, i) => i)
-			.filter((i) => !usedList.includes(i))
+			const filtered = this.filterByDifficulty(dataList, selectedDifficulty)
+			const usedList = this.usedLocations[modeId]
 
-		if (availableIndices.length === 0) {
-			console.error(
-				'No new available locations found after filtering and checking used list.'
-			)
-			this.gameState = GAMESTATES.gameOver
-			this.guessButtonClicked()
-			return
-		}
+			// Determine available indices
+			const availableIndices = filtered
+				.map((_, i) => i)
+				.filter((i) => !usedList.includes(i))
 
-		// If a deterministic playOrder exists for this mode, use it (ensures same seed -> same order)
-		const playOrder = this.playOrders[selectedGameMode]
-		if (playOrder && playOrder.length > 0) {
-			let ptr = this.playOrderPointers[selectedGameMode] || 0
-			const originalIndex = playOrder[ptr % playOrder.length]
-			this.playOrderPointers[selectedGameMode] = ptr + 1
-			// Mark used for backward compatibility (index relative to filteredDataList)
-			const relativeIndex = filteredDataList.indexOf(dataList[originalIndex])
-			if (relativeIndex !== -1) usedList.push(relativeIndex)
-			this.setLocation(originalIndex, selectedGameMode)
-			DOM.guessButton.disabled = true
-			GameMap.guessPosition = null
-			if (this.timerEnabled) {
-				this.endTime = performance.now() + this.timerLengthSeconds * 1000
+			for (const idx of availableIndices) {
+				combinedPool.push({ modeId, dataList, filtered, index: idx })
 			}
-			return
 		}
 
-		// Select a random index from the available filtered indices (fallback)
-		let chooserIndex
+		if (combinedPool.length === 0) {
+			console.warn('No available locations left. Resetting and repeating locations.')
+			// Reset used locations for the selected modes
+			for (const modeId of selectedGameModes) {
+				if (this.usedLocations[modeId]) {
+					this.usedLocations[modeId] = []
+				}
+			}
+
+			// Rebuild the pool with all locations now available
+			for (const modeId of selectedGameModes) {
+				const dataList = this.gameModeData[modeId]?.locations
+				if (!dataList) continue
+
+				const filtered = this.filterByDifficulty(dataList, selectedDifficulty)
+				// All indices are available now
+				const availableIndices = filtered.map((_, i) => i)
+
+				for (const idx of availableIndices) {
+					combinedPool.push({ modeId, dataList, filtered, index: idx })
+				}
+			}
+
+			// If it's still empty, then there were no locations to begin with.
+			if (combinedPool.length === 0) {
+				console.error(
+					'No locations found for the selected difficulty, even after reset.'
+				)
+				this.endGame()
+				return
+			}
+		}
+
+		// --- Choose a location deterministically or randomly ---
+		let chosen
 		if (this.rng) {
-			chooserIndex = this.rng.randIRange(0, availableIndices.length - 1)
+			const pickIndex = this.rng.randIRange(0, combinedPool.length - 1)
+			chosen = combinedPool[pickIndex]
 		} else {
-			chooserIndex = randIRange(0, availableIndices.length - 1)
+			const pickIndex = randIRange(0, combinedPool.length - 1)
+			chosen = combinedPool[pickIndex]
 		}
-		const newLocationFilteredIndex = availableIndices[chooserIndex]
-		usedList.push(newLocationFilteredIndex) // Mark this index (relative to filtered list) as used
 
-		// Get the actual location object from the filtered list
-		const newLocation = filteredDataList[newLocationFilteredIndex]
-
-		// Find its index in the ORIGINAL dataList to pass to setLocation
+		const { modeId, dataList, filtered, index } = chosen
+		const usedList = this.usedLocations[modeId]
+		const newLocation = filtered[index]
 		const originalIndex = dataList.indexOf(newLocation)
+
 		if (originalIndex === -1) {
-			console.error(
-				'Could not find new location in original dataList. This should not happen.'
-			)
-			this.gameState = GAMESTATES.gameOver
-			this.guessButtonClicked()
+			console.error(`Location not found in game mode ${modeId}`)
+			this.endGame()
 			return
 		}
 
-		this.setLocation(originalIndex, selectedGameMode)
+		// Mark this location as used
+		usedList.push(index)
 
+		// --- Change map if necessary ---
+		const modeData = this.gameModeData[modeId]
+		const newMapUrl =
+			modeData.map?.useCustomMap && modeData.map?.mapUrl
+				? modeData.map.mapUrl
+				: modeData.map?.defaultMap || DEFAULT_MAP_URL
+
+		if (GameMap.currentMapUrl !== newMapUrl) {
+			await GameMap.changeMapImage(newMapUrl)
+		}
+
+		// Set and start the round
+		this.startRoundWithLocation(originalIndex, modeId)
+	},
+
+	/**
+	 * Helper: Starts a round from a chosen location index.
+	 */
+	startRoundWithLocation(originalIndex, gameMode) {
+		this.setLocation(originalIndex, gameMode)
 		DOM.guessButton.disabled = true
-		GameMap.guessPosition = null // Clear guess for new round
+		GameMap.guessPosition = null
 
-		// Reset and start the timer
 		if (this.timerEnabled) {
 			this.endTime = performance.now() + this.timerLengthSeconds * 1000
 		}
+	},
+
+	/**
+	 * Helper: Ends the game safely.
+	 */
+	endGame() {
+		this.gameState = GAMESTATES.gameOver
+		this.guessButtonClicked()
 	},
 
 	/**
@@ -964,15 +997,20 @@ export const GameManager = {
 		const distance = Math.sqrt(dx * dx + dy * dy)
 		const leniency = 50 // Distance in which you get the max score
 		const dropOffRate = 0.001 // How quickly the score drops off when guessing farther aue aue! (away)
-		this.roundScore =
+		this.roundScore = Math.round(
 			this.maxScore * Math.exp(-dropOffRate * (distance - leniency))
-		this.roundScore = Math.round(Math.min(this.roundScore, this.maxScore))
+		)
 		this.totalScore += this.roundScore
 	},
 
 	validaiteForm() {
 		this.hideFormWarning()
 		let formValid = true
+		if (mc.getSelected().length === 0) {
+			this.displayFormMessage('Please select at least one image pack.')
+			formValid = false
+		}
+
 		if (DOM.timerEnabled.checked) {
 			if (
 				Number(DOM.timerLengthInput.value) <= 0 ||
@@ -1129,6 +1167,19 @@ export const GameManager = {
 	hideFormWarning() {
 		DOM.formWarning.style.display = 'none'
 	},
+
+	/**
+	 * Updates the list of selected packs displayed on the options screen.
+	 */
+	updateSelectedPacksDisplay() {
+		const listContainer = document.getElementById('selected-packs-list')
+		if (!listContainer) return
+
+		const selectedOptions = mc.getSelectedOptions()
+		listContainer.innerHTML = selectedOptions
+			.map((option) => `<span class="pack-tag">${option.label}</span>`)
+			.join(' ') // Join with a space for proper wrapping
+	},
 }
 
 function initializeDOM() {
@@ -1172,6 +1223,9 @@ function initializeDOM() {
 	DOM.timerLengthOption = document.getElementById('timerLengthOption')
 	DOM.modalOverlay = document.getElementById('modalOverlay')
 	DOM.seededIndicator = document.getElementById('seededIndicator')
+	DOM.packSelectWindow = document.getElementById('packSelectWindow')
+	DOM.packChoices = document.getElementById('packChoices')
+	DOM.changePacksButton = document.getElementById('changePacksButton')
 }
 
 // Main entry point for the game

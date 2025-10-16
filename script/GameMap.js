@@ -396,12 +396,32 @@ export const GameMap = {
       return;
     }
 
+    // --- Optimization: Culling ---
+    // Calculate the visible portion of the map in world coordinates.
+    // This prevents drawing the entire (potentially huge) map image when zoomed in.
+    const view = {
+      left: -this.camera.x - (cssWidth / 2) / this.camera.zoom,
+      right: -this.camera.x + (cssWidth / 2) / this.camera.zoom,
+      top: -this.camera.y - (cssHeight / 2) / this.camera.zoom,
+      bottom: -this.camera.y + (cssHeight / 2) / this.camera.zoom,
+    };
+
+    // Determine the source rectangle (sx, sy, sWidth, sHeight) from the map image.
+    const sx = Math.max(0, view.left);
+    const sy = Math.max(0, view.top);
+    const sWidth = Math.min(this.mapWidth, view.right) - sx;
+    const sHeight = Math.min(this.mapHeight, view.bottom) - sy;
+
+    // Only draw if the calculated source dimensions are valid.
+    if (sWidth <= 0 || sHeight <= 0) {
+      this.ctx.restore(); // Still need to restore context before returning
+      return;
+    }
+
     this.ctx.drawImage(
       this.mapImg,
-      0,
-      0,
-      this.mapWidth,
-      this.mapHeight
+      sx, sy, sWidth, sHeight, // Source rectangle from the image
+      sx, sy, sWidth, sHeight  // Destination rectangle in world coordinates
     );
 
     // Draw pins and line if a guess has been made

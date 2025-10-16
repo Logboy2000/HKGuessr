@@ -1,7 +1,8 @@
 {
-  "name": "All Benches",
+  "name": "Benches (HK)",
   "gameModeId": "benches_only",
   "author": "Coldes",
+    "thumbnail": "images/thumbnail.jpg",
   "locations": [
     {
       "x": 3460,

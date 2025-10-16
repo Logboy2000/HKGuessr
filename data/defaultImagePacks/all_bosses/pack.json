@@ -1,7 +1,8 @@
 {
-  "name": "All Bosses",
+  "name": "Bosses (HK)",
   "gameModeId": "hk_bosses",
   "author": "birdman25x",
+  "thumbnail": "images/thumbnail.png",
   "locations": [
     {
       "x": 3608,

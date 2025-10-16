@@ -1,9 +1,58 @@
 // --- 1. State Management ---
-// A single JavaScript object to hold all the data for the editor.
-const state = {
-	packName: 'MyNewPack',
-	gameModeId: 'my_new_pack',
-	author: '',
+
+/**
+ * Schema for pack properties. This is the single source of truth for generating
+ * UI elements and handling data mapping between the editor state and pack.json.
+ * To add a new property (e.g., a description), just add a new object to this array.
+ */
+const PACK_SCHEMA = [
+	{
+		stateKey: 'packName', // Key in the `state` object
+		packKey: 'name', // Key in the `pack.json` file
+		label: 'Pack Name', // UI Label
+		type: 'text', // Input type ('text', 'textarea', etc.)
+		id: 'pack-name', // DOM element ID
+		defaultValue: 'My New Pack',
+		placeholder: 'e.g., My Awesome Pack',
+	},
+	{
+		stateKey: 'gameModeId',
+		packKey: 'gameModeId',
+		label: 'Game Mode ID',
+		type: 'text',
+		id: 'game-mode-id',
+		defaultValue: 'my_new_pack',
+		placeholder: 'e.g., my_awesome_pack (no spaces)',
+	},
+	{
+		stateKey: 'author',
+		packKey: 'author',
+		label: 'Author',
+		type: 'text',
+		id: 'author-name',
+		defaultValue: '',
+		placeholder: 'Your name',
+	},
+	{
+		stateKey: 'thumbnail', // Will store the path, e.g., 'images/thumbnail.png'
+		packKey: 'thumbnail', // Key in pack.json
+		label: 'Pack Thumbnail',
+		type: 'image',
+		id: 'pack-thumbnail-upload',
+		defaultValue: null, // No thumbnail by default
+		previewId: 'pack-thumbnail-preview',
+		previewDefault: 'images/editor/imagePreview.svg',
+		fileName: 'thumbnail.png', // The name of the file inside the zip
+	},
+]
+
+/**
+ * A single JavaScript object to hold all the data for the editor.
+ * This is the "source of truth" for the editor's current session.
+ * When a pack is imported, this state is updated.
+ * When a pack is exported, this state is used to generate the pack.json file.
+ */
+const state = { // This will be populated dynamically from the schema
 	locations: [], // Array of location objects
 	uploadedFiles: {}, // Maps filename (e.g., '1.png') to File object
 	selectedLocationId: null, // ID of the currently selected location
@@ -48,13 +97,21 @@ imageOverlay.on('load', function () {
 	state.mapImageWidth = img.naturalWidth
 	state.mapImageHeight = img.naturalHeight
 
-	const newBounds = [[0, 0], [state.mapImageHeight, state.mapImageWidth]]
+	const newBounds = [
+		[0, 0],
+		[state.mapImageHeight, state.mapImageWidth],
+	]
 
 	// Update the overlay's bounds and fit the map to them
 	this.setBounds(newBounds)
 	// Change minZoom based on new img dimensions (banger math)
-	map.options.minZoom = Math.floor(Math.log(Math.max(map.getSize().x, map.getSize().y) /Math.max(state.mapImageWidth, state.mapImageHeight)) / Math.log(2))
-	
+	map.options.minZoom = Math.floor(
+		Math.log(
+			Math.max(map.getSize().x, map.getSize().y) /
+				Math.max(state.mapImageWidth, state.mapImageHeight)
+		) / Math.log(2)
+	)
+
 	map.fitBounds(newBounds)
 	map.setMaxBounds(newBounds) // Constrain map panning
 	map.invalidateSize() // Force map to re-render with correct dimensions
@@ -62,9 +119,7 @@ imageOverlay.on('load', function () {
 
 // --- 3. UI Element and Event Handlers ---
 const sidebar = document.getElementById('sidebar')
-const packNameInput = document.getElementById('pack-name')
-const gameModeIdInput = document.getElementById('game-mode-id')
-const authorNameInput = document.getElementById('author-name')
+const packSettingsContainer = document.getElementById('pack-settings-container')
 const locationsList = document.getElementById('locations-list')
 const addLocationBtn = document.getElementById('add-location-btn')
 const downloadPackBtn = document.getElementById('download-pack-btn')
@@ -83,7 +138,6 @@ const imageUploadLabel = document.getElementById('image-upload-label')
 const deleteLocationBtn = document.getElementById('delete-location-btn')
 const closeDetailsBtn = document.getElementById('close-details-btn')
 const defaultMapSelector = document.getElementById('default-map-selector')
-
 
 // Map Image UI Elements
 const mapImageUploadInput = document.getElementById('map-image-upload')
@@ -118,23 +172,6 @@ function stopResize() {
 	window.removeEventListener('mouseup', stopResize)
 	map.invalidateSize() // Important for Leaflet to re-render correctly
 }
-
-// Initial UI state
-packNameInput.value = state.packName
-gameModeIdInput.value = state.gameModeId
-authorNameInput.value = state.author
-
-packNameInput.addEventListener('input', (e) => {
-	state.packName = e.target.value
-})
-
-gameModeIdInput.addEventListener('input', (e) => {
-	state.gameModeId = e.target.value
-})
-
-authorNameInput.addEventListener('input', (e) => {
-	state.author = e.target.value
-})
 
 // Map Image Upload handler
 mapImageUploadInput.addEventListener('change', (e) => {
@@ -174,13 +211,90 @@ newPackBtn.addEventListener('click', () => {
 })
 
 // --- 4. Core Logic Functions ---
+
+/**
+ * Generates UI form fields from PACK_SCHEMA and initializes state.
+ */
+function initializeSchemaDrivenUI() {
+	packSettingsContainer.innerHTML = '' // Clear any static HTML
+	packSettingsContainer.innerHTML = `<h2 class="section-heading">Pack Details</h2>`
+
+	PACK_SCHEMA.forEach((prop) => {
+		// 1. Initialize the state object with default values
+		state[prop.stateKey] = prop.defaultValue
+
+		// 2. Create and append the UI element
+		const formGroup = document.createElement('div')
+		formGroup.className = 'input-group' // Use existing CSS class
+
+		const label = document.createElement('label')
+		label.htmlFor = prop.id
+		label.textContent = prop.label
+		label.className = 'input-label' // Use existing CSS class
+
+		if (prop.type === 'text' || prop.type === 'textarea') {
+			const input = document.createElement(
+				prop.type === 'textarea' ? 'textarea' : 'input'
+			)
+			if (prop.type !== 'textarea') {
+				input.type = prop.type
+			}
+			input.id = prop.id
+			input.className = 'text-input' // Use existing CSS class
+			input.placeholder = prop.placeholder || ''
+			input.value = prop.defaultValue
+
+			// 3. Add event listener to update state on input
+			input.addEventListener('input', (e) => {
+				state[prop.stateKey] = e.target.value
+			})
+
+			formGroup.append(label, input)
+		} else if (prop.type === 'image') {
+			const fileInput = document.createElement('input')
+			fileInput.type = 'file'
+			fileInput.id = prop.id
+			fileInput.style.display = 'none'
+			fileInput.accept =
+				'.png, .jpg, .jpeg, .webp, .gif, .svg, .bmp, .tiff, .ico, .heic, .heif'
+
+			const fileLabel = document.createElement('label')
+			fileLabel.htmlFor = prop.id
+			fileLabel.className = 'file-label'
+			fileLabel.innerHTML = `<span>Upload ${prop.label}</span>`
+
+			const previewImg = document.createElement('img')
+			previewImg.id = prop.previewId
+			previewImg.src = prop.previewDefault
+			previewImg.alt = `${prop.label} Preview`
+			previewImg.className = 'preview-img'
+
+			fileInput.addEventListener('change', (e) => {
+				const file = e.target.files[0]
+				if (!file) return
+
+				// Store the file object to be zipped later
+				state.uploadedFiles[prop.fileName] = file
+				// Store the path for pack.json
+				state[prop.stateKey] = `images/${prop.fileName}`
+
+				// Update UI
+				previewImg.src = URL.createObjectURL(file)
+				fileLabel.querySelector('span').textContent = `Change Thumbnail (${file.name})`
+			})
+
+			formGroup.append(label, fileLabel, fileInput, previewImg)
+		}
+		packSettingsContainer.appendChild(formGroup)
+	})
+}
+
 async function createNewPack() {
 	const confirmed = await showConfirmationDialog(
 		'Are you sure you want to create a new pack? All unsaved changes will be lost.'
 	)
 	if (confirmed) {
 		clearAllData()
-		
 	}
 }
 
@@ -199,10 +313,11 @@ function clearAllData() {
 		URL.revokeObjectURL(state.customMapUrl)
 	}
 
-	// Reset state to default values
-	state.packName = 'MyNewPack'
-	state.gameModeId = 'my_new_pack'
-	state.author = ''
+	// Reset state properties based on the schema
+	PACK_SCHEMA.forEach((prop) => {
+		state[prop.stateKey] = prop.defaultValue
+	})
+
 	state.locations = []
 	state.uploadedFiles = {}
 	state.selectedLocationId = null
@@ -212,10 +327,23 @@ function clearAllData() {
 	state.customMapFile = null
 	state.customMapUrl = state.defaultMapUrl
 
-	// Update UI to reflect cleared state
-	packNameInput.value = state.packName
-	gameModeIdInput.value = state.gameModeId
-	authorNameInput.value = state.author
+	// Update UI inputs to reflect cleared state
+	PACK_SCHEMA.forEach((prop) => {
+		const inputElement = document.getElementById(prop.id)
+		if (inputElement) {
+			if (prop.type === 'image') {
+				const previewEl = document.getElementById(prop.previewId);
+				const labelEl = document.querySelector(`label[for="${prop.id}"] span`);
+				if (previewEl) previewEl.src = prop.previewDefault;
+				if (labelEl) labelEl.textContent = prop.label;
+				// Clear the file input value
+				inputElement.value = '';
+			} else {
+				inputElement.value = prop.defaultValue
+			}
+		}
+	})
+
 	defaultMapSelector.value = 'hallownest.png'
 	mapImageUploadLabel.textContent = 'Upload Custom Map Image'
 	imageOverlay.setUrl(state.customMapUrl)
@@ -423,7 +551,6 @@ defaultMapSelector.addEventListener('change', (e) => {
 	state.customMapFile = null // Clear any custom map file
 	state.defaultMapUrl = `images/game/defaultMaps/${newValue}`
 	imageOverlay.setUrl(state.defaultMapUrl)
-	
 })
 
 // --- 5. Map Interaction ---
@@ -465,9 +592,9 @@ map.on('click', (e) => {
 function setMapUrlAndWaitForLoad(url) {
 	return new Promise((resolve) => {
 		// Use .once() to ensure this listener only fires for the current load operation.
-		imageOverlay.once('load', () => resolve());
-		imageOverlay.setUrl(url);
-	});
+		imageOverlay.once('load', () => resolve())
+		imageOverlay.setUrl(url)
+	})
 }
 
 // --- 6. Import Pack Logic ---
@@ -489,29 +616,47 @@ importFileInput.addEventListener('change', async (e) => {
 		const packData = JSON.parse(packJsonString)
 		console.log('Imported pack data:', packData)
 
-
 		// Reset state and UI
 		clearAllData()
 
 		// Update state with imported data
-		state.packName = packData.name || ''
-		state.gameModeId = packData.gameModeId || ''
-		state.author = packData.author || ''
+		PACK_SCHEMA.forEach((prop) => {
+			const value = packData[prop.packKey] || prop.defaultValue
+			state[prop.stateKey] = value
+			// Also update the dynamically generated UI element
+			const inputElement = document.getElementById(prop.id)
+			if (inputElement) inputElement.value = value
+		})
 
-		packNameInput.value = state.packName
-		gameModeIdInput.value = packData.gameModeId
-		authorNameInput.value = packData.author
+		// Handle thumbnail import
+		const thumbProp = PACK_SCHEMA.find(p => p.stateKey === 'thumbnail');
+		if (thumbProp && packData[thumbProp.packKey]) {
+			const thumbFileInZip = zip.file(packData[thumbProp.packKey]);
+			if (thumbFileInZip) {
+				const thumbBlob = await thumbFileInZip.async('blob');
+				const thumbFile = new File([thumbBlob], thumbProp.fileName);
+				state.uploadedFiles[thumbProp.fileName] = thumbFile;
+				state[thumbProp.stateKey] = packData[thumbProp.packKey];
+
+				const previewEl = document.getElementById(thumbProp.previewId);
+				if (previewEl) previewEl.src = URL.createObjectURL(thumbFile);
+			}
+		}
 
 		if (packData.map?.useCustomMap) {
 			const mapFileInZip = zip.file(packData.map.mapImage)
 			if (mapFileInZip) {
 				const mapBlob = await mapFileInZip.async('blob')
-				state.customMapFile = new File([mapBlob], packData.map.mapImage, { type: 'image/png' })
+				state.customMapFile = new File([mapBlob], packData.map.mapImage, {
+					type: 'image/png',
+				})
 				state.customMapUrl = URL.createObjectURL(state.customMapFile)
 				mapImageUploadLabel.textContent = packData.map.mapImage
 				defaultMapSelector.value = 'hallownest.png' // Reset dropdown
 			} else {
-				console.warn(`Map image '${packData.map.mapImage}' not found in zip. Using default map.`)
+				console.warn(
+					`Map image '${packData.map.mapImage}' not found in zip. Using default map.`
+				)
 				state.customMapFile = null
 				state.customMapUrl = state.defaultMapUrl
 				mapImageUploadLabel.textContent = 'Upload Custom Map Image'
@@ -530,46 +675,46 @@ importFileInput.addEventListener('change', async (e) => {
 		}
 
 		// Set the map URL and explicitly wait for it to load before processing locations.
-		await setMapUrlAndWaitForLoad(state.customMapUrl);
+		await setMapUrlAndWaitForLoad(state.customMapUrl)
 
 		// Now that the map is loaded and dimensions are correct, process locations.
-		const imagesFolder = zip.folder('images');
+		const imagesFolder = zip.folder('images')
 		if (imagesFolder && packData.locations) {
 			await Promise.all(
 				packData.locations.map(async (locData) => {
 					// The path in pack.json is "images/filename.png", but the file in the zip is just "filename.png" inside the "images" folder.
-					const filename = locData.image.split('/').pop();
-					const imageFile = imagesFolder.file(filename);
+					const filename = locData.image.split('/').pop()
+					const imageFile = imagesFolder.file(filename)
 
 					if (imageFile) {
-						const blob = await imageFile.async('blob');
-						const fileObject = new File([blob], filename, { type: blob.type });
+						const blob = await imageFile.async('blob')
+						const fileObject = new File([blob], filename, { type: blob.type })
 						// Use the original filename from the pack as the key
-						state.uploadedFiles[filename] = fileObject;
+						state.uploadedFiles[filename] = fileObject
 					}
 
 					// Correct the inverted y-axis from the pack data for the map
-					const correctedY = state.mapImageHeight - locData.y;
+					const correctedY = state.mapImageHeight - locData.y
 
 					// Create a new location object for our state
-					const newId = generateUniqueId();
+					const newId = generateUniqueId()
 					const newLocation = {
 						id: newId,
 						x: locData.x,
 						y: correctedY, // Use the corrected Y for the editor's coordinate system
 						difficulty: locData.difficulty,
 						image: locData.image, // Store the original image path from the imported pack
-					};
-					const marker = createPin(newId, [correctedY, locData.x]);
-					newLocation.marker = marker;
-					state.locations.push(newLocation);
+					}
+					const marker = createPin(newId, [correctedY, locData.x])
+					newLocation.marker = marker
+					state.locations.push(newLocation)
 				})
-			);
+			)
 		}
 
-		renderLocationsList();
-		hideAlert(loadingAlert);
-		showTemporaryAlert('Pack imported successfully!', 3000);
+		renderLocationsList()
+		hideAlert(loadingAlert)
+		showTemporaryAlert('Pack imported successfully!', 3000)
 	} catch (error) {
 		console.error('Error importing pack:', error)
 		// Hide the loading alert on error
@@ -579,7 +724,7 @@ importFileInput.addEventListener('change', async (e) => {
 		// Clear the file input so the same file can be imported again
 		importFileInput.value = ''
 	}
-});
+})
 
 // --- 7. Download Pack Logic with JSZip ---
 downloadPackBtn.addEventListener('click', async () => {
@@ -617,38 +762,46 @@ downloadPackBtn.addEventListener('click', async () => {
 
 	try {
 		// 1. Prepare JSON data
-		const packData = {
-			name: state.packName,
-			gameModeId: state.gameModeId,
-			author: state.author,
-			locations: state.locations.map((loc) => {
-				return {
-					x: loc.x,
-					// Invert the y-coordinate for game compatibility (game's y=0 is at the bottom)
-					y: state.mapImageHeight - loc.y,
-					difficulty: loc.difficulty,
-					image: loc.image, // Use the original image path from the state
-				}
-			}),
-		}
+		const packData = {}
+		PACK_SCHEMA.forEach((prop) => {
+			packData[prop.packKey] = state[prop.stateKey]
+		})
+		packData.locations = state.locations.map((loc) => {
+			return {
+				x: loc.x,
+				// Invert the y-coordinate for game compatibility (game's y=0 is at the bottom)
+				y: state.mapImageHeight - loc.y,
+				difficulty: loc.difficulty,
+				image: loc.image, // Use the original image path from the state
+			}
+		})
 
 		const zip = new JSZip()
-		
+
 		if (state.customMapFile) {
 			zip.file('map.png', state.customMapFile)
 			packData.map = {
 				useCustomMap: true,
-				mapImage: 'map.png'
+				mapImage: 'map.png',
 			}
 		} else {
 			packData.map = {
 				useCustomMap: false,
-				defaultMap: state.defaultMapUrl
+				defaultMap: state.defaultMapUrl,
 			}
 		}
 
 		zip.file('pack.json', JSON.stringify(packData, null, 2))
 		const imagesFolder = zip.folder('images')
+
+		// Handle thumbnail export
+		const thumbProp = PACK_SCHEMA.find(p => p.stateKey === 'thumbnail');
+		if (thumbProp && state[thumbProp.stateKey] && state.uploadedFiles[thumbProp.fileName]) {
+			const thumbFile = state.uploadedFiles[thumbProp.fileName];
+			// The path is already in packData from the schema loop
+			// Add the thumbnail file to the 'images' folder in the zip
+			imagesFolder.file(thumbProp.fileName, thumbFile)
+		}
 
 		for (const loc of state.locations) {
 			const filename = loc.image.split('/').pop()
@@ -679,7 +832,8 @@ downloadPackBtn.addEventListener('click', async () => {
 	}
 })
 
-// Initial render of the locations list (it will be empty)
+// --- Initialization ---
+initializeSchemaDrivenUI() // Generate the settings form from the schema
 renderLocationsList()
 
 // --- Custom Alert Box functions ---

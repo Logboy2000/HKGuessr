@@ -1,1 +1,10 @@
-["normal", "all_charms", "all_benches", "all_grubs", "all_bosses", "act3"]
+[
+  "normal",
+  "act3",
+  "silksong_all_tools",
+  "all_charms",
+  "all_benches",
+  "all_grubs",
+  "all_bosses",
+  "all_whispering_roots"
+]

@@ -1,6 +1,8 @@
 {
-  "name": "Normal",
+  "name": "Normal (HK)",
   "gameModeId": "normal",
+  "author": "The Community",
+  "thumbnail": "images/thumbnail.jpg",
   "locations": [
     {
       "x": 3832,

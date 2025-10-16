@@ -1,7 +1,8 @@
 {
-  "name": "All Grubs",
+  "name": "All Grubs (HK)",
   "gameModeId": "AllGrubs",
   "author": "Coldes",
+  "thumbnail": "images/thumbnail.png",
   "locations": [
     {
       "x": 839,

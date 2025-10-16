@@ -9,25 +9,21 @@
 	<title>Hollow Guessr</title>
 	<link rel="stylesheet" href="style/style.css?v=1.1.0" />
 	<link rel="stylesheet" href="style/game.css" />
+	<link rel="stylesheet" href="style/multipleChoice.css">
 </head>
 
 <body>
 	<div id="imageWrapper">
 		<div id="blurBg"></div>
 		<img id="locationImg" src="" alt=""></img>
-		
 	</div>
-
-
 
 	<div id="backContainer">
 		<button id="back-button" onclick="window.location.href='index.html'">
-			&lt;- Back
+			&lt;- Quit to Menu
 		</button>
 	</div>
 
-
-	</div>
 	<div id="mapContainer">
 		<canvas id="mapCanvas"></canvas>
 		<div id="roundScoreDisplay"></div>
@@ -61,38 +57,17 @@
 		</div>
 	</div>
 
-
-	<div id="gameOverWindow" class="window">
-		<h2>Game Over</h2>
-		<p id="finalScore">Final Score:</p>
-		<p id="accuracy">Accuracy:</p>
-		<p id="totalRounds">Total Rounds:</p>
-		<p id="timerLengthDisplay">Timer Length:</p>
-		<p id="seedDisplay">Seed:</p>
-		<hr />
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<a id="playAgainButton" class="hk-button">Play Again</a>
-			<a id="optionsButton" class="hk-button">Options</a>
-		</div>
-
-	</div>
-
 	<div id="gameOptionsWindow" class="window">
 		<h2>Game Options</h2>
-		<div class="option">
-			<label for="gameMode">Image Pack:</label>
-			<div style="display: flex; gap: 8px; align-items: center">
-				<select id="gameMode">
-					<!--should be filled using the json files-->
-				</select>
-				<label class="custom-file-upload">
-					<input type="file" id="customImagePack" accept=".zip" style="display: none" />
-					<button id="loadPackButton" onclick="document.getElementById('customImagePack').click()">
-						Load Pack (.zip)
-					</button>
-				</label>
-			</div>
+
+
+		<label>Selected Packs:</label>
+		<button id="changePacksButton">Choose Packs</button>
+		<div id="selected-packs-list">
+			<!-- List of selected packs will be populated by JS -->
 		</div>
+
+
 		<div class="option">
 			<label for="difficultySelector">Difficulty:</label>
 			<select id="difficultySelector">
@@ -149,8 +124,47 @@
 		</div>
 
 	</div>
+
+	<div id="packSelectWindow" class="window">
+
+		<h2>Select Image Packs</h2>
+
+		<div style="overflow-y: auto; padding: 10px 20px 10px 20px ;">
+			<div id="packChoices">
+				<!-- This inner div will be managed by the MultipleChoice class -->
+			</div>
+		</div>
+
+		<div style="display: flex; flex-direction: row; gap: 1rem; align-items: center; justify-content: center; ">
+			<button id="loadPackButton" onclick="document.getElementById('customImagePack').click()">
+				Load Custom Pack (.zip)
+				<input type="file" id="customImagePack" accept=".zip" style="display: none" />
+			</button>
+
+			<button id="packSelectBackButton">Done</button>
+		</div>
+
+
+	</div>
+
+	<div id="gameOverWindow" class="window">
+		<h2>Game Over</h2>
+		<p id="finalScore">Final Score:</p>
+		<p id="accuracy">Accuracy:</p>
+		<p id="totalRounds">Total Rounds:</p>
+		<p id="timerLengthDisplay">Timer Length:</p>
+		<p id="seedDisplay">Seed:</p>
+		<hr />
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<a id="playAgainButton" class="hk-button">Play Again</a>
+			<a id="optionsButton" class="hk-button">Options</a>
+		</div>
+
+	</div>
+
+
+
 	<script src="script/game.js" type="module"></script>
-	<script src="script/loadLocationData.js" type="module"></script>
 </body>
 
 </html>

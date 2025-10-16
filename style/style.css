@@ -102,29 +102,29 @@ img {
 	transform: translate(-50%, -50%);
 	background-color: rgba(0, 0, 0, 0.9);
 	color: #fff;
-	padding: 2rem;
+	padding: 1rem;
 	border-radius: 8px;
 	border: 2px solid rgba(255, 255, 255, 0.5);
 	box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
 	text-align: center;
-	font-size: 1.5rem; /* Standardized window title size */
+	font-size: 1.5rem;
 	z-index: 1000;
 	height: min-content;
-	max-height: 90vh;
-	max-width: 600px;
-	width: 90vw; /* Use viewport width for responsiveness */
-	/* start hidden; JS will toggle display + .visible for animation */
+	max-height: 80vh;
+	width: 85vw;
+	max-width: 910px;
+	
 	display: none;
 	flex-direction: column;
-	justify-content: flex-start; /* Align content to the top for scrolling */
+	justify-content: flex-start;
 	gap: 1.5rem;
-	overflow-y: auto; /* Allow vertical scrolling when content overflows */
+	overflow-y: auto;
 	overflow-x: hidden;
 
 }
 
 .window.visible {
-	display: flex; /* ensure visible */
+	display: flex;
 	opacity: 1;
 	transform: translate(-50%, -50%) scale(1);
 	pointer-events: auto;

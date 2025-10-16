@@ -1,7 +1,8 @@
 {
-  "name": "Silksong (Act 3)",
+  "name": "Act 3 (SS)",
   "gameModeId": "act3",
   "author": "Biticalifi",
+  "thumbnail": "images/thumbnail.png",
   "locations": [
     {
       "x": 1692,
