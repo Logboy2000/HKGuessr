@@ -997,9 +997,11 @@ export const GameManager = {
 		const distance = Math.sqrt(dx * dx + dy * dy)
 		const leniency = 50 // Distance in which you get the max score
 		const dropOffRate = 0.001 // How quickly the score drops off when guessing farther aue aue! (away)
-		this.roundScore = Math.round(
+		const calculatedScore = Math.round(
 			this.maxScore * Math.exp(-dropOffRate * (distance - leniency))
 		)
+		// Clamp the score to the max value, preventing it from exceeding 5000 on very close guesses.
+		this.roundScore = Math.min(calculatedScore, this.maxScore)
 		this.totalScore += this.roundScore
 	},
 
