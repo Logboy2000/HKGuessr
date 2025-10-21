@@ -1,5 +1,4 @@
-import { GameManager, DEFAULT_MAP_URL } from './game.js'
-import { mc } from './game.js'
+import { GameManager, DEFAULT_MAP_URL, hallownestMc as hallownestMultipleChoice, pharloomMc as pharloomMultipleChoice } from './game.js'
 
 // Single object to store all game mode data
 
@@ -43,7 +42,7 @@ async function registerPack(data, locations, mapInfo, isCustom = false) {
 	}
 
 	// Update game mode select options
-	mc.addChoice({
+	const choiceData = {
 		id: data.gameModeId,
 		value: data.gameModeId,
 		label: isCustom ? `${data.name} (Custom)` : data.name,
@@ -51,8 +50,21 @@ async function registerPack(data, locations, mapInfo, isCustom = false) {
 		description: data.description || '',
 		author: data.author || 'Unknown',
 		imageCount: locations.length,
-	})
-	console.log(data.thumbnail)
+	};
+	if (data.map.useCustomMap === false) {
+		if (data.map.defaultMap === "images/game/defaultMaps/pharloom.png") {
+			pharloomMultipleChoice.addChoice(choiceData);
+		}
+		else if (data.map.defaultMap === "images/game/defaultMaps/hallownest.png") {
+			hallownestMultipleChoice.addChoice(choiceData);
+		}
+	} else {
+		// Add to hallownestMc is used for now
+		hallownestMultipleChoice.addChoice(choiceData);
+	}
+
+	console.log("Pack Registered:", choiceData.id)
+
 	return packData
 }
 
@@ -194,7 +206,7 @@ export async function loadInitialData() {
 			}
 		}
 
-		mc.selectChoiceByIndex(0)
+		hallownestMultipleChoice.selectChoiceByIndex(0)
 		console.log('Location data loaded successfully!')
 		return loadedGameModes
 	} catch (error) {

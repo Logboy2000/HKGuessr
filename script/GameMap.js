@@ -81,28 +81,35 @@ export const GameMap = {
   /**
    * Changes the map image, loads it, and resets the camera to the center.
    * @param {string} imageUrl - The URL of the new map image.
+   * @param {Function} [onLoadCallback] - Optional callback to execute after the image is loaded and drawn.
    */
-  async changeMapImage(imageUrl) {
+  async changeMapImage(imageUrl, onLoadCallback) {
+    const mapLoadingEl = document.getElementById('mapLoadingText');
     try {
+      if (mapLoadingEl) mapLoadingEl.style.display = 'block';
+
       this.mapImg.src = imageUrl;
       await this.loadImage(this.mapImg);
 
       // Update map dimensions and center based on the new image
       this.mapWidth = this.mapImg.width;
       this.mapHeight = this.mapImg.height;
+      this.currentMapUrl = imageUrl;
 
       console.log(
         `Image loaded: ${imageUrl} (${this.mapWidth}x${this.mapHeight})`
       );
 
-      // Reset camera to center on the new map
       this.resetCamera();
-
-      // Initial draw call after the new map is loaded
       this.draw();
+
+      // Execute the callback if provided
+      if (onLoadCallback) onLoadCallback();
     } catch (error) {
       console.error("Failed to load map image:", error);
       // Fallback or error handling for image loading
+    } finally {
+      if (mapLoadingEl) mapLoadingEl.style.display = 'none';
     }
   },
 
@@ -176,15 +183,19 @@ export const GameMap = {
     this.updateRelativeMousePos();
 
     if (this.isDragging) {
-      let dx = event.clientX - this.dragStart.x;
-      let dy = event.clientY - this.dragStart.y;
+      // Calculate delta and apply it directly to the camera for immediate feedback
+      const dx = (event.clientX - this.dragStart.x) / this.camera.zoom;
+      const dy = (event.clientY - this.dragStart.y) / this.camera.zoom;
 
       if (dx !== 0 || dy !== 0) {
         this.hasMoved = true;
       }
 
-      this.camera.targetX += dx / this.camera.zoom;
-      this.camera.targetY += dy / this.camera.zoom;
+      // Update both current and target positions to prevent lerp from interfering
+      this.camera.x += dx;
+      this.camera.y += dy;
+      this.camera.targetX = this.camera.x;
+      this.camera.targetY = this.camera.y;
 
       this.dragStart.x = event.clientX;
       this.dragStart.y = event.clientY;
@@ -270,15 +281,18 @@ export const GameMap = {
       this.mousePos.y = event.touches[0].clientY - rect.top;
       this.updateRelativeMousePos();
 
-      let dx = event.touches[0].clientX - this.dragStart.x;
-      let dy = event.touches[0].clientY - this.dragStart.y;
+      const dx = (event.touches[0].clientX - this.dragStart.x) / this.camera.zoom;
+      const dy = (event.touches[0].clientY - this.dragStart.y) / this.camera.zoom;
 
       if (dx !== 0 || dy !== 0) {
         this.hasMoved = true;
       }
 
-      this.camera.targetX += dx / this.camera.zoom;
-      this.camera.targetY += dy / this.camera.zoom;
+      // Update both current and target positions to prevent lerp from interfering
+      this.camera.x += dx;
+      this.camera.y += dy;
+      this.camera.targetX = this.camera.x;
+      this.camera.targetY = this.camera.y;
 
       this.dragStart.x = event.touches[0].clientX;
       this.dragStart.y = event.touches[0].clientY;

@@ -1,5 +1,5 @@
 {
-  "name": "Charms (HK)",
+  "name": "Charms",
   "gameModeId": "charms",
   "author": "rblashchuk",
   "thumbnail": "images/thumbnail.png",
@@ -280,5 +280,9 @@
       "difficulty": 5,
       "image": "images/79c476dd.png"
     }
-  ]
+  ],
+  "map": {
+    "useCustomMap": false,
+    "defaultMap": "images/game/defaultMaps/hallownest.png"
+  }
 }

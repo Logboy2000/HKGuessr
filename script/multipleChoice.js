@@ -88,6 +88,7 @@ export class MultipleChoice {
 	}
 
 	addChoice(option) {
+		
 		this.options.push(option);
 		this.render();
 	}

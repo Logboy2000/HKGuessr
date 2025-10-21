@@ -1,32 +1,36 @@
 .choices {
-	display: flex;
-	flex-wrap: wrap;
-    justify-content: center;
+	display: grid;
+	/* Create as many columns as can fit, with a minimum width of 280px, and let them grow to fill the space. */
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 	gap: 10px;
 	font-family: Arial, sans-serif;
 }
 
 .choice {
-    text-align: left;
-	position: relative; /* Needed for absolute positioning of children */
-	width: 250px;
-	height: 200px; /* Give the card a fixed height */
+	text-align: left;
+	position: relative;
 	cursor: pointer;
-	transition: box-shadow 0.1s;
+	height: 150px;
+	transition: all 0.1s;
 	border-radius: 8px;
-    box-shadow: 0 0 0 1px #a6a6a6;
-    font-size: 1rem;
-	overflow: hidden; /* Keep rounded corners on the image */
+	box-shadow: 0 0 0 1px #868686;
+	font-size: 1rem;
+	overflow: hidden;
+	transform: scale(1);
 }
 
 .choice:hover {
-    box-shadow: 0 0 0 3px #a6a6a6;
-	background-color: #33333375;
+    box-shadow: 0 0 0 1px #ffffff;
+
 }
 
 .choice.selected {
-	box-shadow: 0 0 0 4px #4caf50;
+	box-shadow: 0 0 0 3px #4caf50;
 	background-color: #4caf4f39;
+}
+
+.choice:active {
+	transform: scale(0.98);
 }
 
 .choice img {
@@ -49,4 +53,5 @@
 	padding: 10px;
 	z-index: 2; /* On top of the image */
 	color: white;
+	
 }

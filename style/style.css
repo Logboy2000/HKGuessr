@@ -39,7 +39,6 @@ img {
  	transform: translateX(-50%);
  	display: flex;
  	align-items: center;
- 	gap: 1rem;
 }
 
 /* Separate container for the back button so it can sit above the modal overlay */
@@ -47,27 +46,21 @@ img {
 	position: absolute;
 	top: 0.5rem;
 	left: 0.5rem;
-	z-index: 1100; /* above modal-overlay (900) and windows (1000) */
+	z-index: 1100;
 }
 
-#backContainer button {
-	/* keep visual consistent with other buttons */
-	font-size: 1.25rem;
+#back-button {
 	background-color: transparent;
 	color: #fff;
 	border: 2px solid #fff;
 	border-radius: 0.5rem;
 	padding: 0.5rem 1rem;
 	cursor: pointer;
-}
-
-/* Ensure the back button hover works even if other rules change generic buttons */
-#backContainer button {
 	transition: all 0.12s ease-in-out;
 	pointer-events: auto;
 }
 
-#backContainer button:hover {
+#back-button:hover {
 	background-color: #fff;
 	color: #000;
 	box-shadow: 0 6px 18px rgba(0,0,0,0.4);
@@ -109,18 +102,14 @@ img {
 	text-align: center;
 	font-size: 1.5rem;
 	z-index: 1000;
-	height: min-content;
-	max-height: 80vh;
-	width: 85vw;
-	max-width: 910px;
-	
+	width: 90vw; 
+	max-width: 700px;
+	max-height: 90vh; 
 	display: none;
 	flex-direction: column;
-	justify-content: flex-start;
-	gap: 1.5rem;
+	gap: 1rem; 
 	overflow-y: auto;
-	overflow-x: hidden;
-
+	padding: 1.5rem;
 }
 
 .window.visible {
@@ -132,7 +121,7 @@ img {
 
 /* Hidden-by-default state for animation - JS should add 'visible' after setting display:flex */
 .window:not(.visible) {
-	opacity: 0;
+	opacity: 0 !important;
 	transform: translate(-50%, -55%) scale(0.98);
 	pointer-events: none;
 }
@@ -182,29 +171,6 @@ img {
 	z-index: 1;
 }
 
-#mapContainer {
-	background-color: #000;
-	opacity: 0.6;
-	transition: all 0.5s ease;
-	position: fixed;
-	width: 30%;
-	height: 40%;	
-	right: 0rem;
-	bottom: 0rem;
-	border-radius: 1rem;
-	border-color: #000;
-	border-style: solid;
-	border-width: 1rem;
-	display: flex;
-	flex-direction: column;
-	transform-origin: bottom right; /* Set origin for scaling */
-}
-
-#mapContainer:hover {
-	opacity: 0.9;
-	width: 45%; /* Increased size on hover */
-	height: 55%; /* Increased size on hover */
-}
 
 #mapCanvas {
 	width: 100%;
@@ -231,6 +197,7 @@ img {
 
 #buttonContainer {
 	display: flex;
+	gap: 1rem;
 	padding: 0;
 	font-size: 1.5rem;
 	text-align: center;	
@@ -283,19 +250,6 @@ button[disabled] {
 }
 
 @media (max-width: 768px) {
-	#mapContainer {
-		width: 100%;
-		height: 30%;
-		margin: 0;
-		border-width: 0.5rem;
-		box-sizing: border-box;
-	}
-
-	#mapContainer:hover {
-		width: 100%;
-		height: 30%;
-	}
-
 	#scoreContainer {
 		font-size: 1.5rem;
 	}
@@ -311,8 +265,9 @@ button[disabled] {
 
 	.window {
 		transition: all 0.3s ease;
-		font-size: 1.2rem; /* Readable font size for mobile window titles */
-		max-width: 95%;
+		font-size: 1.2rem;
+		padding: 1rem;
+		gap: 0.75rem;
 	}
 
 	.option {
@@ -700,7 +655,9 @@ label {
 	flex-grow: 0;
 	text-transform: uppercase;
 	letter-spacing: 3px;
-	width: 350px;
+	display: inline-flex; /* Allow button to size to its content */
+	justify-content: center; /* Keep text centered */
+	padding: 10px 60px; /* Add horizontal padding for arrow spacing */
 	background: transparent;
 	border: none;
 	color: rgba(255, 255, 255, 0.7);
@@ -733,18 +690,96 @@ label {
 
 .hk-button::before {
 	background-image: url('../images/leftArrow.png');
-	left: -10px; /* Initial position */
-	transform: translateY(-60%) translateX(-20px) scale(1); /* Start off-screen */
+	left: 25px; /* Position arrow in the padding area */
+	transform: translateY(-60%) translateX(-10px) scale(0.75); /* Start off-screen */
 }
 
 .hk-button::after {
 	background-image: url('../images/rightArrow.png');
-	right: -10px; /* Initial position */
-	transform: translateY(-60%) translateX(20px) scale(1); /* Start off-screen */
+	right: 25px; /* Position arrow in the padding area */
+	transform: translateY(-60%) translateX(10px) scale(0.75); /* Start off-screen */
 }
 
 .hk-button:hover::before,
 .hk-button:hover::after {
 	opacity: 1;
-	transform: translateY(-60%) translateX(0) scale(2); /* Animate to final position */
+	transform: translateY(-60%) translateX(0px) scale(1.35); /* Animate to final position */
+}
+
+.hk-button:focus {
+	outline: none;
+}
+
+/* Centers buttons inside it */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Toast container styles */
+#toast-container {
+	position: fixed;
+	bottom: 1rem;
+	right: 1rem;
+	display: flex;
+	flex-direction: column-reverse; /* New toasts appear above old ones */
+	gap: 0.5rem;
+	z-index: 9999;
+	pointer-events: none; /* Allow clicks to pass through the container */
+}
+
+/* Individual toast styles */
+.hk_toast {
+	background: rgba(0, 0, 0, 0.85);
+	color: white;
+	padding: 10px 16px;
+	border-radius: 6px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+	font-size: 14px;
+	opacity: 0;
+	transition: opacity 350ms ease-in-out;
+	pointer-events: auto; /* Toasts themselves can be interactive if needed later */
+	max-width: 350px;
+	width: 350px;
+}
+
+/* Confirmation Dialog Styles */
+.confirmation-dialog {
+	position: fixed;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 2000;
+	background-color: rgba(0,0,0,0.7);
+}
+
+.dialog-content {
+	background-color: rgba(0, 0, 0, 0.9);
+	padding: 2rem;
+	border-radius: 8px;
+	border: 2px solid rgba(255, 255, 255, 0.5);
+	box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+	text-align: center;
+	max-width: 28rem;
+}
+
+.dialog-content p {
+	font-size: 1.25rem;
+	margin-bottom: 1.5rem;
+}
+
+.dialog-buttons {
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+}
+
+/* Make confirm/cancel buttons smaller */
+.dialog-buttons .hk-button {
+	padding: 8px 32px;
+	font-size: 0.9rem;
+	letter-spacing: 2px;
 }

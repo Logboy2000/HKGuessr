@@ -34,12 +34,6 @@ body {
     margin-bottom: 20px;
 }
 
-/* Button container */
-.button-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
 
 
 /* Fade-in animation */

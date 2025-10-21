@@ -20,10 +20,6 @@ body {
 	text-align: center;
 }
 
-body {
-	overflow: hidden;
-}
-
 hr {
 	width: 100%;
 	border-color: white;
@@ -97,7 +93,32 @@ hr {
 	padding: 10px;
 	width: 100%;
 	box-sizing: border-box;
-	min-height: 40px; /* Ensure it has some height even when empty */
+	height: fit-content;
+	font-size: 1rem;
+}
+
+/* A reusable custom scrollbar style */
+.custom-scrollbar::-webkit-scrollbar {
+	width: 8px; /* Thinner scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+	background: transparent; /* Make the track invisible */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+	background-color: rgba(255, 255, 255, 0.3); /* A semi-transparent white thumb */
+	border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+	background-color: rgba(255, 255, 255, 0.5); /* Lighter on hover */
+}
+
+/* Applying the custom scrollbar to the pack choices window */
+#packSelectWindow > div[style*='overflow-y: auto'] {
+	scrollbar-width: thin; /* For Firefox */
+	scrollbar-color: rgba(255, 255, 255, 0.3) transparent; /* For Firefox */
 }
 
 .pack-tag {
@@ -119,16 +140,6 @@ hr {
 	align-items: flex-start;
 	gap: 10px;
 	width: 100%;
-}
-.window > h2:first-child {
-	border-bottom: 2px solid white;
-	margin-bottom: 15px;
-}
-
-#startButton,
-#restartButton,
-#optionsButton {
-	margin-top: 15px;
 }
 
 #customDifficultyDiv {
@@ -153,7 +164,43 @@ hr {
 	transition: transform 0.3s ease;
 }
 
+#mapContainer {
+	background-color: #000;
+	opacity: 0.6;
+	transition: all 0.5s ease;
+	position: fixed;
+	width: 30%;
+	height: 40%;	
+	right: 0rem;
+	bottom: 0rem;
+	border-radius: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	transform-origin: bottom right;
+	border-width: 0.5rem;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+#mapContainer:hover {
+	opacity: 0.9;
+	width: 45%;
+	height: 55%;
+}
+
 @media (max-width: 768px) {
+		#mapContainer {
+		width: 100%;
+		height: 30%;
+		margin: 0;
+		border-width: 0.5rem;
+		box-sizing: border-box;
+	}
+
+	#mapContainer:hover {
+		width: 100%;
+		height: 30%;
+	}
 	#scoreContainer {
 		left: 50%;
 		transform: translateX(-50%);
@@ -209,6 +256,10 @@ img {
 	gap: 1rem;
 }
 
+#timerDisplay {
+	display: none; /* Hide by default to prevent layout shift */
+}
+
 #imageWrapper {
 	position: relative;
 	width: 100vw;
@@ -248,3 +299,13 @@ img {
 #locationImg::selection {
 	background: none;
 }
+
+
+#formWarning {
+	font-size: 15px; 
+	display: none; 
+	padding: 0; 
+	margin: 1px
+}
+
+

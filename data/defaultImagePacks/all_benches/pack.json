@@ -1,5 +1,5 @@
 {
-  "name": "Benches (HK)",
+  "name": "Benches",
   "gameModeId": "benches_only",
   "author": "Coldes",
     "thumbnail": "images/thumbnail.jpg",
@@ -298,5 +298,9 @@
       "difficulty": 3,
       "image": "images/loc-105-Screenshot_2025_08_29_005339.png"
     }
-  ]
+  ],
+  "map": {
+    "useCustomMap": false,
+    "defaultMap": "images/game/defaultMaps/hallownest.png"
+  }
 }
