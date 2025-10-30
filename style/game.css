@@ -47,6 +47,16 @@ hr {
 	margin-left: 0;
 }
 
+.fullscreen {
+	transition: all 0.2s ease;
+	opacity: 0.95;
+	width: 100% !important;
+	height: 100% !important;
+	right: 0 !important;
+	bottom: 0 !important;
+	margin: 0 !important;
+}
+
 #minimiseButton.rotate180 {
 	transform: rotate(180deg);
 	background-color: #fff;

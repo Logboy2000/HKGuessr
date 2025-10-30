@@ -278,15 +278,7 @@ button[disabled] {
 	}
 }
 
-.fullscreen {
-	transition: all 0.5s ease;
-	opacity: 0.95; /* Make it slightly more opaque in fullscreen */
-	width: 100% !important;
-	height: 100% !important;
-	right: 0 !important;
-	bottom: 0 !important;
-	margin: 0 !important;
-}
+
 
 input[type='range'] {
 	padding: 0;

@@ -11,8 +11,12 @@ import ToastManager from './ToastManager.js'
 
 //BEWARE THIS SOURCE CODE IS NOW LESS OF AN ABSOLUTE MESS THAN IT USED TO BE//
 export const DEFAULT_MAP_URL = 'images/game/defaultMaps/hallownest.png'
-export const hallownestMc = new MultipleChoice(document.getElementById('hallownestPackChoices'));
-export const pharloomMc = new MultipleChoice(document.getElementById('pharloomPackChoices'));
+export const hallownestMc = new MultipleChoice(
+	document.getElementById('hallownestPackChoices')
+)
+export const pharloomMc = new MultipleChoice(
+	document.getElementById('pharloomPackChoices')
+)
 // --- Constants ---
 export const GAMESTATES = {
 	guessing: 0,
@@ -29,8 +33,6 @@ export const DIFFICULTRANGE = {
 
 const tm = new ToastManager()
 const wm = new WindowManager()
-
-
 
 // --- DOM Elements (Grouped for better organization) ---
 // Properties are assigned in initializeDOM().
@@ -50,7 +52,7 @@ export const GameManager = {
 	roundScore: 0,
 	maxScore: 5000,
 	timerLengthSeconds: 60,
-	timerEnabled: false,
+	timeLimitEnabled: false,
 	endTime: 0,
 	imageIsLoaded: false, // Tracks if the current location image is loaded
 	seed: null, // current seed string or null
@@ -104,14 +106,17 @@ export const GameManager = {
 			element: DOM.confirmationWindow,
 			closeOnEscape: true,
 		})
-		this.addEventListeners()
+
+		// Open starting window
 		wm.open('options')
-		DOM.loadingText.style.display = 'none'
+
+		// Set an image on init to prevent a black background initially
 		this.setLocation(
 			randIRange(0, this.gameModeData.hallownest.locations.length),
 			'hallownest'
 		)
 
+		this.addEventListeners()
 		this.gameLoop() // Start the main game loop
 	},
 
@@ -130,40 +135,37 @@ export const GameManager = {
 	 * The main game loop, called continuously using requestAnimationFrame.
 	 */
 	gameLoop() {
-		// Timer update
-		if (
-			GameManager.timerEnabled &&
-			GameManager.gameState === GAMESTATES.guessing &&
-			GameManager.imageIsLoaded
-		) {
-			const currentTime = performance.now()
-			const remainingTime = GameManager.endTime - currentTime
+		if (this.gameState === GAMESTATES.guessing) {
+			// Timer update
+			if (GameManager.timeLimitEnabled && GameManager.imageIsLoaded) {
+				const currentTime = performance.now()
+				const remainingTime = GameManager.endTime - currentTime
 
-			if (remainingTime <= 0) {
-				DOM.timerDisplay.innerText = '0.00'
-				if (!GameMap.guessPosition) {
-					GameMap.updateGuessPos(GameMap.mouseXRelative, GameMap.mouseYRelative)
+				if (remainingTime <= 0) {
+					DOM.timerDisplay.innerText = '0.00'
+					if (!GameMap.guessPosition) {
+						GameMap.updateGuessPos(
+							GameMap.mouseXRelative,
+							GameMap.mouseYRelative
+						)
+					}
+					GameManager.guessButtonClicked()
+				} else {
+					DOM.timerDisplay.innerText = (remainingTime / 1000).toFixed(2)
 				}
-				GameManager.guessButtonClicked()
-			} else {
-				DOM.timerDisplay.innerText = (remainingTime / 1000).toFixed(2)
 			}
 		}
+
 		// Draw map and UI
 		GameMap.draw()
 
-
-		if (GameManager.gameState === GAMESTATES.gameMenu){
+		if (GameManager.gameState === GAMESTATES.gameMenu) {
 			DOM.newGameButton.style.display = 'none'
-			
 		} else {
 			DOM.newGameButton.style.display = 'block'
-		
 		}
 
-			
-
-		requestAnimationFrame(GameManager.gameLoop)
+		requestAnimationFrame(() => GameManager.gameLoop())
 	},
 
 	/**
@@ -172,7 +174,9 @@ export const GameManager = {
 	addEventListeners() {
 		// Ensure DOM elements are available before adding listeners
 		if (!DOM.difficultySelector) {
-			console.error('DOM elements not initialized. Call initializeDOMElements() first.')
+			console.error(
+				'DOM elements not initialized. Call initializeDOMElements() first.'
+			)
 			return
 		}
 		document
@@ -211,7 +215,7 @@ export const GameManager = {
 			this.toggleMinimise()
 		})
 
-		DOM.timerEnabled.addEventListener('change', (event) => {
+		DOM.timeLimitEnabled.addEventListener('change', (event) => {
 			this.timerInputDisplay(event.target)
 			this.validaiteForm()
 		}),
@@ -237,8 +241,13 @@ export const GameManager = {
 		document
 			.getElementById('newGameButton')
 			.addEventListener('click', async () => {
-				if (this.gameState === GAMESTATES.guessing || this.gameState === GAMESTATES.guessed) {
-					const confirmed = await this.showConfirmationDialog('Return to menu? Your current game progress will be lost.')
+				if (
+					this.gameState === GAMESTATES.guessing ||
+					this.gameState === GAMESTATES.guessed
+				) {
+					const confirmed = await this.showConfirmationDialog(
+						'Return to menu? Your current game progress will be lost.'
+					)
 					if (confirmed) wm.open('options')
 				} else {
 					wm.open('options')
@@ -339,10 +348,10 @@ export const GameManager = {
 			DOM.customDifficultyDiv.querySelector('#maxDifficulty').value
 		)
 
-		this.timerEnabled = document.getElementById('timerEnabled').checked
-		if (this.timerEnabled) {
+		this.timeLimitEnabled = DOM.timeLimitEnabled.checked
+		if (this.timeLimitEnabled) {
 			this.timerLengthSeconds = Number(DOM.timerLengthInput.value)
-			this.timerInputDisplay(DOM.timerEnabled)
+			this.timerInputDisplay(DOM.timeLimitEnabled)
 		}
 
 		const mapLoadingEl = document.getElementById('mapLoadingText')
@@ -351,7 +360,10 @@ export const GameManager = {
 		document.body.classList.add('modal-open')
 
 		// --- MULTI-MODE SELECTION ---
-		const selectedGameModeIds = [...hallownestMc.getSelected(), ...pharloomMc.getSelected()];
+		const selectedGameModeIds = [
+			...hallownestMc.getSelected(),
+			...pharloomMc.getSelected(),
+		]
 		if (selectedGameModeIds.length === 0) {
 			console.error('No game mode selected, cannot start game')
 			return
@@ -533,7 +545,6 @@ export const GameManager = {
 	},
 
 	toggleMinimise() {
-
 		if (DOM.minimiseIcon.classList.contains('rotate180')) {
 			// Un-minimise
 			DOM.minimiseIcon.classList.remove('rotate180')
@@ -593,7 +604,7 @@ export const GameManager = {
 		} else if (this.gameState === GAMESTATES.gameOver) {
 			DOM.guessButton.disabled = true
 
-			if (this.timerEnabled) {
+			if (this.timeLimitEnabled) {
 				DOM.timerLengthDisplay.style.display = 'block'
 				DOM.timerLengthDisplay.innerText = `Timer Length: ${this.timerLengthSeconds}s`
 			} else {
@@ -693,7 +704,7 @@ export const GameManager = {
 				// Only enable guess button if a guess was made
 				DOM.guessButton.disabled = false
 			}
-			if (this.timerEnabled) {
+			if (this.timeLimitEnabled) {
 				this.endTime = performance.now() + this.timerLengthSeconds * 1000
 			}
 		}
@@ -758,13 +769,16 @@ export const GameManager = {
 	async nextRound() {
 		// Hide score display for the new round
 		DOM.roundScoreDisplay.style.display = 'none'
-	
+
 		this.gameState = GAMESTATES.guessing
 		GameMap.resetCamera()
 		this.currentRound++
 		this.updateRoundCounter()
 
-		const selectedGameModes = [...hallownestMc.getSelected(), ...pharloomMc.getSelected()];
+		const selectedGameModes = [
+			...hallownestMc.getSelected(),
+			...pharloomMc.getSelected(),
+		]
 		if (!selectedGameModes || selectedGameModes.length === 0) {
 			console.error('No game modes selected.')
 			this.endGame()
@@ -796,7 +810,9 @@ export const GameManager = {
 		}
 
 		if (combinedPool.length === 0) {
-			console.warn('No available locations left. Resetting and repeating locations.')
+			console.warn(
+				'No available locations left. Resetting and repeating locations.'
+			)
 			// Reset used locations for the selected modes
 			for (const modeId of selectedGameModes) {
 				if (this.usedLocations[modeId]) {
@@ -875,7 +891,7 @@ export const GameManager = {
 		DOM.guessButton.disabled = true
 		GameMap.guessPosition = null
 
-		if (this.timerEnabled) {
+		if (this.timeLimitEnabled) {
 			this.endTime = performance.now() + this.timerLengthSeconds * 1000
 		}
 	},
@@ -938,7 +954,9 @@ export const GameManager = {
 		let formValid = true
 
 		// Rule 1: At least one image pack must be selected.
-		if ([...hallownestMc.getSelected(), ...pharloomMc.getSelected()].length === 0) {
+		if (
+			[...hallownestMc.getSelected(), ...pharloomMc.getSelected()].length === 0
+		) {
 			this.showValidationToast('pack', 'Please select at least one image pack.')
 			formValid = false
 		} else {
@@ -946,7 +964,7 @@ export const GameManager = {
 		}
 
 		// Rule 2: Timer length must be a positive number if enabled.
-		if (DOM.timerEnabled.checked) {
+		if (DOM.timeLimitEnabled.checked) {
 			const timerVal = Number(DOM.timerLengthInput.value)
 			if (timerVal <= 0 || isNaN(timerVal)) {
 				this.showValidationToast(
@@ -964,7 +982,10 @@ export const GameManager = {
 		// Rule 3: Round count must be a positive number.
 		const roundsVal = Number(DOM.roundCountInput.value)
 		if (roundsVal <= 0 || isNaN(roundsVal)) {
-			this.showValidationToast('rounds', 'Rounds must be a number greater than 0.')
+			this.showValidationToast(
+				'rounds',
+				'Rounds must be a number greater than 0.'
+			)
 			formValid = false
 		} else {
 			this.dismissValidationToast('rounds')
@@ -976,21 +997,30 @@ export const GameManager = {
 			const maxDiff = Number(DOM.maxDifficultyInput.value)
 
 			if (minDiff < 1 || minDiff > 10 || isNaN(minDiff)) {
-				this.showValidationToast('minDiff', 'Min difficulty must be between 1-10.')
+				this.showValidationToast(
+					'minDiff',
+					'Min difficulty must be between 1-10.'
+				)
 				formValid = false
 			} else {
 				this.dismissValidationToast('minDiff')
 			}
 
 			if (maxDiff < 1 || maxDiff > 10 || isNaN(maxDiff)) {
-				this.showValidationToast('maxDiff', 'Max difficulty must be between 1-10.')
+				this.showValidationToast(
+					'maxDiff',
+					'Max difficulty must be between 1-10.'
+				)
 				formValid = false
 			} else {
 				this.dismissValidationToast('maxDiff')
 			}
 
 			if (minDiff > maxDiff) {
-				this.showValidationToast('diffRange', 'Min difficulty cannot be greater than max.')
+				this.showValidationToast(
+					'diffRange',
+					'Min difficulty cannot be greater than max.'
+				)
 				formValid = false
 			} else {
 				this.dismissValidationToast('diffRange')
@@ -1014,7 +1044,10 @@ export const GameManager = {
 				seedValid = false
 				formValid = false
 			} else if (seedVal.length > 100) {
-				this.showValidationToast('seed', 'Seed cannot be longer than 100 characters.')
+				this.showValidationToast(
+					'seed',
+					'Seed cannot be longer than 100 characters.'
+				)
 				seedValid = false
 				formValid = false
 			}
@@ -1045,13 +1078,35 @@ export const GameManager = {
 	async handleSeedEasterEggs(seedVal) {
 		const lowerSeed = seedVal.toLowerCase()
 		const disallowedBrainrot = [
-			'brainrot', 'skibidi', 'rizz', 'gyatt', 'fanum', 'sigma', 'delulu',
-			'Ohio', '6-7', '6_7', '6.7', 'sixseven', 'six-seven', 'aura',
-			'sybau', 'cringe', 'NPC', 'glazing', 'mewing', 'zesty', 'nocap',
-			'ong', 'bussin',
+			'brainrot',
+			'skibidi',
+			'rizz',
+			'gyatt',
+			'fanum',
+			'sigma',
+			'delulu',
+			'Ohio',
+			'6-7',
+			'6_7',
+			'6.7',
+			'sixseven',
+			'six-seven',
+			'aura',
+			'sybau',
+			'cringe',
+			'NPC',
+			'glazing',
+			'mewing',
+			'zesty',
+			'nocap',
+			'ong',
+			'bussin',
 		]
 
-		if (disallowedBrainrot.some(word => lowerSeed.includes(word)) || seedVal === '67') {
+		if (
+			disallowedBrainrot.some((word) => lowerSeed.includes(word)) ||
+			seedVal === '67'
+		) {
 			this.showValidationToast('seed', 'Seed cannot contain brainrot.')
 		} else if (seedVal === '69') {
 			tm.displayToast('Nice.')
@@ -1081,7 +1136,10 @@ export const GameManager = {
 		const listContainer = document.getElementById('selected-packs-list')
 		if (!listContainer) return
 
-		const selectedOptions = [...hallownestMc.getSelectedOptions(), ...pharloomMc.getSelectedOptions()];
+		const selectedOptions = [
+			...hallownestMc.getSelectedOptions(),
+			...pharloomMc.getSelectedOptions(),
+		]
 		listContainer.innerHTML = selectedOptions // Join with an empty string
 			.map((option) => `<span class="pack-tag">${option.label}</span>`) // The 'gap' property in CSS will handle spacing
 			.join('')
@@ -1113,8 +1171,12 @@ export const GameManager = {
 				resolve(result)
 			}
 
-			confirmBtn.addEventListener('click', () => closeDialog(true), { once: true })
-			cancelBtn.addEventListener('click', () => closeDialog(false), { once: true })
+			confirmBtn.addEventListener('click', () => closeDialog(true), {
+				once: true,
+			})
+			cancelBtn.addEventListener('click', () => closeDialog(false), {
+				once: true,
+			})
 
 			wm.open('confirmation')
 		})
@@ -1139,7 +1201,7 @@ function initializeDOM() {
 	DOM.newGameButton = document.getElementById('newGameButton')
 	DOM.startButton = document.getElementById('startButton')
 	DOM.mainMenuButton = document.getElementById('mainMenuButton')
-	DOM.timerEnabled = document.getElementById('timerEnabled')
+	DOM.timeLimitEnabled = document.getElementById('timeLimitEnabled')
 	DOM.minDifficultyInput = document.getElementById('minDifficulty')
 	DOM.maxDifficultyInput = document.getElementById('maxDifficulty')
 	DOM.minDifficultyValue = document.getElementById('minDifficultyValue')
@@ -1164,17 +1226,17 @@ function initializeDOM() {
 	DOM.modalOverlay = document.getElementById('modalOverlay')
 	DOM.seededIndicator = document.getElementById('seededIndicator')
 	DOM.packSelectWindow = document.getElementById('packSelectWindow')
-	DOM.hallownestPackChoices = document.getElementById('hallownestPackChoices');
+	DOM.hallownestPackChoices = document.getElementById('hallownestPackChoices')
 	DOM.confirmationWindow = document.getElementById('confirmationWindow')
 	DOM.confirmationMessage = document.getElementById('confirmationMessage')
 	DOM.confirmationButtons = document.getElementById('confirmationButtons')
-	DOM.pharloomPackChoices = document.getElementById('pharloomPackChoices');
+	DOM.pharloomPackChoices = document.getElementById('pharloomPackChoices')
 	DOM.changePacksButton = document.getElementById('changePacksButton')
 }
 
 // Main entry point for the game
 async function main() {
-	console.log("DOM Loaded")
+	console.log('DOM Loaded')
 	initializeDOM()
 	const gameData = await loadInitialData()
 	GameManager.init(gameData)
