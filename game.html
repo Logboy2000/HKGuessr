@@ -47,7 +47,7 @@
 		</div>
 		<div id="scoreContainer">
 			<span id="round">0/5</span>
-			<span id="timerDisplay"></span>
+			<span id="timeLimitDisplay"></span>
 		</div>
 	</div>
 
@@ -66,9 +66,9 @@
 			<label for="difficultySelector">Difficulty:</label>
 			<select id="difficultySelector">
 				<option value="all">All</option>
-				<option value="easy">Attuned</option>
-				<option value="normal">Ascended</option>
-				<option value="hard">Radiant</option>
+				<option value="attuned">Attuned</option>
+				<option value="ascended">Ascended</option>
+				<option value="radiant">Radiant</option>
 				<option value="custom">Custom</option>
 			</select>
 		</div>
@@ -85,32 +85,44 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="option">
 			<label for="roundCount">Round count: </label>
 			<input type="text" id="roundCount" name="roundCount" min="1" value="5" placeholder="5" />
 		</div>
+
+		<!--Time Limit-->
 		<div class="option">
 			<label for="timeLimitEnabled">Time Limit?: </label>
-			<input type="checkbox" id="timeLimitEnabled" name="timeLimitEnabled" />
+			<input type="checkbox" id="timeLimitEnabled" name="timeLimitEnabled" data-toggle-target="timerLengthOption" />
 		</div>
 
 		<div class="option" id="timerLengthOption" style="display:none;">
 			<label for="timerLength">Limit (s): </label>
 			<input type="number" id="timerLength" name="timerLength" placeholder="60" value="60" min="1" max="3600" />
 		</div>
+
+
+		<!--Seeded Run-->
 		<div class="option">
 			<label for="enableSeed">Seeded Run?:</label>
-			<div style="display:flex; gap:8px; align-items:center">
-				<input type="checkbox" id="enableSeed" />
-			</div>
+			<input type="checkbox" id="enableSeed" data-toggle-target="seedOption" />
 		</div>
+
 		<div class="option" id="seedOption" style="display:none;">
 			<label for="seedInput">Seed:</label>
 			<div style="display:flex; gap:8px; align-items:center">
-				<input type="text" id="seedInput" placeholder="random or paste seed" step="1" />
+				<input type="text" id="seedInput" placeholder="random or paste seed" />
 				<button id="copySeedButton">Copy</button>
 			</div>
 		</div>
+
+		<!--Blurred Mode-->
+		<div class="option">
+			<label for="blurredModeEnabled">Blurred Mode?:</label>
+			<input type="checkbox" id="blurredModeEnabled" />
+		</div>
+		
 		<div class="button-container">
 			<button id="quitToMenuButton" class="hk-button" onclick="window.location.href = 'index.html'">Quit to Menu</button>
 			<button id="startButton" class="hk-button">Start Game</button>

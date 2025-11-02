@@ -54,6 +54,8 @@ export const GameManager = {
 	timerLengthSeconds: 60,
 	timeLimitEnabled: false,
 	endTime: 0,
+	blurredModeEnabled: false,
+	blurEndTime: 0,
 	imageIsLoaded: false, // Tracks if the current location image is loaded
 	seed: null, // current seed string or null
 	rng: null, // seeded RNG instance when seed provided
@@ -118,6 +120,7 @@ export const GameManager = {
 
 		this.addEventListeners()
 		this.gameLoop() // Start the main game loop
+		this.initializeOptionToggles()
 	},
 
 	/**
@@ -135,14 +138,14 @@ export const GameManager = {
 	 * The main game loop, called continuously using requestAnimationFrame.
 	 */
 	gameLoop() {
+		const currentTime = performance.now()
 		if (this.gameState === GAMESTATES.guessing) {
-			// Timer update
+			// Time Limit update
 			if (GameManager.timeLimitEnabled && GameManager.imageIsLoaded) {
-				const currentTime = performance.now()
 				const remainingTime = GameManager.endTime - currentTime
 
 				if (remainingTime <= 0) {
-					DOM.timerDisplay.innerText = '0.00'
+					DOM.timeLimitDisplay.innerText = '0.00'
 					if (!GameMap.guessPosition) {
 						GameMap.updateGuessPos(
 							GameMap.mouseXRelative,
@@ -151,8 +154,23 @@ export const GameManager = {
 					}
 					GameManager.guessButtonClicked()
 				} else {
-					DOM.timerDisplay.innerText = (remainingTime / 1000).toFixed(2)
+					DOM.timeLimitDisplay.innerText = (remainingTime / 1000).toFixed(2)
 				}
+			}
+
+			// Blur Timer Update
+			if (GameManager.blurredModeEnabled) {
+				const remainingTime = GameManager.blurEndTime - currentTime
+				// Ease-out adjustment (fast start, slow finish)
+				const progress = 1 - remainingTime / GameManager.blurEndTime
+				const eased = 1 - Math.exp(-3 * progress) // tweak 3 for how sharply it eases
+				const adjustedRemaining = GameManager.blurEndTime * (1 - eased)
+
+				// Then your existing line (now using adjustedRemaining)
+				DOM.locationImgElement.style.filter = `blur(${Math.max(
+					0,
+					adjustedRemaining / 50
+				)}px)`
 			}
 		}
 
@@ -215,19 +233,19 @@ export const GameManager = {
 			this.toggleMinimise()
 		})
 
-		DOM.timeLimitEnabled.addEventListener('change', (event) => {
-			this.timerInputDisplay(event.target)
-			this.validaiteForm()
-		}),
-			DOM.minDifficultyInput.addEventListener(
-				'input',
-				this.validaiteForm.bind(this)
-			),
-			DOM.maxDifficultyInput.addEventListener(
-				'input',
-				this.validaiteForm.bind(this)
-			),
-			DOM.enableSeed.addEventListener('change', this.validaiteForm.bind(this))
+		DOM.timeLimitEnabled.addEventListener(
+			'change',
+			this.validaiteForm.bind(this)
+		)
+		DOM.minDifficultyInput.addEventListener(
+			'input',
+			this.validaiteForm.bind(this)
+		)
+		DOM.maxDifficultyInput.addEventListener(
+			'input',
+			this.validaiteForm.bind(this)
+		)
+		DOM.enableSeed.addEventListener('change', this.validaiteForm.bind(this))
 
 		document
 			.getElementById('playAgainButton')
@@ -259,21 +277,6 @@ export const GameManager = {
 
 		// Focus trap: keep focus inside the visible modal while open
 		document.addEventListener('focusin', this._focusInHandler)
-
-		// EnableSeed toggle: when unchecked, disable seed input and copy button
-		if (DOM.enableSeed) {
-			// set initial UI state: show/hide seed option container
-			if (DOM.seedOption)
-				DOM.seedOption.style.display = DOM.enableSeed.checked ? 'flex' : 'none'
-			if (DOM.copySeedButton)
-				DOM.copySeedButton.disabled = !DOM.enableSeed.checked
-			DOM.enableSeed.addEventListener('change', (e) => {
-				const enabled = e.target.checked
-				if (DOM.seedOption)
-					DOM.seedOption.style.display = enabled ? 'flex' : 'none'
-				if (DOM.copySeedButton) DOM.copySeedButton.disabled = !enabled
-			})
-		}
 
 		document
 			.getElementById('copySeedButton')
@@ -351,8 +354,8 @@ export const GameManager = {
 		this.timeLimitEnabled = DOM.timeLimitEnabled.checked
 		if (this.timeLimitEnabled) {
 			this.timerLengthSeconds = Number(DOM.timerLengthInput.value)
-			this.timerInputDisplay(DOM.timeLimitEnabled)
 		}
+		this.blurredModeEnabled = DOM.blurredModeEnabled.checked
 
 		const mapLoadingEl = document.getElementById('mapLoadingText')
 		if (mapLoadingEl) mapLoadingEl.style.display = 'block'
@@ -523,17 +526,41 @@ export const GameManager = {
 	},
 
 	/**
-	 * Toggles the disabled state of the timer length input based on timer enabled checkbox.
-	 * @param {HTMLInputElement} element - The timer enabled checkbox.
+	 * Toggles fullscreen mode for the map container.
+	 * Initializes all checkbox-based option toggles in the game options window.
+	 * It finds all checkboxes with a `data-toggle-target` attribute and sets up
+	 * event listeners to show/hide the target element.
 	 */
-	timerInputDisplay(element) {
-		if (element.checked) {
-			if (DOM.timerLengthOption) DOM.timerLengthOption.style.display = 'flex'
-			DOM.timerDisplay.style.display = 'block'
-		} else {
-			if (DOM.timerLengthOption) DOM.timerLengthOption.style.display = 'none'
-			DOM.timerDisplay.style.display = 'none'
-		}
+	initializeOptionToggles() {
+		const toggles = DOM.gameOptionsWindow.querySelectorAll(
+			'[data-toggle-target]'
+		)
+
+		toggles.forEach((toggle) => {
+			const targetId = toggle.dataset.toggleTarget
+			const targetElement = document.getElementById(targetId)
+
+			if (!targetElement) {
+				console.warn(`Toggle target element with ID "${targetId}" not found.`)
+				return
+			}
+
+			const updateTargetVisibility = () => {
+				const isChecked = toggle.checked
+				targetElement.style.display = isChecked ? 'flex' : 'none'
+
+				// Special handling for timer display outside the options window
+				if (toggle.id === 'timeLimitEnabled') {
+					DOM.timeLimitDisplay.style.display = isChecked ? 'block' : 'none'
+				}
+			}
+
+			// Set initial state
+			updateTargetVisibility()
+
+			// Add event listener for changes
+			toggle.addEventListener('change', updateTargetVisibility)
+		})
 	},
 
 	/**
@@ -671,20 +698,18 @@ export const GameManager = {
 		if (DOM.modalOverlay) DOM.modalOverlay.classList.add('visible')
 		document.body.classList.add('modal-open')
 
-		// Attach onload/onerror directly to the DOM image element to avoid double-downloads
-		const domImg = DOM.locationImgElement
 		// Clear previous handlers to avoid leaks or duplicate calls
-		domImg.onload = null
-		domImg.onerror = null
+		DOM.locationImgElement.onload = null
+		DOM.locationImgElement.onerror = null
 
-		domImg.onload = () => {
+		DOM.locationImgElement.onload = () => {
 			this.imageIsLoaded = true
 			document.getElementById('loadingText').style.display = 'none'
-			domImg.style.display = 'block'
+			DOM.locationImgElement.style.display = 'block'
 			// Fade in the image and remove blur
 			setTimeout(() => {
-				domImg.style.opacity = '1'
-				domImg.classList.remove('hideLocationImg')
+				DOM.locationImgElement.style.opacity = '1'
+				DOM.locationImgElement.classList.remove('hideLocationImg')
 				document.getElementById('blurBg').classList.remove('hideLocationImg')
 			}, 10)
 
@@ -707,9 +732,14 @@ export const GameManager = {
 			if (this.timeLimitEnabled) {
 				this.endTime = performance.now() + this.timerLengthSeconds * 1000
 			}
+
+			if (this.blurredModeEnabled) {
+				DOM.locationImgElement.style.filter = `blur(100px)`
+				this.blurEndTime = performance.now() + 6000
+			}
 		}
 
-		domImg.onerror = (e) => {
+		DOM.locationImgElement.onerror = (e) => {
 			console.error('Failed to load location image:', {
 				path: imgSrc,
 				error: e,
@@ -1195,7 +1225,7 @@ function initializeDOM() {
 	DOM.gameOptionsWindow = document.getElementById('gameOptionsWindow')
 	DOM.loadingText = document.getElementById('loadingText')
 	DOM.roundElement = document.getElementById('round')
-	DOM.timerDisplay = document.getElementById('timerDisplay')
+	DOM.timeLimitDisplay = document.getElementById('timeLimitDisplay')
 	DOM.totalRoundsElement = document.getElementById('totalRounds')
 	DOM.timerLengthDisplay = document.getElementById('timerLengthDisplay')
 	DOM.newGameButton = document.getElementById('newGameButton')
@@ -1232,11 +1262,12 @@ function initializeDOM() {
 	DOM.confirmationButtons = document.getElementById('confirmationButtons')
 	DOM.pharloomPackChoices = document.getElementById('pharloomPackChoices')
 	DOM.changePacksButton = document.getElementById('changePacksButton')
+	DOM.blurredModeEnabled = document.getElementById('blurredModeEnabled')
 }
 
 // Main entry point for the game
 async function main() {
-	console.log('DOM Loaded')
+	console.log('DOM Loaded!')
 	initializeDOM()
 	const gameData = await loadInitialData()
 	GameManager.init(gameData)
