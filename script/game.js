@@ -845,6 +845,9 @@ export const GameManager = {
 			console.warn(
 				'No available locations left. Resetting and repeating locations.'
 			)
+			tm.displayToast(
+				'All unique locations have been used. Locations will now repeat.'
+			)
 			// Reset used locations for the selected modes
 			for (const modeId of selectedGameModes) {
 				if (this.usedLocations[modeId]) {
