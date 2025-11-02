@@ -141,8 +141,8 @@ export const GameManager = {
 		const currentTime = performance.now()
 		if (this.gameState === GAMESTATES.guessing) {
 			// Time Limit update
-			if (GameManager.timeLimitEnabled && GameManager.imageIsLoaded) {
-				const remainingTime = GameManager.endTime - currentTime
+			if (this.timeLimitEnabled && this.imageIsLoaded) {
+				const remainingTime = this.endTime - currentTime
 
 				if (remainingTime <= 0) {
 					DOM.timeLimitDisplay.innerText = '0.00'
@@ -152,19 +152,19 @@ export const GameManager = {
 							GameMap.mouseYRelative
 						)
 					}
-					GameManager.guessButtonClicked()
+					this.guessButtonClicked()
 				} else {
 					DOM.timeLimitDisplay.innerText = (remainingTime / 1000).toFixed(2)
 				}
 			}
 
 			// Blur Timer Update
-			if (GameManager.blurredModeEnabled) {
-				const remainingTime = GameManager.blurEndTime - currentTime
+			if (this.blurredModeEnabled) {
+				const remainingTime = this.blurEndTime - currentTime
 				// Ease-out adjustment (fast start, slow finish)
-				const progress = 1 - remainingTime / GameManager.blurEndTime
+				const progress = 1 - remainingTime / this.blurEndTime
 				const eased = 1 - Math.exp(-3 * progress) // tweak 3 for how sharply it eases
-				const adjustedRemaining = GameManager.blurEndTime * (1 - eased)
+				const adjustedRemaining = this.blurEndTime * (1 - eased)
 
 				// Then your existing line (now using adjustedRemaining)
 				DOM.locationImgElement.style.filter = `blur(${Math.max(
@@ -172,6 +172,8 @@ export const GameManager = {
 					adjustedRemaining / 50
 				)}px)`
 			}
+		} else {
+			DOM.locationImgElement.style.filter = ``
 		}
 
 		// Draw map and UI
