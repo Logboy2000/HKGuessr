@@ -145,7 +145,7 @@ export const GameManager = {
 				const remainingTime = GameManager.endTime - currentTime
 
 				if (remainingTime <= 0) {
-					DOM.timerDisplay.innerText = '0.00'
+					DOM.timeLimitDisplay.innerText = '0.00'
 					if (!GameMap.guessPosition) {
 						GameMap.updateGuessPos(
 							GameMap.mouseXRelative,
@@ -154,14 +154,23 @@ export const GameManager = {
 					}
 					GameManager.guessButtonClicked()
 				} else {
-					DOM.timerDisplay.innerText = (remainingTime / 1000).toFixed(2)
+					DOM.timeLimitDisplay.innerText = (remainingTime / 1000).toFixed(2)
 				}
 			}
 
 			// Blur Timer Update
 			if (GameManager.blurredModeEnabled) {
 				const remainingTime = GameManager.blurEndTime - currentTime
-				DOM.locationImgElement.style.filter = `blur(${Math.max(0, remainingTime / 50)}px)`
+				// Ease-out adjustment (fast start, slow finish)
+				const progress = 1 - remainingTime / GameManager.blurEndTime
+				const eased = 1 - Math.exp(-3 * progress) // tweak 3 for how sharply it eases
+				const adjustedRemaining = GameManager.blurEndTime * (1 - eased)
+
+				// Then your existing line (now using adjustedRemaining)
+				DOM.locationImgElement.style.filter = `blur(${Math.max(
+					0,
+					adjustedRemaining / 50
+				)}px)`
 			}
 		}
 
@@ -224,9 +233,18 @@ export const GameManager = {
 			this.toggleMinimise()
 		})
 
-		DOM.timeLimitEnabled.addEventListener('change', this.validaiteForm.bind(this))
-		DOM.minDifficultyInput.addEventListener('input', this.validaiteForm.bind(this))
-		DOM.maxDifficultyInput.addEventListener('input', this.validaiteForm.bind(this))
+		DOM.timeLimitEnabled.addEventListener(
+			'change',
+			this.validaiteForm.bind(this)
+		)
+		DOM.minDifficultyInput.addEventListener(
+			'input',
+			this.validaiteForm.bind(this)
+		)
+		DOM.maxDifficultyInput.addEventListener(
+			'input',
+			this.validaiteForm.bind(this)
+		)
 		DOM.enableSeed.addEventListener('change', this.validaiteForm.bind(this))
 
 		document
@@ -338,7 +356,6 @@ export const GameManager = {
 			this.timerLengthSeconds = Number(DOM.timerLengthInput.value)
 		}
 		this.blurredModeEnabled = DOM.blurredModeEnabled.checked
-
 
 		const mapLoadingEl = document.getElementById('mapLoadingText')
 		if (mapLoadingEl) mapLoadingEl.style.display = 'block'
@@ -515,7 +532,9 @@ export const GameManager = {
 	 * event listeners to show/hide the target element.
 	 */
 	initializeOptionToggles() {
-		const toggles = DOM.gameOptionsWindow.querySelectorAll('[data-toggle-target]')
+		const toggles = DOM.gameOptionsWindow.querySelectorAll(
+			'[data-toggle-target]'
+		)
 
 		toggles.forEach((toggle) => {
 			const targetId = toggle.dataset.toggleTarget
@@ -532,7 +551,7 @@ export const GameManager = {
 
 				// Special handling for timer display outside the options window
 				if (toggle.id === 'timeLimitEnabled') {
-					DOM.timerDisplay.style.display = isChecked ? 'block' : 'none'
+					DOM.timeLimitDisplay.style.display = isChecked ? 'block' : 'none'
 				}
 			}
 
@@ -716,7 +735,7 @@ export const GameManager = {
 
 			if (this.blurredModeEnabled) {
 				DOM.locationImgElement.style.filter = `blur(100px)`
-				this.blurEndTime = performance.now() + 7000
+				this.blurEndTime = performance.now() + 6000
 			}
 		}
 
@@ -1206,7 +1225,7 @@ function initializeDOM() {
 	DOM.gameOptionsWindow = document.getElementById('gameOptionsWindow')
 	DOM.loadingText = document.getElementById('loadingText')
 	DOM.roundElement = document.getElementById('round')
-	DOM.timerDisplay = document.getElementById('timerDisplay')
+	DOM.timeLimitDisplay = document.getElementById('timeLimitDisplay')
 	DOM.totalRoundsElement = document.getElementById('totalRounds')
 	DOM.timerLengthDisplay = document.getElementById('timerLengthDisplay')
 	DOM.newGameButton = document.getElementById('newGameButton')
@@ -1244,7 +1263,6 @@ function initializeDOM() {
 	DOM.pharloomPackChoices = document.getElementById('pharloomPackChoices')
 	DOM.changePacksButton = document.getElementById('changePacksButton')
 	DOM.blurredModeEnabled = document.getElementById('blurredModeEnabled')
-	
 }
 
 // Main entry point for the game
