@@ -1,22 +1,23 @@
-import { GameMap } from './GameMap.js'
-import { randIRange, makeSeededRandom } from './Utils.js'
-import { loadInitialData } from './loadLocationData.js'
-import { MultipleChoice } from './multipleChoice.js'
-import WindowManager from './WindowManager.js'
-import ToastManager from './ToastManager.js'
-
 ///////////////////////////////////////////////
 ////// Geoguessr Clone for Hollow Knight //////
 ///////////////////////////////////////////////
 
 //BEWARE THIS SOURCE CODE IS NOW LESS OF AN ABSOLUTE MESS THAN IT USED TO BE//
+
+// Variable that can be changed from console to get various debug info
+window.debugMode = false
+
+import { GameMap } from './GameMap.js'
+import { randIRange, makeSeededRandom } from './Utils.js'
+import { loadInitialData } from './loadLocationData.js'
+import { MultipleChoice } from '/modules/MultipleChoice/MultipleChoice.js'
+import WindowManager from './WindowManager.js'
+import ToastManager from './ToastManager.js'
+import AudioPlayer from '/modules/AudioPlayer.js'
+
 export const DEFAULT_MAP_URL = 'images/game/defaultMaps/hallownest.png'
-export const hallownestMc = new MultipleChoice(
-	document.getElementById('hallownestPackChoices')
-)
-export const pharloomMc = new MultipleChoice(
-	document.getElementById('pharloomPackChoices')
-)
+export const hallownestMc = new MultipleChoice(getElem('hallownestPackChoices'))
+export const pharloomMc = new MultipleChoice(getElem('pharloomPackChoices'))
 // --- Constants ---
 export const GAMESTATES = {
 	guessing: 0,
@@ -51,11 +52,13 @@ export const GameManager = {
 	totalScore: 0,
 	roundScore: 0,
 	maxScore: 5000,
+	lastFrameTime: 0,
 	timerLengthSeconds: 60,
 	timeLimitEnabled: false,
 	endTime: 0,
-	blurredModeEnabled: false,
-	blurEndTime: 0,
+	blurredModeEnabled: false, // Is the mode active?
+	blurTimeRemaining: 0, // How much time is left for the blur effect.
+	totalBlurTime: 20000,
 	imageIsLoaded: false, // Tracks if the current location image is loaded
 	seed: null, // current seed string or null
 	rng: null, // seeded RNG instance when seed provided
@@ -63,10 +66,34 @@ export const GameManager = {
 	maxDifficulty: 10,
 	gameModeData: {}, // Moved here to be managed by GameManager
 
+	speedrunTimer: {
+		_currentLocationTime: 0,
+		set currentLocationTime(newTime) {
+			this._currentLocationTime = newTime
+			getElem('locationTime').innerText = (newTime / 1000).toFixed(2)
+		},
+		get currentLocationTime() {
+			return this._currentLocationTime
+		},
+
+		_totalTime: 0,
+		set totalTime(newTime) {
+			this._totalTime = newTime
+			getElem('totalTime').innerText = (newTime / 1000).toFixed(2)
+		},
+		get totalTime() {
+			return this._totalTime
+		},
+	},
+
 	/**
 	 * Initializes the game manager.
 	 */
 	init(gameData) {
+		AudioPlayer.preloadSound('audio/pin_drop.ogg')
+		AudioPlayer.preloadSound('audio/confirm.ogg')
+		AudioPlayer.preloadSound('audio/basic_button.ogg')
+
 		this.gameModeData = gameData
 		GameMap.init(DOM.mapCanvas)
 
@@ -115,7 +142,8 @@ export const GameManager = {
 		// Set an image on init to prevent a black background initially
 		this.setLocation(
 			randIRange(0, this.gameModeData.hallownest.locations.length),
-			'hallownest'
+			'hallownest',
+			false
 		)
 
 		this.addEventListeners()
@@ -139,9 +167,17 @@ export const GameManager = {
 	 */
 	gameLoop() {
 		const currentTime = performance.now()
+		const dt = this.lastFrameTime > 0 ? currentTime - this.lastFrameTime : 0
+		this.lastFrameTime = currentTime
+
 		if (this.gameState === GAMESTATES.guessing) {
-			// Time Limit update
-			if (this.timeLimitEnabled && this.imageIsLoaded) {
+			/// Speedrun Timer Update
+			this.speedrunTimer.currentLocationTime += dt
+			this.speedrunTimer.totalTime += dt
+
+			/// Time Limit update
+			if (this.timeLimitEnabled) {
+				// This still needs to be based on a fixed end time
 				const remainingTime = this.endTime - currentTime
 
 				if (remainingTime <= 0) {
@@ -160,20 +196,72 @@ export const GameManager = {
 
 			// Blur Timer Update
 			if (this.blurredModeEnabled) {
-				const remainingTime = this.blurEndTime - currentTime
-				// Ease-out adjustment (fast start, slow finish)
-				const progress = 1 - remainingTime / this.blurEndTime
-				const eased = 1 - Math.exp(-3 * progress) // tweak 3 for how sharply it eases
-				const adjustedRemaining = this.blurEndTime * (1 - eased)
-
-				// Then your existing line (now using adjustedRemaining)
-				DOM.locationImgElement.style.filter = `blur(${Math.max(
-					0,
-					adjustedRemaining / 50
-				)}px)`
+				if (this.blurTimeRemaining > 0) {
+					this.blurTimeRemaining -= dt
+					const blurDuration = this.totalBlurTime // Total duration of the effect in ms
+					// Calculate progress from 0 (start) to 1 (end)
+					const progress = 1 - Math.max(0, this.blurTimeRemaining) / blurDuration
+					// Apply an ease-out function to the progress
+					const easedProgress = 1 - Math.pow(1 - progress, 4)
+					// Map the eased progress to a blur value (e.g., 100px down to 0)
+					const blurPx = (1 - easedProgress) * 100
+					DOM.locationImgElement.style.filter = `blur(${blurPx}px)`
+				} else {
+					DOM.locationImgElement.style.filter = 'blur(0px)'
+				}
 			}
 		} else {
 			DOM.locationImgElement.style.filter = ``
+		}
+
+		// --- Debug Window Update ---
+		if (window.debugMode) {
+			DOM.debugWindow.style.display = 'block'
+
+			const {
+				camera,
+				mousePos,
+				mouseXRelative,
+				mouseYRelative,
+				guessPosition,
+				fps,
+			} = GameMap
+			const gameStateName = Object.keys(GAMESTATES).find(
+				(key) => GAMESTATES[key] === this.gameState
+			)
+
+			const debugData = {
+				'Game State': `${gameStateName} (${this.gameState})`,
+				Round: `${this.currentRound}/${this.totalRounds}`,
+				Score: `${this.totalScore} (Round: ${this.roundScore})`,
+				Seed: this.seed,
+
+				'---': 'Map',
+				Cam: `X: ${camera.x.toFixed(2)}, Y: ${camera.y.toFixed(2)}`,
+				Zoom: camera.zoom.toFixed(3),
+				Mouse: `X: ${mousePos.x}, Y: ${mousePos.y}`,
+				'Rel Mouse': `X: ${mouseXRelative.toFixed(
+					2
+				)}, Y: ${mouseYRelative.toFixed(2)}`,
+				Guess: guessPosition
+					? `X: ${guessPosition.x.toFixed(2)}, Y: ${guessPosition.y.toFixed(2)}`
+					: 'null',
+				Correct: this.currentLocation
+					? `X: ${this.currentLocation[0]}, Y: ${this.currentLocation[1]}`
+					: 'null',
+				FPS: fps.toFixed(1),
+			}
+
+			DOM.debugText.textContent = Object.entries(debugData)
+				.map(([key, value]) => {
+					if (key === '---') return value // For separators
+					// Pad the key to align the values
+					const paddedKey = key.padEnd(10, ' ')
+					return `${paddedKey}: ${value}`
+				})
+				.join('\n')
+		} else {
+			DOM.debugWindow.style.display = 'none'
 		}
 
 		// Draw map and UI
@@ -248,6 +336,8 @@ export const GameManager = {
 			this.validaiteForm.bind(this)
 		)
 		DOM.enableSeed.addEventListener('change', this.validaiteForm.bind(this))
+		getElem('blurTimeInput').addEventListener('change', this.validaiteForm.bind(this))
+		getElem('blurredModeEnabled').addEventListener('change', this.validaiteForm.bind(this))
 
 		document
 			.getElementById('playAgainButton')
@@ -281,39 +371,6 @@ export const GameManager = {
 		document.addEventListener('focusin', this._focusInHandler)
 
 		document
-			.getElementById('copySeedButton')
-			.addEventListener('click', async () => {
-				try {
-					const val = (DOM.seedInput?.value || '').toString().trim()
-					if (!val) {
-						tm.displayToast('Seed input is empty, nothing to copy')
-						return
-					}
-					// Use Clipboard API if available
-					let copied = false
-					if (
-						navigator.clipboard &&
-						typeof navigator.clipboard.writeText === 'function'
-					) {
-						try {
-							await navigator.clipboard.writeText(val)
-							copied = true
-						} catch (e) {
-							// fall through to fallback
-							copied = false
-						}
-					}
-
-					if (copied) {
-						tm.displayToast('Seed copied')
-						console.log('Seed copied to clipboard')
-					}
-				} catch (e) {
-					console.warn('Failed to copy seed to clipboard', e)
-				}
-			})
-
-		document
 			.getElementById('fullscreenButton')
 			.addEventListener('click', () => this.toggleFullscreen())
 
@@ -338,12 +395,23 @@ export const GameManager = {
 		if (event.key === 'm') {
 			this.toggleMinimise()
 		}
+		if (event.key === '~') {
+			window.debugMode = !window.debugMode
+		}
 	},
 
 	/**
 	 * Starts or restarts the game.
 	 */
 	async restartGame() {
+		// Reset timer state
+		this.speedrunTimer.currentLocationTime = 0
+		this.speedrunTimer.totalTime = 0
+		this.lastFrameTime = 0
+
+		
+		
+		
 		this.updateRoundCounter()
 
 		this.minDifficulty = Number(
@@ -359,7 +427,7 @@ export const GameManager = {
 		}
 		this.blurredModeEnabled = DOM.blurredModeEnabled.checked
 
-		const mapLoadingEl = document.getElementById('mapLoadingText')
+		const mapLoadingEl = getElem('mapLoadingText')
 		if (mapLoadingEl) mapLoadingEl.style.display = 'block'
 		DOM.modalOverlay?.classList.add('visible')
 		document.body.classList.add('modal-open')
@@ -386,6 +454,9 @@ export const GameManager = {
 		// Close any open windows
 		wm.close()
 
+		this.totalBlurTime = DOM.blurTimeInput.value * 1000
+		console.log(this.totalBlurTime)
+
 		// Load the map image for the *first* valid mode
 		const firstMode = validGameModes[0]
 		const mapUrl =
@@ -398,7 +469,7 @@ export const GameManager = {
 				DOM.gameOptionsWindow?.classList.contains('visible') ||
 				DOM.gameOverWindow?.classList.contains('visible')
 			const imageLoadingVisible =
-				document.getElementById('loadingText')?.style.display !== 'none'
+				getElem('loadingText')?.style.display !== 'none'
 			const mapLoadingVisibleNow = mapLoadingEl?.style.display !== 'none'
 			if (!anyWindowVisible && !imageLoadingVisible && !mapLoadingVisibleNow) {
 				DOM.modalOverlay?.classList.remove('visible')
@@ -418,13 +489,11 @@ export const GameManager = {
 				this.seed = String(generatedSeed)
 				if (DOM.seedInput) DOM.seedInput.value = this.seed
 			}
-			DOM.copySeedButton && (DOM.copySeedButton.disabled = false)
 		} else {
 			generatedSeed =
 				((Date.now() ^ Math.floor(Math.random() * 0xffffffff)) >>> 0) >>> 0
 			this.seed = String(generatedSeed)
 			if (DOM.seedInput) DOM.seedInput.value = ''
-			DOM.copySeedButton && (DOM.copySeedButton.disabled = true)
 		}
 
 		try {
@@ -437,7 +506,6 @@ export const GameManager = {
 			this.rng = null
 		}
 
-		console.log(`Using seed: ${this.seed}`)
 		seededIndicator.style.display =
 			DOM.enableSeed && DOM.enableSeed.checked ? 'block' : 'none'
 
@@ -492,7 +560,6 @@ export const GameManager = {
 			console.warn('Failed to build deterministic play order:', e)
 		}
 
-		this.gameState = GAMESTATES.guessing
 		this.totalScore = 0
 
 		DOM.guessButton.disabled = true
@@ -540,7 +607,7 @@ export const GameManager = {
 
 		toggles.forEach((toggle) => {
 			const targetId = toggle.dataset.toggleTarget
-			const targetElement = document.getElementById(targetId)
+			const targetElement = getElem(targetId)
 
 			if (!targetElement) {
 				console.warn(`Toggle target element with ID "${targetId}" not found.`)
@@ -593,10 +660,14 @@ export const GameManager = {
 	guessButtonClicked() {
 		if (DOM.guessButton.disabled) return
 
+		AudioPlayer.playSound('audio/basic_button.ogg')
+
 		if (this.gameState === GAMESTATES.guessing) {
 			this.calculateScore()
 			this.gameState = GAMESTATES.guessed
 			DOM.guessButton.disabled = false
+
+			AudioPlayer.playSound('audio/confirm.ogg')
 
 			DOM.roundScoreDisplay.innerText = `You earned ${this.roundScore} points`
 			DOM.roundScoreDisplay.style.display = 'block'
@@ -660,7 +731,7 @@ export const GameManager = {
 	 * @param {number} i - The index of the location in the dataList.
 	 * @param {string} gameMode - The current game mode.
 	 */
-	setLocation(i, gameMode) {
+	setLocation(i, gameMode, shouldStartGame = true) {
 		this.imageIsLoaded = false
 		GameMap.guessPosition = null // Clear previous guess
 
@@ -691,12 +762,12 @@ export const GameManager = {
 		const imgSrc = this.currentLocation[3]
 		// Hide image and apply blur while loading
 		DOM.locationImgElement.classList.add('hideLocationImg')
-		document.getElementById('blurBg').classList.add('hideLocationImg')
+		getElem('blurBg').classList.add('hideLocationImg')
 		DOM.locationImgElement.style.opacity = '0'
 		DOM.locationImgElement.style.transition = 'opacity 0.4s ease'
 
 		// Show image loading text and keep overlay visible while the image loads
-		document.getElementById('loadingText').style.display = 'flex'
+		getElem('loadingText').style.display = 'flex'
 		if (DOM.modalOverlay) DOM.modalOverlay.classList.add('visible')
 		document.body.classList.add('modal-open')
 
@@ -705,18 +776,21 @@ export const GameManager = {
 		DOM.locationImgElement.onerror = null
 
 		DOM.locationImgElement.onload = () => {
-			this.imageIsLoaded = true
-			document.getElementById('loadingText').style.display = 'none'
+			if (shouldStartGame) {
+				this.gameState = GAMESTATES.guessing
+				this.speedrunTimer.currentLocationTime = 0
+			}
+			getElem('loadingText').style.display = 'none'
 			DOM.locationImgElement.style.display = 'block'
 			// Fade in the image and remove blur
 			setTimeout(() => {
 				DOM.locationImgElement.style.opacity = '1'
 				DOM.locationImgElement.classList.remove('hideLocationImg')
-				document.getElementById('blurBg').classList.remove('hideLocationImg')
+				getElem('blurBg').classList.remove('hideLocationImg')
 			}, 10)
 
 			// Only hide overlay if no windows or other loading messages are visible
-			const mapLoadingEl = document.getElementById('mapLoadingText')
+			const mapLoadingEl = getElem('mapLoadingText')
 			const anyWindowVisible =
 				(DOM.gameOptionsWindow &&
 					DOM.gameOptionsWindow.classList.contains('visible')) ||
@@ -736,8 +810,7 @@ export const GameManager = {
 			}
 
 			if (this.blurredModeEnabled) {
-				DOM.locationImgElement.style.filter = `blur(100px)`
-				this.blurEndTime = performance.now() + 6000
+				this.blurTimeRemaining = this.totalBlurTime
 			}
 		}
 
@@ -746,9 +819,9 @@ export const GameManager = {
 				path: imgSrc,
 				error: e,
 			})
-			document.getElementById('loadingText').style.display = 'none'
+			getElem('loadingText').style.display = 'none'
 			// hide overlay if map isn't loading and no windows are visible
-			const mapLoadingEl = document.getElementById('mapLoadingText')
+			const mapLoadingEl = getElem('mapLoadingText')
 			const anyWindowVisible =
 				(DOM.gameOptionsWindow &&
 					DOM.gameOptionsWindow.classList.contains('visible')) ||
@@ -762,8 +835,9 @@ export const GameManager = {
 		}
 
 		// Start loading into the visible DOM image (single network request)
-		document.getElementById('locationImg').src = imgSrc
-		document.getElementById('blurBg').style.backgroundImage = `url(${imgSrc})`
+		getElem('locationImg').src = imgSrc
+		getElem('blurBg').style.backgroundImage = `url(${imgSrc})`
+
 		// Do not remove hideLocationImg here; wait for image to load
 	},
 
@@ -802,7 +876,6 @@ export const GameManager = {
 		// Hide score display for the new round
 		DOM.roundScoreDisplay.style.display = 'none'
 
-		this.gameState = GAMESTATES.guessing
 		GameMap.resetCamera()
 		this.currentRound++
 		this.updateRoundCounter()
@@ -925,6 +998,8 @@ export const GameManager = {
 		this.setLocation(originalIndex, gameMode)
 		DOM.guessButton.disabled = true
 		GameMap.guessPosition = null
+
+		
 
 		if (this.timeLimitEnabled) {
 			this.endTime = performance.now() + this.timerLengthSeconds * 1000
@@ -1096,6 +1171,23 @@ export const GameManager = {
 			this.dismissValidationToast('seed')
 		}
 
+
+		if (DOM.blurredModeEnabled.checked) {
+			const blurTimeVal = Number(DOM.blurTimeInput.value)
+			if (blurTimeVal <= 0 || isNaN(blurTimeVal)) {
+				this.showValidationToast(
+					'blurTime',
+					'Blur time must be a number greater than 0.'
+				)
+				formValid = false
+			} else {
+				this.dismissValidationToast('blurTime')
+			}
+		} else {
+			this.dismissValidationToast('blurTime')
+		}
+
+
 		if (formValid) {
 			DOM.startButton.style.pointerEvents = 'auto'
 			DOM.startButton.style.opacity = '1'
@@ -1104,6 +1196,8 @@ export const GameManager = {
 			DOM.startButton.style.opacity = '0.25'
 		}
 	},
+
+	
 
 	/**
 	 * Handles the fun easter eggs for the seed input.
@@ -1143,6 +1237,7 @@ export const GameManager = {
 			seedVal === '67'
 		) {
 			this.showValidationToast('seed', 'Seed cannot contain brainrot.')
+			formValid = false
 		} else if (seedVal === '69') {
 			tm.displayToast('Nice.')
 		} else if (lowerSeed.includes('yalikejazz')) {
@@ -1168,7 +1263,7 @@ export const GameManager = {
 	 * Updates the list of selected packs displayed on the options screen.
 	 */
 	updateSelectedPacksDisplay() {
-		const listContainer = document.getElementById('selected-packs-list')
+		const listContainer = getElem('selected-packs-list')
 		if (!listContainer) return
 
 		const selectedOptions = [
@@ -1219,55 +1314,61 @@ export const GameManager = {
 }
 
 function initializeDOM() {
-	DOM.customDifficultyDiv = document.getElementById('customDifficultyDiv')
-	DOM.difficultySelector = document.getElementById('difficultySelector')
-	DOM.roundCountInput = document.getElementById('roundCount')
-	DOM.timerLengthInput = document.getElementById('timerLength')
+	DOM.customDifficultyDiv = getElem('customDifficultyDiv')
+	DOM.difficultySelector = getElem('difficultySelector')
+	DOM.roundCountInput = getElem('roundCount')
+	DOM.timerLengthInput = getElem('timerLength')
 
-	DOM.accuracyElement = document.getElementById('accuracy')
-	DOM.finalScoreDisplay = document.getElementById('finalScore')
-	DOM.gameOverWindow = document.getElementById('gameOverWindow')
-	DOM.gameOptionsWindow = document.getElementById('gameOptionsWindow')
-	DOM.loadingText = document.getElementById('loadingText')
-	DOM.roundElement = document.getElementById('round')
-	DOM.timeLimitDisplay = document.getElementById('timeLimitDisplay')
-	DOM.totalRoundsElement = document.getElementById('totalRounds')
-	DOM.timerLengthDisplay = document.getElementById('timerLengthDisplay')
-	DOM.newGameButton = document.getElementById('newGameButton')
-	DOM.startButton = document.getElementById('startButton')
-	DOM.mainMenuButton = document.getElementById('mainMenuButton')
-	DOM.timeLimitEnabled = document.getElementById('timeLimitEnabled')
-	DOM.minDifficultyInput = document.getElementById('minDifficulty')
-	DOM.maxDifficultyInput = document.getElementById('maxDifficulty')
-	DOM.minDifficultyValue = document.getElementById('minDifficultyValue')
-	DOM.maxDifficultyValue = document.getElementById('maxDifficultyValue')
-	DOM.formWarning = document.getElementById('formWarning')
+	DOM.accuracyElement = getElem('accuracy')
+	DOM.finalScoreDisplay = getElem('finalScore')
+	DOM.gameOverWindow = getElem('gameOverWindow')
+	DOM.gameOptionsWindow = getElem('gameOptionsWindow')
+	DOM.loadingText = getElem('loadingText')
+	DOM.roundElement = getElem('round')
+	DOM.timeLimitDisplay = getElem('timeLimitDisplay')
+	DOM.totalRoundsElement = getElem('totalRounds')
+	DOM.timerLengthDisplay = getElem('timerLengthDisplay')
+	DOM.newGameButton = getElem('newGameButton')
+	DOM.startButton = getElem('startButton')
+	DOM.mainMenuButton = getElem('mainMenuButton')
+	DOM.timeLimitEnabled = getElem('timeLimitEnabled')
+	DOM.minDifficultyInput = getElem('minDifficulty')
+	DOM.maxDifficultyInput = getElem('maxDifficulty')
+	DOM.minDifficultyValue = getElem('minDifficultyValue')
+	DOM.maxDifficultyValue = getElem('maxDifficultyValue')
+	DOM.formWarning = getElem('formWarning')
 
-	DOM.guessButton = document.getElementById('guessButton')
-	DOM.locationImgElement = document.getElementById('locationImg')
-	DOM.mapCanvas = document.getElementById('mapCanvas')
-	DOM.mapContainer = document.getElementById('mapContainer')
-	DOM.roundScoreDisplay = document.getElementById('roundScoreDisplay')
-	DOM.minimiseButton = document.getElementById('minimiseButton')
-	DOM.gameMode = document.getElementById('gameMode')
-	DOM.minimiseIcon = document.getElementById('minimiseIcon')
-	DOM.fullscreenButton = document.getElementById('fullscreenButton')
-	DOM.seedInput = document.getElementById('seedInput')
-	DOM.copySeedButton = document.getElementById('copySeedButton')
-	DOM.seedDisplay = document.getElementById('seedDisplay')
-	DOM.enableSeed = document.getElementById('enableSeed')
-	DOM.seedOption = document.getElementById('seedOption')
-	DOM.timerLengthOption = document.getElementById('timerLengthOption')
-	DOM.modalOverlay = document.getElementById('modalOverlay')
-	DOM.seededIndicator = document.getElementById('seededIndicator')
-	DOM.packSelectWindow = document.getElementById('packSelectWindow')
-	DOM.hallownestPackChoices = document.getElementById('hallownestPackChoices')
-	DOM.confirmationWindow = document.getElementById('confirmationWindow')
-	DOM.confirmationMessage = document.getElementById('confirmationMessage')
-	DOM.confirmationButtons = document.getElementById('confirmationButtons')
-	DOM.pharloomPackChoices = document.getElementById('pharloomPackChoices')
-	DOM.changePacksButton = document.getElementById('changePacksButton')
-	DOM.blurredModeEnabled = document.getElementById('blurredModeEnabled')
+	DOM.guessButton = getElem('guessButton')
+	DOM.locationImgElement = getElem('locationImg')
+	DOM.mapCanvas = getElem('mapCanvas')
+	DOM.mapContainer = getElem('mapContainer')
+	DOM.roundScoreDisplay = getElem('roundScoreDisplay')
+	DOM.minimiseButton = getElem('minimiseButton')
+	DOM.gameMode = getElem('gameMode')
+	DOM.minimiseIcon = getElem('minimiseIcon')
+	DOM.fullscreenButton = getElem('fullscreenButton')
+	DOM.seedInput = getElem('seedInput')
+	DOM.seedDisplay = getElem('seedDisplay')
+	DOM.enableSeed = getElem('enableSeed')
+	DOM.seedOption = getElem('seedOption')
+	DOM.timerLengthOption = getElem('timerLengthOption')
+	DOM.modalOverlay = getElem('modalOverlay')
+	DOM.seededIndicator = getElem('seededIndicator')
+	DOM.packSelectWindow = getElem('packSelectWindow')
+	DOM.hallownestPackChoices = getElem('hallownestPackChoices')
+	DOM.confirmationWindow = getElem('confirmationWindow')
+	DOM.confirmationMessage = getElem('confirmationMessage')
+	DOM.confirmationButtons = getElem('confirmationButtons')
+	DOM.pharloomPackChoices = getElem('pharloomPackChoices')
+	DOM.changePacksButton = getElem('changePacksButton')
+	DOM.blurredModeEnabled = getElem('blurredModeEnabled')
+	DOM.debugWindow = getElem('debugWindow')
+	DOM.debugText = getElem('debugText')
+	DOM.blurTimeInput = getElem('blurTimeInput')
+}
+
+function getElem(id) {
+	return document.getElementById(id)
 }
 
 // Main entry point for the game

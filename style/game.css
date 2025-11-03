@@ -227,7 +227,43 @@ hr {
 		top: 0.75rem;
 	}
 }
+#speedrunTimer {
+	position: absolute;
+	top: 0.5rem;
+	left: 0.5rem;
+	display: block;
+	gap: 0.5rem;
+	
+}
 
+#totalTime {
+	display: block;
+	gap: 0.5rem;
+	font-size: 2rem;
+}
+
+#locationTime {
+	display: block;
+}
+
+#topRightContainer {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	display: flex;
+	gap: 0.5rem;
+}
+#bottomLeftContainer {
+	position: absolute;
+	bottom: 0.5rem;
+	left: 0.5rem;
+	display: flex;
+	gap: 0.5rem;
+	font-size: 1.5rem;
+	color: rgba(255, 255, 255, 0.7);
+	text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+	
+}
 #mapCanvas.minimise {
 	transition: all 0.5s ease;
 	opacity: 0;

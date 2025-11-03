@@ -67,24 +67,20 @@ img {
 	transform: translateY(-1px);
 }
 
-/* Top-right controls (New Game etc.) */
-#topRightContainer {
-	position: absolute;
-	top: 0.5rem;
-	right: 0.5rem;
-	display: flex;
-	gap: 0.5rem;
-}
-#bottomLeftContainer {
-	position: absolute;
+
+
+#debugWindow {
+	position: fixed;
 	bottom: 0.5rem;
 	left: 0.5rem;
-	display: flex;
-	gap: 0.5rem;
-	font-size: 1.5rem;
-	color: rgba(255, 255, 255, 0.7);
-	text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-	
+	background-color: rgba(0, 0, 0, 0.75);
+	color: #fff;
+	padding: 0.5rem;
+	border-radius: 4px;
+	font-family: monospace;
+	font-size: 12px;
+	z-index: 9000; /* High z-index to be on top */
+	white-space: pre; /* To respect newlines and spaces in the text content */
 }
 
 .window {
@@ -156,7 +152,7 @@ img {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	gap: 1rem;
+	gap: 0.5rem;
 	width: 100%;
 }
 
@@ -273,8 +269,7 @@ button[disabled] {
 	.option {
 		flex-direction: column; /* Stack label and input on mobile */
 		align-items: flex-start;
-		gap: 0.5rem;
-		font-size: 1rem; /* Set a base size for the option container */
+		font-size: 1rem; 
 	}
 }
 
