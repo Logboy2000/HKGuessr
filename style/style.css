@@ -152,7 +152,7 @@ img {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	gap: 1rem;
+	gap: 0.5rem;
 	width: 100%;
 }
 
@@ -269,8 +269,7 @@ button[disabled] {
 	.option {
 		flex-direction: column; /* Stack label and input on mobile */
 		align-items: flex-start;
-		gap: 0.5rem;
-		font-size: 1rem; /* Set a base size for the option container */
+		font-size: 1rem; 
 	}
 }
 

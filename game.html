@@ -60,10 +60,10 @@
 		<div id="selected-packs-list">
 			<!-- List of selected packs will be populated by JS -->
 		</div>
-		
-				<div class="button-container">
-				<button id="changePacksButton" class="hk-button">Select Image Packs</button>
-				</div>
+
+		<div class="button-container">
+			<button id="changePacksButton" class="hk-button">Select Image Packs</button>
+		</div>
 
 
 		<div class="option">
@@ -98,12 +98,13 @@
 		<!--Time Limit-->
 		<div class="option">
 			<label for="timeLimitEnabled">Time Limit?: </label>
-			<input type="checkbox" id="timeLimitEnabled" name="timeLimitEnabled" data-toggle-target="timerLengthOption" />
+			<input type="checkbox" id="timeLimitEnabled" name="timeLimitEnabled"
+				data-toggle-target="timerLengthOption" />
 		</div>
 
-		<div class="option" id="timerLengthOption" style="display:none;">
+		<div class="option" id="timerLengthOption">
 			<label for="timerLength">Limit (s): </label>
-			<input type="number" id="timerLength" name="timerLength" placeholder="60" value="60" min="1" max="3600" />
+			<input type="text" id="timerLength" name="timerLength" placeholder="60" value="60" min="1" max="3600" />
 		</div>
 
 
@@ -113,22 +114,26 @@
 			<input type="checkbox" id="enableSeed" data-toggle-target="seedOption" />
 		</div>
 
-		<div class="option" id="seedOption" style="display:none;">
+		<div class="option" id="seedOption">
 			<label for="seedInput">Seed:</label>
-			<div style="display:flex; gap:8px; align-items:center">
-				<input type="text" id="seedInput" placeholder="random or paste seed" />
-				<button id="copySeedButton">Copy</button>
-			</div>
+			<input type="text" id="seedInput" placeholder="random or paste seed" />
 		</div>
 
 		<!--Blurred Mode-->
 		<div class="option">
 			<label for="blurredModeEnabled">Blurred Mode?:</label>
-			<input type="checkbox" id="blurredModeEnabled" />
+			<input type="checkbox" id="blurredModeEnabled" data-toggle-target="blurTimeOption" />
 		</div>
-		
+
+		<div class="option" id="blurTimeOption">
+			<label for="blurTimeInput">Blur Time (s):</label>
+			<input type="text" name="blurTimeInput" id="blurTimeInput" value="20">
+		</div>
+
+
 		<div class="button-container">
-			<button id="quitToMenuButton" class="hk-button" onclick="window.location.href = 'index.html'">Quit to Menu</button>
+			<button id="quitToMenuButton" class="hk-button" onclick="window.location.href = 'index.html'">Quit to
+				Menu</button>
 			<button id="startButton" class="hk-button">Start Game</button>
 		</div>
 
@@ -138,7 +143,8 @@
 
 		<h2>Select Image Packs</h2>
 
-		<div class="custom-scrollbar" style="overflow-y: auto; padding: 10px 20px; display: flex; flex-direction: column; gap: 20px;">
+		<div class="custom-scrollbar"
+			style="overflow-y: auto; padding: 10px 20px; display: flex; flex-direction: column; gap: 20px;">
 			<div>
 				<h3>Hollow Knight</h3>
 				<div id="hallownestPackChoices"></div>

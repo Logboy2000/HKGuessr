@@ -58,6 +58,7 @@ export const GameManager = {
 	endTime: 0,
 	blurredModeEnabled: false, // Is the mode active?
 	blurTimeRemaining: 0, // How much time is left for the blur effect.
+	totalBlurTime: 20000,
 	imageIsLoaded: false, // Tracks if the current location image is loaded
 	seed: null, // current seed string or null
 	rng: null, // seeded RNG instance when seed provided
@@ -197,7 +198,7 @@ export const GameManager = {
 			if (this.blurredModeEnabled) {
 				if (this.blurTimeRemaining > 0) {
 					this.blurTimeRemaining -= dt
-					const blurDuration = 15000 // Total duration of the effect in ms
+					const blurDuration = this.totalBlurTime // Total duration of the effect in ms
 					// Calculate progress from 0 (start) to 1 (end)
 					const progress = 1 - Math.max(0, this.blurTimeRemaining) / blurDuration
 					// Apply an ease-out function to the progress
@@ -335,6 +336,8 @@ export const GameManager = {
 			this.validaiteForm.bind(this)
 		)
 		DOM.enableSeed.addEventListener('change', this.validaiteForm.bind(this))
+		getElem('blurTimeInput').addEventListener('change', this.validaiteForm.bind(this))
+		getElem('blurredModeEnabled').addEventListener('change', this.validaiteForm.bind(this))
 
 		document
 			.getElementById('playAgainButton')
@@ -368,39 +371,6 @@ export const GameManager = {
 		document.addEventListener('focusin', this._focusInHandler)
 
 		document
-			.getElementById('copySeedButton')
-			.addEventListener('click', async () => {
-				try {
-					const val = (DOM.seedInput?.value || '').toString().trim()
-					if (!val) {
-						tm.displayToast('Seed input is empty, nothing to copy')
-						return
-					}
-					// Use Clipboard API if available
-					let copied = false
-					if (
-						navigator.clipboard &&
-						typeof navigator.clipboard.writeText === 'function'
-					) {
-						try {
-							await navigator.clipboard.writeText(val)
-							copied = true
-						} catch (e) {
-							// fall through to fallback
-							copied = false
-						}
-					}
-
-					if (copied) {
-						tm.displayToast('Seed copied')
-						console.log('Seed copied to clipboard')
-					}
-				} catch (e) {
-					console.warn('Failed to copy seed to clipboard', e)
-				}
-			})
-
-		document
 			.getElementById('fullscreenButton')
 			.addEventListener('click', () => this.toggleFullscreen())
 
@@ -428,6 +398,10 @@ export const GameManager = {
 		if (event.key === '~') {
 			window.debugMode = !window.debugMode
 		}
+		if (event.key === 'Escape') {
+			
+		}
+	
 	},
 
 	/**
@@ -438,6 +412,9 @@ export const GameManager = {
 		this.speedrunTimer.currentLocationTime = 0
 		this.speedrunTimer.totalTime = 0
 		this.lastFrameTime = 0
+
+		
+		
 		
 		this.updateRoundCounter()
 
@@ -481,6 +458,9 @@ export const GameManager = {
 		// Close any open windows
 		wm.close()
 
+		this.totalBlurTime = DOM.blurTimeInput.value * 1000
+		console.log(this.totalBlurTime)
+
 		// Load the map image for the *first* valid mode
 		const firstMode = validGameModes[0]
 		const mapUrl =
@@ -513,13 +493,11 @@ export const GameManager = {
 				this.seed = String(generatedSeed)
 				if (DOM.seedInput) DOM.seedInput.value = this.seed
 			}
-			DOM.copySeedButton && (DOM.copySeedButton.disabled = false)
 		} else {
 			generatedSeed =
 				((Date.now() ^ Math.floor(Math.random() * 0xffffffff)) >>> 0) >>> 0
 			this.seed = String(generatedSeed)
 			if (DOM.seedInput) DOM.seedInput.value = ''
-			DOM.copySeedButton && (DOM.copySeedButton.disabled = true)
 		}
 
 		try {
@@ -836,7 +814,7 @@ export const GameManager = {
 			}
 
 			if (this.blurredModeEnabled) {
-				this.blurTimeRemaining = 15000
+				this.blurTimeRemaining = this.totalBlurTime
 			}
 		}
 
@@ -1197,6 +1175,23 @@ export const GameManager = {
 			this.dismissValidationToast('seed')
 		}
 
+
+		if (DOM.blurredModeEnabled.checked) {
+			const blurTimeVal = Number(DOM.blurTimeInput.value)
+			if (blurTimeVal <= 0 || isNaN(blurTimeVal)) {
+				this.showValidationToast(
+					'blurTime',
+					'Blur time must be a number greater than 0.'
+				)
+				formValid = false
+			} else {
+				this.dismissValidationToast('blurTime')
+			}
+		} else {
+			this.dismissValidationToast('blurTime')
+		}
+
+
 		if (formValid) {
 			DOM.startButton.style.pointerEvents = 'auto'
 			DOM.startButton.style.opacity = '1'
@@ -1205,6 +1200,8 @@ export const GameManager = {
 			DOM.startButton.style.opacity = '0.25'
 		}
 	},
+
+	
 
 	/**
 	 * Handles the fun easter eggs for the seed input.
@@ -1244,6 +1241,7 @@ export const GameManager = {
 			seedVal === '67'
 		) {
 			this.showValidationToast('seed', 'Seed cannot contain brainrot.')
+			formValid = false
 		} else if (seedVal === '69') {
 			tm.displayToast('Nice.')
 		} else if (lowerSeed.includes('yalikejazz')) {
@@ -1354,7 +1352,6 @@ function initializeDOM() {
 	DOM.minimiseIcon = getElem('minimiseIcon')
 	DOM.fullscreenButton = getElem('fullscreenButton')
 	DOM.seedInput = getElem('seedInput')
-	DOM.copySeedButton = getElem('copySeedButton')
 	DOM.seedDisplay = getElem('seedDisplay')
 	DOM.enableSeed = getElem('enableSeed')
 	DOM.seedOption = getElem('seedOption')
@@ -1371,6 +1368,7 @@ function initializeDOM() {
 	DOM.blurredModeEnabled = getElem('blurredModeEnabled')
 	DOM.debugWindow = getElem('debugWindow')
 	DOM.debugText = getElem('debugText')
+	DOM.blurTimeInput = getElem('blurTimeInput')
 }
 
 function getElem(id) {
