@@ -398,10 +398,6 @@ export const GameManager = {
 		if (event.key === '~') {
 			window.debugMode = !window.debugMode
 		}
-		if (event.key === 'Escape') {
-			
-		}
-	
 	},
 
 	/**
