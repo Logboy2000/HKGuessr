@@ -87,6 +87,20 @@ img {
 	
 }
 
+#debugWindow {
+	position: fixed;
+	bottom: 0.5rem;
+	left: 0.5rem;
+	background-color: rgba(0, 0, 0, 0.75);
+	color: #fff;
+	padding: 0.5rem;
+	border-radius: 4px;
+	font-family: monospace;
+	font-size: 12px;
+	z-index: 9000; /* High z-index to be on top */
+	white-space: pre; /* To respect newlines and spaces in the text content */
+}
+
 .window {
 	transition: all 0.28s cubic-bezier(.2,.9,.2,1);
 	position: fixed;

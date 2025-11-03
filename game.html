@@ -5,11 +5,11 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 	<title>Hollow Guessr</title>
-	<link rel="stylesheet" href="style/style.css?v=1.1.0" />
+	<link rel="stylesheet" href="style/style.css" />
 	<link rel="stylesheet" href="style/game.css" />
-	<link rel="stylesheet" href="style/multipleChoice.css">
+	<link rel="stylesheet" href="modules/MultipleChoice/multipleChoice.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 
 <body>
@@ -179,12 +179,13 @@
 		</div>
 	</div>
 
+	<div id="debugWindow" style="display: none;">
+		<div id="debugText">
 
+		</div>
+	</div>
 
-	<!-- Cloudflare Web Analytics -->
-	<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2742178302474629a99e2bf4a2bd6905"}'></script>
 	<script src="script/game.js" type="module"></script>
-
 </body>
 
 </html>

@@ -207,7 +207,6 @@ export async function loadInitialData() {
 		}
 
 		hallownestMultipleChoice.selectChoiceByIndex(0)
-		console.log('Location data loaded successfully!')
 		return loadedGameModes
 	} catch (error) {
 		console.error('Error loading location data:', error)

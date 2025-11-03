@@ -1,6 +1,5 @@
 .choices {
 	display: grid;
-	/* Create as many columns as can fit, with a minimum width of 280px, and let them grow to fill the space. */
 	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 	gap: 10px;
 	font-family: Arial, sans-serif;
@@ -51,7 +50,7 @@
 	right: 0;
 	background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0) 100%);
 	padding: 10px;
-	z-index: 2; /* On top of the image */
+	z-index: 2;
 	color: white;
 	
 }

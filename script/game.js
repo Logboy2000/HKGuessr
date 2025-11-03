@@ -1,15 +1,20 @@
-import { GameMap } from './GameMap.js'
-import { randIRange, makeSeededRandom } from './Utils.js'
-import { loadInitialData } from './loadLocationData.js'
-import { MultipleChoice } from './multipleChoice.js'
-import WindowManager from './WindowManager.js'
-import ToastManager from './ToastManager.js'
-
 ///////////////////////////////////////////////
 ////// Geoguessr Clone for Hollow Knight //////
 ///////////////////////////////////////////////
 
 //BEWARE THIS SOURCE CODE IS NOW LESS OF AN ABSOLUTE MESS THAN IT USED TO BE//
+
+// Variable that can be changed from console to get various debug info
+window.debugMode = false
+
+import { GameMap } from './GameMap.js'
+import { randIRange, makeSeededRandom } from './Utils.js'
+import { loadInitialData } from './loadLocationData.js'
+import { MultipleChoice } from '/modules/MultipleChoice/MultipleChoice.js'
+import WindowManager from './WindowManager.js'
+import ToastManager from './ToastManager.js'
+import AudioPlayer from '/modules/AudioPlayer.js'
+
 export const DEFAULT_MAP_URL = 'images/game/defaultMaps/hallownest.png'
 export const hallownestMc = new MultipleChoice(
 	document.getElementById('hallownestPackChoices')
@@ -67,6 +72,10 @@ export const GameManager = {
 	 * Initializes the game manager.
 	 */
 	init(gameData) {
+		AudioPlayer.preloadSound('audio/pin_drop.ogg')
+		AudioPlayer.preloadSound('audio/confirm.ogg')
+		AudioPlayer.preloadSound('audio/basic_button.ogg')
+
 		this.gameModeData = gameData
 		GameMap.init(DOM.mapCanvas)
 
@@ -174,6 +183,56 @@ export const GameManager = {
 			}
 		} else {
 			DOM.locationImgElement.style.filter = ``
+		}
+
+		// --- Debug Window Update ---
+		if (window.debugMode) {
+			DOM.debugWindow.style.display = 'block'
+
+			const {
+				camera,
+				mousePos,
+				mouseXRelative,
+				mouseYRelative,
+				guessPosition,
+				fps,
+			} = GameMap
+			const gameStateName = Object.keys(GAMESTATES).find(
+				(key) => GAMESTATES[key] === this.gameState
+			)
+
+			const debugData = {
+				'Game State': `${gameStateName} (${this.gameState})`,
+				Round: `${this.currentRound}/${this.totalRounds}`,
+				Score: `${this.totalScore} (Round: ${this.roundScore})`,
+				Seed: this.seed,
+
+				'---': 'Map',
+				Cam: `X: ${camera.x.toFixed(2)}, Y: ${camera.y.toFixed(2)}`,
+				Zoom: camera.zoom.toFixed(3),
+				Mouse: `X: ${mousePos.x}, Y: ${mousePos.y}`,
+				'Rel Mouse': `X: ${mouseXRelative.toFixed(
+					2
+				)}, Y: ${mouseYRelative.toFixed(2)}`,
+				Guess: guessPosition
+					? `X: ${guessPosition.x.toFixed(2)}, Y: ${guessPosition.y.toFixed(2)}`
+					: 'null',
+				Correct: this.currentLocation
+					? `X: ${this.currentLocation[0]}, Y: ${this.currentLocation[1]}`
+					: 'null',
+				FPS: fps.toFixed(1),
+			}
+
+			DOM.debugText.textContent = Object.entries(debugData)
+				.map(([key, value]) => {
+					if (key === '---') return value // For separators
+					// Pad the key to align the values
+					const paddedKey = key.padEnd(10, ' ')
+					return `${paddedKey}: ${value}`
+				})
+				.join('\n')
+		} else {
+			DOM.debugWindow.style.display = 'none'
 		}
 
 		// Draw map and UI
@@ -437,7 +496,6 @@ export const GameManager = {
 			this.rng = null
 		}
 
-		console.log(`Using seed: ${this.seed}`)
 		seededIndicator.style.display =
 			DOM.enableSeed && DOM.enableSeed.checked ? 'block' : 'none'
 
@@ -593,10 +651,14 @@ export const GameManager = {
 	guessButtonClicked() {
 		if (DOM.guessButton.disabled) return
 
+		AudioPlayer.playSound('audio/basic_button.ogg')
+
 		if (this.gameState === GAMESTATES.guessing) {
 			this.calculateScore()
 			this.gameState = GAMESTATES.guessed
 			DOM.guessButton.disabled = false
+
+			AudioPlayer.playSound('audio/confirm.ogg')
 
 			DOM.roundScoreDisplay.innerText = `You earned ${this.roundScore} points`
 			DOM.roundScoreDisplay.style.display = 'block'
@@ -1268,6 +1330,8 @@ function initializeDOM() {
 	DOM.pharloomPackChoices = document.getElementById('pharloomPackChoices')
 	DOM.changePacksButton = document.getElementById('changePacksButton')
 	DOM.blurredModeEnabled = document.getElementById('blurredModeEnabled')
+	DOM.debugWindow = document.getElementById('debugWindow')
+	DOM.debugText = document.getElementById('debugText')
 }
 
 // Main entry point for the game
