@@ -1,4 +1,4 @@
-import { lerp } from './Utils.js'
+import { lerp, loadImage } from './Utils.js'
 import { GameManager, GAMESTATES, DOM, DEFAULT_MAP_URL } from './game.js'
 import AudioPlayer from '/modules/AudioPlayer.js'
 
@@ -60,8 +60,8 @@ export const GameMap = {
 
 		// Ensure pin images are loaded before attempting to draw them
 		Promise.all([
-			this.loadImage(this.knightPinImg),
-			this.loadImage(this.shadePinImg),
+			loadImage(this.knightPinImg),
+			loadImage(this.shadePinImg),
 		]).catch((error) => {
 			console.error('Failed to load one or more pin images:', error)
 			// Fallback or error handling for image loading
@@ -82,7 +82,7 @@ export const GameMap = {
 			if (mapLoadingEl) mapLoadingEl.style.display = 'block'
 
 			this.mapImg.src = imageUrl
-			await this.loadImage(this.mapImg)
+			await loadImage(this.mapImg)
 
 			// Update map dimensions and center based on the new image
 			this.mapWidth = this.mapImg.width
@@ -106,23 +106,7 @@ export const GameMap = {
 		}
 	},
 
-	/**
-	 * Helper to load an image and return a Promise.
-	 * @param {Image} img - The image object to load.
-	 * @returns {Promise<Image>} A promise that resolves when the image is loaded.
-	 */
-	loadImage(img) {
-		return new Promise((resolve, reject) => {
-			// If image is already loaded and has dimensions, resolve immediately
-			if (img.complete && img.naturalWidth !== 0) {
-				resolve(img)
-				return
-			}
-			img.onload = () => resolve(img)
-			img.onerror = (e) =>
-				reject(new Error(`Failed to load image: ${img.src}, ${e}`))
-		})
-	},
+
 
 	/**
 	 * Adds all necessary event listeners for map interaction.
