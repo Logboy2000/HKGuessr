@@ -20,11 +20,11 @@ export const GameMap = {
 	shadePinImg: new Image(),
 
 	camera: {
-		x: 0, // Initial map offset
-		y: 0, // Initial map offset
+		x: 0,
+		y: 0, 
 		targetX: 0,
 		targetY: 0,
-		zoom: 0.125, // Initial zoom level
+		zoom: 0.125, 
 		targetZoom: 0.125,
 	},
 	mousePos: { x: 0, y: 0 }, // Mouse position relative to canvas

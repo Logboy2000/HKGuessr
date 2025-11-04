@@ -18,6 +18,7 @@ export class MultipleChoice {
 			}
 
 			const img = document.createElement('img');
+			img.classList.add('choice-img')
 			img.onerror = function() {
 				// If the image fails to load, replace it with a default placeholder
 				this.src = 'images/noThumbnail.svg';
@@ -30,12 +31,11 @@ export class MultipleChoice {
 				img.alt = 'No Thumbnail';
 			}
 
+
 			choiceDiv.appendChild(img); // Add image directly to choiceDiv
 
 			const textContainer = document.createElement('div')
 			textContainer.classList.add('choiceTextContainer')
-
-			textContainer.appendChild(document.createTextNode(option.label));
 
 			// Add author and image count
 			const infoContainer = document.createElement('div');
@@ -54,6 +54,21 @@ export class MultipleChoice {
 				countSpan.textContent = `${option.imageCount} images`;
 				infoContainer.appendChild(countSpan);
 			}
+
+			const labelSpan = document.createElement('span');
+			labelSpan.className = 'choice-label';
+			labelSpan.textContent = option.label;
+
+			if (option.gameMapName) {
+				const mapTypeIcon = document.createElement('img');
+				if (option.gameMapName === 'hallownest') mapTypeIcon.src = 'images/knightPin.png'
+				else if (option.gameMapName === 'pharloom') mapTypeIcon.src = 'images/hornetPin.png'
+				else mapTypeIcon.src = 'images/customPin.png'
+				mapTypeIcon.className = 'choice-map-icon';
+				textContainer.appendChild(mapTypeIcon); // Icon first
+			}
+
+			textContainer.appendChild(labelSpan); // Then the text
 			textContainer.appendChild(infoContainer);
 			choiceDiv.appendChild(textContainer); // Add text container directly to choiceDiv
 
@@ -88,7 +103,6 @@ export class MultipleChoice {
 	}
 
 	addChoice(option) {
-		
 		this.options.push(option);
 		this.render();
 	}

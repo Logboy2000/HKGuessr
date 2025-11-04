@@ -1,15 +1,27 @@
 ![Logo](images/logo.png)
 
-Hollow Guessr is an open-source GeoGuessr game set in the worlds of Hollow Knight and Silksong.
+Hollow Guessr is an open-source GeoGuessr web game set in the worlds of Hollow Knight and Silksong. 
+
+The game is written in vanilla HTML, JS, and CSS; no fancy frameworks or build tools.
 
 Play it live at [https://hollowguessr.pages.dev](https://hollowguessr.pages.dev/)
 
 
-## Overview
-This project is built entirely with vanilla HTML, JS, and CSS. No fancy build tools or frameworks.
 
-Core Features:
-- Multiple Image Packs – Includes Hallownest and Pharloom packs by default.
+## Core Features:
+### Multiple Image Packs
+
+Includes Hallownest and Pharloom along with other user submitted packs. Play with multiple packs simultaneously or just one
+
+### Pack Editor: 
+
+A full GUI editor for adding new locations and submitting them to the main game 
+
+### Challenge Modes: 
+
+Enable blurring, time limits, and difficulty filters to tailor your experience
+
+
 
 ## Local Setup
 To set up Hollow Guessr locally, follow these steps:
@@ -38,7 +50,7 @@ python -m http.server 8000 --bind localhost
 - **[The HK Wiki](https://hollowknight.wiki/)**: Provided 54 of the screenshots in game
 - **[HK Title Generator](https://prashantmohta.github.io/TitleGenerator.HollowKnight/)**: Used to make the game's logo
 - **[GeoGuessr](https://www.geoguessr.com/)**: Inspired by the mechanics of GeoGuessr.
-- **Community Contributors**: Special thanks to everyone who has contributed image packs and locations! See the full list of contributors on the [Image Pack Guide](https://hollowguessr.pages.dev/imagePacks.html) page.
+- **Community Contributors**: Special thanks to everyone who has contributed image packs and locations! See the full list of contributors on the [credits page](https://hollowguessr.pages.dev/credits.html).
 
 ## Support Me
 I don't want your money. Donate to charity or something.

@@ -16,8 +16,8 @@ import ToastManager from './ToastManager.js'
 import AudioPlayer from '/modules/AudioPlayer.js'
 
 export const DEFAULT_MAP_URL = 'images/game/defaultMaps/hallownest.png'
-export const hallownestMc = new MultipleChoice(getElem('hallownestPackChoices'))
-export const pharloomMc = new MultipleChoice(getElem('pharloomPackChoices'))
+export const imagePackMC = new MultipleChoice(getElem('packChoices'))
+
 // --- Constants ---
 export const GAMESTATES = {
 	guessing: 0,
@@ -433,10 +433,9 @@ export const GameManager = {
 		document.body.classList.add('modal-open')
 
 		// --- MULTI-MODE SELECTION ---
-		const selectedGameModeIds = [
-			...hallownestMc.getSelected(),
-			...pharloomMc.getSelected(),
-		]
+		const selectedGameModeIds = imagePackMC.getSelected()
+
+		
 		if (selectedGameModeIds.length === 0) {
 			console.error('No game mode selected, cannot start game')
 			return
@@ -880,10 +879,9 @@ export const GameManager = {
 		this.currentRound++
 		this.updateRoundCounter()
 
-		const selectedGameModes = [
-			...hallownestMc.getSelected(),
-			...pharloomMc.getSelected(),
-		]
+		const selectedGameModes = imagePackMC.getSelected()
+
+		
 		if (!selectedGameModes || selectedGameModes.length === 0) {
 			console.error('No game modes selected.')
 			this.endGame()
@@ -1065,7 +1063,7 @@ export const GameManager = {
 
 		// Rule 1: At least one image pack must be selected.
 		if (
-			[...hallownestMc.getSelected(), ...pharloomMc.getSelected()].length === 0
+			imagePackMC.getSelected().length === 0
 		) {
 			this.showValidationToast('pack', 'Please select at least one image pack.')
 			formValid = false
@@ -1265,13 +1263,22 @@ export const GameManager = {
 	updateSelectedPacksDisplay() {
 		const listContainer = getElem('selected-packs-list')
 		if (!listContainer) return
+		
+		listContainer.innerHTML = imagePackMC.getSelectedOptions()
+			.map((option) => {
+				let iconHtml = '';
+				if (option.gameMapName) {
+					let iconSrc = 'images/customPin.png'; // Default to custom
+					if (option.gameMapName === 'hallownest') {
+						iconSrc = 'images/knightPin.png';
+					} else if (option.gameMapName === 'pharloom') {
+						iconSrc = 'images/hornetPin.png';
+					}
+					iconHtml = `<img src="${iconSrc}" class="choice-map-icon" alt="${option.gameMapName} map icon">`;
+				}
 
-		const selectedOptions = [
-			...hallownestMc.getSelectedOptions(),
-			...pharloomMc.getSelectedOptions(),
-		]
-		listContainer.innerHTML = selectedOptions // Join with an empty string
-			.map((option) => `<span class="pack-tag">${option.label}</span>`) // The 'gap' property in CSS will handle spacing
+				return `<span class="pack-tag">${iconHtml}${option.label}</span>`;
+			})
 			.join('')
 	},
 
@@ -1355,11 +1362,10 @@ function initializeDOM() {
 	DOM.modalOverlay = getElem('modalOverlay')
 	DOM.seededIndicator = getElem('seededIndicator')
 	DOM.packSelectWindow = getElem('packSelectWindow')
-	DOM.hallownestPackChoices = getElem('hallownestPackChoices')
+	DOM.packChoices = getElem('packChoices')
 	DOM.confirmationWindow = getElem('confirmationWindow')
 	DOM.confirmationMessage = getElem('confirmationMessage')
 	DOM.confirmationButtons = getElem('confirmationButtons')
-	DOM.pharloomPackChoices = getElem('pharloomPackChoices')
 	DOM.changePacksButton = getElem('changePacksButton')
 	DOM.blurredModeEnabled = getElem('blurredModeEnabled')
 	DOM.debugWindow = getElem('debugWindow')
