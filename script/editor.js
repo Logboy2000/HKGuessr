@@ -625,7 +625,11 @@ importFileInput.addEventListener('change', async (e) => {
 			state[prop.stateKey] = value
 			// Also update the dynamically generated UI element
 			const inputElement = document.getElementById(prop.id)
-			if (inputElement) inputElement.value = value
+			if (inputElement) {
+				if (inputElement.type !== 'file') {
+					inputElement.value = value
+				}
+			}
 		})
 
 		// Handle thumbnail import
