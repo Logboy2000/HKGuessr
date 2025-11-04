@@ -2,7 +2,7 @@
   "name": "Tools",
   "gameModeId": "all_tools",
   "author": "seaman",
-  "thumbnail": null,
+  "thumbnail": "images/thumbnail.jpg",
   "locations": [
     {
       "x": 1603,
