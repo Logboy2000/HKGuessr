@@ -63,6 +63,7 @@ const state = { // This will be populated dynamically from the schema
 	customMapUrl: 'images/game/defaultMaps/hallownest.png', // URL for the currently displayed map image.
 	mapImageWidth: 4498,
 	mapImageHeight: 2901,
+	contributors: [], // Array of contributor objects {images, name, notes}
 }
 
 // --- 2. Leaflet Map Setup ---
@@ -326,6 +327,7 @@ function clearAllData() {
 	state.defaultMapUrl = 'images/game/defaultMaps/hallownest.png'
 	state.customMapFile = null
 	state.customMapUrl = state.defaultMapUrl
+	state.contributors = []
 
 	// Update UI inputs to reflect cleared state
 	PACK_SCHEMA.forEach((prop) => {
@@ -632,6 +634,13 @@ importFileInput.addEventListener('change', async (e) => {
 			}
 		})
 
+		// Import contributors if present
+		if (packData.contributors && Array.isArray(packData.contributors)) {
+			state.contributors = packData.contributors
+		} else {
+			state.contributors = []
+		}
+
 		// Handle thumbnail import
 		const thumbProp = PACK_SCHEMA.find(p => p.stateKey === 'thumbnail');
 		if (thumbProp && packData[thumbProp.packKey]) {
@@ -779,6 +788,11 @@ downloadPackBtn.addEventListener('click', async () => {
 				image: loc.image, // Use the original image path from the state
 			}
 		})
+
+		// Include contributors if present
+		if (state.contributors && state.contributors.length > 0) {
+			packData.contributors = state.contributors
+		}
 
 		const zip = new JSZip()
 

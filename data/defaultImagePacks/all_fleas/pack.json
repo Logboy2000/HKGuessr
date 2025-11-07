@@ -185,6 +185,12 @@
       "image": "images/loc-30-Vog.png"
     }
   ],
+  "contributors": [
+    {
+      "images": 30,
+      "name": "VimifU"
+    }
+  ],
   "map": {
     "useCustomMap": false,
     "defaultMap": "images/game/defaultMaps/pharloom.png"

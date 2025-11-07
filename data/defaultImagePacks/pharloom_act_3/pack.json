@@ -2123,6 +2123,13 @@
       "image": "images/loc-353-Screenshot_2025_09_27_132604.png"
     }
   ],
+  "contributors": [
+    {
+      "images": 353,
+      "name": "Biticalifi",
+      "notes": "goat"
+    }
+  ],
   "map": {
     "useCustomMap": false,
     "defaultMap": "images/game/defaultMaps/pharloom.png"

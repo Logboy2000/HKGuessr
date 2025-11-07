@@ -1691,6 +1691,48 @@
       "image": "images/loc-203-Screenshot_2025_09_01_015955.png"
     }
   ],
+  "contributors": [
+    {
+      "images": 52,
+      "name": "Hollow Knight Wiki"
+    },
+    {
+      "images": 22,
+      "name": "RikiChik"
+    },
+    {
+      "images": 10,
+      "name": "demapples14"
+    },
+    {
+      "images": 10,
+      "name": "Hood_"
+    },
+    {
+      "images": 9,
+      "name": "derRumit"
+    },
+    {
+      "images": 3,
+      "name": "lucasbrasantos"
+    },
+    {
+      "images": 20,
+      "name": "Dinno115"
+    },
+    {
+      "images": 31,
+      "name": "Monsdote"
+    },
+    {
+      "images": 25,
+      "name": "Apple"
+    },
+    {
+      "images": 101,
+      "name": "Maximilian Fischer"
+    }
+  ],
   "map": {
     "useCustomMap": false,
     "defaultMap": "images/game/defaultMaps/hallownest.png"

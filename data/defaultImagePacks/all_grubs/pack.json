@@ -293,6 +293,12 @@
       "image": "images/loc-50-Screenshot_2025_08_30_235658.png"
     }
   ],
+  "contributors": [
+    {
+      "images": 97,
+      "name": "Coldes"
+    }
+  ],
   "map": {
     "useCustomMap": false,
     "defaultMap": "images/game/defaultMaps/hallownest.png"

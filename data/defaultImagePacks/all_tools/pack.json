@@ -365,6 +365,12 @@
       "image": "images/loc-60-tool_thiefs_mark.png"
     }
   ],
+  "contributors": [
+    {
+      "images": 40,
+      "name": "seaman"
+    }
+  ],
   "map": {
     "useCustomMap": false,
     "defaultMap": "images/game/defaultMaps/pharloom.png"

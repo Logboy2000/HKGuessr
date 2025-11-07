@@ -287,6 +287,12 @@
       "image": "images/loc-47-imagem_2025_11_03_101121513.png"
     }
   ],
+  "contributors": [
+    {
+      "images": 47,
+      "name": "DETONAGAME"
+    }
+  ],
   "map": {
     "useCustomMap": false,
     "defaultMap": "images/game/defaultMaps/pharloom.png"

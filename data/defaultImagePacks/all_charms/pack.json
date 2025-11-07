@@ -281,6 +281,16 @@
       "image": "images/79c476dd.png"
     }
   ],
+  "contributors": [
+    {
+      "images": 42,
+      "name": "rblashchuk"
+    },
+    {
+      "images": 3,
+      "name": "Laith"
+    }
+  ],
   "map": {
     "useCustomMap": false,
     "defaultMap": "images/game/defaultMaps/hallownest.png"

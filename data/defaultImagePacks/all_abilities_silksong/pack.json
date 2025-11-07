@@ -113,6 +113,12 @@
       "image": "images/loc-18-ability_farsight.png"
     }
   ],
+  "contributors": [
+    {
+      "images": 18,
+      "name": "seaman"
+    }
+  ],
   "map": {
     "useCustomMap": false,
     "defaultMap": "images/game/defaultMaps/pharloom.png"

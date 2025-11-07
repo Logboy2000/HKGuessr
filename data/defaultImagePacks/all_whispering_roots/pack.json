@@ -95,6 +95,12 @@
       "image": "images/loc-15-Schermafbeelding_2025_10_15_163540.png"
     }
   ],
+  "contributors": [
+    {
+      "images": 46,
+      "name": "birdman25x"
+        }
+  ],
   "map": {
     "useCustomMap": false,
     "defaultMap": "images/game/defaultMaps/hallownest.png"

@@ -293,6 +293,12 @@
       "image": "images/loc-48-Capture_d__cran_2025_10_29_010100.png"
     }
   ],
+  "contributors": [
+    {
+      "images": 48,
+      "name": "Lo 2 Source"
+    }
+  ],
   "map": {
     "useCustomMap": true,
     "mapImage": "map.png"
