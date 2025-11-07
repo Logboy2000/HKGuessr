@@ -89,6 +89,16 @@
       "images": 47,
       "name": "DETONAGAME",
       "notes": "All Bosses (Silksong)"
+    },
+    {
+      "images": 18,
+      "name": "seaman",
+      "notes": "All Abilities (Silksong)"
+    },
+    {
+      "images": 30,
+      "name": "VimifU",
+      "notes": "Fleamaster"
     }
   ]
 }
