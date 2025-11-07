@@ -6,7 +6,9 @@
   "all_charms",
   "all_benches",
   "all_grubs",
+  "all_fleas",
   "all_bosses",
   "all_whispering_roots",
-  "silksong_bosses"
+  "silksong_bosses",
+  "all_abilities_silksong"
 ]
