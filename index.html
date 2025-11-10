@@ -106,7 +106,8 @@
         const textRef = db.ref("liveText");
 
         textRef.on("value", (snapshot) => {
-            document.getElementById("magicText").innerText = snapshot.val() || "";
+			// I loooove html injection
+            document.getElementById("magicText").innerHTML = snapshot.val() || "";
         });
     </script>
 </body>
