@@ -58,8 +58,7 @@ body {
     }
 }
 
-#title-image,
-.button-container {
+.moving {
     animation: fadeIn 1.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
@@ -135,4 +134,8 @@ body {
 
 #footer-info a:hover {
     color: white;
+}
+#randomText {
+    font-style: italic;
+    padding-bottom: 20px;
 }
