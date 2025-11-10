@@ -25,11 +25,16 @@
 		content="Guess the locations in Hallownest with Hollow Guessr, a fan-made Hollow Knight GeoGuessr clone." />
 	<meta name="twitter:image" content="images/social-preview.png" />
 	<!--End of SEO Junk-->
+	<script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-database-compat.js"></script>
+
 </head>
 
 <body>
-	<img src="images/logo.png" alt="Hollow Guessr logo - A Hollow Knight GeoGuessing Game" id="title-image" class="moving"/>
-	<!-- <p class="moving" id="randomText">Thanks for playing, BlueSR :)</p> -->
+	<img src="images/logo.png" alt="Hollow Guessr logo - A Hollow Knight GeoGuessing Game" id="title-image"
+		class="moving" />
+	<p class="moving" id="magicText"></p>
+	<br>
 	<div class="button-container moving">
 		<a class="hk-button" href="game.html">
 			Play
@@ -84,7 +89,26 @@
 			<a href="https://loganhowarth.pages.dev/" target="_blank" rel="noopener noreferrer"
 				style="text-decoration: underline;">Logboy2000</a></span>
 	</div>
-	
+	<!--Magic Text-->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBZhZ5ONdvvGS0FbOC-BhmTWZgp0d8bqWc",
+            authDomain: "hollowguessrbackend.firebaseapp.com",
+            databaseURL: "https://hollowguessrbackend-default-rtdb.firebaseio.com",
+            projectId: "hollowguessrbackend",
+            storageBucket: "hollowguessrbackend.firebasestorage.app",
+            messagingSenderId: "468117202388",
+            appId: "1:468117202388:web:1ad209b0fe18dbc9692241"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        const db = firebase.database();
+        const textRef = db.ref("liveText");
+
+        textRef.on("value", (snapshot) => {
+            document.getElementById("magicText").innerText = snapshot.val() || "";
+        });
+    </script>
 </body>
 
 </html>

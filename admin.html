@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin Panel</title>
+    <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-database-compat.js"></script>
+</head>
+
+<body>
+    <h2>Admin Panel</h2>
+
+    <!-- Login form -->
+    <div id="loginForm">
+        <input id="email" type="email" placeholder="Email"><br>
+        <input id="password" type="password" placeholder="Password"><br>
+        <button id="loginBtn">Login</button>
+        <p id="loginStatus"></p>
+    </div>
+
+    <!-- Editor (hidden until logged in) -->
+    <div id="editor" style="display: none;">
+        <input id="textInput" placeholder="magic text input"></input><br>
+        <button id="logoutBtn">Logout</button>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBZhZ5ONdvvGS0FbOC-BhmTWZgp0d8bqWc",
+            authDomain: "hollowguessrbackend.firebaseapp.com",
+            databaseURL: "https://hollowguessrbackend-default-rtdb.firebaseio.com",
+            projectId: "hollowguessrbackend",
+            storageBucket: "hollowguessrbackend.firebasestorage.app",
+            messagingSenderId: "468117202388",
+            appId: "1:468117202388:web:1ad209b0fe18dbc9692241"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        const auth = firebase.auth();
+        const db = firebase.database();
+        const textRef = db.ref("liveText");
+
+        const loginForm = document.getElementById("loginForm");
+        const editor = document.getElementById("editor");
+        const loginStatus = document.getElementById("loginStatus");
+
+        // Log in button
+        document.getElementById("loginBtn").addEventListener("click", () => {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    loginStatus.innerText = "Logged in!";
+                })
+                .catch((err) => {
+                    loginStatus.innerText = err.message;
+                });
+        });
+
+        // Update UI on auth state change
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                loginForm.style.display = "none";
+                editor.style.display = "block";
+            } else {
+                loginForm.style.display = "block";
+                editor.style.display = "none";
+            }
+        });
+
+        document.getElementById("textInput").addEventListener("keyup", () => {
+            const newText = document.getElementById("textInput").value;
+            textRef.set(newText);
+        })
+
+        // Logout
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            auth.signOut();
+        });
+    </script>
+</body>
+
+</html>
