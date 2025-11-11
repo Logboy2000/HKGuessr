@@ -34,75 +34,87 @@
 				</div>
 				<br>
 
-				<div class="sidebar-section" id="pack-settings-container">
-					<h2 class="section-heading">Pack Details</h2>
-					<!-- This container will be dynamically filled by editor.js -->
+				<!-- Tab Navigation -->
+				<div class="tabs-container">
+					<button class="tab-button active" data-tab="pack-settings">Pack Settings</button>
+					<button class="tab-button" data-tab="locations">Locations</button>
 				</div>
 
 				<br>
 
-				<div class="sidebar-section">
-					<h2 class="section-heading">Map Image</h2>
-					<select name="map-image" class="dropdown" id="default-map-selector">
-						<option value="hallownest.png">Hallownest</option>
-						<option value="pharloom.png">Pharloom (SPOILERS!)</option>
-					</select>
-					<p style="text-align: center; margin: 1rem 0; color: #9ca3af;">OR</p>
-
-
-					<div class="input-group">
-						<label for="map-image-upload" class="file-label">
-							<span id="map-image-upload-label">Upload Custom Map Image</span>
-						</label>
-						<input type="file" id="map-image-upload" style="display: none"
-							accept=".png, .jpg, .jpeg, .webp, .gif, .svg, .bmp, .tiff, .ico, .heic, .heif" />
+				<!-- Pack Settings Tab Content -->
+				<div id="tab-pack-settings" class="tab-content active">
+					<div class="sidebar-section" id="pack-settings-container">
+						<h2 class="section-heading">Pack Details</h2>
+						<!-- This container will be dynamically filled by editor.js -->
 					</div>
-				</div>
 
-				<br>
-
-				<div class="sidebar-section">
-					<h2 class="section-heading">Locations</h2>
-					<div id="locations-list" class="location-list">
-					</div>
 					<br>
-					<button id="add-location-btn" class="btn btn-primary btn-full-width">
-						<img src="images/editor/add.svg" alt="" class="svg-icon">
-						Add New Location
-					</button>
+
+					<div class="sidebar-section">
+						<h2 class="section-heading">Map Image</h2>
+						<select name="map-image" class="dropdown" id="default-map-selector">
+							<option value="hallownest.png">Hallownest</option>
+							<option value="pharloom.png">Pharloom (SPOILERS!)</option>
+						</select>
+						<p style="text-align: center; margin: 1rem 0; color: #9ca3af;">OR</p>
+
+
+						<div class="input-group">
+							<label for="map-image-upload" class="file-label">
+								<span id="map-image-upload-label">Upload Custom Map Image</span>
+							</label>
+							<input type="file" id="map-image-upload" style="display: none"
+								accept=".png, .jpg, .jpeg, .webp, .gif, .svg, .bmp, .tiff, .ico, .heic, .heif" />
+						</div>
+					</div>
 				</div>
 
-				<br>
+				<!-- Locations Tab Content -->
+				<div id="tab-locations" class="tab-content">
+					<div class="sidebar-section">
+						<h2 class="section-heading">Locations</h2>
+						<div id="locations-list" class="location-list">
+						</div>
+						<br>
+						<button id="add-location-btn" class="btn btn-primary btn-full-width">
+							<img src="images/editor/add.svg" alt="" class="svg-icon">
+							Add New Location
+						</button>
+					</div>
 
-				<div id="location-details" class="sidebar-section" style="display: none">
-					<h2 class="section-heading">Location Details</h2>
-					<div class="input-group">
-						<label class="input-label">Coordinates</label>
-						<p class="text-lg" style="font-family: monospace; color: #9ca3af">
-							X: <span id="coord-x">...</span>, Y: <span id="coord-y">...</span>
-						</p>
-					</div>
-					<div class="input-group">
-						<label for="difficulty-slider" class="input-label">Difficulty: <span
-								id="difficulty-value">5</span></label>
-						<input type="range" id="difficulty-slider" min="1" max="10" value="5" class="slider-input" />
-					</div>
-					<div class="input-group">
-						<label for="image-upload" class="file-label">
-							<span id="image-upload-label">Upload Location Image</span>
-						</label>
-						<input type="file" id="image-upload" style="display: none"
-							accept=".png, .jpg, .jpeg, .webp, .gif, .svg, .bmp, .tiff, .ico, .heic, .heif" />
-						<img id="image-preview" src="images/editor/imagePreview.svg" alt="Image Preview"
-							class="preview-img" />
-					</div>
-					<div class="flex-row">
-						<button id="delete-location-btn" class="btn btn-danger flex-grow-1">
-							Delete
-						</button>
-						<button id="close-details-btn" class="btn btn-secondary flex-grow-1">
-							Close
-						</button>
+					<br>
+
+					<div id="location-details" class="sidebar-section" style="display: none">
+						<h2 class="section-heading">Location Details</h2>
+						<div class="input-group">
+							<label class="input-label">Coordinates</label>
+							<p class="text-lg" style="font-family: monospace; color: #9ca3af">
+								X: <span id="coord-x">...</span>, Y: <span id="coord-y">...</span>
+							</p>
+						</div>
+						<div class="input-group">
+							<label for="difficulty-slider" class="input-label">Difficulty: <span
+									id="difficulty-value">5</span></label>
+							<input type="range" id="difficulty-slider" min="1" max="10" value="5" class="slider-input" />
+						</div>
+						<div class="input-group">
+							<label for="image-upload" class="file-label">
+								<span id="image-upload-label">Upload Location Image</span>
+							</label>
+							<input type="file" id="image-upload" style="display: none"
+								accept=".png, .jpg, .jpeg, .webp, .gif, .svg, .bmp, .tiff, .ico, .heic, .heif" />
+							<img id="image-preview" src="images/editor/imagePreview.svg" alt="Image Preview"
+								class="preview-img" />
+						</div>
+						<div class="flex-row">
+							<button id="delete-location-btn" class="btn btn-danger flex-grow-1">
+								Delete
+							</button>
+							<button id="close-details-btn" class="btn btn-secondary flex-grow-1">
+								Close
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>

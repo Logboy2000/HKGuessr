@@ -576,3 +576,50 @@ button:focus {
 	border: 1px solid #4b5563;
 	transition: all 0.2s ease-in-out;
 }
+
+/* Tab Navigation Styles */
+.tabs-container {
+	display: flex;
+	gap: 0.5rem;
+	background-color: #0d0a0d;
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+	margin-bottom: 0;
+}
+
+.tab-button {
+	flex: 1;
+	padding: 0.75rem 1rem;
+	background-color: #1f2937;
+	color: #9ca3af;
+	border: 1px solid #4b5563;
+	border-radius: 0.5rem;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 0.875rem;
+	transition: all 0.2s ease-in-out;
+	text-align: center;
+}
+
+.tab-button:hover {
+	background-color: #374151;
+	color: #e5e7eb;
+	border-color: #6b7280;
+}
+
+.tab-button.active {
+	background-color: #2563eb;
+	color: #fff;
+	border-color: #3b82f6;
+	box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+}
+
+.tab-content {
+	display: none;
+}
+
+.tab-content.active {
+	display: block;
+}

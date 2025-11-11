@@ -836,9 +836,48 @@ downloadPackBtn.addEventListener('click', async () => {
 	}
 })
 
+// --- Tab Navigation ---
+function switchTab(tabName) {
+	// Remove active class from all tab buttons and content
+	document.querySelectorAll('.tab-button').forEach(btn => {
+		btn.classList.remove('active')
+	})
+	document.querySelectorAll('.tab-content').forEach(content => {
+		content.classList.remove('active')
+	})
+
+	// Add active class to selected tab button and content
+	const selectedButton = document.querySelector(`.tab-button[data-tab="${tabName}"]`)
+	const selectedContent = document.getElementById(`tab-${tabName}`)
+	
+	if (selectedButton) {
+		selectedButton.classList.add('active')
+	}
+	if (selectedContent) {
+		selectedContent.classList.add('active')
+	}
+
+	// Scroll to top of sidebar when switching tabs
+	const scrollableSidebar = sidebar.querySelector('div[style*="overflow-y: scroll"]')
+	if (scrollableSidebar) {
+		scrollableSidebar.scrollTop = 0
+	}
+}
+
 // --- Initialization ---
 initializeSchemaDrivenUI() // Generate the settings form from the schema
 renderLocationsList()
+
+// Initialize tab navigation (script is at end of body, so DOM is ready)
+document.querySelectorAll('.tab-button').forEach(button => {
+	button.addEventListener('click', () => {
+		const tabName = button.getAttribute('data-tab')
+		switchTab(tabName)
+	})
+})
+
+// Ensure Pack Settings tab is active on page load
+switchTab('pack-settings')
 
 // --- Custom Alert Box functions ---
 // A simple function to create a modal-like alert message.
