@@ -215,7 +215,7 @@ button[disabled] {
 	}
 
 	.option {
-		flex-direction: column; /* Stack label and input on mobile */
+		flex-direction: column;
 		align-items: flex-start;
 		font-size: 1rem; 
 	}
@@ -231,7 +231,9 @@ input[type='range'] {
 
 input[type='text'],
 select,
-input[type='number'] {
+input[type='number'],
+input[type='password'],
+input[type='email'] {
 	background-color: #111;
 	color: #fff;
 	padding: 8px 12px;

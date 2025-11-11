@@ -139,3 +139,60 @@ body {
     font-style: italic;
     padding-bottom: 20px;
 }
+
+/* Magic Text Animation */
+@keyframes magicTextAppear {
+    0% {
+        opacity: 0;
+        transform: translateX(20px) scale(0.9);
+        filter: blur(4px);
+    }
+    50% {
+        transform: translateX(-5px) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+#magicText {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    transition: text-shadow 0.3s ease;
+    position: relative;
+    display: inline-block;
+}
+
+#magicText.animate {
+    animation: magicTextAppear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+#magicText.animate::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 150%;
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+    animation: glowPulse 0.8s ease-out forwards;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes glowPulse {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    50% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.8);
+    }
+}

@@ -33,7 +33,7 @@
 <body>
 	<img src="images/logo.png" alt="Hollow Guessr logo - A Hollow Knight GeoGuessing Game" id="title-image"
 		class="moving" />
-	<p class="moving" id="magicText"></p>
+	<p id="magicText"></p>
 	<br>
 	<div class="button-container moving">
 		<a class="hk-button" href="game.html">
@@ -107,7 +107,30 @@
 
         textRef.on("value", (snapshot) => {
 			// I loooove html injection
-            document.getElementById("magicText").innerHTML = snapshot.val() || "";
+            const magicTextElement = document.getElementById("magicText");
+            const newText = snapshot.val() || "";
+            
+            // Only animate if there's new text and it's different from current
+            if (newText && newText !== magicTextElement.innerHTML) {
+                // Remove animation class first to reset
+                magicTextElement.classList.remove("animate");
+                
+                // Force reflow to ensure class removal is processed
+                void magicTextElement.offsetWidth;
+                
+                // Update text
+                magicTextElement.innerHTML = newText;
+                
+                // Add animation class to trigger animation
+                magicTextElement.classList.add("animate");
+                
+                // Remove animation class after animation completes
+                setTimeout(() => {
+                    magicTextElement.classList.remove("animate");
+                }, 800);
+            } else if (!newText) {
+                magicTextElement.innerHTML = "";
+            }
         });
     </script>
 </body>
