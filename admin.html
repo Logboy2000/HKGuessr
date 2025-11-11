@@ -131,7 +131,7 @@
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
 
-            auth.signInWithEmailAndPassword(email, password)     
+            auth.signInWithEmailAndPassword(email, password)
                 .catch((err) => {
                     loginStatus.innerText = err.message;
                 });
