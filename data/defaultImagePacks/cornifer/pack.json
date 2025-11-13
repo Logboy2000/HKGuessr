@@ -1,0 +1,96 @@
+{
+  "name": "cornifer",
+  "gameModeId": "cornifer",
+  "author": "birdman25x",
+  "thumbnail": "images/thumbnail.png",
+  "locations": [
+    {
+      "x": 1191,
+      "y": 448,
+      "difficulty": 5,
+      "image": "images/loc-1-Schermafbeelding_2025_11_13_085828.png"
+    },
+    {
+      "x": 2016,
+      "y": 629,
+      "difficulty": 4,
+      "image": "images/loc-3-Schermafbeelding_2025_11_13_085927.png"
+    },
+    {
+      "x": 2732,
+      "y": 569,
+      "difficulty": 6,
+      "image": "images/loc-4-Schermafbeelding_2025_11_13_085821.png"
+    },
+    {
+      "x": 1997,
+      "y": 869,
+      "difficulty": 4,
+      "image": "images/loc-5-Schermafbeelding_2025_11_13_085805.png"
+    },
+    {
+      "x": 1622,
+      "y": 889,
+      "difficulty": 4,
+      "image": "images/loc-6-Schermafbeelding_2025_11_13_085814.png"
+    },
+    {
+      "x": 1544,
+      "y": 1136,
+      "difficulty": 7,
+      "image": "images/loc-7-Schermafbeelding_2025_11_13_085841.png"
+    },
+    {
+      "x": 1385,
+      "y": 1695,
+      "difficulty": 4,
+      "image": "images/loc-9-Schermafbeelding_2025_11_13_085901.png"
+    },
+    {
+      "x": 1640,
+      "y": 1844,
+      "difficulty": 6,
+      "image": "images/loc-10-Schermafbeelding_2025_11_13_085854.png"
+    },
+    {
+      "x": 2076,
+      "y": 1789,
+      "difficulty": 8,
+      "image": "images/loc-11-Schermafbeelding_2025_11_13_085914.png"
+    },
+    {
+      "x": 2703,
+      "y": 1409,
+      "difficulty": 5,
+      "image": "images/loc-12-Schermafbeelding_2025_11_13_085847.png"
+    },
+    {
+      "x": 2806,
+      "y": 2177,
+      "difficulty": 5,
+      "image": "images/loc-13-Schermafbeelding_2025_11_13_085920.png"
+    },
+    {
+      "x": 3688,
+      "y": 1769,
+      "difficulty": 6,
+      "image": "images/loc-14-Schermafbeelding_2025_11_13_085907.png"
+    },
+    {
+      "x": 1190,
+      "y": 1331,
+      "difficulty": 8,
+      "image": "images/loc-15-Schermafbeelding_2025_11_13_141012.png"
+    }
+  ],
+  "map": {
+    "useCustomMap": false,
+    "defaultMap": "images/game/defaultMaps/hallownest.png"
+  },
+  "contributors": [
+    {
+      "images": 13,
+      "name": "birdman25x"
+    }
+  ]
+}
