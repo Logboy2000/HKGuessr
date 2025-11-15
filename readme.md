@@ -52,5 +52,5 @@ python -m http.server 8000 --bind localhost
 - **[GeoGuessr](https://www.geoguessr.com/)**: Inspired by the mechanics of GeoGuessr.
 - **Community Contributors**: Special thanks to everyone who has contributed image packs and locations! See the full list of contributors on the [credits page](https://hollowguessr.pages.dev/credits.html).
 
-## Support Me
-I don't want your money. Donate to charity or something.
+## Support Me ❤️
+I don't want your money that bad, you can give it to **charity** or something. But if you REALLY want to give me money, you can donate [here](https://hollowguessr.pages.dev/credits.html)
