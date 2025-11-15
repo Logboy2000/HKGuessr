@@ -499,7 +499,7 @@ difficultySlider.addEventListener('input', (e) => {
 		(loc) => loc.id === state.selectedLocationId
 	)
 	if (location) {
-		location.difficulty = parseInt(e.target.value)
+		location.difficulty = e.target.value
 		difficultyValueSpan.textContent = location.difficulty
 		renderLocationsList()
 	}
@@ -853,6 +853,53 @@ downloadPackBtn.addEventListener('click', async () => {
 // --- Initialization ---
 initializeSchemaDrivenUI() // Generate the settings form from the schema
 renderLocationsList()
+
+// Keyboard navigation: Left/Right arrows change the selected location.
+// - Right: move to the next location (index + 1)
+// - Left: move to the previous location (index - 1)
+// Behavior notes:
+// - If no location is selected, Right selects the first, Left selects the last.
+// - Selection is clamped (no wrapping).
+// - Ignore arrow keys when focus is inside an input/textarea or a contentEditable element.
+window.addEventListener('keydown', (e) => {
+	if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft' && e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return
+
+	const active = document.activeElement
+	if (!active) return
+
+	const tag = active.tagName
+
+	if (!state.locations || state.locations.length === 0) return
+
+	const currentIndex = state.locations.findIndex(
+		(loc) => loc.id === state.selectedLocationId
+		
+	)
+
+	if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+		// If nothing selected, pick the first. Otherwise pick next (clamped).
+		const nextIndex = Math.min(
+			currentIndex === -1 ? 0 : currentIndex + 1,
+			state.locations.length - 1
+		)
+		const nextId = state.locations[nextIndex].id
+		if (nextId !== state.selectedLocationId) {
+			selectLocation(nextId)
+		}
+		e.preventDefault()
+	} else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+		// If nothing selected, pick the last. Otherwise pick previous (clamped).
+		const prevIndex = Math.max(
+			currentIndex === -1 ? state.locations.length - 1 : currentIndex - 1,
+			0
+		)
+		const prevId = state.locations[prevIndex].id
+		if (prevId !== state.selectedLocationId) {
+			selectLocation(prevId)
+		}
+		e.preventDefault()
+	}
+})
 
 // --- Custom Alert Box functions ---
 // A simple function to create a modal-like alert message.
