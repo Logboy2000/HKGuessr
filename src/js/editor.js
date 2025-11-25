@@ -1,6 +1,6 @@
 // --- 1. State Management ---
 
-/**
+/*
  * Schema for pack properties. This is the single source of truth for generating
  * UI elements and handling data mapping between the editor state and pack.json.
  * To add a new property (e.g., a description), just add a new object to this array.

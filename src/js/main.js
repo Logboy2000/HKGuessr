@@ -2,13 +2,13 @@
 
 // --- Firebase Initialization ---
 const firebaseConfig = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-    databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-    appId: import.meta.env.VITE_FIREBASE_APP_ID
+            apiKey: "AIzaSyBZhZ5ONdvvGS0FbOC-BhmTWZgp0d8bqWc",
+            authDomain: "hollowguessrbackend.firebaseapp.com",
+            databaseURL: "https://hollowguessrbackend-default-rtdb.firebaseio.com",
+            projectId: "hollowguessrbackend",
+            storageBucket: "hollowguessrbackend.firebasestorage.app",
+            messagingSenderId: "468117202388",
+            appId: "1:468117202388:web:1ad209b0fe18dbc9692241"
 };
 firebase.initializeApp(firebaseConfig);
 
