@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<link rel="manifest" href="/assets/manifest-DcJz2I3y.json" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+	<title>Credits | Hollow Guessr</title>
+	<link rel="stylesheet" href="style/style.css" />
+	<link rel="stylesheet" href="style/locationRequest.css" />
+	<script>
+		// Constants for contributors data
+		const PACK_LIST_URL = 'data/defaultImagePacks/packList.json'
+		const DEFAULT_IMAGE_PACKS_FOLDER = 'data/defaultImagePacks/'
+		const MAX_RETRIES = 3
+		const RETRY_DELAY = 1000 // ms
+		const VERSION = '1.0' // Increment this when making changes to the data format
+	</script>
+</head>
+
+<body>
+	<main class="location-request-content">
+		<div class="button-container">
+			<a href="index.html" class="hk-button">Back</a>
+		</div>
+		<br>
+		<h1>Credits</h1>
+
+		<h2>Contributors</h2>
+
+		<ul class="suggestions-list">
+			<li>
+				<b>YuriShimoi:</b>
+				<hr>
+				Helped reorganise script and style patterns
+			</li>
+			<li>
+				<b>rblashchuk:</b>
+				<hr>
+				Added initial ground work for different gamemodes and added charms mode
+			</li>
+		</ul>
+
+		<h2>Top Image Packs</h2>
+		<p>Your name will be added here if you submit an image pack!</p>
+		<div class="table-container">
+			<table class="contributors-table" id="contributorsTable">
+				<thead>
+					<tr>
+						<th>Place</th>
+						<th>Images</th>
+						<th>Name</th>
+						<th>Pack</th>
+						<th>Notes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Contributors will be loaded here dynamically -->
+				</tbody>
+			</table>
+		</div>
+		<h2>Extra Credits</h2>
+		<ul class="suggestions-list">
+			<li><a href="https://www.teamcherry.com.au/" target="_blank">Team Cherry</a>: Creators of Hollow Knight and
+				Hollow Knight: Silksong.</li>
+			<li><a href="https://hollowknight.wiki/" target="_blank">The HK Wiki</a>: Source of the initial 54 of the
+				screenshots in Hollow Guessr</li>
+			<li><a href="https://prashantmohta.github.io/TitleGenerator.HollowKnight/" target="_blank">HK Title
+					Generator</a>: Used to make the game's logo.</li>
+			<li><a href="https://www.geoguessr.com/" target="_blank">GeoGuessr</a>: Inspired by the mechanics of
+				GeoGuessr.</li>
+		</ul>
+		<br>
+		<div class="button-container">
+			<a href="index.html" class="hk-button">Back</a>
+		</div>
+
+		<script>
+			/**
+			 * Gets the ordinal suffix for a number (1st, 2nd, 3rd, etc.)
+			 * @param {number} i - The number to get the suffix for
+			 * @return {string} The number with its ordinal suffix
+			 */
+			function getOrdinalSuffix(i) {
+				const j = i % 10
+				const k = i % 100
+
+				if (j === 1 && k !== 11) {
+					return i + 'st'
+				} else if (j === 2 && k !== 12) {
+					return i + 'nd'
+				} else if (j === 3 && k !== 13) {
+					return i + 'rd'
+				} else {
+					return i + 'th'
+				}
+			}
+
+			/**
+			 * Creates a row element for a contributor
+			 * @param {Object} contributor - The contributor data
+			 * @param {number} place - The place/rank of the contributor
+			 * @return {HTMLElement} The table row element
+			 */
+			function createContributorRow(contributor, place) {
+				const row = document.createElement('tr')
+
+				// Add medal class for top positions
+				if (place === 1) {
+					row.classList.add('gold-medal')
+				} else if (place === 2) {
+					row.classList.add('silver-medal')
+				} else if (place === 3) {
+					row.classList.add('bronze-medal')
+				}
+
+				// Format position text
+				const positionText = getOrdinalSuffix(place)
+
+				// Create cells safely with textContent to prevent XSS
+				const placeCell = document.createElement('td')
+				placeCell.textContent = positionText
+
+				const imagesCell = document.createElement('td')
+				imagesCell.textContent = contributor.images
+
+				const nameCell = document.createElement('td')
+				nameCell.textContent = contributor.name
+
+				const packCell = document.createElement('td')
+				packCell.textContent = contributor.pack || ''
+
+				const notesCell = document.createElement('td')
+				notesCell.textContent = contributor.notes || ''
+
+				// Append cells to row
+				row.appendChild(placeCell)
+				row.appendChild(imagesCell)
+				row.appendChild(nameCell)
+				row.appendChild(packCell)
+				row.appendChild(notesCell)
+
+				return row
+			}
+
+			/**
+			 * Shows a message in the contributors table
+			 * @param {string} message - The message to display
+			 * @param {boolean} showReloadButton - Whether to show a reload button
+			 */
+			function showTableMessage(message, showReloadButton = false) {
+				const tbody = document.querySelector('#contributorsTable tbody')
+				tbody.innerHTML = ''
+
+				const row = document.createElement('tr')
+				const cell = document.createElement('td')
+
+				cell.setAttribute('colspan', '5')
+				cell.style.textAlign = 'center'
+				cell.style.padding = '20px'
+
+				if (showReloadButton) {
+					const messageSpan = document.createElement('span')
+					messageSpan.textContent = message
+
+					const reloadButton = document.createElement('button')
+					reloadButton.textContent = 'Reload Data'
+					reloadButton.style.marginLeft = '15px'
+					reloadButton.addEventListener('click', () => loadContributors())
+
+					cell.appendChild(messageSpan)
+					cell.appendChild(reloadButton)
+				} else {
+					cell.textContent = message
+				}
+
+				row.appendChild(cell)
+				tbody.appendChild(row)
+			}
+
+			/**
+			 * Loads and displays the contributors from all image packs
+			 * @param {number} retryCount - Current retry attempt (default 0)
+			 */
+			async function loadContributors(retryCount = 0) {
+				try {
+					// Show loading state
+					showTableMessage('Loading contributors data...')
+
+					// First, load the pack list
+					const packListResponse = await fetch(
+						`${PACK_LIST_URL}?v=${VERSION}&t=${Date.now()}`
+					)
+
+					if (!packListResponse.ok) {
+						throw new Error(
+							`Failed to load pack list: ${packListResponse.status} ${packListResponse.statusText}`
+						)
+					}
+
+					const packList = await packListResponse.json()
+
+					if (!Array.isArray(packList)) {
+						throw new Error('Invalid pack list format')
+					}
+
+					// Load all packs and aggregate contributors
+					const allContributors = []
+					for (const packName of packList) {
+						try {
+							const packResponse = await fetch(
+								`${DEFAULT_IMAGE_PACKS_FOLDER}${packName}/pack.json?v=${VERSION}&t=${Date.now()}`
+							)
+
+							if (!packResponse.ok) {
+								console.warn(`Failed to load pack ${packName}`)
+								continue
+							}
+
+							const packData = await packResponse.json()
+
+							if (packData.contributors && Array.isArray(packData.contributors)) {
+								// Add pack name to each contributor
+								packData.contributors.forEach(contributor => {
+									allContributors.push({
+										...contributor,
+										pack: packData.name || packName
+									})
+								})
+							}
+						} catch (error) {
+							console.warn(`Error loading pack ${packName}:`, error)
+							// Continue loading other packs even if one fails
+						}
+					}
+
+					// Aggregate contributors by name, combining their images and packs
+					const contributorMap = new Map()
+					for (const contributor of allContributors) {
+						const key = contributor.name
+						if (contributorMap.has(key)) {
+							const existing = contributorMap.get(key)
+							existing.images += contributor.images
+							// Track unique packs using a Set
+							if (!existing.packSet) {
+								existing.packSet = new Set([existing.pack])
+							}
+							existing.packSet.add(contributor.pack)
+							// Keep the first non-empty notes
+							if (!existing.notes && contributor.notes) {
+								existing.notes = contributor.notes
+							}
+						} else {
+							contributorMap.set(key, {
+								...contributor,
+								packSet: new Set([contributor.pack])
+							})
+						}
+					}
+
+					// Convert pack sets to comma-separated strings
+					const contributors = Array.from(contributorMap.values()).map(contributor => {
+						if (contributor.packSet) {
+							contributor.pack = Array.from(contributor.packSet).join(', ')
+							delete contributor.packSet
+						}
+						return contributor
+					}).sort((a, b) => b.images - a.images)
+
+					// Get table element and prepare for new content
+					const tbody = document.querySelector('#contributorsTable tbody')
+					tbody.innerHTML = ''
+
+					if (contributors.length === 0) {
+						showTableMessage('No contributors found.', true)
+						return
+					}
+
+					// Track the place/rank
+					let currentPlace = 1
+					let previousImages = null
+					const fragment = document.createDocumentFragment()
+
+					// Add each contributor to the table
+					contributors.forEach((contributor, index) => {
+						// Update the place/rank when the image count changes
+						if (
+							previousImages !== null &&
+							previousImages !== contributor.images
+						) {
+							currentPlace = index + 1
+						}
+						previousImages = contributor.images
+
+						// Create and add the row
+						const row = createContributorRow(contributor, currentPlace)
+						fragment.appendChild(row)
+					})
+
+					// Add all rows to the table at once (better performance)
+					tbody.appendChild(fragment)
+				} catch (error) {
+					console.error(
+						`Error loading contributors (attempt ${retryCount + 1}/${MAX_RETRIES + 1
+						}):`,
+						error
+					)
+
+					// Retry loading if we haven't exceeded max retries
+					if (retryCount < MAX_RETRIES) {
+						showTableMessage(
+							`Loading contributors data... (Retry ${retryCount + 1
+							}/${MAX_RETRIES})`
+						)
+
+						// Wait before retrying
+						await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY))
+						return loadContributors(retryCount + 1)
+					}
+
+					showTableMessage('Error loading contributors data.', true)
+				}
+			}
+
+			// Initialize when the document is ready
+			document.addEventListener('DOMContentLoaded', loadContributors)
+		</script>
+	</main>
+</body>
+
+</html>

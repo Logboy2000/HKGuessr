@@ -1,0 +1,378 @@
+{
+  "name": "Tools",
+  "gameModeId": "all_tools",
+  "author": "seaman",
+  "thumbnail": "images/thumbnail.jpg",
+  "locations": [
+    {
+      "x": 1603,
+      "y": 2493,
+      "difficulty": 6,
+      "image": "images/loc-1-tool_straight_pin.png"
+    },
+    {
+      "x": 3023,
+      "y": 2037,
+      "difficulty": 8,
+      "image": "images/loc-2-tool_threefold_pin.png"
+    },
+    {
+      "x": 2125,
+      "y": 2634,
+      "difficulty": 5,
+      "image": "images/loc-3-tool_sting_shard.png"
+    },
+    {
+      "x": 2635,
+      "y": 1884,
+      "difficulty": 7,
+      "image": "images/loc-4-tool_tacks.png"
+    },
+    {
+      "x": 1521,
+      "y": 2191,
+      "difficulty": 6,
+      "image": "images/loc-5-tool_longpin.png"
+    },
+    {
+      "x": 2204,
+      "y": 2296,
+      "difficulty": 8,
+      "image": "images/loc-6-tool_curveclaw.png"
+    },
+    {
+      "x": 2711,
+      "y": 2506,
+      "difficulty": 5,
+      "image": "images/loc-7-tool_curvesickle.png"
+    },
+    {
+      "x": 3522,
+      "y": 1289,
+      "difficulty": 3,
+      "image": "images/loc-8-tool_throwing_ring.png"
+    },
+    {
+      "x": 287,
+      "y": 1485,
+      "difficulty": 2,
+      "image": "images/loc-10-tool_conchcutter.png"
+    },
+    {
+      "x": 2029,
+      "y": 1648,
+      "difficulty": 8,
+      "image": "images/loc-12-tool_silkshot_ta.png"
+    },
+    {
+      "x": 816,
+      "y": 860,
+      "difficulty": 9,
+      "image": "images/loc-13-tool_silkshot_mf.png"
+    },
+    {
+      "x": 1520,
+      "y": 1904,
+      "difficulty": 7,
+      "image": "images/loc-14-tool_delvers_drill.png"
+    },
+    {
+      "x": 1714,
+      "y": 1009,
+      "difficulty": 4,
+      "image": "images/loc-16-tool_cogfly.png"
+    },
+    {
+      "x": 1720,
+      "y": 1130,
+      "difficulty": 4,
+      "image": "images/loc-17-tool_rosary_cannon.png"
+    },
+    {
+      "x": 2281,
+      "y": 994,
+      "difficulty": 5,
+      "image": "images/loc-18-tool_voltvessels_s.png"
+    },
+    {
+      "x": 2281,
+      "y": 994,
+      "difficulty": 5,
+      "image": "images/loc-19-tool_voltvessels_b.png"
+    },
+    {
+      "x": 2343,
+      "y": 2629,
+      "difficulty": 9,
+      "image": "images/loc-20-tool_flintslate.png"
+    },
+    {
+      "x": 3350,
+      "y": 1222,
+      "difficulty": 3,
+      "image": "images/loc-22-tool_flea_brew.png"
+    },
+    {
+      "x": 420,
+      "y": 2303,
+      "difficulty": 1,
+      "image": "images/loc-23-tool_plasmium_phial.png"
+    },
+    {
+      "x": 420,
+      "y": 2302,
+      "difficulty": 2,
+      "image": "images/loc-24-tool_needle_phial.png"
+    },
+    {
+      "x": 2126,
+      "y": 2634,
+      "difficulty": 5,
+      "image": "images/loc-27-tool_magma_bell.png"
+    },
+    {
+      "x": 2591,
+      "y": 2625,
+      "difficulty": 8,
+      "image": "images/loc-28-tool_warding_bell.png"
+    },
+    {
+      "x": 1630,
+      "y": 2220,
+      "difficulty": 6,
+      "image": "images/loc-31-tool_multibinder.png"
+    },
+    {
+      "x": 2399,
+      "y": 1191,
+      "difficulty": 7,
+      "image": "images/loc-35-tool_spool_extender.png"
+    },
+    {
+      "x": 2214,
+      "y": 1415,
+      "difficulty": 2,
+      "image": "images/loc-37-tool_claw_mirror.png"
+    },
+    {
+      "x": 2745,
+      "y": 1239,
+      "difficulty": 6,
+      "image": "images/loc-44-tool_longclaw.png"
+    },
+    {
+      "x": 817,
+      "y": 1004,
+      "difficulty": 6,
+      "image": "images/loc-47-tool_pin_badge.png"
+    },
+    {
+      "x": 2686,
+      "y": 2039,
+      "difficulty": 8,
+      "image": "images/loc-52-tool_barbed_bracelet.png"
+    },
+    {
+      "x": 2030,
+      "y": 1647,
+      "difficulty": 4,
+      "image": "images/loc-56-tool_scuttlebrace.png"
+    },
+    {
+      "x": 2399,
+      "y": 1191,
+      "difficulty": 7,
+      "image": "images/loc-57-tool_ascendants_grip.png"
+    },
+    {
+      "x": 2399,
+      "y": 1192,
+      "difficulty": 8,
+      "image": "images/loc-58-tool_spider_strings.png"
+    },
+    {
+      "x": 3458,
+      "y": 2677,
+      "difficulty": 5,
+      "image": "images/loc-59-tool_silkspeed_anklets.png"
+    },
+    {
+      "x": 1805,
+      "y": 2010,
+      "difficulty": 5,
+      "image": "images/loc-9-tool_pimpillo.png"
+    },
+    {
+      "x": 2125,
+      "y": 2634,
+      "difficulty": 8,
+      "image": "images/loc-11-tool_silkshot_fd.png"
+    },
+    {
+      "x": 2029,
+      "y": 1648,
+      "difficulty": 5,
+      "image": "images/loc-15-tool_cogwork_wheel.png"
+    },
+    {
+      "x": 1007,
+      "y": 2681,
+      "difficulty": 10,
+      "image": "images/loc-21-tool_snare_setter.png"
+    },
+    {
+      "x": 1059,
+      "y": 2384,
+      "difficulty": 3,
+      "image": "images/loc-25-tool_druids_eye.png"
+    },
+    {
+      "x": 1059,
+      "y": 2385,
+      "difficulty": 3,
+      "image": "images/loc-26-tool_druids_eyes.png"
+    },
+    {
+      "x": 1217,
+      "y": 2163,
+      "difficulty": 6,
+      "image": "images/loc-29-tool_pollip_pouch.png"
+    },
+    {
+      "x": 2118,
+      "y": 2324,
+      "difficulty": 5,
+      "image": "images/loc-30-tool_fractured_mask.png"
+    },
+    {
+      "x": 616,
+      "y": 2740,
+      "difficulty": 7,
+      "image": "images/loc-32-tool_weavelight.png"
+    },
+    {
+      "x": 2030,
+      "y": 1649,
+      "difficulty": 5,
+      "image": "images/loc-33-tool_sawtooth_circlet.png"
+    },
+    {
+      "x": 1978,
+      "y": 1524,
+      "difficulty": 8,
+      "image": "images/loc-34-tool_injector_band.png"
+    },
+    {
+      "x": 1843,
+      "y": 1108,
+      "difficulty": 7,
+      "image": "images/loc-36-tool_reserve_bind.png"
+    },
+    {
+      "x": 2214,
+      "y": 1414,
+      "difficulty": 2,
+      "image": "images/loc-38-tool_claw_mirrors.png"
+    },
+    {
+      "x": 359,
+      "y": 1345,
+      "difficulty": 10,
+      "image": "images/loc-39-tool_memory_crystal.png"
+    },
+    {
+      "x": 561,
+      "y": 1732,
+      "difficulty": 3,
+      "image": "images/loc-40-tool_snitch_pick.png"
+    },
+    {
+      "x": 622,
+      "y": 1452,
+      "difficulty": 2,
+      "image": "images/loc-41-tool_volt_filament.png"
+    },
+    {
+      "x": 2914,
+      "y": 1491,
+      "difficulty": 10,
+      "image": "images/loc-42-tool_quick_sling.png"
+    },
+    {
+      "x": 3105,
+      "y": 1174,
+      "difficulty": 8,
+      "image": "images/loc-43-tool_wreath_of_purity.png"
+    },
+    {
+      "x": 1605,
+      "y": 1902,
+      "difficulty": 4,
+      "image": "images/loc-45-tool_wispfire_lantern.png"
+    },
+    {
+      "x": 3350,
+      "y": 1221,
+      "difficulty": 3,
+      "image": "images/loc-46-tool_egg_of_flealia.png"
+    },
+    {
+      "x": 1679,
+      "y": 2209,
+      "difficulty": 4,
+      "image": "images/loc-48-tool_compass.png"
+    },
+    {
+      "x": 1216,
+      "y": 2484,
+      "difficulty": 8,
+      "image": "images/loc-49-tool_shard_pendant.png"
+    },
+    {
+      "x": 561,
+      "y": 1732,
+      "difficulty": 7,
+      "image": "images/loc-50-tool_magnetite_brooch.png"
+    },
+    {
+      "x": 2740,
+      "y": 2449,
+      "difficulty": 7,
+      "image": "images/loc-51-tool_weighted_belt.png"
+    },
+    {
+      "x": 606,
+      "y": 2292,
+      "difficulty": 9,
+      "image": "images/loc-53-tool_dead_bugs_purse.png"
+    },
+    {
+      "x": 606,
+      "y": 2292,
+      "difficulty": 10,
+      "image": "images/loc-54-tool_shell_satchel.png"
+    },
+    {
+      "x": 561,
+      "y": 1732,
+      "difficulty": 6,
+      "image": "images/loc-55-tool_magnetite_dice.png"
+    },
+    {
+      "x": 561,
+      "y": 1731,
+      "difficulty": 6,
+      "image": "images/loc-60-tool_thiefs_mark.png"
+    }
+  ],
+  "contributors": [
+    {
+      "images": 40,
+      "name": "seaman"
+    }
+  ],
+  "map": {
+    "useCustomMap": false,
+    "defaultMap": "images/game/defaultMaps/pharloom.png"
+  }
+}

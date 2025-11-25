@@ -1,0 +1,108 @@
+{
+  "name": "Whispering Roots",
+  "gameModeId": "whispering_roots",
+  "author": "birdman25x",
+  "thumbnail": "images/thumbnail.png",
+  "locations": [
+    {
+      "x": 2055,
+      "y": 839,
+      "difficulty": 4,
+      "image": "images/loc-1-Schermafbeelding_2025_10_15_162331.png"
+    },
+    {
+      "x": 2473,
+      "y": 1359,
+      "difficulty": 5,
+      "image": "images/loc-2-Schermafbeelding_2025_10_15_162445.png"
+    },
+    {
+      "x": 3203,
+      "y": 426,
+      "difficulty": 5,
+      "image": "images/loc-3-Schermafbeelding_2025_10_15_162521.png"
+    },
+    {
+      "x": 750,
+      "y": 1984,
+      "difficulty": 7,
+      "image": "images/loc-4-Schermafbeelding_2025_10_15_162555.png"
+    },
+    {
+      "x": 1969,
+      "y": 690,
+      "difficulty": 6,
+      "image": "images/loc-5-Schermafbeelding_2025_10_15_162650.png"
+    },
+    {
+      "x": 1922,
+      "y": 1177,
+      "difficulty": 5,
+      "image": "images/loc-6-Schermafbeelding_2025_10_15_162727.png"
+    },
+    {
+      "x": 1885,
+      "y": 1599,
+      "difficulty": 5,
+      "image": "images/loc-7-Schermafbeelding_2025_10_15_162757.png"
+    },
+    {
+      "x": 915,
+      "y": 1072,
+      "difficulty": 6,
+      "image": "images/loc-8-Schermafbeelding_2025_10_15_162820.png"
+    },
+    {
+      "x": 3886,
+      "y": 2098,
+      "difficulty": 6,
+      "image": "images/loc-9-Schermafbeelding_2025_10_15_162847.png"
+    },
+    {
+      "x": 1081,
+      "y": 549,
+      "difficulty": 5,
+      "image": "images/loc-10-Schermafbeelding_2025_10_15_162913.png"
+    },
+    {
+      "x": 3745,
+      "y": 1598,
+      "difficulty": 8,
+      "image": "images/loc-11-Schermafbeelding_2025_10_15_162938.png"
+    },
+    {
+      "x": 1167,
+      "y": 1461,
+      "difficulty": 7,
+      "image": "images/loc-12-Schermafbeelding_2025_10_15_163200.png"
+    },
+    {
+      "x": 3443,
+      "y": 879,
+      "difficulty": 2,
+      "image": "images/loc-13-Schermafbeelding_2025_10_15_163248.png"
+    },
+    {
+      "x": 3067,
+      "y": 2007,
+      "difficulty": 6,
+      "image": "images/loc-14-Schermafbeelding_2025_10_15_163506.png"
+    },
+    {
+      "x": 3703,
+      "y": 712,
+      "difficulty": 5,
+      "image": "images/loc-15-Schermafbeelding_2025_10_15_163540.png"
+    }
+  ],
+  "contributors": [
+    {
+      "images": 46,
+      "name": "birdman25x"
+        }
+  ],
+  "map": {
+    "useCustomMap": false,
+    "defaultMap": "images/game/defaultMaps/hallownest.png"
+  }
+}

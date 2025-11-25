@@ -1,0 +1,722 @@
+@font-face {
+	font-family: 'Trajan Pro Bold';
+	font-display: swap;
+	font-style: normal;
+	font-weight: normal;
+	src: local('Trajan Pro Bold'), url('TrajanPro-Bold.woff') format('woff');
+}
+
+* {
+	font-family: 'Trajan Pro Bold';
+	color: #fff;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+hr {
+	width: 95%;
+	border-color: rgba(255, 255, 255, 0.3);
+}
+
+body {
+	background-color: #000;
+	font-size: 16px;
+}
+
+
+
+img {
+	-webkit-user-drag: none;
+}
+
+#scoreContainer {
+ 	font-size: 2rem;
+ 	color: #fff;
+ 	position: absolute;
+ 	top: 0.5rem;
+ 	left: 50%;
+ 	transform: translateX(-50%);
+ 	display: flex;
+ 	align-items: center;
+}
+
+/* Separate container for the back button so it can sit above the modal overlay */
+#backContainer {
+	position: absolute;
+	top: 0.5rem;
+	left: 0.5rem;
+	z-index: 1100;
+}
+
+#back-button {
+	background-color: transparent;
+	color: #fff;
+	border: 2px solid #fff;
+	border-radius: 0.5rem;
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+	transition: all 0.12s ease-in-out;
+	pointer-events: auto;
+}
+
+#back-button:hover {
+	background-color: #fff;
+	color: #000;
+	box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+	transform: translateY(-1px);
+}
+
+
+
+
+/* Dimming / backdrop effect when a modal is open */
+.modal-open #mapContainer,
+.modal-open #locationImg,
+.modal-open #controlsContainer {
+	filter: blur(2px) saturate(0.8);
+	opacity: 0.4;
+	transition: all 0.28s ease;
+}
+
+/* Overlay that sits behind modals and blocks clicks */
+.modal-overlay {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.4);
+	display: none;
+}
+.modal-overlay.visible { display:block; }
+
+/* Improve visible focus state for keyboard users inside modals */
+.window :focus {
+	outline: 2px solid rgba(255,255,255,0.9);
+	outline-offset: 2px;
+}
+.option {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 0.5rem;
+	width: 100%;
+}
+
+
+#loadingText, #mapLoadingText  {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, calc(-50%));
+	font-size: 2rem;
+	color: #fff;
+	z-index: 1;
+}
+
+
+#mapCanvas {
+	width: 100%;
+	flex-grow: 1; /* Allow canvas to fill available vertical space */
+	min-height: 0; /* Prevents flexbox overflow issues */
+	touch-action: none;
+	pointer-events: unset;
+	transition: all 0.5s ease;
+}
+
+#controlsContainer {
+	height: 60px; /* Give the container a fixed height */
+	display: flex;
+	width: 100%;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0 65px 0 0.5rem; /* Add padding on the right for the minimise button */
+}
+
+#iconButtons {
+	display: flex;
+	gap: 0.5rem;
+}
+
+#buttonContainer {
+	display: flex;
+	gap: 1rem;
+	padding: 0;
+	font-size: 1.5rem;
+	text-align: center;	
+	align-items: center;
+}
+
+button {
+	font-size: 1.25rem;
+	background-color: transparent;
+	color: #fff;
+	border: 2px solid #fff;
+	border-radius: 0.5rem;
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+	transition: all 0.1s ease-in-out;
+	max-height: 50px; 
+	text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+
+button:hover {
+	background-color: #fff;
+	color: #000000;
+}
+
+button:hover > img {
+	filter: invert(1);
+}
+
+button:disabled,
+button[disabled] {
+	background-color: transparent;
+	color: #999;
+	border: 2px solid #999;
+	cursor: not-allowed;
+}
+
+#showMapButton {
+	position: absolute;
+	width: 60px;
+	height: 60px;
+	right: 2.5rem;
+	bottom: 3rem;
+	margin-bottom: 3rem;
+	margin-right: 2.5rem;
+	display: none;
+	text-align: center;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+}
+
+@media (max-width: 768px) {
+	#scoreContainer {
+		font-size: 1.5rem;
+	}
+
+	button {
+		font-size: 1rem;
+		padding: 0.5rem;
+	}
+
+	p {
+		font-size: 0.9rem;
+	}
+
+	.window {
+		transition: all 0.3s ease;
+		font-size: 1.2rem;
+		padding: 1rem;
+		gap: 0.75rem;
+	}
+
+	.option {
+		flex-direction: column;
+		align-items: flex-start;
+		font-size: 1rem; 
+	}
+}
+
+
+
+input[type='range'] {
+	padding: 0;
+	border: none;
+	background: transparent;
+}
+
+input[type='text'],
+select,
+input[type='number'],
+input[type='password'],
+input[type='email'] {
+	background-color: #111;
+	color: #fff;
+	padding: 8px 12px;
+	border: 2px solid #818181;
+	font-size: 1rem; /* Explicitly set a readable font size */
+	border-radius: 4px;
+}
+
+input[type='text']:focus,
+select:focus,
+input[type='number']:focus {
+	border-color: #ffffff;
+	outline: none;
+	box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+input[type='text']:disabled,
+select:disabled,
+input[type='number']:disabled {
+	background-color: #818181;
+	border-color: #000000;
+	outline: none;
+	user-select: none;
+	cursor: not-allowed;
+}
+
+/* Style the checkbox - prettier, accessible, no HTML changes required */
+input[type='checkbox'] {
+	/* remove native appearance so we can style it consistently */
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+
+	width: 22px;
+	height: 22px;
+	margin-right: 10px;
+	border: 2px solid rgba(255,255,255,0.95);
+	border-radius: 6px;
+	background-color: transparent;
+	display: inline-block;
+	vertical-align: middle;
+	cursor: pointer;
+	position: relative;
+	transition: all 0.12s ease-in-out;
+}
+
+/* checkmark created with ::after — widely supported when appearance is removed */
+input[type='checkbox']::after {
+	/* draw the two-segment check using rotated borders and center it */
+	content: '';
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 8px;
+	height: 12px;
+	transform: translate(-50%, -55%) rotate(45deg) scale(0);
+	transform-origin: center;
+	border-right: 2px solid transparent;
+	border-bottom: 2px solid transparent;
+	transition: transform 0.12s ease-in-out, border-color 0.12s ease-in-out;
+}
+
+input[type='checkbox']:checked {
+	background-color: #fff;
+	border-color: #fff;
+}
+
+input[type='checkbox']:checked::after {
+	border-right-color: #000;
+	border-bottom-color: #000;
+	transform: translate(-50%, -55%) rotate(45deg) scale(1);
+}
+
+input[type='checkbox']:focus {
+	outline: 3px solid rgb(171, 171, 171);
+	outline-offset: 2px;
+}
+
+/* Make labels inside option rows clickable and show pointer */
+.option label {
+	cursor: pointer;
+}
+
+label {
+	text-align: left;
+	margin-bottom: 0;
+	cursor: text;
+}
+
+/* Location Request Page Styles */
+.location-request-container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 2rem;
+	background-color: rgba(0, 0, 0, 0.8);
+	border-radius: 1rem;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.back-nav {
+	margin-bottom: 2rem;
+}
+
+.back-nav button {
+	background: transparent;
+	border: 2px solid #fff;
+	color: #fff;
+	padding: 0.5rem 1rem;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.back-nav button:hover {
+	background: #fff;
+	color: #000;
+}
+
+.location-request-content {
+	display: flex;
+	flex-direction: column;
+}
+
+.location-request-content h1 {
+	text-align: center;
+	font-size: 2.5rem;
+	margin-bottom: 1rem;
+	color: #fff;
+	text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.location-request-content h2 {
+	font-size: 1.8rem;
+	margin-bottom: 1rem;
+	color: #fff;
+	border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+	padding-bottom: 0.5rem;
+}
+
+.requirements-list,
+.suggestions-list,
+.contributors-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.requirements-list li,
+.suggestions-list li,
+.contributors-list li {
+	margin: 1rem 0;
+	padding: 0.5rem;
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 0.5rem;
+	transition: all 0.3s ease;
+}
+
+.requirements-list li:hover,
+.suggestions-list li:hover,
+.contributors-list li:hover {
+	background: rgba(255, 255, 255, 0.2);
+}
+
+.contributors-list li.alternative::before {
+	content: '✓';
+	margin-right: 0.75rem;
+	color: #4caf50;
+	font-weight: bold;
+	font-size: 1.2rem;
+}
+
+.suggestions-list li {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+}
+
+.table-container {
+	position: relative;
+	margin-top: 1.5rem;
+	margin-bottom: 2rem;
+}
+
+.contributors-table {
+	width: 100%;
+	border-collapse: collapse;
+	border-radius: 0.5rem;
+	overflow: hidden;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+.suggestions-list li.preferred {
+	background: rgba(0, 255, 0, 0.1);
+	border: 1px solid rgba(0, 255, 0, 0.3);
+}
+
+.contributors-table th {
+	background-color: rgba(255, 255, 255, 0.2);
+	padding: 0.75rem;
+	text-align: left;
+	font-weight: bold;
+	border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.contributors-table td {
+	padding: 0.75rem;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contributors-table tr:hover {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+.contributors-table tr.gold-medal td {
+	background-color: rgba(255, 215, 0, 0.2);
+}
+
+.contributors-table tr.silver-medal td {
+	background-color: rgba(192, 192, 192, 0.2);
+}
+
+.contributors-table tr.bronze-medal td {
+	background-color: rgba(205, 127, 50, 0.2);
+}
+
+.suggestions-list a {
+	color: #fff;
+	text-decoration: none;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+	transition: all 0.3s ease;
+}
+
+.suggestions-list a:hover {
+	color: #fff;
+	border-bottom-color: #fff;
+}
+
+.coordinates-image {
+	display: flex;
+	justify-content: center;
+	margin: 1rem 0;
+}
+
+.coordinates-image img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 0.5rem;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.contributors-list .count {
+	display: inline-block;
+	min-width: 2.5rem;
+	text-align: right;
+	margin-right: 0.5rem;
+	color: #ffd700;
+}
+
+.contributors-table td:nth-child(2) {
+	font-weight: bold;
+	color: #ffd700;
+	text-align: center;
+	text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+.contributors-table td:nth-child(1) {
+	text-align: center;
+	font-weight: bold;
+}
+
+.contributors-table td:nth-child(4) {
+	font-style: italic;
+	color: rgba(255, 255, 255, 0.8);
+}
+
+.last-updated {
+	text-align: right;
+	font-size: 0.8rem;
+	color: rgba(255, 255, 255, 0.6);
+	margin-top: 0.5rem;
+	font-style: italic;
+}
+
+@media (max-width: 768px) {
+	.location-request-container {
+		padding: 1rem;
+	}
+
+	.location-request-content h1 {
+		font-size: 2rem;
+	}
+
+	.location-request-content h2 {
+		font-size: 1.5rem;
+	}
+
+	.suggestions-list li {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.contributors-table {
+		font-size: 0.9rem;
+	}
+
+	.contributors-table th,
+	.contributors-table td {
+		padding: 0.5rem;
+	}
+
+	.last-updated {
+		font-size: 0.7rem;
+		margin-top: 0.3rem;
+	}
+}
+
+.rotate180 {
+	transition: all 0.3s ease;
+	transform: rotate(180deg);
+}
+
+
+
+#guessButton {
+	flex-grow: 1; /* Allow guess button to fill space */
+}
+
+.spoiler {
+	background-color: #818181;
+	color: #818181;
+	transition: all 0.3s ease;
+	border-radius: 0.25rem;
+	padding: 0.1rem 0.25rem;
+	text-shadow: none;
+	width: fit-content;
+	cursor: pointer;
+}
+
+.spoiler:hover {
+	color: #fff;
+	text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+	background-color: transparent;
+}
+
+
+/* Play button */
+.hk-button {
+	font-family: 'Trajan Pro Bold', serif;
+	font-size: 1rem;
+	font-weight: bold;
+	padding: 10px 0;
+	transition: color 0.3s, text-shadow 0.3s;
+	max-height: none;
+	flex-grow: 0;
+	text-transform: uppercase;
+	letter-spacing: 3px;
+	display: inline-flex; /* Allow button to size to its content */
+	justify-content: center; /* Keep text centered */
+	padding: 10px 60px; /* Add horizontal padding for arrow spacing */
+	background: transparent;
+	border: none;
+	color: rgba(255, 255, 255, 0.7);
+	position: relative;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.hk-button:hover {
+	color: #fff;
+	text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+	background-color: transparent; /* Override the global button hover style */
+}
+
+/* Hollow Knight-style selection cursors */
+.hk-button::before,
+.hk-button::after {
+	content: ''; /* Use empty content for background images */
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 20px;
+	height: 20px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.hk-button::before {
+	background-image: url('/images/leftArrow.png');
+	left: 25px; /* Position arrow in the padding area */
+	transform: translateY(-60%) translateX(-10px) scale(0.75); /* Start off-screen */
+}
+
+.hk-button::after {
+	background-image: url('/images/rightArrow.png');
+	right: 25px; /* Position arrow in the padding area */
+	transform: translateY(-60%) translateX(10px) scale(0.75); /* Start off-screen */
+}
+
+.hk-button:hover::before,
+.hk-button:hover::after {
+	opacity: 1;
+	transform: translateY(-60%) translateX(0px) scale(1.35); /* Animate to final position */
+}
+
+.hk-button:focus {
+	outline: none;
+}
+
+/* Centers buttons inside it */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Toast container styles */
+#toast-container {
+	position: fixed;
+	bottom: 1rem;
+	right: 1rem;
+	display: flex;
+	flex-direction: column-reverse; /* New toasts appear above old ones */
+	gap: 0.5rem;
+	z-index: 9999;
+	pointer-events: none; /* Allow clicks to pass through the container */
+}
+
+/* Individual toast styles */
+.hk_toast {
+	background: rgba(0, 0, 0, 0.85);
+	color: white;
+	padding: 10px 16px;
+	border-radius: 6px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+	font-size: 14px;
+	opacity: 0;
+	transition: opacity 350ms ease-in-out;
+	pointer-events: auto; /* Toasts themselves can be interactive if needed later */
+	max-width: 350px;
+	width: 350px;
+}
+
+/* Confirmation Dialog Styles */
+.confirmation-dialog {
+	position: fixed;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 2000;
+	background-color: rgba(0,0,0,0.7);
+}
+
+.dialog-content {
+	background-color: rgba(0, 0, 0, 0.9);
+	padding: 2rem;
+	border-radius: 8px;
+	border: 2px solid rgba(255, 255, 255, 0.5);
+	box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+	text-align: center;
+	max-width: 28rem;
+}
+
+.dialog-content p {
+	font-size: 1.25rem;
+	margin-bottom: 1.5rem;
+}
+
+.dialog-buttons {
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+}
+
+/* Make confirm/cancel buttons smaller */
+.dialog-buttons .hk-button {
+	padding: 8px 32px;
+	font-size: 0.9rem;
+	letter-spacing: 2px;
+}

@@ -1,0 +1,312 @@
+{
+  "name": "Benches",
+  "gameModeId": "benches_only",
+  "author": "Coldes",
+    "thumbnail": "images/thumbnail.jpg",
+  "locations": [
+    {
+      "x": 3460,
+      "y": 1726,
+      "difficulty": 5,
+      "image": "images/loc-71-Screenshot_2025_08_29_000007.png"
+    },
+    {
+      "x": 1407,
+      "y": 392,
+      "difficulty": 8,
+      "image": "images/loc-47-Screenshot_2025_08_28_233859.png"
+    },
+    {
+      "x": 2007,
+      "y": 628,
+      "difficulty": 1,
+      "image": "images/loc-46-Screenshot_2025_08_28_233838.png"
+    },
+    {
+      "x": 2053,
+      "y": 839,
+      "difficulty": 2,
+      "image": "images/loc-51-Screenshot_2025_08_28_234811.png"
+    },
+    {
+      "x": 2156,
+      "y": 919,
+      "difficulty": 4,
+      "image": "images/loc-48-Screenshot_2025_08_28_234151.png"
+    },
+    {
+      "x": 2359,
+      "y": 907,
+      "difficulty": 2,
+      "image": "images/loc-49-Screenshot_2025_08_28_234503.png"
+    },
+    {
+      "x": 2858,
+      "y": 526,
+      "difficulty": 4,
+      "image": "images/loc-92-Screenshot_2025_08_29_001215.png"
+    },
+    {
+      "x": 2900,
+      "y": 857,
+      "difficulty": 4,
+      "image": "images/loc-90-Screenshot_2025_08_29_001118.png"
+    },
+    {
+      "x": 3503,
+      "y": 860,
+      "difficulty": 3,
+      "image": "images/loc-93-Screenshot_2025_08_29_001237.png"
+    },
+    {
+      "x": 3682,
+      "y": 946,
+      "difficulty": 5,
+      "image": "images/loc-94-Screenshot_2025_08_29_001258.png"
+    },
+    {
+      "x": 2679,
+      "y": 1010,
+      "difficulty": 3,
+      "image": "images/loc-50-Screenshot_2025_08_28_234530.png"
+    },
+    {
+      "x": 1442,
+      "y": 736,
+      "difficulty": 3,
+      "image": "images/loc-54-Screenshot_2025_08_28_235117.png"
+    },
+    {
+      "x": 1092,
+      "y": 857,
+      "difficulty": 5,
+      "image": "images/loc-56-Screenshot_2025_08_28_235222.png"
+    },
+    {
+      "x": 916,
+      "y": 770,
+      "difficulty": 3,
+      "image": "images/loc-57-Screenshot_2025_08_28_235249.png"
+    },
+    {
+      "x": 585,
+      "y": 768,
+      "difficulty": 5,
+      "image": "images/loc-58-Screenshot_2025_08_28_235344.png"
+    },
+    {
+      "x": 490,
+      "y": 949,
+      "difficulty": 5,
+      "image": "images/loc-59-Screenshot_2025_08_28_235402.png"
+    },
+    {
+      "x": 1556,
+      "y": 1008,
+      "difficulty": 3,
+      "image": "images/loc-55-Screenshot_2025_08_28_235141.png"
+    },
+    {
+      "x": 1598,
+      "y": 1227,
+      "difficulty": 2,
+      "image": "images/loc-60-Screenshot_2025_08_28_235422.png"
+    },
+    {
+      "x": 1136,
+      "y": 1319,
+      "difficulty": 4,
+      "image": "images/loc-95-Screenshot_2025_08_29_001327.png"
+    },
+    {
+      "x": 853,
+      "y": 1368,
+      "difficulty": 5,
+      "image": "images/loc-97-Screenshot_2025_08_29_001424.png"
+    },
+    {
+      "x": 1492,
+      "y": 1458,
+      "difficulty": 3,
+      "image": "images/loc-61-Screenshot_2025_08_28_235516.png"
+    },
+    {
+      "x": 709,
+      "y": 1476,
+      "difficulty": 4,
+      "image": "images/loc-96-Screenshot_2025_08_29_001356.png"
+    },
+    {
+      "x": 1335,
+      "y": 1719,
+      "difficulty": 4,
+      "image": "images/loc-80-Screenshot_2025_08_29_000629.png"
+    },
+    {
+      "x": 2106,
+      "y": 1192,
+      "difficulty": 3,
+      "image": "images/loc-62-Screenshot_2025_08_28_235605.png"
+    },
+    {
+      "x": 1991,
+      "y": 1724,
+      "difficulty": 6,
+      "image": "images/loc-64-Screenshot_2025_08_28_235654.png"
+    },
+    {
+      "x": 2113,
+      "y": 1753,
+      "difficulty": 3,
+      "image": "images/loc-63-Screenshot_2025_08_28_235632.png"
+    },
+    {
+      "x": 2105,
+      "y": 1970,
+      "difficulty": 2,
+      "image": "images/loc-74-Screenshot_2025_08_29_000242.png"
+    },
+    {
+      "x": 1436,
+      "y": 2074,
+      "difficulty": 4,
+      "image": "images/loc-79-Screenshot_2025_08_29_000604.png"
+    },
+    {
+      "x": 322,
+      "y": 1863,
+      "difficulty": 3,
+      "image": "images/loc-82-Screenshot_2025_08_29_000737.png"
+    },
+    {
+      "x": 2440,
+      "y": 1263,
+      "difficulty": 5,
+      "image": "images/loc-69-Screenshot_2025_08_28_235808.png"
+    },
+    {
+      "x": 2680,
+      "y": 1410,
+      "difficulty": 4,
+      "image": "images/loc-66-Screenshot_2025_08_28_235749.png"
+    },
+    {
+      "x": 2482,
+      "y": 1577,
+      "difficulty": 3,
+      "image": "images/loc-65-Screenshot_2025_08_28_235720.png"
+    },
+    {
+      "x": 2895,
+      "y": 1549,
+      "difficulty": 3,
+      "image": "images/loc-68-Screenshot_2025_08_28_235904.png"
+    },
+    {
+      "x": 2588,
+      "y": 1849,
+      "difficulty": 4,
+      "image": "images/loc-73-Screenshot_2025_08_29_000126.png"
+    },
+    {
+      "x": 3298,
+      "y": 1369,
+      "difficulty": 3,
+      "image": "images/loc-72-Screenshot_2025_08_29_000030.png"
+    },
+    {
+      "x": 3470,
+      "y": 1669,
+      "difficulty": 4,
+      "image": "images/loc-70-Screenshot_2025_08_28_235936.png"
+    },
+    {
+      "x": 3651,
+      "y": 1269,
+      "difficulty": 5,
+      "image": "images/loc-88-Screenshot_2025_08_29_001024.png"
+    },
+    {
+      "x": 4030,
+      "y": 1583,
+      "difficulty": 3,
+      "image": "images/loc-86-Screenshot_2025_08_29_000934.png"
+    },
+    {
+      "x": 4311,
+      "y": 1840,
+      "difficulty": 4,
+      "image": "images/loc-85-Screenshot_2025_08_29_000852.png"
+    },
+    {
+      "x": 3611,
+      "y": 2117,
+      "difficulty": 5,
+      "image": "images/loc-91-Screenshot_2025_08_29_001145.png"
+    },
+    {
+      "x": 3246,
+      "y": 2234,
+      "difficulty": 6,
+      "image": "images/loc-84-Screenshot_2025_08_29_000832.png"
+    },
+    {
+      "x": 2627,
+      "y": 2254,
+      "difficulty": 6,
+      "image": "images/loc-83-Screenshot_2025_08_29_000759.png"
+    },
+    {
+      "x": 2236,
+      "y": 698,
+      "difficulty": 2,
+      "image": "images/loc-53-Screenshot_2025_08_28_234947.png"
+    },
+    {
+      "x": 2098,
+      "y": 1978,
+      "difficulty": 2,
+      "image": "images/loc-78-Screenshot_2025_08_29_000318.png"
+    },
+    {
+      "x": 2111,
+      "y": 1978,
+      "difficulty": 2,
+      "image": "images/loc-77-Screenshot_2025_08_29_000427.png"
+    },
+    {
+      "x": 3040,
+      "y": 2224,
+      "difficulty": 1,
+      "image": "images/loc-99-Screenshot_2025_08_29_001455.png"
+    },
+    {
+      "x": 3032,
+      "y": 2233,
+      "difficulty": 1,
+      "image": "images/loc-101-Screenshot_2025_08_29_001518.png"
+    },
+    {
+      "x": 3044,
+      "y": 2233,
+      "difficulty": 1,
+      "image": "images/loc-103-Screenshot_2025_08_29_001538.png"
+    },
+    {
+      "x": 333,
+      "y": 1863,
+      "difficulty": 3,
+      "image": "images/loc-105-Screenshot_2025_08_29_005339.png"
+    }
+  ],
+  "contributors": [
+    {
+      "images": 97,
+      "name": "Coldes"
+    }
+  ],
+  "map": {
+    "useCustomMap": false,
+    "defaultMap": "images/game/defaultMaps/hallownest.png"
+  }
+}

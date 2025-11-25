@@ -1,0 +1,306 @@
+{
+  "name": "White Palace",
+  "gameModeId": "white_palace",
+  "author": "Lo 2 Source",
+  "thumbnail": "images/thumbnail.png",
+  "locations": [
+    {
+      "x": 361,
+      "y": 915,
+      "difficulty": 2,
+      "image": "images/loc-1-Capture_d__cran_2025_10_29_000238.png"
+    },
+    {
+      "x": 486,
+      "y": 914,
+      "difficulty": 2,
+      "image": "images/loc-2-Capture_d__cran_2025_10_29_000352.png"
+    },
+    {
+      "x": 583,
+      "y": 889,
+      "difficulty": 6,
+      "image": "images/loc-3-Capture_d__cran_2025_10_29_000432.png"
+    },
+    {
+      "x": 673,
+      "y": 861,
+      "difficulty": 4,
+      "image": "images/loc-4-Capture_d__cran_2025_10_29_000504.png"
+    },
+    {
+      "x": 435,
+      "y": 711,
+      "difficulty": 1,
+      "image": "images/loc-5-Capture_d__cran_2025_10_29_000657.png"
+    },
+    {
+      "x": 319,
+      "y": 725,
+      "difficulty": 7,
+      "image": "images/loc-6-Capture_d__cran_2025_10_29_000742.png"
+    },
+    {
+      "x": 260,
+      "y": 734,
+      "difficulty": 5,
+      "image": "images/loc-7-Capture_d__cran_2025_10_29_000826.png"
+    },
+    {
+      "x": 194,
+      "y": 701,
+      "difficulty": 5,
+      "image": "images/loc-8-Capture_d__cran_2025_10_29_000952.png"
+    },
+    {
+      "x": 306,
+      "y": 572,
+      "difficulty": 8,
+      "image": "images/loc-9-Capture_d__cran_2025_10_29_001055.png"
+    },
+    {
+      "x": 544,
+      "y": 709,
+      "difficulty": 10,
+      "image": "images/loc-10-Capture_d__cran_2025_10_29_001218.png"
+    },
+    {
+      "x": 569,
+      "y": 685,
+      "difficulty": 2,
+      "image": "images/loc-11-Capture_d__cran_2025_10_29_001310.png"
+    },
+    {
+      "x": 779,
+      "y": 683,
+      "difficulty": 3,
+      "image": "images/loc-12-Capture_d__cran_2025_10_29_002123.png"
+    },
+    {
+      "x": 855,
+      "y": 554,
+      "difficulty": 10,
+      "image": "images/loc-13-Capture_d__cran_2025_10_29_002229.png"
+    },
+    {
+      "x": 761,
+      "y": 540,
+      "difficulty": 3,
+      "image": "images/loc-14-Capture_d__cran_2025_10_29_002312.png"
+    },
+    {
+      "x": 737,
+      "y": 639,
+      "difficulty": 3,
+      "image": "images/loc-15-Capture_d__cran_2025_10_29_002343.png"
+    },
+    {
+      "x": 691,
+      "y": 522,
+      "difficulty": 4,
+      "image": "images/loc-16-Capture_d__cran_2025_10_29_002448.png"
+    },
+    {
+      "x": 607,
+      "y": 589,
+      "difficulty": 6,
+      "image": "images/loc-17-Capture_d__cran_2025_10_29_002546.png"
+    },
+    {
+      "x": 492,
+      "y": 708,
+      "difficulty": 1,
+      "image": "images/loc-18-Capture_d__cran_2025_10_29_002652.png"
+    },
+    {
+      "x": 500,
+      "y": 574,
+      "difficulty": 2,
+      "image": "images/loc-19-Capture_d__cran_2025_10_29_002735.png"
+    },
+    {
+      "x": 517,
+      "y": 494,
+      "difficulty": 1,
+      "image": "images/loc-20-Capture_d__cran_2025_10_29_002807.png"
+    },
+    {
+      "x": 454,
+      "y": 394,
+      "difficulty": 8,
+      "image": "images/loc-21-Capture_d__cran_2025_10_29_002857.png"
+    },
+    {
+      "x": 561,
+      "y": 392,
+      "difficulty": 4,
+      "image": "images/loc-22-Capture_d__cran_2025_10_29_003406.png"
+    },
+    {
+      "x": 457,
+      "y": 365,
+      "difficulty": 3,
+      "image": "images/loc-23-Capture_d__cran_2025_10_29_003754.png"
+    },
+    {
+      "x": 498,
+      "y": 193,
+      "difficulty": 2,
+      "image": "images/loc-24-Capture_d__cran_2025_10_29_003921.png"
+    },
+    {
+      "x": 478,
+      "y": 275,
+      "difficulty": 3,
+      "image": "images/loc-25-Capture_d__cran_2025_10_29_003950.png"
+    },
+    {
+      "x": 642,
+      "y": 288,
+      "difficulty": 7,
+      "image": "images/loc-26-Capture_d__cran_2025_10_29_004102.png"
+    },
+    {
+      "x": 690,
+      "y": 185,
+      "difficulty": 3,
+      "image": "images/loc-27-Capture_d__cran_2025_10_29_004148.png"
+    },
+    {
+      "x": 687,
+      "y": 247,
+      "difficulty": 6,
+      "image": "images/loc-28-Capture_d__cran_2025_10_29_004248.png"
+    },
+    {
+      "x": 888,
+      "y": 236,
+      "difficulty": 5,
+      "image": "images/loc-29-Capture_d__cran_2025_10_29_004403.png"
+    },
+    {
+      "x": 526,
+      "y": 147,
+      "difficulty": 2,
+      "image": "images/loc-30-Capture_d__cran_2025_10_29_004502.png"
+    },
+    {
+      "x": 361,
+      "y": 124,
+      "difficulty": 3,
+      "image": "images/loc-31-Capture_d__cran_2025_10_29_004603.png"
+    },
+    {
+      "x": 441,
+      "y": 116,
+      "difficulty": 2,
+      "image": "images/loc-32-Capture_d__cran_2025_10_29_004644.png"
+    },
+    {
+      "x": 472,
+      "y": 30,
+      "difficulty": 4,
+      "image": "images/loc-33-Capture_d__cran_2025_10_29_004736.png"
+    },
+    {
+      "x": 400,
+      "y": 24,
+      "difficulty": 1,
+      "image": "images/loc-34-Capture_d__cran_2025_10_29_004808.png"
+    },
+    {
+      "x": 395,
+      "y": 572,
+      "difficulty": 2,
+      "image": "images/loc-35-Capture_d__cran_2025_10_29_005034.png"
+    },
+    {
+      "x": 326,
+      "y": 572,
+      "difficulty": 6,
+      "image": "images/loc-36-Capture_d__cran_2025_10_29_005059.png"
+    },
+    {
+      "x": 273,
+      "y": 466,
+      "difficulty": 4,
+      "image": "images/loc-37-Capture_d__cran_2025_10_29_005143.png"
+    },
+    {
+      "x": 229,
+      "y": 574,
+      "difficulty": 4,
+      "image": "images/loc-38-Capture_d__cran_2025_10_29_005309.png"
+    },
+    {
+      "x": 194,
+      "y": 576,
+      "difficulty": 3,
+      "image": "images/loc-39-Capture_d__cran_2025_10_29_014627.png"
+    },
+    {
+      "x": 70,
+      "y": 489,
+      "difficulty": 4,
+      "image": "images/loc-40-Capture_d__cran_2025_10_29_005444.png"
+    },
+    {
+      "x": 45,
+      "y": 383,
+      "difficulty": 4,
+      "image": "images/loc-41-Capture_d__cran_2025_10_29_005537.png"
+    },
+    {
+      "x": 107,
+      "y": 430,
+      "difficulty": 3,
+      "image": "images/loc-42-Capture_d__cran_2025_10_29_005600.png"
+    },
+    {
+      "x": 269,
+      "y": 366,
+      "difficulty": 5,
+      "image": "images/loc-43-Capture_d__cran_2025_10_29_005717.png"
+    },
+    {
+      "x": 137,
+      "y": 322,
+      "difficulty": 3,
+      "image": "images/loc-44-Capture_d__cran_2025_10_29_005804.png"
+    },
+    {
+      "x": 141,
+      "y": 276,
+      "difficulty": 5,
+      "image": "images/loc-45-Capture_d__cran_2025_10_29_005851.png"
+    },
+    {
+      "x": 316,
+      "y": 276,
+      "difficulty": 5,
+      "image": "images/loc-46-Capture_d__cran_2025_10_29_005924.png"
+    },
+    {
+      "x": 341,
+      "y": 345,
+      "difficulty": 1,
+      "image": "images/loc-47-Capture_d__cran_2025_10_29_010021.png"
+    },
+    {
+      "x": 416,
+      "y": 343,
+      "difficulty": 1,
+      "image": "images/loc-48-Capture_d__cran_2025_10_29_010100.png"
+    }
+  ],
+  "contributors": [
+    {
+      "images": 48,
+      "name": "Lo 2 Source"
+    }
+  ],
+  "map": {
+    "useCustomMap": true,
+    "mapImage": "map.png"
+  }
+}

@@ -1,0 +1,204 @@
+{
+  "name": "Bosses",
+  "gameModeId": "hk_bosses",
+  "author": "birdman25x",
+  "thumbnail": "images/thumbnail.png",
+  "locations": [
+    {
+      "x": 3608,
+      "y": 1552,
+      "difficulty": 7,
+      "image": "images/loc-10-Schermafbeelding_2025_10_14_214241.png"
+    },
+    {
+      "x": 2586,
+      "y": 987,
+      "difficulty": 4,
+      "image": "images/loc-17-Schermafbeelding_2025_10_14_213923.png"
+    },
+    {
+      "x": 2142,
+      "y": 846,
+      "difficulty": 2,
+      "image": "images/loc-4-Schermafbeelding_2025_10_14_214433.png"
+    },
+    {
+      "x": 2103,
+      "y": 2248,
+      "difficulty": 4,
+      "image": "images/loc-5-Schermafbeelding_2025_10_14_214410.png"
+    },
+    {
+      "x": 802,
+      "y": 738,
+      "difficulty": 2,
+      "image": "images/loc-6-Schermafbeelding_2025_10_14_214339.png"
+    },
+    {
+      "x": 2859,
+      "y": 526,
+      "difficulty": 6,
+      "image": "images/loc-11-Schermafbeelding_2025_10_14_214214.png"
+    },
+    {
+      "x": 4072,
+      "y": 1947,
+      "difficulty": 5,
+      "image": "images/loc-18-Schermafbeelding_2025_10_14_213853.png"
+    },
+    {
+      "x": 2262,
+      "y": 1355,
+      "difficulty": 5,
+      "image": "images/loc-31-Schermafbeelding_2025_10_14_212625.png"
+    },
+    {
+      "x": 3649,
+      "y": 1272,
+      "difficulty": 5,
+      "image": "images/loc-15-Schermafbeelding_2025_10_14_214027.png"
+    },
+    {
+      "x": 1350,
+      "y": 1053,
+      "difficulty": 5,
+      "image": "images/loc-21-Schermafbeelding_2025_10_14_211503.png"
+    },
+    {
+      "x": 1426,
+      "y": 2129,
+      "difficulty": 7,
+      "image": "images/loc-22-Schermafbeelding_2025_10_14_211547.png"
+    },
+    {
+      "x": 2233,
+      "y": 707,
+      "difficulty": 4,
+      "image": "images/loc-24-Schermafbeelding_2025_10_14_211713.png"
+    },
+    {
+      "x": 2794,
+      "y": 1308,
+      "difficulty": 5,
+      "image": "images/loc-26-Schermafbeelding_2025_10_14_211832.png"
+    },
+    {
+      "x": 986,
+      "y": 642,
+      "difficulty": 4,
+      "image": "images/loc-29-Schermafbeelding_2025_10_14_212346.png"
+    },
+    {
+      "x": 4110,
+      "y": 1781,
+      "difficulty": 7,
+      "image": "images/loc-34-Schermafbeelding_2025_10_14_213216.png"
+    },
+    {
+      "x": 3176,
+      "y": 937,
+      "difficulty": 2,
+      "image": "images/loc-37-Schermafbeelding_2025_10_14_213415.png"
+    },
+    {
+      "x": 1895,
+      "y": 874,
+      "difficulty": 4,
+      "image": "images/loc-8-Schermafbeelding_2025_10_14_214311.png"
+    },
+    {
+      "x": 2949,
+      "y": 1803,
+      "difficulty": 2,
+      "image": "images/loc-13-Schermafbeelding_2025_10_14_214141.png"
+    },
+    {
+      "x": 1868,
+      "y": 1839,
+      "difficulty": 3,
+      "image": "images/loc-20-Schermafbeelding_2025_10_14_211413.png"
+    },
+    {
+      "x": 2637,
+      "y": 1230,
+      "difficulty": 6,
+      "image": "images/loc-25-Schermafbeelding_2025_10_14_211749.png"
+    },
+    {
+      "x": 734,
+      "y": 1150,
+      "difficulty": 8,
+      "image": "images/loc-27-Schermafbeelding_2025_10_14_211932.png"
+    },
+    {
+      "x": 3000,
+      "y": 1403,
+      "difficulty": 5,
+      "image": "images/loc-30-Schermafbeelding_2025_10_14_212430.png"
+    },
+    {
+      "x": 1667,
+      "y": 1033,
+      "difficulty": 3,
+      "image": "images/loc-36-Schermafbeelding_2025_10_14_213338.png"
+    },
+    {
+      "x": 1920,
+      "y": 629,
+      "difficulty": 7,
+      "image": "images/loc-16-Schermafbeelding_2025_10_14_213959.png"
+    },
+    {
+      "x": 2242,
+      "y": 701,
+      "difficulty": 2,
+      "image": "images/loc-19-Schermafbeelding_2025_10_14_211335.png"
+    },
+    {
+      "x": 3662,
+      "y": 1237,
+      "difficulty": 4,
+      "image": "images/loc-23-Schermafbeelding_2025_10_14_211637.png"
+    },
+    {
+      "x": 2436,
+      "y": 1939,
+      "difficulty": 3,
+      "image": "images/loc-14-Schermafbeelding_2025_10_14_214100.png"
+    },
+    {
+      "x": 1602,
+      "y": 1223,
+      "difficulty": 5,
+      "image": "images/loc-28-Schermafbeelding_2025_10_14_212024.png"
+    },
+    {
+      "x": 1281,
+      "y": 314,
+      "difficulty": 6,
+      "image": "images/loc-33-Schermafbeelding_2025_10_14_213109.png"
+    },
+    {
+      "x": 691,
+      "y": 1369,
+      "difficulty": 4,
+      "image": "images/loc-35-Schermafbeelding_2025_10_14_213257.png"
+    },
+    {
+      "x": 957,
+      "y": 1854,
+      "difficulty": 6,
+      "image": "images/loc-32-Schermafbeelding_2025_10_14_213032.png"
+    }
+  ],
+  "contributors": [
+    {
+      "images": 46,
+      "name": "birdman25x"
+    }
+  ],
+  "map": {
+    "useCustomMap": false,
+    "defaultMap": "images/game/defaultMaps/hallownest.png"
+  }
+}

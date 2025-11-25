@@ -1,0 +1,198 @@
+{
+  "name": "Fleamaster",
+  "gameModeId": "awoooooo",
+  "author": "VimifU",
+  "thumbnail": "images/thumbnail.png",
+  "locations": [
+    {
+      "x": 1241,
+      "y": 2326,
+      "difficulty": 1,
+      "image": "images/loc-1-photo_2025_11_06_18_26_02.jpg"
+    },
+    {
+      "x": 1827,
+      "y": 2601,
+      "difficulty": 1,
+      "image": "images/loc-2-photo_2025_11_06_18_27_28.jpg"
+    },
+    {
+      "x": 1979,
+      "y": 2472,
+      "difficulty": 3,
+      "image": "images/loc-3-photo_2025_11_06_18_28_07.jpg"
+    },
+    {
+      "x": 2568,
+      "y": 2524,
+      "difficulty": 2,
+      "image": "images/loc-4-photo_2025_11_06_18_28_33.jpg"
+    },
+    {
+      "x": 3040,
+      "y": 2081,
+      "difficulty": 2,
+      "image": "images/loc-5-photo_2025_11_06_18_30_36.jpg"
+    },
+    {
+      "x": 1137,
+      "y": 2153,
+      "difficulty": 1,
+      "image": "images/loc-6-photo_2025_11_06_18_25_24.jpg"
+    },
+    {
+      "x": 1579,
+      "y": 2005,
+      "difficulty": 1,
+      "image": "images/loc-7-photo_2025_11_06_18_35_30.jpg"
+    },
+    {
+      "x": 2880,
+      "y": 2445,
+      "difficulty": 2,
+      "image": "images/loc-8-photo_2025_11_06_18_29_51.jpg"
+    },
+    {
+      "x": 2432,
+      "y": 2031,
+      "difficulty": 2,
+      "image": "images/loc-10-Kratt.png"
+    },
+    {
+      "x": 1988,
+      "y": 2032,
+      "difficulty": 2,
+      "image": "images/loc-10-photo_2025_11_06_18_33_23.jpg"
+    },
+    {
+      "x": 2350,
+      "y": 1720,
+      "difficulty": 3,
+      "image": "images/loc-11-photo_2025_11_06_18_32_08.jpg"
+    },
+    {
+      "x": 618,
+      "y": 1664,
+      "difficulty": 2,
+      "image": "images/loc-12-photo_2025_11_06_18_36_39.jpg"
+    },
+    {
+      "x": 1005,
+      "y": 1395,
+      "difficulty": 3,
+      "image": "images/loc-13-photo_2025_11_06_18_37_27.jpg"
+    },
+    {
+      "x": 958,
+      "y": 1275,
+      "difficulty": 2,
+      "image": "images/loc-14-photo_2025_11_06_18_37_58.jpg"
+    },
+    {
+      "x": 2586,
+      "y": 1154,
+      "difficulty": 3,
+      "image": "images/loc-15-photo_2025_11_06_18_40_44.jpg"
+    },
+    {
+      "x": 3110,
+      "y": 1350,
+      "difficulty": 1,
+      "image": "images/loc-16-photo_2025_11_06_18_32_50.jpg"
+    },
+    {
+      "x": 1684,
+      "y": 1201,
+      "difficulty": 2,
+      "image": "images/loc-17-photo_2025_11_06_18_39_46.jpg"
+    },
+    {
+      "x": 1587,
+      "y": 1802,
+      "difficulty": 2,
+      "image": "images/loc-18-photo_2025_11_06_18_34_56.jpg"
+    },
+    {
+      "x": 1800,
+      "y": 1786,
+      "difficulty": 2,
+      "image": "images/loc-19-photo_2025_11_06_18_34_01.jpg"
+    },
+    {
+      "x": 2526,
+      "y": 2679,
+      "difficulty": 2,
+      "image": "images/loc-20-photo_2025_11_06_18_29_11.jpg"
+    },
+    {
+      "x": 3014,
+      "y": 1744,
+      "difficulty": 1,
+      "image": "images/loc-21-photo_2025_11_06_18_31_37.jpg"
+    },
+    {
+      "x": 624,
+      "y": 2388,
+      "difficulty": 2,
+      "image": "images/loc-22-photo_2025_11_06_18_24_27.jpg"
+    },
+    {
+      "x": 1816,
+      "y": 2388,
+      "difficulty": 1,
+      "image": "images/loc-23-photo_2025_11_06_18_26_54.jpg"
+    },
+    {
+      "x": 2816,
+      "y": 1887,
+      "difficulty": 1,
+      "image": "images/loc-24-photo_2025_11_06_18_31_10.jpg"
+    },
+    {
+      "x": 494,
+      "y": 1134,
+      "difficulty": 1,
+      "image": "images/loc-25-photo_2025_11_06_18_38_28.jpg"
+    },
+    {
+      "x": 673,
+      "y": 1613,
+      "difficulty": 2,
+      "image": "images/loc-26-photo_2025_11_06_18_37_01.jpg"
+    },
+    {
+      "x": 1604,
+      "y": 1277,
+      "difficulty": 2,
+      "image": "images/loc-27-photo_2025_11_06_18_39_20.jpg"
+    },
+    {
+      "x": 2339,
+      "y": 1267,
+      "difficulty": 2,
+      "image": "images/loc-28-photo_2025_11_06_18_40_18.jpg"
+    },
+    {
+      "x": 2147,
+      "y": 955,
+      "difficulty": 1,
+      "image": "images/loc-23-B_Huge_Flea.png"
+    },
+    {
+      "x": 2947,
+      "y": 1064,
+      "difficulty": 1,
+      "image": "images/loc-30-Vog.png"
+    }
+  ],
+  "contributors": [
+    {
+      "images": 30,
+      "name": "VimifU"
+    }
+  ],
+  "map": {
+    "useCustomMap": false,
+    "defaultMap": "images/game/defaultMaps/pharloom.png"
+  }
+}

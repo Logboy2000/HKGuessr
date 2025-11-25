@@ -1,0 +1,1740 @@
+{
+  "name": "Hallownest",
+  "gameModeId": "hallownest",
+  "author": "The Community",
+  "thumbnail": "images/thumbnail.jpg",
+  "locations": [
+    {
+      "x": 3832,
+      "y": 1449,
+      "difficulty": 6,
+      "image": "images/locations_3832_1449_2b8c50.jpg"
+    },
+    {
+      "x": 631,
+      "y": 1704,
+      "difficulty": 4,
+      "image": "images/locations_631_1704_5300b9.png"
+    },
+    {
+      "x": 583,
+      "y": 767,
+      "difficulty": 6,
+      "image": "images/locations_583_767_ea0aea.jpg"
+    },
+    {
+      "x": 3451,
+      "y": 842,
+      "difficulty": 2,
+      "image": "images/locations_3451_842_920dd1.jpg"
+    },
+    {
+      "x": 3112,
+      "y": 937,
+      "difficulty": 2,
+      "image": "images/locations_3112_937_08fa58.jpg"
+    },
+    {
+      "x": 2598,
+      "y": 1030,
+      "difficulty": 3,
+      "image": "images/locations_2598_1030_3fe5d8.png"
+    },
+    {
+      "x": 1970,
+      "y": 1835,
+      "difficulty": 3,
+      "image": "images/locations_1970_1835_417bc5.jpg"
+    },
+    {
+      "x": 1864,
+      "y": 621,
+      "difficulty": 3,
+      "image": "images/locations_1864_621_3a374b.png"
+    },
+    {
+      "x": 3965,
+      "y": 1644,
+      "difficulty": 7,
+      "image": "images/locations_3965_1644_aad0eb.jpg"
+    },
+    {
+      "x": 2726,
+      "y": 2346,
+      "difficulty": 1,
+      "image": "images/locations_2726_2346_a7cac9.jpg"
+    },
+    {
+      "x": 2154,
+      "y": 824,
+      "difficulty": 5,
+      "image": "images/locations_2154_824_b47b2e.png"
+    },
+    {
+      "x": 1090,
+      "y": 1190,
+      "difficulty": 10,
+      "image": "images/locations_1090_1190_515663.jpg"
+    },
+    {
+      "x": 2734,
+      "y": 2192,
+      "difficulty": 3,
+      "image": "images/locations_2734_2192_620b46.jpg"
+    },
+    {
+      "x": 2795,
+      "y": 1206,
+      "difficulty": 7,
+      "image": "images/locations_2795_1206_258885.jpg"
+    },
+    {
+      "x": 4367,
+      "y": 1953,
+      "difficulty": 3,
+      "image": "images/locations_4367_1953_aa7da0.jpg"
+    },
+    {
+      "x": 4191,
+      "y": 1919,
+      "difficulty": 8,
+      "image": "images/locations_4191_1919_be5018.jpg"
+    },
+    {
+      "x": 301,
+      "y": 1907,
+      "difficulty": 2,
+      "image": "images/locations_301_1907_8dae97.jpg"
+    },
+    {
+      "x": 2690,
+      "y": 1460,
+      "difficulty": 8,
+      "image": "images/locations_2690_1460_fc8b57.jpg"
+    },
+    {
+      "x": 2672,
+      "y": 2453,
+      "difficulty": 6,
+      "image": "images/locations_2672_2453_2652e5.jpg"
+    },
+    {
+      "x": 1400,
+      "y": 1850,
+      "difficulty": 9,
+      "image": "images/locations_1400_1850_8160e9.jpg"
+    },
+    {
+      "x": 2581,
+      "y": 1878,
+      "difficulty": 4,
+      "image": "images/locations_2581_1878_eb7bb5.jpg"
+    },
+    {
+      "x": 2690,
+      "y": 1410,
+      "difficulty": 4,
+      "image": "images/locations_2690_1410_ac96d8.jpg"
+    },
+    {
+      "x": 1800,
+      "y": 1850,
+      "difficulty": 2,
+      "image": "images/locations_1800_1850_7c6e00.jpg"
+    },
+    {
+      "x": 3350,
+      "y": 1946,
+      "difficulty": 1,
+      "image": "images/locations_3350_1946_c12ac0.jpg"
+    },
+    {
+      "x": 2103,
+      "y": 2239,
+      "difficulty": 1,
+      "image": "images/locations_2103_2239_46ffda.jpg"
+    },
+    {
+      "x": 3275,
+      "y": 1693,
+      "difficulty": 5,
+      "image": "images/locations_3275_1693_73b1d1.png"
+    },
+    {
+      "x": 2074,
+      "y": 936,
+      "difficulty": 3,
+      "image": "images/locations_2074_936_362715.jpg"
+    },
+    {
+      "x": 2053,
+      "y": 844,
+      "difficulty": 2,
+      "image": "images/locations_2053_844_130970.jpg"
+    },
+    {
+      "x": 2558,
+      "y": 922,
+      "difficulty": 4,
+      "image": "images/locations_2558_922_f01ffb.jpg"
+    },
+    {
+      "x": 2716,
+      "y": 1548,
+      "difficulty": 5,
+      "image": "images/locations_2716_1548_35016d.jpg"
+    },
+    {
+      "x": 1914,
+      "y": 871,
+      "difficulty": 3,
+      "image": "images/locations_1914_871_b66cb6.jpg"
+    },
+    {
+      "x": 1288,
+      "y": 449,
+      "difficulty": 6,
+      "image": "images/locations_1288_449_e55285.png"
+    },
+    {
+      "x": 1670,
+      "y": 2170,
+      "difficulty": 10,
+      "image": "images/locations_1670_2170_ef366b.jpg"
+    },
+    {
+      "x": 3125,
+      "y": 2640,
+      "difficulty": 3,
+      "image": "images/locations_3125_2640_0ccecd.png"
+    },
+    {
+      "x": 3613,
+      "y": 949,
+      "difficulty": 6,
+      "image": "images/locations_3613_949_1f5920.png"
+    },
+    {
+      "x": 2057,
+      "y": 1760,
+      "difficulty": 2,
+      "image": "images/locations_2057_1760_68d997.jpg"
+    },
+    {
+      "x": 3683,
+      "y": 1712,
+      "difficulty": 3,
+      "image": "images/locations_3683_1712_976b78.jpg"
+    },
+    {
+      "x": 1854,
+      "y": 865,
+      "difficulty": 3,
+      "image": "images/locations_1854_865_c733a1.jpg"
+    },
+    {
+      "x": 3391,
+      "y": 432,
+      "difficulty": 6,
+      "image": "images/locations_3391_432_992a1e.png"
+    },
+    {
+      "x": 3325,
+      "y": 1530,
+      "difficulty": 4,
+      "image": "images/locations_3325_1530_95720d.jpg"
+    },
+    {
+      "x": 1690,
+      "y": 639,
+      "difficulty": 1,
+      "image": "images/locations_1690_639_3f237e.jpg"
+    },
+    {
+      "x": 1739,
+      "y": 1743,
+      "difficulty": 6,
+      "image": "images/locations_1739_1743_57935e.png"
+    },
+    {
+      "x": 3550,
+      "y": 1450,
+      "difficulty": 4,
+      "image": "images/locations_3550_1450_fa52e6.jpg"
+    },
+    {
+      "x": 1150,
+      "y": 1240,
+      "difficulty": 6,
+      "image": "images/locations_1150_1240_e44084.jpg"
+    },
+    {
+      "x": 3493,
+      "y": 2002,
+      "difficulty": 4,
+      "image": "images/locations_3493_2002_d6f55d.jpg"
+    },
+    {
+      "x": 1070,
+      "y": 1289,
+      "difficulty": 4,
+      "image": "images/locations_1070_1289_3e068f.png"
+    },
+    {
+      "x": 3410,
+      "y": 630,
+      "difficulty": 3,
+      "image": "images/locations_3410_630_0aaaeb.jpg"
+    },
+    {
+      "x": 1193,
+      "y": 967,
+      "difficulty": 4,
+      "image": "images/locations_1193_967_644ea7.jpg"
+    },
+    {
+      "x": 4216,
+      "y": 1343,
+      "difficulty": 7,
+      "image": "images/locations_4216_1343_c52daf.jpg"
+    },
+    {
+      "x": 1140,
+      "y": 356,
+      "difficulty": 6,
+      "image": "images/locations_1140_356_3461ef.jpg"
+    },
+    {
+      "x": 3360,
+      "y": 928,
+      "difficulty": 2,
+      "image": "images/locations_3360_928_9e9d2a.jpg"
+    },
+    {
+      "x": 2353,
+      "y": 2119,
+      "difficulty": 4,
+      "image": "images/locations_2353_2119_59315e.jpg"
+    },
+    {
+      "x": 2520,
+      "y": 820,
+      "difficulty": 6,
+      "image": "images/locations_2520_820_4b907f.jpg"
+    },
+    {
+      "x": 2138,
+      "y": 2374,
+      "difficulty": 4,
+      "image": "images/locations_2138_2374_95522e.jpg"
+    },
+    {
+      "x": 3670,
+      "y": 1922,
+      "difficulty": 6,
+      "image": "images/locations_3670_1922_ba24ca.jpg"
+    },
+    {
+      "x": 2669,
+      "y": 1850,
+      "difficulty": 3,
+      "image": "images/locations_2669_1850_624824.jpg"
+    },
+    {
+      "x": 3434,
+      "y": 1478,
+      "difficulty": 5,
+      "image": "images/locations_3434_1478_5a6cf1.jpg"
+    },
+    {
+      "x": 2893,
+      "y": 1634,
+      "difficulty": 8,
+      "image": "images/locations_2893_1634_da2355.jpg"
+    },
+    {
+      "x": 1026,
+      "y": 579,
+      "difficulty": 2,
+      "image": "images/locations_1026_579_fcb26f.png"
+    },
+    {
+      "x": 3221,
+      "y": 2228,
+      "difficulty": 3,
+      "image": "images/locations_3221_2228_e727be.jpg"
+    },
+    {
+      "x": 2244,
+      "y": 799,
+      "difficulty": 5,
+      "image": "images/locations_2244_799_5aa5a1.jpg"
+    },
+    {
+      "x": 2738,
+      "y": 1779,
+      "difficulty": 7,
+      "image": "images/locations_2738_1779_3bb413.jpg"
+    },
+    {
+      "x": 2600,
+      "y": 1401,
+      "difficulty": 3,
+      "image": "images/locations_2600_1401_784fbe.jpg"
+    },
+    {
+      "x": 3180,
+      "y": 110,
+      "difficulty": 4,
+      "image": "images/locations_3180_110_3d9f6c.jpg"
+    },
+    {
+      "x": 1360,
+      "y": 1280,
+      "difficulty": 3,
+      "image": "images/locations_1360_1280_520974.jpg"
+    },
+    {
+      "x": 4020,
+      "y": 1580,
+      "difficulty": 4,
+      "image": "images/locations_4020_1580_c0dc29.jpg"
+    },
+    {
+      "x": 2963,
+      "y": 482,
+      "difficulty": 5,
+      "image": "images/locations_2963_482_4e5ff2.jpg"
+    },
+    {
+      "x": 1739,
+      "y": 1995,
+      "difficulty": 7,
+      "image": "images/locations_1739_1995_80e5d8.png"
+    },
+    {
+      "x": 872,
+      "y": 1982,
+      "difficulty": 9,
+      "image": "images/locations_872_1982_6087a1.jpg"
+    },
+    {
+      "x": 2910,
+      "y": 1745,
+      "difficulty": 9,
+      "image": "images/locations_2910_1745_c2a550.jpg"
+    },
+    {
+      "x": 1689,
+      "y": 1142,
+      "difficulty": 4,
+      "image": "images/locations_1689_1142_f0ea95.png"
+    },
+    {
+      "x": 3950,
+      "y": 1767,
+      "difficulty": 10,
+      "image": "images/locations_3950_1767_b6c181.jpg"
+    },
+    {
+      "x": 1858,
+      "y": 2269,
+      "difficulty": 1,
+      "image": "images/locations_1858_2269_0c3b85.jpg"
+    },
+    {
+      "x": 3849,
+      "y": 1527,
+      "difficulty": 5,
+      "image": "images/locations_3849_1527_c21e70.jpg"
+    },
+    {
+      "x": 1381,
+      "y": 682,
+      "difficulty": 8,
+      "image": "images/locations_1381_682_772c2b.png"
+    },
+    {
+      "x": 2522,
+      "y": 2071,
+      "difficulty": 2,
+      "image": "images/locations_2522_2071_b5e416.jpg"
+    },
+    {
+      "x": 2557,
+      "y": 1201,
+      "difficulty": 5,
+      "image": "images/locations_2557_1201_4284de.png"
+    },
+    {
+      "x": 980,
+      "y": 1950,
+      "difficulty": 9,
+      "image": "images/locations_980_1950_44139d.jpg"
+    },
+    {
+      "x": 3360,
+      "y": 2710,
+      "difficulty": 9,
+      "image": "images/locations_3360_2710_bb1113.jpg"
+    },
+    {
+      "x": 2740,
+      "y": 1260,
+      "difficulty": 3,
+      "image": "images/locations_2740_1260_d2129a.jpg"
+    },
+    {
+      "x": 600,
+      "y": 1920,
+      "difficulty": 6,
+      "image": "images/locations_600_1920_e47971.jpg"
+    },
+    {
+      "x": 2894,
+      "y": 986,
+      "difficulty": 2,
+      "image": "images/locations_2894_986_9f636b.jpg"
+    },
+    {
+      "x": 2052,
+      "y": 624,
+      "difficulty": 1,
+      "image": "images/locations_2052_624_161f59.jpg"
+    },
+    {
+      "x": 1583,
+      "y": 583,
+      "difficulty": 1,
+      "image": "images/locations_1583_583_a1c09c.png"
+    },
+    {
+      "x": 3590,
+      "y": 1535,
+      "difficulty": 2,
+      "image": "images/locations_3590_1535_908ed1.jpg"
+    },
+    {
+      "x": 1668,
+      "y": 961,
+      "difficulty": 10,
+      "image": "images/locations_1668_961_bbfe76.png"
+    },
+    {
+      "x": 815,
+      "y": 725,
+      "difficulty": 2,
+      "image": "images/locations_815_725_898797.jpg"
+    },
+    {
+      "x": 935,
+      "y": 684,
+      "difficulty": 4,
+      "image": "images/locations_935_684_4e8de9.jpg"
+    },
+    {
+      "x": 2557,
+      "y": 878,
+      "difficulty": 3,
+      "image": "images/locations_2557_878_ee3e38.jpg"
+    },
+    {
+      "x": 1700,
+      "y": 1100,
+      "difficulty": 8,
+      "image": "images/locations_1700_1100_58708a.jpg"
+    },
+    {
+      "x": 470,
+      "y": 978,
+      "difficulty": 6,
+      "image": "images/locations_470_978_2e209f.png"
+    },
+    {
+      "x": 3389,
+      "y": 595,
+      "difficulty": 5,
+      "image": "images/locations_3389_595_0631f2.jpg"
+    },
+    {
+      "x": 2690,
+      "y": 850,
+      "difficulty": 7,
+      "image": "images/locations_2690_850_065d58.jpg"
+    },
+    {
+      "x": 3906,
+      "y": 1945,
+      "difficulty": 6,
+      "image": "images/locations_3906_1945_2bf7e5.jpg"
+    },
+    {
+      "x": 2404,
+      "y": 2077,
+      "difficulty": 8,
+      "image": "images/locations_2404_2077_103e5d.jpg"
+    },
+    {
+      "x": 3700,
+      "y": 1250,
+      "difficulty": 4,
+      "image": "images/locations_3700_1250_4d5ebc.jpg"
+    },
+    {
+      "x": 1467,
+      "y": 509,
+      "difficulty": 7,
+      "image": "images/locations_1467_509_b62610.png"
+    },
+    {
+      "x": 3839,
+      "y": 1370,
+      "difficulty": 4,
+      "image": "images/locations_3839_1370_6ad019.jpg"
+    },
+    {
+      "x": 3278,
+      "y": 1363,
+      "difficulty": 6,
+      "image": "images/locations_3278_1363_cfb935.jpg"
+    },
+    {
+      "x": 981,
+      "y": 1322,
+      "difficulty": 5,
+      "image": "images/locations_981_1322_890e59.jpg"
+    },
+    {
+      "x": 3552,
+      "y": 1275,
+      "difficulty": 5,
+      "image": "images/locations_3552_1275_55a232.jpg"
+    },
+    {
+      "x": 2773,
+      "y": 2065,
+      "difficulty": 5,
+      "image": "images/locations_2773_2065_b66485.jpg"
+    },
+    {
+      "x": 2630,
+      "y": 2258,
+      "difficulty": 4,
+      "image": "images/locations_2630_2258_46cebd.jpg"
+    },
+    {
+      "x": 2022,
+      "y": 616,
+      "difficulty": 1,
+      "image": "images/locations_2022_616_6274a7.jpg"
+    },
+    {
+      "x": 3035,
+      "y": 2227,
+      "difficulty": 1,
+      "image": "images/locations_3035_2227_bd7fcf.jpg"
+    },
+    {
+      "x": 344,
+      "y": 2079,
+      "difficulty": 3,
+      "image": "images/2c4f51d0.png"
+    },
+    {
+      "x": 718,
+      "y": 1468,
+      "difficulty": 5,
+      "image": "images/75fef139.png"
+    },
+    {
+      "x": 379,
+      "y": 910,
+      "difficulty": 3,
+      "image": "images/7b487ef2.png"
+    },
+    {
+      "x": 990,
+      "y": 633,
+      "difficulty": 3,
+      "image": "images/0564a56f.png"
+    },
+    {
+      "x": 987,
+      "y": 1796,
+      "difficulty": 7,
+      "image": "images/ae5a26d1.png"
+    },
+    {
+      "x": 852,
+      "y": 1041,
+      "difficulty": 5,
+      "image": "images/e20b059b.png"
+    },
+    {
+      "x": 1869,
+      "y": 1425,
+      "difficulty": 5,
+      "image": "images/b953105c.png"
+    },
+    {
+      "x": 1505,
+      "y": 1420,
+      "difficulty": 4,
+      "image": "images/d823bd6b.png"
+    },
+    {
+      "x": 2552,
+      "y": 1612,
+      "difficulty": 3,
+      "image": "images/da395213.png"
+    },
+    {
+      "x": 2908,
+      "y": 1745,
+      "difficulty": 5,
+      "image": "images/e974a253.png"
+    },
+    {
+      "x": 2398,
+      "y": 1799,
+      "difficulty": 6,
+      "image": "images/0e8a6591.png"
+    },
+    {
+      "x": 2176,
+      "y": 1708,
+      "difficulty": 7,
+      "image": "images/41d2cfa9.png"
+    },
+    {
+      "x": 2900,
+      "y": 924,
+      "difficulty": 5,
+      "image": "images/3ec65c81.png"
+    },
+    {
+      "x": 3990,
+      "y": 1723,
+      "difficulty": 5,
+      "image": "images/e3bf9ef9.png"
+    },
+    {
+      "x": 2367,
+      "y": 2760,
+      "difficulty": 2,
+      "image": "images/4c71745a.png"
+    },
+    {
+      "x": 2334,
+      "y": 610,
+      "difficulty": 6,
+      "image": "images/6b578457.png"
+    },
+    {
+      "x": 2793,
+      "y": 432,
+      "difficulty": 5,
+      "image": "images/44c85b3f.png"
+    },
+    {
+      "x": 783,
+      "y": 2013,
+      "difficulty": 7,
+      "image": "images/68497898.png"
+    },
+    {
+      "x": 3822,
+      "y": 2016,
+      "difficulty": 4,
+      "image": "images/80abc0c3.png"
+    },
+    {
+      "x": 1329,
+      "y": 461,
+      "difficulty": 9,
+      "image": "images/loc-4-20250819174436_1.jpg"
+    },
+    {
+      "x": 2241,
+      "y": 1903,
+      "difficulty": 7,
+      "image": "images/loc-22-20250819182050_1.jpg"
+    },
+    {
+      "x": 984,
+      "y": 1964,
+      "difficulty": 8,
+      "image": "images/loc-34-20250819183201_1.jpg"
+    },
+    {
+      "x": 2206,
+      "y": 2166,
+      "difficulty": 8,
+      "image": "images/loc-28-20250819182636_1.jpg"
+    },
+    {
+      "x": 3347,
+      "y": 2703,
+      "difficulty": 7,
+      "image": "images/loc-32-20250819182958_1.jpg"
+    },
+    {
+      "x": 552,
+      "y": 2093,
+      "difficulty": 7,
+      "image": "images/loc-36-20250819183304_1.jpg"
+    },
+    {
+      "x": 2130,
+      "y": 990,
+      "difficulty": 9,
+      "image": "images/loc-62-20250819193157_1.jpg"
+    },
+    {
+      "x": 1718,
+      "y": 1595,
+      "difficulty": 10,
+      "image": "images/loc-32-20250819194132_1.jpg"
+    },
+    {
+      "x": 3224,
+      "y": 988,
+      "difficulty": 7,
+      "image": "images/loc-50-20250819184605_1.jpg"
+    },
+    {
+      "x": 3688,
+      "y": 798,
+      "difficulty": 6,
+      "image": "images/loc-52-20250819184721_1.jpg"
+    },
+    {
+      "x": 1985,
+      "y": 980,
+      "difficulty": 8,
+      "image": "images/loc-60-20250819193046_1.jpg"
+    },
+    {
+      "x": 1146,
+      "y": 358,
+      "difficulty": 8,
+      "image": "images/loc-2-20250819174301_1.jpg"
+    },
+    {
+      "x": 2459,
+      "y": 1346,
+      "difficulty": 8,
+      "image": "images/loc-18-20250819181442_1.jpg"
+    },
+    {
+      "x": 2930,
+      "y": 1942,
+      "difficulty": 7,
+      "image": "images/loc-26-20250819182337_1.jpg"
+    },
+    {
+      "x": 2076,
+      "y": 2360,
+      "difficulty": 8,
+      "image": "images/loc-30-20250819182727_1.jpg"
+    },
+    {
+      "x": 3717,
+      "y": 1321,
+      "difficulty": 7,
+      "image": "images/loc-40-20250819183929_1.jpg"
+    },
+    {
+      "x": 3351,
+      "y": 436,
+      "difficulty": 7,
+      "image": "images/loc-46-20250819184422_1.jpg"
+    },
+    {
+      "x": 1846,
+      "y": 811,
+      "difficulty": 6,
+      "image": "images/loc-58-20250819192804_1.jpg"
+    },
+    {
+      "x": 793,
+      "y": 749,
+      "difficulty": 9,
+      "image": "images/loc-8-20250819174542_1.jpg"
+    },
+    {
+      "x": 1962,
+      "y": 1183,
+      "difficulty": 7,
+      "image": "images/loc-14-20250819175235_1.jpg"
+    },
+    {
+      "x": 3278,
+      "y": 1408,
+      "difficulty": 6,
+      "image": "images/loc-24-20250819182157_1.jpg"
+    },
+    {
+      "x": 4136,
+      "y": 1911,
+      "difficulty": 7,
+      "image": "images/loc-38-20250819183722_1.jpg"
+    },
+    {
+      "x": 690,
+      "y": 1378,
+      "difficulty": 6,
+      "image": "images/loc-56-20250819185059_1.jpg"
+    },
+    {
+      "x": 3029,
+      "y": 619,
+      "difficulty": 6,
+      "image": "images/loc-44-20250819184329_1.jpg"
+    },
+    {
+      "x": 3338,
+      "y": 998,
+      "difficulty": 5,
+      "image": "images/loc-48-20250819184534_1.jpg"
+    },
+    {
+      "x": 1441,
+      "y": 737,
+      "difficulty": 7,
+      "image": "images/loc-6-20250819174500_1.jpg"
+    },
+    {
+      "x": 1282,
+      "y": 1131,
+      "difficulty": 9,
+      "image": "images/loc-10-20250819175009_1.jpg"
+    },
+    {
+      "x": 4031,
+      "y": 1384,
+      "difficulty": 7,
+      "image": "images/loc-42-20250819184035_1.jpg"
+    },
+    {
+      "x": 825,
+      "y": 1033,
+      "difficulty": 6,
+      "image": "images/loc-54-20250819184932_1.jpg"
+    },
+    {
+      "x": 1691,
+      "y": 1141,
+      "difficulty": 10,
+      "image": "images/loc-12-20250819175126_1.jpg"
+    },
+    {
+      "x": 3031,
+      "y": 1522,
+      "difficulty": 7,
+      "image": "images/loc-20-20250819181731_1.jpg"
+    },
+    {
+      "x": 302,
+      "y": 1905,
+      "difficulty": 3,
+      "image": "images/loc-2-distantvillage1.jpg"
+    },
+    {
+      "x": 1522,
+      "y": 658,
+      "difficulty": 3,
+      "image": "images/loc-4-kingspass1.jpg"
+    },
+    {
+      "x": 2366,
+      "y": 2769,
+      "difficulty": 2,
+      "image": "images/loc-6-abyss1.jpg"
+    },
+    {
+      "x": 1662,
+      "y": 1033,
+      "difficulty": 3,
+      "image": "images/loc-8-greenpath1.jpg"
+    },
+    {
+      "x": 504,
+      "y": 1149,
+      "difficulty": 5,
+      "image": "images/loc-10-gardens1.jpg"
+    },
+    {
+      "x": 3734,
+      "y": 979,
+      "difficulty": 2,
+      "image": "images/loc-12-grounds1.jpg"
+    },
+    {
+      "x": 1419,
+      "y": 2073,
+      "difficulty": 4,
+      "image": "images/loc-14-deepnest1.jpg"
+    },
+    {
+      "x": 2550,
+      "y": 703,
+      "difficulty": 5,
+      "image": "images/loc-16-crossroads1.jpg"
+    },
+    {
+      "x": 980,
+      "y": 1939,
+      "difficulty": 7,
+      "image": "images/loc-18-deepnest2.jpg"
+    },
+    {
+      "x": 3696,
+      "y": 2114,
+      "difficulty": 4,
+      "image": "images/loc-20-hive1.jpg"
+    },
+    {
+      "x": 3401,
+      "y": 1891,
+      "difficulty": 7,
+      "image": "images/loc-22-ismasgrove1.jpg"
+    },
+    {
+      "x": 3468,
+      "y": 1630,
+      "difficulty": 4,
+      "image": "images/loc-24-city1.jpg"
+    },
+    {
+      "x": 2553,
+      "y": 1029,
+      "difficulty": 4,
+      "image": "images/loc-26-crossroads2.jpg"
+    },
+    {
+      "x": 1406,
+      "y": 389,
+      "difficulty": 6,
+      "image": "images/loc-28-cliffs1.jpg"
+    },
+    {
+      "x": 1062,
+      "y": 581,
+      "difficulty": 3,
+      "image": "images/loc-30-cliffs2.jpg"
+    },
+    {
+      "x": 1317,
+      "y": 1054,
+      "difficulty": 8,
+      "image": "images/loc-32-greenpath2.jpg"
+    },
+    {
+      "x": 3001,
+      "y": 1443,
+      "difficulty": 8,
+      "image": "images/loc-34-city2.jpg"
+    },
+    {
+      "x": 2932,
+      "y": 1943,
+      "difficulty": 5,
+      "image": "images/loc-36-waterways1.jpg"
+    },
+    {
+      "x": 944,
+      "y": 1474,
+      "difficulty": 7,
+      "image": "images/loc-38-gardens2.jpg"
+    },
+    {
+      "x": 768,
+      "y": 1192,
+      "difficulty": 1,
+      "image": "images/loc-40-gardens3.jpg"
+    },
+    {
+      "x": 2995,
+      "y": 702,
+      "difficulty": 5,
+      "image": "images/loc-42-peaks1.jpg"
+    },
+    {
+      "x": 2699,
+      "y": 1601,
+      "difficulty": 9,
+      "image": "images/loc-44-city3.jpg"
+    },
+    {
+      "x": 1340,
+      "y": 1928,
+      "difficulty": 10,
+      "image": "images/loc-46-deepnest3.jpg"
+    },
+    {
+      "x": 3323,
+      "y": 2069,
+      "difficulty": 4,
+      "image": "images/loc-48-kedge1.jpg"
+    },
+    {
+      "x": 3870,
+      "y": 1852,
+      "difficulty": 10,
+      "image": "images/loc-50-kedge2.jpg"
+    },
+       {
+      "x": 698,
+      "y": 1456,
+      "difficulty": 4,
+      "image": "images/loc-3-Screenshot_2025_08_31_221408.png"
+    },
+    {
+      "x": 836,
+      "y": 1476,
+      "difficulty": 5,
+      "image": "images/loc-5-Screenshot_2025_08_31_223120.png"
+    },
+    {
+      "x": 929,
+      "y": 1417,
+      "difficulty": 9,
+      "image": "images/loc-7-Screenshot_2025_08_31_223256.png"
+    },
+    {
+      "x": 2134,
+      "y": 921,
+      "difficulty": 2,
+      "image": "images/loc-9-Screenshot_2025_08_31_223328.png"
+    },
+    {
+      "x": 1973,
+      "y": 675,
+      "difficulty": 5,
+      "image": "images/loc-11-Screenshot_2025_08_31_223447.png"
+    },
+    {
+      "x": 1878,
+      "y": 715,
+      "difficulty": 1,
+      "image": "images/loc-13-Screenshot_2025_08_31_223541.png"
+    },
+    {
+      "x": 1960,
+      "y": 775,
+      "difficulty": 3,
+      "image": "images/loc-15-Screenshot_2025_08_31_223709.png"
+    },
+    {
+      "x": 2408,
+      "y": 807,
+      "difficulty": 1,
+      "image": "images/loc-17-Screenshot_2025_08_31_223856.png"
+    },
+    {
+      "x": 2547,
+      "y": 821,
+      "difficulty": 5,
+      "image": "images/loc-19-Screenshot_2025_08_31_224020.png"
+    },
+    {
+      "x": 2113,
+      "y": 857,
+      "difficulty": 1,
+      "image": "images/loc-21-Screenshot_2025_08_31_224133.png"
+    },
+    {
+      "x": 1407,
+      "y": 394,
+      "difficulty": 6,
+      "image": "images/loc-23-Screenshot_2025_08_31_224301.png"
+    },
+    {
+      "x": 1255,
+      "y": 394,
+      "difficulty": 8,
+      "image": "images/loc-25-Screenshot_2025_08_31_224359.png"
+    },
+    {
+      "x": 1221,
+      "y": 318,
+      "difficulty": 10,
+      "image": "images/loc-27-Screenshot_2025_08_31_224556.png"
+    },
+    {
+      "x": 1221,
+      "y": 318,
+      "difficulty": 3,
+      "image": "images/loc-29-Screenshot_2025_08_31_224638.png"
+    },
+    {
+      "x": 1460,
+      "y": 509,
+      "difficulty": 4,
+      "image": "images/loc-31-Screenshot_2025_08_31_224754.png"
+    },
+    {
+      "x": 3014,
+      "y": 1598,
+      "difficulty": 7,
+      "image": "images/loc-33-Screenshot_2025_08_31_224948.png"
+    },
+    {
+      "x": 2993,
+      "y": 1446,
+      "difficulty": 9,
+      "image": "images/loc-35-Screenshot_2025_08_31_225057.png"
+    },
+    {
+      "x": 2943,
+      "y": 1308,
+      "difficulty": 10,
+      "image": "images/loc-37-Screenshot_2025_08_31_225142.png"
+    },
+    {
+      "x": 2965,
+      "y": 1127,
+      "difficulty": 2,
+      "image": "images/loc-39-Screenshot_2025_08_31_225225.png"
+    },
+    {
+      "x": 1961,
+      "y": 1187,
+      "difficulty": 6,
+      "image": "images/loc-41-Screenshot_2025_08_31_225305.png"
+    },
+    {
+      "x": 1810,
+      "y": 985,
+      "difficulty": 10,
+      "image": "images/loc-43-Screenshot_2025_08_31_225412.png"
+    },
+    {
+      "x": 2859,
+      "y": 528,
+      "difficulty": 2,
+      "image": "images/loc-45-Screenshot_2025_08_31_225649.png"
+    },
+    {
+      "x": 2988,
+      "y": 618,
+      "difficulty": 5,
+      "image": "images/loc-47-Screenshot_2025_08_31_225849.png"
+    },
+    {
+      "x": 3409,
+      "y": 597,
+      "difficulty": 7,
+      "image": "images/loc-49-Screenshot_2025_08_31_230008.png"
+    },
+    {
+      "x": 3052,
+      "y": 2231,
+      "difficulty": 10,
+      "image": "images/loc-51-Screenshot_2025_08_31_230648.png"
+    },
+    {
+      "x": 3053,
+      "y": 2231,
+      "difficulty": 4,
+      "image": "images/loc-53-Screenshot_2025_08_31_231330.png"
+    },
+    {
+      "x": 4032,
+      "y": 1581,
+      "difficulty": 3,
+      "image": "images/loc-55-Screenshot_2025_08_31_231533.png"
+    },
+    {
+      "x": 4331,
+      "y": 1699,
+      "difficulty": 3,
+      "image": "images/loc-57-Screenshot_2025_08_31_231625.png"
+    },
+    {
+      "x": 4315,
+      "y": 1741,
+      "difficulty": 1,
+      "image": "images/loc-59-Screenshot_2025_08_31_231758.png"
+    },
+    {
+      "x": 4253,
+      "y": 1604,
+      "difficulty": 7,
+      "image": "images/loc-61-Screenshot_2025_08_31_231951.png"
+    },
+    {
+      "x": 2109,
+      "y": 1194,
+      "difficulty": 2,
+      "image": "images/loc-63-Screenshot_2025_09_01_005335.png"
+    },
+    {
+      "x": 1983,
+      "y": 1271,
+      "difficulty": 5,
+      "image": "images/loc-65-Screenshot_2025_09_01_005554.png"
+    },
+    {
+      "x": 1879,
+      "y": 1267,
+      "difficulty": 3,
+      "image": "images/loc-67-Screenshot_2025_09_01_005716.png"
+    },
+    {
+      "x": 1855,
+      "y": 1353,
+      "difficulty": 7,
+      "image": "images/loc-69-Screenshot_2025_09_01_005849.png"
+    },
+    {
+      "x": 1867,
+      "y": 1386,
+      "difficulty": 8,
+      "image": "images/loc-71-Screenshot_2025_09_01_005915.png"
+    },
+    {
+      "x": 1702,
+      "y": 1394,
+      "difficulty": 6,
+      "image": "images/loc-73-Screenshot_2025_09_01_010024.png"
+    },
+    {
+      "x": 1645,
+      "y": 1395,
+      "difficulty": 6,
+      "image": "images/loc-75-Screenshot_2025_09_01_010041.png"
+    },
+    {
+      "x": 1603,
+      "y": 1424,
+      "difficulty": 4,
+      "image": "images/loc-77-Screenshot_2025_09_01_010104.png"
+    },
+    {
+      "x": 1506,
+      "y": 1425,
+      "difficulty": 4,
+      "image": "images/loc-79-Screenshot_2025_09_01_010143.png"
+    },
+    {
+      "x": 1499,
+      "y": 1412,
+      "difficulty": 5,
+      "image": "images/loc-81-Screenshot_2025_09_01_010202.png"
+    },
+    {
+      "x": 1487,
+      "y": 1457,
+      "difficulty": 3,
+      "image": "images/loc-83-Screenshot_2025_09_01_010302.png"
+    },
+    {
+      "x": 1587,
+      "y": 1454,
+      "difficulty": 5,
+      "image": "images/loc-85-Screenshot_2025_09_01_010321.png"
+    },
+    {
+      "x": 1429,
+      "y": 1391,
+      "difficulty": 2,
+      "image": "images/loc-87-Screenshot_2025_09_01_010407.png"
+    },
+    {
+      "x": 1461,
+      "y": 1393,
+      "difficulty": 3,
+      "image": "images/loc-89-Screenshot_2025_09_01_010429.png"
+    },
+    {
+      "x": 1486,
+      "y": 1287,
+      "difficulty": 4,
+      "image": "images/loc-91-Screenshot_2025_09_01_010522.png"
+    },
+    {
+      "x": 1502,
+      "y": 1251,
+      "difficulty": 4,
+      "image": "images/loc-93-Screenshot_2025_09_01_010548.png"
+    },
+    {
+      "x": 1548,
+      "y": 1149,
+      "difficulty": 3,
+      "image": "images/loc-95-Screenshot_2025_09_01_010733.png"
+    },
+    {
+      "x": 1584,
+      "y": 1111,
+      "difficulty": 3,
+      "image": "images/loc-97-Screenshot_2025_09_01_010755.png"
+    },
+    {
+      "x": 1675,
+      "y": 1139,
+      "difficulty": 5,
+      "image": "images/loc-99-Screenshot_2025_09_01_010819.png"
+    },
+    {
+      "x": 1702,
+      "y": 1098,
+      "difficulty": 6,
+      "image": "images/loc-101-Screenshot_2025_09_01_010909.png"
+    },
+    {
+      "x": 1701,
+      "y": 1074,
+      "difficulty": 6,
+      "image": "images/loc-103-Screenshot_2025_09_01_010928.png"
+    },
+    {
+      "x": 1811,
+      "y": 944,
+      "difficulty": 7,
+      "image": "images/loc-105-Screenshot_2025_09_01_011051.png"
+    },
+    {
+      "x": 1774,
+      "y": 945,
+      "difficulty": 3,
+      "image": "images/loc-107-Screenshot_2025_09_01_011151.png"
+    },
+    {
+      "x": 1901,
+      "y": 922,
+      "difficulty": 4,
+      "image": "images/loc-109-Screenshot_2025_09_01_011225.png"
+    },
+    {
+      "x": 2031,
+      "y": 905,
+      "difficulty": 4,
+      "image": "images/loc-111-Screenshot_2025_09_01_011301.png"
+    },
+    {
+      "x": 2127,
+      "y": 934,
+      "difficulty": 6,
+      "image": "images/loc-113-Screenshot_2025_09_01_011358.png"
+    },
+    {
+      "x": 2213,
+      "y": 951,
+      "difficulty": 4,
+      "image": "images/loc-115-Screenshot_2025_09_01_011444.png"
+    },
+    {
+      "x": 1447,
+      "y": 2075,
+      "difficulty": 3,
+      "image": "images/loc-117-Screenshot_2025_09_01_011520.png"
+    },
+    {
+      "x": 1517,
+      "y": 2073,
+      "difficulty": 6,
+      "image": "images/loc-119-Screenshot_2025_09_01_011538.png"
+    },
+    {
+      "x": 1755,
+      "y": 2072,
+      "difficulty": 2,
+      "image": "images/loc-121-Screenshot_2025_09_01_011606.png"
+    },
+    {
+      "x": 1721,
+      "y": 2073,
+      "difficulty": 6,
+      "image": "images/loc-123-Screenshot_2025_09_01_011624.png"
+    },
+    {
+      "x": 1729,
+      "y": 2176,
+      "difficulty": 9,
+      "image": "images/loc-125-Screenshot_2025_09_01_011739.png"
+    },
+    {
+      "x": 1717,
+      "y": 2005,
+      "difficulty": 6,
+      "image": "images/loc-127-Screenshot_2025_09_01_011827.png"
+    },
+    {
+      "x": 1394,
+      "y": 1554,
+      "difficulty": 10,
+      "image": "images/loc-129-Screenshot_2025_09_01_012049.png"
+    },
+    {
+      "x": 1384,
+      "y": 1527,
+      "difficulty": 5,
+      "image": "images/loc-131-Screenshot_2025_09_01_012106.png"
+    },
+    {
+      "x": 1421,
+      "y": 1532,
+      "difficulty": 6,
+      "image": "images/loc-133-Screenshot_2025_09_01_012123.png"
+    },
+    {
+      "x": 1486,
+      "y": 1515,
+      "difficulty": 5,
+      "image": "images/loc-135-Screenshot_2025_09_01_012141.png"
+    },
+    {
+      "x": 1531,
+      "y": 1551,
+      "difficulty": 4,
+      "image": "images/loc-137-Screenshot_2025_09_01_012219.png"
+    },
+    {
+      "x": 1667,
+      "y": 1460,
+      "difficulty": 6,
+      "image": "images/loc-139-Screenshot_2025_09_01_012249.png"
+    },
+    {
+      "x": 2172,
+      "y": 1281,
+      "difficulty": 5,
+      "image": "images/loc-141-Screenshot_2025_09_01_012425.png"
+    },
+    {
+      "x": 2259,
+      "y": 1365,
+      "difficulty": 4,
+      "image": "images/loc-143-Screenshot_2025_09_01_012532.png"
+    },
+    {
+      "x": 2047,
+      "y": 1364,
+      "difficulty": 7,
+      "image": "images/loc-145-Screenshot_2025_09_01_012610.png"
+    },
+    {
+      "x": 1980,
+      "y": 1452,
+      "difficulty": 2,
+      "image": "images/loc-147-Screenshot_2025_09_01_012644.png"
+    },
+    {
+      "x": 2040,
+      "y": 1444,
+      "difficulty": 1,
+      "image": "images/loc-149-Screenshot_2025_09_01_012700.png"
+    },
+    {
+      "x": 1910,
+      "y": 1558,
+      "difficulty": 6,
+      "image": "images/loc-151-Screenshot_2025_09_01_012814.png"
+    },
+    {
+      "x": 2195,
+      "y": 1559,
+      "difficulty": 7,
+      "image": "images/loc-153-Screenshot_2025_09_01_012923.png"
+    },
+    {
+      "x": 2093,
+      "y": 1746,
+      "difficulty": 7,
+      "image": "images/loc-155-Screenshot_2025_09_01_012955.png"
+    },
+    {
+      "x": 2114,
+      "y": 1750,
+      "difficulty": 6,
+      "image": "images/loc-157-Screenshot_2025_09_01_013003.png"
+    },
+    {
+      "x": 2021,
+      "y": 1765,
+      "difficulty": 6,
+      "image": "images/loc-159-Screenshot_2025_09_01_013032.png"
+    },
+    {
+      "x": 1989,
+      "y": 1841,
+      "difficulty": 3,
+      "image": "images/loc-161-Screenshot_2025_09_01_013400.png"
+    },
+    {
+      "x": 2035,
+      "y": 1810,
+      "difficulty": 4,
+      "image": "images/loc-163-Screenshot_2025_09_01_013428.png"
+    },
+    {
+      "x": 1815,
+      "y": 1647,
+      "difficulty": 1,
+      "image": "images/loc-165-Screenshot_2025_09_01_013519.png"
+    },
+    {
+      "x": 1886,
+      "y": 1640,
+      "difficulty": 6,
+      "image": "images/loc-167-Screenshot_2025_09_01_013532.png"
+    },
+    {
+      "x": 1898,
+      "y": 1654,
+      "difficulty": 3,
+      "image": "images/loc-169-Screenshot_2025_09_01_013550.png"
+    },
+    {
+      "x": 1934,
+      "y": 1719,
+      "difficulty": 4,
+      "image": "images/loc-171-Screenshot_2025_09_01_013649.png"
+    },
+    {
+      "x": 2002,
+      "y": 1711,
+      "difficulty": 4,
+      "image": "images/loc-173-Screenshot_2025_09_01_013710.png"
+    },
+    {
+      "x": 2001,
+      "y": 1729,
+      "difficulty": 3,
+      "image": "images/loc-175-Screenshot_2025_09_01_013723.png"
+    },
+    {
+      "x": 1864,
+      "y": 1854,
+      "difficulty": 1,
+      "image": "images/loc-177-Screenshot_2025_09_01_013756.png"
+    },
+    {
+      "x": 1814,
+      "y": 1809,
+      "difficulty": 6,
+      "image": "images/loc-179-Screenshot_2025_09_01_013901.png"
+    },
+    {
+      "x": 1695,
+      "y": 1847,
+      "difficulty": 6,
+      "image": "images/loc-181-Screenshot_2025_09_01_013928.png"
+    },
+    {
+      "x": 1299,
+      "y": 1735,
+      "difficulty": 4,
+      "image": "images/loc-183-Screenshot_2025_09_01_014140.png"
+    },
+    {
+      "x": 326,
+      "y": 1864,
+      "difficulty": 1,
+      "image": "images/loc-185-Screenshot_2025_09_01_014315.png"
+    },
+    {
+      "x": 1145,
+      "y": 2076,
+      "difficulty": 2,
+      "image": "images/loc-187-Screenshot_2025_09_01_014640.png"
+    },
+    {
+      "x": 1439,
+      "y": 2120,
+      "difficulty": 2,
+      "image": "images/loc-189-Screenshot_2025_09_01_014856.png"
+    },
+    {
+      "x": 1550,
+      "y": 2133,
+      "difficulty": 6,
+      "image": "images/loc-191-Screenshot_2025_09_01_014918.png"
+    },
+    {
+      "x": 1482,
+      "y": 1003,
+      "difficulty": 7,
+      "image": "images/loc-193-Screenshot_2025_09_01_015557.png"
+    },
+    {
+      "x": 1565,
+      "y": 1008,
+      "difficulty": 4,
+      "image": "images/loc-195-Screenshot_2025_09_01_015616.png"
+    },
+    {
+      "x": 1418,
+      "y": 1023,
+      "difficulty": 6,
+      "image": "images/loc-197-Screenshot_2025_09_01_015631.png"
+    },
+    {
+      "x": 1350,
+      "y": 1060,
+      "difficulty": 2,
+      "image": "images/loc-199-Screenshot_2025_09_01_015735.png"
+    },
+    {
+      "x": 584,
+      "y": 770,
+      "difficulty": 4,
+      "image": "images/loc-201-Screenshot_2025_09_01_015906.png"
+    },
+    {
+      "x": 389,
+      "y": 916,
+      "difficulty": 1,
+      "image": "images/loc-203-Screenshot_2025_09_01_015955.png"
+    }
+  ],
+  "contributors": [
+    {
+      "images": 52,
+      "name": "Hollow Knight Wiki"
+    },
+    {
+      "images": 22,
+      "name": "RikiChik"
+    },
+    {
+      "images": 10,
+      "name": "demapples14"
+    },
+    {
+      "images": 10,
+      "name": "Hood_"
+    },
+    {
+      "images": 9,
+      "name": "derRumit"
+    },
+    {
+      "images": 3,
+      "name": "lucasbrasantos"
+    },
+    {
+      "images": 20,
+      "name": "Dinno115"
+    },
+    {
+      "images": 31,
+      "name": "Monsdote"
+    },
+    {
+      "images": 25,
+      "name": "Apple"
+    },
+    {
+      "images": 101,
+      "name": "Maximilian Fischer"
+    }
+  ],
+  "map": {
+    "useCustomMap": false,
+    "defaultMap": "images/game/defaultMaps/hallownest.png"
+  }
+}

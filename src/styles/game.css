@@ -1,0 +1,430 @@
+body {
+	overflow: hidden;
+}
+
+#roundScoreDisplay {
+	position: absolute;
+	bottom: calc(10% + 20px); /* Position above the button container */
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: rgba(0, 0, 0, 0.7);
+	padding: 8px 25px;
+	border-radius: 10px;
+	border: 2px solid white;
+	font-size: 1.25rem; /* 20px */
+	z-index: 10;
+	pointer-events: none; /* Prevent it from blocking map clicks */
+	display: none; /* Hidden by default */
+	min-width: 250px;
+	white-space: nowrap; /* Prevent text from wrapping */
+	text-align: center;
+}
+
+hr {
+	width: 100%;
+	border-color: white;
+	margin: 0;
+}
+
+#minimiseButton {
+	position: absolute;
+	right: 0.5rem;
+	bottom: 0.3rem;
+	z-index: 10;
+
+	transition: transform 0.3s ease; /* Smooth rotation for the button itself */
+}
+
+#fullscreenButton,
+#minimiseButton {
+	width: 50px;
+	height: 50px;
+	min-width: 50px;
+	padding: 0;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+	margin-left: 0;
+}
+
+.fullscreen {
+	transition: all 0.2s ease;
+	opacity: 0.95;
+	width: 100% !important;
+	height: 100% !important;
+	right: 0 !important;
+	bottom: 0 !important;
+	margin: 0 !important;
+}
+
+#minimiseButton.rotate180 {
+	transform: rotate(180deg);
+	background-color: #fff;
+}
+
+#scoreContainer span {
+	text-align: left;
+	padding: 5px 15px;
+}
+
+.choice-description {
+	font-size: 0.9rem;
+	color: #b0b0b0;
+	margin-top: 0.75rem;
+	font-family: sans-serif; /* Use a more readable font for descriptions */
+	font-weight: normal;
+	white-space: normal; /* Allow text to wrap */
+}
+
+.choice-info {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 0.75rem;
+	font-size: 0.8rem;
+	color: #9ca3af;
+	font-family: sans-serif;
+	font-weight: normal;
+}
+
+.choice-author {
+	text-align: left;
+}
+
+.choice-image-count {
+	text-align: right;
+}
+
+.choice-map-icon {
+	width: 24px !important; 
+	height: 24px !important;
+	margin-right: 8px;
+	vertical-align: middle;
+	object-fit: contain;
+}
+
+#packChoices {
+	overflow-y: auto; 
+	padding: 10px 20px; 
+	display: grid; 
+	flex-direction: column; 
+	gap: 20px;
+}
+
+ #selected-packs-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	background-color: rgba(54, 54, 54, 0.55);
+	border-radius: 6px;
+	padding: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	height: fit-content;
+	font-size: 1rem;
+}
+
+/* A reusable custom scrollbar style */
+.custom-scrollbar::-webkit-scrollbar {
+	width: 8px; /* Thinner scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+	background: transparent; /* Make the track invisible */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+	background-color: rgba(255, 255, 255, 0.3); /* A semi-transparent white thumb */
+	border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+	background-color: rgba(255, 255, 255, 0.5); /* Lighter on hover */
+}
+
+/* Applying the custom scrollbar to the pack choices window */
+#packSelectWindow > div[style*='overflow-y: auto'] {
+	scrollbar-width: thin; /* For Firefox */
+	scrollbar-color: rgba(255, 255, 255, 0.3) transparent; /* For Firefox */
+}
+
+.pack-tag {
+	display: inline-block;
+	background-color: #4b55637d;
+	color: #e5e7eb;
+	padding: 4px 10px;
+	border-radius: 6px;
+}
+
+#selected-packs-list:empty::before {
+	content: 'No packs selected.';
+	color: #6b7280;
+}
+
+.pack-selection-area {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 10px;
+	width: 100%;
+}
+
+#customDifficultyDiv {
+	gap: 1rem;
+}
+
+.custom-difficulty-inputs {
+	display: flex;
+	flex-direction: row;
+	gap: 1rem;
+	width: 100%;
+}
+
+.range-container {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+#minimiseIcon {
+	transition: transform 0.3s ease;
+}
+
+#mapContainer {
+	background-color: #000;
+	opacity: 0.6;
+	transition: all 0.5s ease;
+	position: fixed;
+	width: 30%;
+	height: 40%;	
+	right: 0rem;
+	bottom: 0rem;
+	border-radius: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	transform-origin: bottom right;
+	border-width: 0.5rem;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+#mapContainer:hover {
+	opacity: 0.9;
+	width: 45%;
+	height: 55%;
+}
+
+@media (max-width: 768px) {
+		#mapContainer {
+		width: 100%;
+		height: 30%;
+		margin: 0;
+		border-width: 0.5rem;
+		box-sizing: border-box;
+	}
+
+	#mapContainer:hover {
+		width: 100%;
+		height: 30%;
+	}
+	#scoreContainer {
+		left: 50%;
+		transform: translateX(-50%);
+		top: 0.75rem;
+		font-size: 1rem;
+		gap: 0.5rem;
+	}
+	#topRightContainer {
+		right: 0.5rem;
+		top: 0.75rem;
+	}
+	#backContainer {
+		left: 0.5rem;
+		top: 0.75rem;
+	}
+}
+#speedrunTimer {
+	position: absolute;
+	top: 0.5rem;
+	left: 0.5rem;
+	display: block;
+	gap: 0.5rem;
+	
+}
+
+#totalTime {
+	display: block;
+	gap: 0.5rem;
+	font-size: 2rem;
+}
+
+#locationTime {
+	display: block;
+}
+
+#topRightContainer {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	display: flex;
+	gap: 0.5rem;
+}
+#bottomLeftContainer {
+	position: absolute;
+	bottom: 0.5rem;
+	left: 0.5rem;
+	display: flex;
+	gap: 0.5rem;
+	font-size: 1.5rem;
+	color: rgba(255, 255, 255, 0.7);
+	text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+	
+}
+#mapCanvas.minimise {
+	transition: all 0.5s ease;
+	opacity: 0;
+	transform: scale(0);
+	height: 0 !important;
+	width: 100% !important;
+	pointer-events: none;
+}
+
+#mapContainer.minimise {
+	transition: all 0.5s ease;
+	width: 60px !important;
+	height: 60px !important;
+	background-color: transparent;
+	opacity: 1;
+}
+
+#mapContainer.minimise #controlsContainer {
+	opacity: 0;
+	pointer-events: none;
+}
+
+img {
+	-webkit-user-drag: none;
+}
+
+#scoreContainer {
+	font-size: 2rem;
+	color: #fff;
+	position: absolute;
+	top: 0.5rem;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+#timerDisplay {
+	display: none; /* Hide by default to prevent layout shift */
+}
+
+#imageWrapper {
+	position: relative;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+}
+
+/* blurred background layer */
+#blurBg {
+	position: absolute;
+	inset: 0;
+	background: center/cover no-repeat;
+	filter: blur(20px) brightness(0.45);
+	z-index: 0;
+	pointer-events: none;
+}
+
+#locationImg {
+	background: center/cover no-repeat;
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	user-select: none;
+	pointer-events: none;
+	filter: none;
+	opacity: 1;
+	transition: opacity 0.4s ease;
+}
+
+.hideLocationImg {
+	filter: blur(20px) brightness(0.45);
+	opacity: 0;
+}
+
+#locationImg::selection {
+	background: none;
+}
+
+
+#formWarning {
+	font-size: 15px; 
+	display: none; 
+	padding: 0; 
+	margin: 1px
+}
+
+
+
+#debugWindow {
+	position: fixed;
+	bottom: 0.5rem;
+	left: 0.5rem;
+	background-color: rgba(0, 0, 0, 0.75);
+	color: #fff;
+	padding: 0.5rem;
+	border-radius: 4px;
+	font-family: monospace;
+	font-size: 12px;
+	z-index: 9000; /* High z-index to be on top */
+	white-space: pre; /* To respect newlines and spaces in the text content */
+}
+
+.window {
+	transition: all 0.40s cubic-bezier(.2,.9,.2,1);
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: rgba(0, 0, 0, 0.9);
+	color: #fff;
+	padding: 1rem;
+	border-radius: 8px;
+	border: 2px solid rgba(255, 255, 255, 0.5);
+	box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+	text-align: center;
+	font-size: 1.5rem;
+	z-index: 1000;
+	width: 90vw; 
+	max-height: 90vh; 
+	display: none;
+	flex-direction: column;
+	gap: 1rem; 
+	overflow-y: auto;
+	padding: 1.5rem;
+	max-width: 600px;
+}
+
+#packSelectWindow {
+	max-width: 1000px;
+}
+
+.window.visible {
+	display: flex;
+	opacity: 1;
+	transform: translate(-50%, -50%) scale(1);
+	pointer-events: auto;
+}
+
+/* Hidden-by-default state for animation - JS should add 'visible' after setting display:flex */
+.window:not(.visible) {
+	opacity: 0 !important;
+	transform: translate(-50%, -55%) scale(0.98);
+	pointer-events: none;
+}

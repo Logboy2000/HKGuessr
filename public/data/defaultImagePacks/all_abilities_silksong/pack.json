@@ -1,0 +1,126 @@
+{
+  "name": "All Abilities",
+  "gameModeId": "silksong_abilities",
+  "author": "seaman",
+  "thumbnail": "images/thumbnail.png",
+  "locations": [
+    {
+      "x": 914,
+      "y": 2362,
+      "difficulty": 5,
+      "image": "images/loc-1-skill_silkspear.png"
+    },
+    {
+      "x": 2979,
+      "y": 1945,
+      "difficulty": 5,
+      "image": "images/loc-2-skill_thread_storm.png"
+    },
+    {
+      "x": 2459,
+      "y": 1760,
+      "difficulty": 5,
+      "image": "images/loc-3-skill_cross_stitch.png"
+    },
+    {
+      "x": 50,
+      "y": 2389,
+      "difficulty": 5,
+      "image": "images/loc-4-skill_sharpdart.png"
+    },
+    {
+      "x": 1130,
+      "y": 1432,
+      "difficulty": 5,
+      "image": "images/loc-5-skill_rune_rage.png"
+    },
+    {
+      "x": 1937,
+      "y": 617,
+      "difficulty": 5,
+      "image": "images/loc-6-skill_pale_nails.png"
+    },
+    {
+      "x": 2064,
+      "y": 2495,
+      "difficulty": 5,
+      "image": "images/loc-7-art_swift_step.png"
+    },
+    {
+      "x": 1198,
+      "y": 2003,
+      "difficulty": 5,
+      "image": "images/loc-8-art_cling_grip.png"
+    },
+    {
+      "x": 1644,
+      "y": 2143,
+      "difficulty": 5,
+      "image": "images/loc-9-art_needolin.png"
+    },
+    {
+      "x": 1968,
+      "y": 1727,
+      "difficulty": 5,
+      "image": "images/loc-10-art_clawline.png"
+    },
+    {
+      "x": 2180,
+      "y": 3227,
+      "difficulty": 5,
+      "image": "images/loc-11-art_silk_soar.png"
+    },
+    {
+      "x": 1113,
+      "y": 2758,
+      "difficulty": 5,
+      "image": "images/loc-12-art_sylphsong.png"
+    },
+    {
+      "x": 589,
+      "y": 2597,
+      "difficulty": 5,
+      "image": "images/loc-13-melody_elegy_of_the_deep.png"
+    },
+    {
+      "x": 322,
+      "y": 1882,
+      "difficulty": 5,
+      "image": "images/loc-14-ability_needle_strike.png"
+    },
+    {
+      "x": 2895,
+      "y": 2636,
+      "difficulty": 5,
+      "image": "images/loc-15-ability_drifters_cloak.png"
+    },
+    {
+      "x": 840,
+      "y": 816,
+      "difficulty": 5,
+      "image": "images/loc-16-ability_faydown_cloak.png"
+    },
+    {
+      "x": 589,
+      "y": 2598,
+      "difficulty": 5,
+      "image": "images/loc-17-ability_everbloom.png"
+    },
+    {
+      "x": 2254,
+      "y": 3132,
+      "difficulty": 5,
+      "image": "images/loc-18-ability_farsight.png"
+    }
+  ],
+  "contributors": [
+    {
+      "images": 18,
+      "name": "seaman"
+    }
+  ],
+  "map": {
+    "useCustomMap": false,
+    "defaultMap": "images/game/defaultMaps/pharloom.png"
+  }
+}

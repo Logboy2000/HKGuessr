@@ -1,0 +1,24 @@
+{
+  "name": "hkguessr",
+  "version": "1.0.0",
+  "description": "Hollow Guessr is an open-source GeoGuessr web game set in the worlds of Hollow Knight and Silksong.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Logboy2000/HKGuessr.git"
+  },
+  "keywords": [],
+  "author": "Logboy2000",
+  "license": "GPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/Logboy2000/HKGuessr/issues"
+  },
+  "homepage": "https://github.com/Logboy2000/HKGuessr#readme",
+  "devDependencies": {
+    "vite": "^7.2.4"
+  }
+}

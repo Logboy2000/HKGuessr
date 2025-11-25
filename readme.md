@@ -1,8 +1,8 @@
-![Logo](images/logo.png)
+![Logo](readme/logo.png)
 
 Hollow Guessr is an open-source GeoGuessr web game set in the worlds of Hollow Knight and Silksong. 
 
-The game is written in vanilla HTML, JS, and CSS; no fancy frameworks or build tools.
+This game is written in vanilla HTML, JS, and CSS using Vite; no fancy UI frameworks.
 
 Play it live at [https://hollowguessr.pages.dev](https://hollowguessr.pages.dev/)
 
@@ -39,11 +39,15 @@ git clone https://github.com/logboy2000/HKGuessr.git
 cd HKGuessr
 ```
 
-3. Start a simple local server (for example, using Python):
+3. Install the dependencies:
 ```bash
-python -m http.server 8000 --bind localhost
+npm install
 ```
-4. Access the game at [http://localhost:8000/](http://localhost:8000/).
+4. Start the development server:
+```bash
+npm run dev
+```
+5. Open your web browser
 
 ## Credits
 - **Hollow Knight**: Created by Team Cherry and source of all in game screenshots.

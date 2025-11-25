@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Image Pack Editor | Hollow Guessr</title>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+	<link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" crossorigin href="/assets/editor-Dwl1cjJq.css">
+</head>
+
+<body>
+	<div id="app-container">
+		<div id="map"></div>
+
+		<div id="sidebar">
+			<div id="resizer"></div>
+			<div style="overflow-y: scroll;">
+				<button onclick="window.location.href='index.html'" class="btn btn-secondary">
+					&lt;- Back
+				</button>
+				<br>
+				<div class="sidebar-section">
+					<br>
+					<h1 class="main-heading">Image Pack Editor</h1>
+					<br>
+					<br>
+					<p
+						style="text-align: center; margin-top: -1rem; margin-bottom: 1rem; font-size: 0.9rem; color: #9ca3af;">
+						Confused, or want your pack added to the main game? See the <a href="imagePacks.html" target="_blank"
+							style="color: #60a5fa; text-decoration: underline;">Image Pack Guide</a>.
+					</p>
+				</div>
+				<br>
+
+				<div class="sidebar-section" id="pack-settings-container">
+					<h2 class="section-heading">Pack Details</h2>
+					<!-- This container will be dynamically filled by editor.js -->
+				</div>
+
+				<br>
+
+				<div class="sidebar-section">
+					<h2 class="section-heading">Map Image</h2>
+					<select name="map-image" class="dropdown" id="default-map-selector">
+						<option value="hallownest.png">Hallownest</option>
+						<option value="pharloom.png">Pharloom (SPOILERS!)</option>
+					</select>
+					<p style="text-align: center; margin: 1rem 0; color: #9ca3af;">OR</p>
+
+
+					<div class="input-group">
+						<label for="map-image-upload" class="file-label">
+							<span id="map-image-upload-label">Upload Custom Map Image</span>
+						</label>
+						<input type="file" id="map-image-upload" style="display: none"
+							accept=".png, .jpg, .jpeg, .webp, .gif, .svg, .bmp, .tiff, .ico, .heic, .heif" />
+					</div>
+				</div>
+
+				<br>
+
+				<div class="sidebar-section">
+					<h2 class="section-heading">Locations</h2>
+					<div id="locations-list" class="location-list">
+					</div>
+					<br>
+					<button id="add-location-btn" class="btn btn-primary btn-full-width">
+						<img src="/images/editor/add.svg" alt="" class="svg-icon">
+						Add New Location
+					</button>
+				</div>
+
+				<br>
+
+				<div id="location-details" class="sidebar-section" style="display: none">
+					<h2 class="section-heading">Location Details</h2>
+					<div class="input-group">
+						<label class="input-label">Coordinates</label>
+						<p class="text-lg" style="font-family: monospace; color: #9ca3af">
+							X: <span id="coord-x">...</span>, Y: <span id="coord-y">...</span>
+						</p>
+					</div>
+					<div class="input-group">
+						<label for="difficulty-slider" class="input-label">Difficulty: <span
+								id="difficulty-value">5</span></label>
+						<input type="range" id="difficulty-slider" min="1" max="10" value="5" step="0.1" class="slider-input" />
+					</div>
+					<div class="input-group">
+						<label for="image-upload" class="file-label">
+							<span id="image-upload-label">Upload Location Image</span>
+						</label>
+						<input type="file" id="image-upload" style="display: none"
+							accept=".png, .jpg, .jpeg, .webp, .gif, .svg, .bmp, .tiff, .ico, .heic, .heif" />
+						<img id="image-preview" src="/images/editor/imagePreview.svg" alt="Image Preview"
+							class="preview-img" />
+					</div>
+					<div class="flex-row">
+						<button id="delete-location-btn" class="btn btn-danger flex-grow-1">
+							Delete
+						</button>
+						<button id="close-details-btn" class="btn btn-secondary flex-grow-1">
+							Close
+						</button>
+					</div>
+				</div>
+			</div>
+
+
+			
+			<div class="flex-row" style="
+						padding-top: 1.5rem;
+						border-top: 1px solid #4b5563;
+						margin-top: auto;
+					">
+				<button id="new-pack-btn" class="btn btn-secondary flex-grow-1">
+					<img src="/images/editor/add.svg" alt="" class="svg-icon">
+					New Pack
+				</button>
+				<button id="import-pack-btn" class="btn btn-secondary flex-grow-1">
+					<img src="/images/editor/upload.svg" alt="" class="svg-icon">
+					Import Pack
+				</button>
+				<button id="download-pack-btn" class="btn btn-primary flex-grow-1">
+					<img src="/images/editor/download.svg" alt="" class="svg-icon">
+					Download Pack
+				</button>
+				<input type="file" id="import-file-input" style="display: none" accept=".zip" />
+			</div>
+		</div>
+	</div>
+
+	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+	<script src="/js/editor.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,298 @@
+{
+  "name": "Charms",
+  "gameModeId": "charms",
+  "author": "rblashchuk",
+  "thumbnail": "images/thumbnail.png",
+  "locations": [
+    {
+      "x": 3732,
+      "y": 980,
+      "difficulty": 5,
+      "image": "images/charms_3732_980_1ba8e2.png"
+    },
+    {
+      "x": 1967,
+      "y": 1701,
+      "difficulty": 5,
+      "image": "images/charms_1967_1701_fb5709.png"
+    },
+    {
+      "x": 2547,
+      "y": 2634,
+      "difficulty": 4,
+      "image": "images/charms_2547_2634_07c333.png"
+    },
+    {
+      "x": 2324,
+      "y": 814,
+      "difficulty": 7,
+      "image": "images/charms_2324_814_91e1d8.png"
+    },
+    {
+      "x": 4211,
+      "y": 1904,
+      "difficulty": 8,
+      "image": "images/charms_4211_1904_f20bae.png"
+    },
+    {
+      "x": 2820,
+      "y": 1212,
+      "difficulty": 6,
+      "image": "images/charms_2820_1212_a29178.png"
+    },
+    {
+      "x": 1934,
+      "y": 624,
+      "difficulty": 2,
+      "image": "images/charms_1934_624_d067cf.png"
+    },
+    {
+      "x": 1982,
+      "y": 624,
+      "difficulty": 4,
+      "image": "images/charms_1982_624_88aa8f.png"
+    },
+    {
+      "x": 2947,
+      "y": 1804,
+      "difficulty": 3,
+      "image": "images/charms_2947_1804_fb747b.png"
+    },
+    {
+      "x": 2674,
+      "y": 1016,
+      "difficulty": 5,
+      "image": "images/charms_2674_1016_7aa0a9.png"
+    },
+    {
+      "x": 2435,
+      "y": 1939,
+      "difficulty": 1,
+      "image": "images/charms_2435_1939_a1e3a5.png"
+    },
+    {
+      "x": 1375,
+      "y": 661,
+      "difficulty": 9,
+      "image": "images/charms_1375_661_d23f67.png"
+    },
+    {
+      "x": 2674,
+      "y": 1016,
+      "difficulty": 6,
+      "image": "images/charms_2674_1016_b6dfea.png"
+    },
+    {
+      "x": 2674,
+      "y": 1016,
+      "difficulty": 2,
+      "image": "images/charms_2674_1016_8fed12.png"
+    },
+    {
+      "x": 1306,
+      "y": 931,
+      "difficulty": 7,
+      "image": "images/charms_1306_931_d6a243.png"
+    },
+    {
+      "x": 2110,
+      "y": 1188,
+      "difficulty": 4,
+      "image": "images/charms_2110_1188_c8ce2d.png"
+    },
+    {
+      "x": 1889,
+      "y": 705,
+      "difficulty": 2,
+      "image": "images/charms_1889_705_ca2ca4.png"
+    },
+    {
+      "x": 1456,
+      "y": 502,
+      "difficulty": 5,
+      "image": "images/charms_1456_502_22f4d0.png"
+    },
+    {
+      "x": 398,
+      "y": 905,
+      "difficulty": 6,
+      "image": "images/charms_398_905_c1c079.png"
+    },
+    {
+      "x": 1676,
+      "y": 2175,
+      "difficulty": 5,
+      "image": "images/charms_1676_2175_31494f.png"
+    },
+    {
+      "x": 1982,
+      "y": 624,
+      "difficulty": 3,
+      "image": "images/charms_1982_624_71296e.png"
+    },
+    {
+      "x": 2649,
+      "y": 2756,
+      "difficulty": 6,
+      "image": "images/charms_2649_2756_805a81.png"
+    },
+    {
+      "x": 3999,
+      "y": 1986,
+      "difficulty": 8,
+      "image": "images/charms_3999_1986_cc62b4.png"
+    },
+    {
+      "x": 3325,
+      "y": 852,
+      "difficulty": 5,
+      "image": "images/charms_3325_852_ac0c0e.png"
+    },
+    {
+      "x": 1985,
+      "y": 1828,
+      "difficulty": 6,
+      "image": "images/charms_1985_1828_484561.png"
+    },
+    {
+      "x": 982,
+      "y": 1950,
+      "difficulty": 9,
+      "image": "images/charms_982_1950_800d35.png"
+    },
+    {
+      "x": 1982,
+      "y": 624,
+      "difficulty": 2,
+      "image": "images/charms_1982_624_20e6ff.png"
+    },
+    {
+      "x": 2110,
+      "y": 1188,
+      "difficulty": 3,
+      "image": "images/charms_2110_1188_50bcf4.png"
+    },
+    {
+      "x": 1982,
+      "y": 624,
+      "difficulty": 5,
+      "image": "images/charms_1982_624_f79754.png"
+    },
+    {
+      "x": 2026,
+      "y": 624,
+      "difficulty": 4,
+      "image": "images/charms_2026_624_0888e0.png"
+    },
+    {
+      "x": 2674,
+      "y": 1016,
+      "difficulty": 4,
+      "image": "images/charms_2674_1016_01f697.png"
+    },
+    {
+      "x": 2674,
+      "y": 1016,
+      "difficulty": 3,
+      "image": "images/charms_2674_1016_6a4256.png"
+    },
+    {
+      "x": 548,
+      "y": 1143,
+      "difficulty": 3,
+      "image": "images/charms_548_1143_125aea.png"
+    },
+    {
+      "x": 2054,
+      "y": 839,
+      "difficulty": 3,
+      "image": "images/charms_2054_839_5ef736.png"
+    },
+    {
+      "x": 2483,
+      "y": 654,
+      "difficulty": 3,
+      "image": "images/charms_2678_641_77cd93.png"
+    },
+    {
+      "x": 1539,
+      "y": 1544,
+      "difficulty": 8,
+      "image": "images/charms_1539_1544_29732f.png"
+    },
+    {
+      "x": 2042,
+      "y": 624,
+      "difficulty": 1,
+      "image": "images/charms_2042_624_3843ff.png"
+    },
+    {
+      "x": 1889,
+      "y": 705,
+      "difficulty": 3,
+      "image": "images/charms_1889_705_7750be.png"
+    },
+    {
+      "x": 3426,
+      "y": 807,
+      "difficulty": 2,
+      "image": "images/charms_3426_807_a4c192.png"
+    },
+    {
+      "x": 3036,
+      "y": 2230,
+      "difficulty": 1,
+      "image": "images/charms_3036_2230_6cfff6.png"
+    },
+    {
+      "x": 1718,
+      "y": 645,
+      "difficulty": 4,
+      "image": "images/charms_1718_645_d0bee2.png"
+    },
+    {
+      "x": 1982,
+      "y": 624,
+      "difficulty": 1,
+      "image": "images/charms_1982_624_09fc7c.png"
+    },
+    {
+      "x": 2110,
+      "y": 1188,
+      "difficulty": 5,
+      "image": "images/charms_2110_1188_794e81.png"
+    },
+    {
+      "x": 1915,
+      "y": 620,
+      "difficulty": 5,
+      "image": "images/b2a5e434.png"
+    },
+    {
+      "x": 1915,
+      "y": 620,
+      "difficulty": 5,
+      "image": "images/f2eeb92b.png"
+    },
+    {
+      "x": 1915,
+      "y": 620,
+      "difficulty": 5,
+      "image": "images/79c476dd.png"
+    }
+  ],
+  "contributors": [
+    {
+      "images": 42,
+      "name": "rblashchuk"
+    },
+    {
+      "images": 3,
+      "name": "Laith"
+    }
+  ],
+  "map": {
+    "useCustomMap": false,
+    "defaultMap": "images/game/defaultMaps/hallownest.png"
+  }
+}

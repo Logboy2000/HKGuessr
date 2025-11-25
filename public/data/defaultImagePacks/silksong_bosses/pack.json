@@ -1,0 +1,300 @@
+{
+  "name": "Bosses",
+  "gameModeId": "silksong_bosses",
+  "author": "DETONAGAME",
+  "thumbnail": "images/thumbnail.png",
+  "locations": [
+    {
+      "x": 724,
+      "y": 2615,
+      "difficulty": 2,
+      "image": "images/loc-1-imagem_2025_11_03_080756628.png"
+    },
+    {
+      "x": 1063,
+      "y": 2419,
+      "difficulty": 3,
+      "image": "images/loc-2-imagem_2025_11_03_080839504.png"
+    },
+    {
+      "x": 2101,
+      "y": 2586,
+      "difficulty": 3,
+      "image": "images/loc-3-1__2_.png"
+    },
+    {
+      "x": 2757,
+      "y": 2657,
+      "difficulty": 2,
+      "image": "images/loc-4-imagem_2025_11_03_081756419.png"
+    },
+    {
+      "x": 1847,
+      "y": 2222,
+      "difficulty": 6,
+      "image": "images/loc-5-imagem_2025_11_03_082221841.png"
+    },
+    {
+      "x": 1307,
+      "y": 2019,
+      "difficulty": 5,
+      "image": "images/loc-6-imagem_2025_11_03_091349897.png"
+    },
+    {
+      "x": 1639,
+      "y": 2141,
+      "difficulty": 4,
+      "image": "images/loc-7-imagem_2025_11_03_083218049.png"
+    },
+    {
+      "x": 579,
+      "y": 1899,
+      "difficulty": 6,
+      "image": "images/loc-8-Sem_nome__1080_x_1080_px___2_.png"
+    },
+    {
+      "x": 1025,
+      "y": 1706,
+      "difficulty": 5,
+      "image": "images/loc-9-imagem_2025_11_03_082405432.png"
+    },
+    {
+      "x": 2459,
+      "y": 1760,
+      "difficulty": 5,
+      "image": "images/loc-10-Sem_nome__1080_x_1080_px_.png"
+    },
+    {
+      "x": 1929,
+      "y": 1176,
+      "difficulty": 3,
+      "image": "images/loc-11-imagem_2025_11_03_084057249.png"
+    },
+    {
+      "x": 2215,
+      "y": 1413,
+      "difficulty": 2,
+      "image": "images/loc-12-Design_sem_nome__4_.png"
+    },
+    {
+      "x": 1646,
+      "y": 1599,
+      "difficulty": 6,
+      "image": "images/loc-13-imagem_2025_11_03_083649676.png"
+    },
+    {
+      "x": 1514,
+      "y": 2493,
+      "difficulty": 4,
+      "image": "images/loc-14-1__5_.png"
+    },
+    {
+      "x": 870,
+      "y": 2571,
+      "difficulty": 6,
+      "image": "images/loc-15-1__6_.png"
+    },
+    {
+      "x": 615,
+      "y": 2744,
+      "difficulty": 4,
+      "image": "images/loc-16-imagem_2025_11_03_081235499.png"
+    },
+    {
+      "x": 401,
+      "y": 1484,
+      "difficulty": 3,
+      "image": "images/loc-17-Sem_nome__1080_x_1080_px___1_.png"
+    },
+    {
+      "x": 1130,
+      "y": 1431,
+      "difficulty": 2,
+      "image": "images/loc-18-imagem_2025_11_03_083327577.png"
+    },
+    {
+      "x": 1845,
+      "y": 1106,
+      "difficulty": 6,
+      "image": "images/loc-19-Design_sem_nome__5_.png"
+    },
+    {
+      "x": 2940,
+      "y": 1302,
+      "difficulty": 4,
+      "image": "images/loc-20-imagem_2025_11_03_084321531.png"
+    },
+    {
+      "x": 2546,
+      "y": 1240,
+      "difficulty": 8,
+      "image": "images/loc-21-imagem_2025_11_03_084255891.png"
+    },
+    {
+      "x": 1604,
+      "y": 1904,
+      "difficulty": 6,
+      "image": "images/loc-22-imagem_2025_11_03_082444566.png"
+    },
+    {
+      "x": 1851,
+      "y": 2225,
+      "difficulty": 7,
+      "image": "images/loc-23-imagem_2025_11_03_092218695.png"
+    },
+    {
+      "x": 2516,
+      "y": 2396,
+      "difficulty": 7,
+      "image": "images/loc-24-1.png"
+    },
+    {
+      "x": 2757,
+      "y": 2658,
+      "difficulty": 4,
+      "image": "images/loc-25-1__1_.png"
+    },
+    {
+      "x": 1928,
+      "y": 830,
+      "difficulty": 3,
+      "image": "images/loc-26-1__3_.png"
+    },
+    {
+      "x": 1928,
+      "y": 609,
+      "difficulty": 1,
+      "image": "images/loc-27-imagem_2025_11_03_084343769.png"
+    },
+    {
+      "x": 823,
+      "y": 991,
+      "difficulty": 8,
+      "image": "images/loc-28-imagem_2025_11_03_083559455.png"
+    },
+    {
+      "x": 2197,
+      "y": 1472,
+      "difficulty": 8,
+      "image": "images/loc-29-imagem_2025_11_03_084229845.png"
+    },
+    {
+      "x": 2214,
+      "y": 1414,
+      "difficulty": 3,
+      "image": "images/loc-30-imagem_2025_11_03_084206418.png"
+    },
+    {
+      "x": 942,
+      "y": 1165,
+      "difficulty": 8,
+      "image": "images/loc-31-imagem_2025_11_03_083541459.png"
+    },
+    {
+      "x": 239,
+      "y": 2469,
+      "difficulty": 5,
+      "image": "images/loc-32-imagem_2025_11_03_081519436.png"
+    },
+    {
+      "x": 188,
+      "y": 2613,
+      "difficulty": 6,
+      "image": "images/loc-33-Design_sem_nome__7_.png"
+    },
+    {
+      "x": 2102,
+      "y": 2760,
+      "difficulty": 7,
+      "image": "images/loc-34-Design_sem_nome.png"
+    },
+    {
+      "x": 3234,
+      "y": 2501,
+      "difficulty": 7,
+      "image": "images/loc-35-Design_sem_nome__6_.png"
+    },
+    {
+      "x": 3105,
+      "y": 2315,
+      "difficulty": 5,
+      "image": "images/loc-36-imagem_2025_11_03_092153203.png"
+    },
+    {
+      "x": 3010,
+      "y": 2135,
+      "difficulty": 4,
+      "image": "images/loc-37-imagem_2025_11_03_082144752.png"
+    },
+    {
+      "x": 3349,
+      "y": 1946,
+      "difficulty": 8,
+      "image": "images/loc-38-imagem_2025_11_03_081944565.png"
+    },
+    {
+      "x": 3444,
+      "y": 1945,
+      "difficulty": 6,
+      "image": "images/loc-39-Design_sem_nome__1_.png"
+    },
+    {
+      "x": 260,
+      "y": 1649,
+      "difficulty": 8,
+      "image": "images/loc-40-imagem_2025_11_03_082256138.png"
+    },
+    {
+      "x": 425,
+      "y": 1816,
+      "difficulty": 7,
+      "image": "images/loc-41-imagem_2025_11_03_082422495.png"
+    },
+    {
+      "x": 623,
+      "y": 1451,
+      "difficulty": 4,
+      "image": "images/loc-42-imagem_2025_11_03_082343059.png"
+    },
+    {
+      "x": 289,
+      "y": 1486,
+      "difficulty": 2,
+      "image": "images/loc-43-imagem_2025_11_03_082326063.png"
+    },
+    {
+      "x": 1052,
+      "y": 1859,
+      "difficulty": 6,
+      "image": "images/loc-44-Design_sem_nome__3_.png"
+    },
+    {
+      "x": 936,
+      "y": 1862,
+      "difficulty": 3,
+      "image": "images/loc-45-imagem_2025_11_03_083301040.png"
+    },
+    {
+      "x": 1924,
+      "y": 3249,
+      "difficulty": 6,
+      "image": "images/loc-46-imagem_2025_11_03_081826783.png"
+    },
+    {
+      "x": 2718,
+      "y": 1915,
+      "difficulty": 7,
+      "image": "images/loc-47-imagem_2025_11_03_101121513.png"
+    }
+  ],
+  "contributors": [
+    {
+      "images": 47,
+      "name": "DETONAGAME"
+    }
+  ],
+  "map": {
+    "useCustomMap": false,
+    "defaultMap": "images/game/defaultMaps/pharloom.png"
+  }
+}
