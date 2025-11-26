@@ -626,13 +626,13 @@ label {
 }
 
 .hk-button::before {
-	background-image: url('../images/leftArrow.png');
+	background-image: url('/images/leftArrow.png');
 	left: 25px; /* Position arrow in the padding area */
 	transform: translateY(-60%) translateX(-10px) scale(0.75); /* Start off-screen */
 }
 
 .hk-button::after {
-	background-image: url('../images/rightArrow.png');
+	background-image: url('/images/rightArrow.png');
 	right: 25px; /* Position arrow in the padding area */
 	transform: translateY(-60%) translateX(10px) scale(0.75); /* Start off-screen */
 }

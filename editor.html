@@ -6,8 +6,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Image Pack Editor | Hollow Guessr</title>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
-	<link rel="stylesheet" href="style/editor.css">
+	<link rel="shortcut icon" href="/assets/icons/favicon.png" type="image/x-icon">
+	<link rel="stylesheet" href="src/styles/editor.css">
 </head>
 
 <body>
@@ -67,7 +67,7 @@
 					</div>
 					<br>
 					<button id="add-location-btn" class="btn btn-primary btn-full-width">
-						<img src="images/editor/add.svg" alt="" class="svg-icon">
+						<img src="/images/editor/add.svg" alt="" class="svg-icon">
 						Add New Location
 					</button>
 				</div>
@@ -93,7 +93,7 @@
 						</label>
 						<input type="file" id="image-upload" style="display: none"
 							accept=".png, .jpg, .jpeg, .webp, .gif, .svg, .bmp, .tiff, .ico, .heic, .heif" />
-						<img id="image-preview" src="images/editor/imagePreview.svg" alt="Image Preview"
+						<img id="image-preview" src="/images/editor/imagePreview.svg" alt="Image Preview"
 							class="preview-img" />
 					</div>
 					<div class="flex-row">
@@ -115,15 +115,15 @@
 						margin-top: auto;
 					">
 				<button id="new-pack-btn" class="btn btn-secondary flex-grow-1">
-					<img src="images/editor/add.svg" alt="" class="svg-icon">
+					<img src="/images/editor/add.svg" alt="" class="svg-icon">
 					New Pack
 				</button>
 				<button id="import-pack-btn" class="btn btn-secondary flex-grow-1">
-					<img src="images/editor/upload.svg" alt="" class="svg-icon">
+					<img src="/images/editor/upload.svg" alt="" class="svg-icon">
 					Import Pack
 				</button>
 				<button id="download-pack-btn" class="btn btn-primary flex-grow-1">
-					<img src="images/editor/download.svg" alt="" class="svg-icon">
+					<img src="/images/editor/download.svg" alt="" class="svg-icon">
 					Download Pack
 				</button>
 				<input type="file" id="import-file-input" style="display: none" accept=".zip" />
@@ -133,7 +133,7 @@
 
 	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-	<script src="script/editor.js"></script>
+	<script src="src/js/editor.js" type="module"></script>
 </body>
 
 </html>

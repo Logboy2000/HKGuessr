@@ -10,10 +10,10 @@ window.debugMode = false
 import { GameMap } from './GameMap.js'
 import { randIRange, makeSeededRandom } from './Utils.js'
 import { loadInitialData } from './loadLocationData.js'
-import { MultipleChoice } from '/modules/MultipleChoice/MultipleChoice.js'
+import { MultipleChoice } from './MultipleChoice/MultipleChoice.js'
 import WindowManager from './WindowManager.js'
 import ToastManager from './ToastManager.js'
-import AudioPlayer from '/modules/AudioPlayer.js'
+import AudioPlayer from './AudioPlayer.js'
 
 export const DEFAULT_MAP_URL = 'images/game/defaultMaps/hallownest.png'
 export const imagePackMC = new MultipleChoice(getElem('packChoices'))

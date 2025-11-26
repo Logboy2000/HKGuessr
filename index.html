@@ -3,12 +3,11 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<link rel="manifest" href="manifest.json" />
-	<link rel="stylesheet" href="style/index.css" />
-	<link rel="stylesheet" href="style/style.css" />
+	<link rel="stylesheet" href="src/styles/index.css" />
+	<link rel="stylesheet" href="src/styles/style.css" />
 	<!--SEO Junk-->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+	<link rel="shortcut icon" href="/assets/icons/favicon.png" type="image/x-icon" />
 	<title>Hollow Guessr</title>
 	<meta name="description"
 		content="Test your knowledge of Hallownest in Hollow Guessr, a Hollow Knight-inspired GeoGuessr game." />
@@ -17,13 +16,13 @@
 	<meta property="og:title" content="Hollow Guessr - A Hollow Knight GeoGuessing Game" />
 	<meta property="og:description"
 		content="Test your knowledge of Hallownest and Pharloom in this interactive guessing game. Can you recognize every location in Hollow Knight?" />
-	<meta property="og:image" content="images/social-preview.png" />
+	<meta property="og:image" content="/images/social-preview.png" />
 	<meta property="og:url" content="https://hollowguessr.pages.dev/" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Hollow Guessr - A Hollow Knight GeoGuessing Game" />
 	<meta name="twitter:description"
 		content="Guess the locations in Hallownest with Hollow Guessr, a fan-made Hollow Knight GeoGuessr clone." />
-	<meta name="twitter:image" content="images/social-preview.png" />
+	<meta name="twitter:image" content="/images/social-preview.png" />
 	<!--End of SEO Junk-->
 	<script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app-compat.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-database-compat.js"></script>
@@ -31,7 +30,7 @@
 </head>
 
 <body>
-	<img src="images/logo.png" alt="Hollow Guessr logo - A Hollow Knight GeoGuessing Game" id="title-image"
+	<img src="/images/logo.png" alt="Hollow Guessr logo - A Hollow Knight GeoGuessing Game" id="title-image"
 		class="moving" />
 	<p id="magicText"></p>
 	<br>
@@ -58,6 +57,7 @@
 	<div id="silksong-promo">
 		<h3>New Stuff:</h3>
 		<ul style="font-family: 'Arial', sans-serif; font-size: 0.8rem;">
+			<li style="font-family: 'Arial', sans-serif;">Improved site loading speed!</li>
 			<li style="font-family: 'Arial', sans-serif;">Pack Update: Pharloom has increased from 395 to 515 locations!</li>
 			<li style="font-family: Arial, sans-serif">Added a "Donate" button ❤️</li>
 		</ul>
@@ -69,50 +69,8 @@
 			<a href="https://loganhowarth.pages.dev/" target="_blank" rel="noopener noreferrer"
 				style="text-decoration: underline;">Logboy2000</a></span>
 	</div>
-	<!--Magic Text-->
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBZhZ5ONdvvGS0FbOC-BhmTWZgp0d8bqWc",
-            authDomain: "hollowguessrbackend.firebaseapp.com",
-            databaseURL: "https://hollowguessrbackend-default-rtdb.firebaseio.com",
-            projectId: "hollowguessrbackend",
-            storageBucket: "hollowguessrbackend.firebasestorage.app",
-            messagingSenderId: "468117202388",
-            appId: "1:468117202388:web:1ad209b0fe18dbc9692241"
-        };
-        firebase.initializeApp(firebaseConfig);
-
-        const db = firebase.database();
-        const textRef = db.ref("liveText");
-
-        textRef.on("value", (snapshot) => {
-			// I loooove html injection
-            const magicTextElement = document.getElementById("magicText");
-            const newText = snapshot.val() || "";
-            
-            // Only animate if there's new text and it's different from current
-            if (newText && newText !== magicTextElement.innerHTML) {
-                // Remove animation class first to reset
-                magicTextElement.classList.remove("animate");
-                
-                // Force reflow to ensure class removal is processed
-                void magicTextElement.offsetWidth;
-                
-                // Update text
-                magicTextElement.innerHTML = newText;
-                
-                // Add animation class to trigger animation
-                magicTextElement.classList.add("animate");
-                
-                // Remove animation class after animation completes
-                setTimeout(() => {
-                    magicTextElement.classList.remove("animate");
-                }, 800);
-            } else if (!newText) {
-                magicTextElement.innerHTML = "";
-            }
-        });
-    </script>
+	<!-- Main script entry point -->
+	<script type="module" src="/src/js/main.js"></script>
 </body>
 
 </html>

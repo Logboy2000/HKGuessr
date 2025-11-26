@@ -4,11 +4,11 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+	<link rel="shortcut icon" href="/assets/icons/favicon.png" type="image/x-icon">
 	<title>Hollow Guessr</title>
-	<link rel="stylesheet" href="style/style.css" />
-	<link rel="stylesheet" href="style/game.css" />
-	<link rel="stylesheet" href="modules/MultipleChoice/multipleChoice.css">
+	<link rel="stylesheet" href="src/styles/style.css" />
+	<link rel="stylesheet" href="src/styles/game.css" />
+	<link rel="stylesheet" href="src/styles/multipleChoice.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 
@@ -25,11 +25,11 @@
 		<div id="controlsContainer">
 			<button id="guessButton">Guess!</button>
 			<button id="fullscreenButton">
-				<img src="images/game/fullscreen.svg" alt="FS" style="max-width: 100%; padding: 3px" />
+				<img src="/images/game/fullscreen.svg" alt="FS" style="max-width: 100%; padding: 3px" />
 			</button>
 		</div>
 		<button id="minimiseButton">
-			<img src="images/game/arrow-down.svg" alt="V" style="max-width: 100%; padding: 3px" id="minimiseIcon" />
+			<img src="/images/game/arrow-down.svg" alt="V" style="max-width: 100%; padding: 3px" id="minimiseIcon" />
 		</button>
 	</div>
 
@@ -187,7 +187,7 @@
 		</div>
 	</div>
 
-	<script src="script/game.js" type="module"></script>
+	<script src="src/js/game.js" type="module"></script>
 </body>
 
 </html>
