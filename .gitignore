@@ -1,7 +1,3 @@
-
 .vscode/launch.json
-/node_modules
-/dist
-.env
-/dist
-/dist
+node_modules/
+dist/

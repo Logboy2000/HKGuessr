@@ -541,7 +541,7 @@ button:focus {
 }
 
 .leaflet-marker-icon.pin-icon {
-	background-image: url('../images/shadePin.png');
+	background-image: url('/images/shadePin.png');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;

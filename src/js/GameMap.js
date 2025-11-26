@@ -1,6 +1,6 @@
 import { lerp, loadImage } from './Utils.js'
 import { GameManager, GAMESTATES, DOM, DEFAULT_MAP_URL } from './game.js'
-import AudioPlayer from '/modules/AudioPlayer.js'
+import AudioPlayer from './AudioPlayer.js'
 
 // --- Constants for the default map ---
 const DEFAULT_MAP_WIDTH = 4498
@@ -55,8 +55,8 @@ export const GameMap = {
 		this.ctx.imageSmoothingEnabled = true
 
 		// Load static pin images
-		this.knightPinImg.src = 'images/knightPin.png'
-		this.shadePinImg.src = 'images/shadePin.png'
+		this.knightPinImg.src = '/images/knightPin.png'
+		this.shadePinImg.src = '/images/shadePin.png'
 
 		// Ensure pin images are loaded before attempting to draw them
 		Promise.all([
