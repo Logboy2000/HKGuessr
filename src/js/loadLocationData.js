@@ -212,6 +212,7 @@ export async function loadInitialData() {
 		}
 
 		imagePackMC.selectChoiceByIndex(0)
+		imagePackMC.selectChoiceByIndex(1)
 		return loadedGameModes
 	} catch (error) {
 		console.error('Error loading location data:', error)

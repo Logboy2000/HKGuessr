@@ -1,0 +1,300 @@
+{
+  "name": "Lore Tablets",
+  "gameModeId": "lore_tablets_hallownest",
+  "author": "seaman",
+  "thumbnail": "images/thumbnail.png",
+  "locations": [
+    {
+      "x": 1697,
+      "y": 650,
+      "difficulty": "4",
+      "image": "images/loc-1-kings_pass_form.png"
+    },
+    {
+      "x": 1626,
+      "y": 624,
+      "difficulty": "3.8",
+      "image": "images/loc-2-kings_pass_focus.png"
+    },
+    {
+      "x": 1673,
+      "y": 575,
+      "difficulty": "3",
+      "image": "images/loc-3-kings_pass_kingdom.png"
+    },
+    {
+      "x": 2042,
+      "y": 630,
+      "difficulty": "1",
+      "image": "images/loc-4-dirtmouth_mapping.png"
+    },
+    {
+      "x": 2063,
+      "y": 631,
+      "difficulty": "2",
+      "image": "images/loc-5-bretta_1.png"
+    },
+    {
+      "x": 2064,
+      "y": 630,
+      "difficulty": "2",
+      "image": "images/loc-6-bretta_2.png"
+    },
+    {
+      "x": 2064,
+      "y": 630,
+      "difficulty": "2",
+      "image": "images/loc-7-bretta_3.png"
+    },
+    {
+      "x": 2063,
+      "y": 630,
+      "difficulty": "2",
+      "image": "images/loc-8-bretta_4.png"
+    },
+    {
+      "x": 2064,
+      "y": 630,
+      "difficulty": "2",
+      "image": "images/loc-9-bretta_5.png"
+    },
+    {
+      "x": 1600,
+      "y": 1231,
+      "difficulty": "3",
+      "image": "images/loc-10-archives_1.png"
+    },
+    {
+      "x": 1600,
+      "y": 1231,
+      "difficulty": "3",
+      "image": "images/loc-11-archives_2.png"
+    },
+    {
+      "x": 1600,
+      "y": 1230,
+      "difficulty": "3",
+      "image": "images/loc-12-archives_3.png"
+    },
+    {
+      "x": 829,
+      "y": 1313,
+      "difficulty": "3",
+      "image": "images/loc-13-gardens_traitor.png"
+    },
+    {
+      "x": 2718,
+      "y": 2354,
+      "difficulty": "4",
+      "image": "images/loc-14-ancient_basin_ascended.png"
+    },
+    {
+      "x": 2778,
+      "y": 2163,
+      "difficulty": "4",
+      "image": "images/loc-15-ancient_basin_fountain.png"
+    },
+    {
+      "x": 3208,
+      "y": 1893,
+      "difficulty": "4",
+      "image": "images/loc-16-waterways_honor.png"
+    },
+    {
+      "x": 3707,
+      "y": 1268,
+      "difficulty": "1",
+      "image": "images/loc-17-colo_warrior.png"
+    },
+    {
+      "x": 3719,
+      "y": 1269,
+      "difficulty": "1",
+      "image": "images/loc-18-colo_conqueror.png"
+    },
+    {
+      "x": 3731,
+      "y": 1269,
+      "difficulty": "1",
+      "image": "images/loc-19-colo_fool.png"
+    },
+    {
+      "x": 4370,
+      "y": 2109,
+      "difficulty": "6",
+      "image": "images/loc-20-edge_herald.png"
+    },
+    {
+      "x": 1183,
+      "y": 512,
+      "difficulty": "5",
+      "image": "images/loc-21-cliffs_void.png"
+    },
+    {
+      "x": 3320,
+      "y": 951,
+      "difficulty": "1",
+      "image": "images/loc-22-resting_grounds_protect.png"
+    },
+    {
+      "x": 2238,
+      "y": 707,
+      "difficulty": "3.5",
+      "image": "images/loc-23-crossroads_vessel.png"
+    },
+    {
+      "x": 1920,
+      "y": 771,
+      "difficulty": 5,
+      "image": "images/loc-24-crossroads_pilgrim.png"
+    },
+    {
+      "x": 2455,
+      "y": 1527,
+      "difficulty": "7",
+      "image": "images/loc-25-city_sealed.png"
+    },
+    {
+      "x": 2823,
+      "y": 1708,
+      "difficulty": "1",
+      "image": "images/loc-26-city_memorial.png"
+    },
+    {
+      "x": 2722,
+      "y": 1680,
+      "difficulty": "4",
+      "image": "images/loc-27-city_lemm.png"
+    },
+    {
+      "x": 3183,
+      "y": 1672,
+      "difficulty": 5,
+      "image": "images/loc-28-city_marissa.png"
+    },
+    {
+      "x": 3010,
+      "y": 1148,
+      "difficulty": "5",
+      "image": "images/loc-29-city_spire.png"
+    },
+    {
+      "x": 2537,
+      "y": 1029,
+      "difficulty": "2",
+      "image": "images/loc-30-menderbug_1.png"
+    },
+    {
+      "x": 2537,
+      "y": 1030,
+      "difficulty": "2",
+      "image": "images/loc-31-menderbug_2.png"
+    },
+    {
+      "x": 2537,
+      "y": 1027,
+      "difficulty": "2",
+      "image": "images/loc-32-menderbug_3.png"
+    },
+    {
+      "x": 1562,
+      "y": 1512,
+      "difficulty": "9",
+      "image": "images/loc-33-fungal_peace.png"
+    },
+    {
+      "x": 2040,
+      "y": 1246,
+      "difficulty": "10",
+      "image": "images/loc-34-fungal_strength.png"
+    },
+    {
+      "x": 1866,
+      "y": 1390,
+      "difficulty": "9",
+      "image": "images/loc-35-fungal_wyrm.png"
+    },
+    {
+      "x": 2036,
+      "y": 1444,
+      "difficulty": "4",
+      "image": "images/loc-36-fungal_heart.png"
+    },
+    {
+      "x": 1734,
+      "y": 1675,
+      "difficulty": "10",
+      "image": "images/loc-37-fungal_core_pity.png"
+    },
+    {
+      "x": 2200,
+      "y": 1563,
+      "difficulty": "8",
+      "image": "images/loc-38-mantis_swift.png"
+    },
+    {
+      "x": 1852,
+      "y": 1632,
+      "difficulty": "9",
+      "image": "images/loc-39-mantis_truce.png"
+    },
+    {
+      "x": 1321,
+      "y": 752,
+      "difficulty": "8",
+      "image": "images/loc-40-greenpath_hidden.png"
+    },
+    {
+      "x": 1002,
+      "y": 979,
+      "difficulty": "8",
+      "image": "images/loc-41-greenpath_life.png"
+    },
+    {
+      "x": 1071,
+      "y": 684,
+      "difficulty": "8.5",
+      "image": "images/loc-42-greenpath_mind.png"
+    },
+    {
+      "x": 1030,
+      "y": 683,
+      "difficulty": "9",
+      "image": "images/loc-43-greenpath_children.png"
+    },
+    {
+      "x": 970,
+      "y": 1088,
+      "difficulty": "8",
+      "image": "images/loc-44-greenpath_wary.png"
+    },
+    {
+      "x": 1495,
+      "y": 977,
+      "difficulty": "7.5",
+      "image": "images/loc-45-greenpath_law.png"
+    },
+    {
+      "x": 2560,
+      "y": 1212,
+      "difficulty": "8",
+      "image": "images/loc-46-soul_sanctum_cenda.png"
+    },
+    {
+      "x": 2821,
+      "y": 1321,
+      "difficulty": "9",
+      "image": "images/loc-47-soul_sanctum_aba.png"
+    }
+  ],
+  "contributors": [
+    {
+      "images": 47,
+      "name": "seaman"
+    }
+  ],
+  "map": {
+    "useCustomMap": false,
+    "defaultMap": "images/game/defaultMaps/hallownest.png"
+  }
+}

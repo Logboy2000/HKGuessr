@@ -250,6 +250,10 @@ export const GameManager = {
 					? `X: ${this.currentLocation[0]}, Y: ${this.currentLocation[1]}`
 					: 'null',
 				FPS: fps.toFixed(1),
+				TotalLocations: Object.values(this.gameModeData).reduce(
+					(acc, mode) => acc + mode.locations.length,
+					0
+				),
 			}
 
 			DOM.debugText.textContent = Object.entries(debugData)
