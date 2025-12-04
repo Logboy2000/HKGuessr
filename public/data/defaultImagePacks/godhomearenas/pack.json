@@ -1,0 +1,318 @@
+{
+  "name": "Godhome Arenas",
+  "gameModeId": "godhome_arenas",
+  "author": "birdman25x",
+  "thumbnail": "images/thumbnail.png",
+  "locations": [
+    {
+      "x": 2593,
+      "y": 987,
+      "difficulty": "4.2",
+      "image": "images/loc-1-Schermafbeelding_2025_12_03_161145.png"
+    },
+    {
+      "x": 985,
+      "y": 643,
+      "difficulty": "3.2",
+      "image": "images/loc-2-Schermafbeelding_2025_12_03_161254.png"
+    },
+    {
+      "x": 1925,
+      "y": 874,
+      "difficulty": "3.6",
+      "image": "images/loc-3-Schermafbeelding_2025_12_03_165023.png"
+    },
+    {
+      "x": 2140,
+      "y": 853,
+      "difficulty": "4.5",
+      "image": "images/loc-4-Schermafbeelding_2025_12_03_211506.png"
+    },
+    {
+      "x": 2159,
+      "y": 833,
+      "difficulty": "4",
+      "image": "images/loc-6-Schermafbeelding_2025_12_03_211531.png"
+    },
+    {
+      "x": 820,
+      "y": 752,
+      "difficulty": "3.8",
+      "image": "images/loc-7-Schermafbeelding_2025_12_03_211645.png"
+    },
+    {
+      "x": 4320,
+      "y": 1695,
+      "difficulty": "3.6",
+      "image": "images/loc-8-Schermafbeelding_2025_12_03_211710.png"
+    },
+    {
+      "x": 1353,
+      "y": 1052,
+      "difficulty": "1.6",
+      "image": "images/loc-9-Schermafbeelding_2025_12_03_212236.png"
+    },
+    {
+      "x": 2436,
+      "y": 1939,
+      "difficulty": 5,
+      "image": "images/loc-10-Schermafbeelding_2025_12_03_212329.png"
+    },
+    {
+      "x": 1865,
+      "y": 1838,
+      "difficulty": "4.1",
+      "image": "images/loc-11-Schermafbeelding_2025_12_03_212351.png"
+    },
+    {
+      "x": 3655,
+      "y": 1273,
+      "difficulty": "5.7",
+      "image": "images/loc-12-Schermafbeelding_2025_12_03_212414.png"
+    },
+    {
+      "x": 4072,
+      "y": 1950,
+      "difficulty": "3.4",
+      "image": "images/loc-13-Schermafbeelding_2025_12_03_212448.png"
+    },
+    {
+      "x": 2102,
+      "y": 2242,
+      "difficulty": "3.6",
+      "image": "images/loc-14-Schermafbeelding_2025_12_03_212510.png"
+    },
+    {
+      "x": 2101,
+      "y": 2248,
+      "difficulty": "5.8",
+      "image": "images/loc-15-Schermafbeelding_2025_12_03_212530.png"
+    },
+    {
+      "x": 1425,
+      "y": 2128,
+      "difficulty": "4.5",
+      "image": "images/loc-16-Schermafbeelding_2025_12_03_212550.png"
+    },
+    {
+      "x": 3608,
+      "y": 1533,
+      "difficulty": "4.3",
+      "image": "images/loc-17-Schermafbeelding_2025_12_03_212647.png"
+    },
+    {
+      "x": 3648,
+      "y": 1277,
+      "difficulty": "4.1",
+      "image": "images/loc-18-Schermafbeelding_2025_12_03_212712.png"
+    },
+    {
+      "x": 2859,
+      "y": 522,
+      "difficulty": "3.9",
+      "image": "images/loc-19-Schermafbeelding_2025_12_03_212731.png"
+    },
+    {
+      "x": 2868,
+      "y": 482,
+      "difficulty": "7",
+      "image": "images/loc-20-Schermafbeelding_2025_12_03_212748.png"
+    },
+    {
+      "x": 1600,
+      "y": 1230,
+      "difficulty": 5,
+      "image": "images/loc-21-Schermafbeelding_2025_12_03_212805.png"
+    },
+    {
+      "x": 734,
+      "y": 1148,
+      "difficulty": "4.1",
+      "image": "images/loc-22-Schermafbeelding_2025_12_03_212831.png"
+    },
+    {
+      "x": 2063,
+      "y": 644,
+      "difficulty": "6.1",
+      "image": "images/loc-23-Schermafbeelding_2025_12_03_212854.png"
+    },
+    {
+      "x": 2795,
+      "y": 1302,
+      "difficulty": "3",
+      "image": "images/loc-24-Schermafbeelding_2025_12_03_212911.png"
+    },
+    {
+      "x": 2634,
+      "y": 1220,
+      "difficulty": "5.6",
+      "image": "images/loc-26-Schermafbeelding_2025_12_03_212955.png"
+    },
+    {
+      "x": 2633,
+      "y": 1229,
+      "difficulty": "6.6",
+      "image": "images/loc-27-Schermafbeelding_2025_12_03_213342.png"
+    },
+    {
+      "x": 2948,
+      "y": 1806,
+      "difficulty": "2.9",
+      "image": "images/loc-28-Schermafbeelding_2025_12_03_213401.png"
+    },
+    {
+      "x": 2955,
+      "y": 1841,
+      "difficulty": 5,
+      "image": "images/loc-29-Schermafbeelding_2025_12_03_213421.png"
+    },
+    {
+      "x": 3007,
+      "y": 1397,
+      "difficulty": "3.1",
+      "image": "images/loc-30-Schermafbeelding_2025_12_03_213439.png"
+    },
+    {
+      "x": 1668,
+      "y": 1035,
+      "difficulty": "7.2",
+      "image": "images/loc-31-Schermafbeelding_2025_12_03_213501.png"
+    },
+    {
+      "x": 764,
+      "y": 1365,
+      "difficulty": "3.4",
+      "image": "images/loc-32-Schermafbeelding_2025_12_03_213525.png"
+    },
+    {
+      "x": 955,
+      "y": 1852,
+      "difficulty": "6.6",
+      "image": "images/loc-33-Schermafbeelding_2025_12_03_213547.png"
+    },
+    {
+      "x": 4107,
+      "y": 1782,
+      "difficulty": "6.1",
+      "image": "images/loc-34-Schermafbeelding_2025_12_03_213611.png"
+    },
+    {
+      "x": 3159,
+      "y": 935,
+      "difficulty": "8.8",
+      "image": "images/loc-35-Schermafbeelding_2025_12_03_213630.png"
+    },
+    {
+      "x": 1275,
+      "y": 336,
+      "difficulty": "5.5",
+      "image": "images/loc-37-Schermafbeelding_2025_12_03_213653.png"
+    },
+    {
+      "x": 2261,
+      "y": 1361,
+      "difficulty": "3.6",
+      "image": "images/loc-38-Schermafbeelding_2025_12_03_213754.png"
+    },
+    {
+      "x": 476,
+      "y": 949,
+      "difficulty": "7",
+      "image": "images/loc-39-Schermafbeelding_2025_12_03_213911.png"
+    },
+    {
+      "x": 1985,
+      "y": 645,
+      "difficulty": "6.5",
+      "image": "images/loc-41-Schermafbeelding_2025_12_03_214010.png"
+    },
+    {
+      "x": 2238,
+      "y": 702,
+      "difficulty": "4.7",
+      "image": "images/loc-42-Schermafbeelding_2025_12_03_214047.png"
+    },
+    {
+      "x": 1917,
+      "y": 629,
+      "difficulty": "3.8",
+      "image": "images/loc-43-Schermafbeelding_2025_12_03_214104.png"
+    },
+    {
+      "x": 1930,
+      "y": 631,
+      "difficulty": 5,
+      "image": "images/loc-44-Schermafbeelding_2025_12_03_214124.png"
+    },
+    {
+      "x": 2238,
+      "y": 693,
+      "difficulty": "3.6",
+      "image": "images/loc-45-Schermafbeelding_2025_12_03_214145.png"
+    },
+    {
+      "x": 2586,
+      "y": 989,
+      "difficulty": "3.4",
+      "image": "images/loc-46-Schermafbeelding_2025_12_03_214308.png"
+    },
+    {
+      "x": 1918,
+      "y": 873,
+      "difficulty": "3.6",
+      "image": "images/loc-47-Schermafbeelding_2025_12_03_214326.png"
+    },
+    {
+      "x": 1426,
+      "y": 2111,
+      "difficulty": "3.9",
+      "image": "images/loc-48-Schermafbeelding_2025_12_03_214346.png"
+    },
+    {
+      "x": 1601,
+      "y": 1219,
+      "difficulty": "4",
+      "image": "images/loc-49-Schermafbeelding_2025_12_03_214411.png"
+    },
+    {
+      "x": 1669,
+      "y": 1024,
+      "difficulty": "4.3",
+      "image": "images/loc-50-Schermafbeelding_2025_12_03_214430.png"
+    },
+    {
+      "x": 764,
+      "y": 1357,
+      "difficulty": "6.1",
+      "image": "images/loc-51-Schermafbeelding_2025_12_03_214447.png"
+    },
+    {
+      "x": 4107,
+      "y": 1771,
+      "difficulty": "3.6",
+      "image": "images/loc-52-Schermafbeelding_2025_12_03_214510.png"
+    },
+    {
+      "x": 3158,
+      "y": 926,
+      "difficulty": "5.6",
+      "image": "images/loc-53-Schermafbeelding_2025_12_03_214539.png"
+    },
+    {
+      "x": 1274,
+      "y": 328,
+      "difficulty": "5",
+      "image": "images/loc-54-Schermafbeelding_2025_12_03_214600.png"
+    }
+  ],
+  "contributors": [
+    {
+      "images": 50,
+      "name": "birdman25x"
+    }
+  ],
+  "map": {
+    "useCustomMap": false,
+    "defaultMap": "images/game/defaultMaps/hallownest.png"
+  }
+}
