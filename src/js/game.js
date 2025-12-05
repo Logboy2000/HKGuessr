@@ -105,6 +105,8 @@ export const GameManager = {
 			}
 		})
 
+		this.loadOptionsFromLocalStorage()
+
 		// --- Add all windows to the WindowManager ---
 		wm.add({
 			id: 'options',
@@ -298,18 +300,43 @@ export const GameManager = {
 			})
 		DOM.difficultySelector.addEventListener(
 			'change',
-			this.toggleCustomDifficultyDisplay.bind(this)
-		)
+			() => {
+				if (DOM.difficultySelector.value === 'custom') {
+					DOM.customDifficultyDiv.style.display = 'flex'
+				} else {
+					DOM.customDifficultyDiv.style.display = 'none'
+				}
+				this.saveOptionsToLocalStorage()
+			})
+
+
 		DOM.roundCountInput.addEventListener(
 			'input',
-			this.updateRoundCounter.bind(this)
+			() => {
+				this.saveOptionsToLocalStorage()
+				this.updateRoundCounter()
+			}
+
 		)
-		DOM.roundCountInput.addEventListener('input', this.validaiteForm.bind(this))
+		DOM.roundCountInput.addEventListener(
+			'input', () => {
+				this.saveOptionsToLocalStorage()
+				this.validaiteForm()
+			})
+
 		DOM.timerLengthInput.addEventListener(
 			'input',
-			this.validaiteForm.bind(this)
+			() => {
+				this.saveOptionsToLocalStorage()
+				this.validaiteForm()
+			}
 		)
-		DOM.seedInput.addEventListener('input', this.validaiteForm.bind(this))
+		DOM.seedInput.addEventListener('input',
+			() => {
+				this.saveOptionsToLocalStorage()
+				this.validaiteForm()
+			}
+		)
 
 		// Listeners for custom difficulty range sliders to update value displays
 		DOM.minDifficultyInput.addEventListener('input', (e) => {
@@ -329,19 +356,38 @@ export const GameManager = {
 
 		DOM.timeLimitEnabled.addEventListener(
 			'change',
-			this.validaiteForm.bind(this)
+			() => {
+				this.validaiteForm()
+				this.saveOptionsToLocalStorage()
+			}
+
 		)
 		DOM.minDifficultyInput.addEventListener(
 			'input',
-			this.validaiteForm.bind(this)
+			() => {
+				this.validaiteForm()
+				this.saveOptionsToLocalStorage()
+			}
 		)
 		DOM.maxDifficultyInput.addEventListener(
 			'input',
-			this.validaiteForm.bind(this)
+			() => {
+				this.validaiteForm()
+				this.saveOptionsToLocalStorage()
+			}
 		)
-		DOM.enableSeed.addEventListener('change', this.validaiteForm.bind(this))
-		getElem('blurTimeInput').addEventListener('change', this.validaiteForm.bind(this))
-		getElem('blurredModeEnabled').addEventListener('change', this.validaiteForm.bind(this))
+		DOM.enableSeed.addEventListener('change', () => {
+			this.validaiteForm()
+			this.saveOptionsToLocalStorage()
+		})
+		getElem('blurTimeInput').addEventListener('change', () => {
+			this.validaiteForm()
+			this.saveOptionsToLocalStorage()
+		})
+		getElem('blurredModeEnabled').addEventListener('change', () => {
+			this.validaiteForm()
+			this.saveOptionsToLocalStorage()
+		})
 
 		document
 			.getElementById('playAgainButton')
@@ -413,9 +459,9 @@ export const GameManager = {
 		this.speedrunTimer.totalTime = 0
 		this.lastFrameTime = 0
 
-		
-		
-		
+
+
+		this.saveOptionsToLocalStorage()
 		this.updateRoundCounter()
 
 		this.minDifficulty = Number(
@@ -439,7 +485,7 @@ export const GameManager = {
 		// --- MULTI-MODE SELECTION ---
 		const selectedGameModeIds = imagePackMC.getSelected()
 
-		
+
 		if (selectedGameModeIds.length === 0) {
 			console.error('No game mode selected, cannot start game')
 			return
@@ -458,7 +504,6 @@ export const GameManager = {
 		wm.close()
 
 		this.totalBlurTime = DOM.blurTimeInput.value * 1000
-		console.log(this.totalBlurTime)
 
 		// Load the map image for the *first* valid mode
 		const firstMode = validGameModes[0]
@@ -587,18 +632,6 @@ export const GameManager = {
 	},
 
 	/**
-	 * Toggles the visibility of the custom difficulty selection div.
-	 */
-	toggleCustomDifficultyDisplay() {
-		if (DOM.difficultySelector.value === 'custom') {
-			DOM.customDifficultyDiv.style.display = 'flex'
-		} else {
-			DOM.customDifficultyDiv.style.display = 'none'
-		}
-	},
-
-	/**
-	 * Toggles fullscreen mode for the map container.
 	 * Initializes all checkbox-based option toggles in the game options window.
 	 * It finds all checkboxes with a `data-toggle-target` attribute and sets up
 	 * event listeners to show/hide the target element.
@@ -715,9 +748,8 @@ export const GameManager = {
 			}
 
 			wm.open('gameover')
-			DOM.finalScoreDisplay.innerText = `Final Score: ${this.totalScore}/${
-				this.totalRounds * this.maxScore
-			}`
+			DOM.finalScoreDisplay.innerText = `Final Score: ${this.totalScore}/${this.totalRounds * this.maxScore
+				}`
 			const accuracyPercent = (
 				(this.totalScore / (this.totalRounds * this.maxScore)) *
 				100
@@ -885,7 +917,7 @@ export const GameManager = {
 
 		const selectedGameModes = imagePackMC.getSelected()
 
-		
+
 		if (!selectedGameModes || selectedGameModes.length === 0) {
 			console.error('No game modes selected.')
 			this.endGame()
@@ -1001,7 +1033,7 @@ export const GameManager = {
 		DOM.guessButton.disabled = true
 		GameMap.guessPosition = null
 
-		
+
 
 		if (this.timeLimitEnabled) {
 			this.endTime = performance.now() + this.timerLengthSeconds * 1000
@@ -1168,6 +1200,7 @@ export const GameManager = {
 				this.dismissValidationToast('seed')
 				// You can keep your fun easter egg toasts here, they will auto-dismiss
 				this.handleSeedEasterEggs(seedVal)
+				
 			}
 		} else {
 			this.dismissValidationToast('seed')
@@ -1199,7 +1232,7 @@ export const GameManager = {
 		}
 	},
 
-	
+
 
 	/**
 	 * Handles the fun easter eggs for the seed input.
@@ -1208,39 +1241,7 @@ export const GameManager = {
 	 */
 	async handleSeedEasterEggs(seedVal) {
 		const lowerSeed = seedVal.toLowerCase()
-		const disallowedBrainrot = [
-			'brainrot',
-			'skibidi',
-			'rizz',
-			'gyatt',
-			'fanum',
-			'sigma',
-			'delulu',
-			'Ohio',
-			'6-7',
-			'6_7',
-			'6.7',
-			'sixseven',
-			'six-seven',
-			'aura',
-			'sybau',
-			'cringe',
-			'NPC',
-			'glazing',
-			'mewing',
-			'zesty',
-			'nocap',
-			'ong',
-			'bussin',
-		]
-
-		if (
-			disallowedBrainrot.some((word) => lowerSeed.includes(word)) ||
-			seedVal === '67'
-		) {
-			this.showValidationToast('seed', 'Seed cannot contain brainrot.')
-			formValid = false
-		} else if (seedVal === '69') {
+		if (seedVal === '69') {
 			tm.displayToast('Nice.')
 		} else if (lowerSeed.includes('yalikejazz')) {
 			const { egg } = await import('./egg.js')
@@ -1259,6 +1260,7 @@ export const GameManager = {
 				{ allowHTML: true }
 			)
 		}
+		return true
 	},
 
 	/**
@@ -1267,7 +1269,7 @@ export const GameManager = {
 	updateSelectedPacksDisplay() {
 		const listContainer = getElem('selected-packs-list')
 		if (!listContainer) return
-		
+
 		listContainer.innerHTML = imagePackMC.getSelectedOptions()
 			.map((option) => {
 				let iconHtml = '';
@@ -1321,6 +1323,66 @@ export const GameManager = {
 
 			wm.open('confirmation')
 		})
+	},
+	saveOptionsToLocalStorage() {
+		localStorage.roundCount = DOM.roundCountInput.value
+		localStorage.timerLength = DOM.timerLengthInput.value
+		localStorage.timeLimitEnabled = DOM.timeLimitEnabled.checked
+		localStorage.minDifficulty = DOM.minDifficultyInput.value
+		localStorage.maxDifficulty = DOM.maxDifficultyInput.value
+		localStorage.blurredModeEnabled = DOM.blurredModeEnabled.checked
+		localStorage.blurTime = DOM.blurTimeInput.value
+		localStorage.selectedDifficulty = DOM.difficultySelector.value
+		localStorage.selectedPacks = imagePackMC.getSelected()
+		localStorage.seedEnabled = DOM.enableSeed.checked
+		localStorage.seedInput = DOM.seedInput.value
+
+	},
+	loadOptionsFromLocalStorage() {
+		if (localStorage.roundCount) {
+			DOM.roundCountInput.value = localStorage.roundCount
+		}
+		this.updateRoundCounter()
+		if (localStorage.timerLength) {
+			DOM.timerLengthInput.value = localStorage.timerLength
+		}
+		if (localStorage.timeLimitEnabled) {
+			DOM.timeLimitEnabled.checked =
+				localStorage.timeLimitEnabled === 'true' ? true : false
+		}
+		if (localStorage.minDifficulty) {
+			DOM.minDifficultyInput.value = localStorage.minDifficulty
+		}
+		if (localStorage.maxDifficulty) {
+			DOM.maxDifficultyInput.value = localStorage.maxDifficulty
+		}
+		if (localStorage.blurredModeEnabled) {
+			DOM.blurredModeEnabled.checked =
+				localStorage.blurredModeEnabled === 'true' ? true : false
+		}
+		if (localStorage.blurTime) {
+			DOM.blurTimeInput.value = localStorage.blurTime
+		}
+		if (localStorage.selectedDifficulty) {
+			DOM.difficultySelector.value = localStorage.selectedDifficulty
+		}
+		if (localStorage.selectedPacks) {
+			const packsArr = localStorage.selectedPacks.split(',');
+			for (let i = 0; i < packsArr.length; i++) {
+				imagePackMC.selected.add(packsArr[i])
+			}
+		}
+		imagePackMC.render();
+		if (localStorage.seedEnabled == 'true'){
+			DOM.enableSeed.checked = true
+			
+		} else if(localStorage.seedEnabled == 'false'){
+			DOM.enableSeed.checked = false
+		}
+		if(localStorage.seedInput) {
+			DOM.seedInput.value = localStorage.seedInput
+		}
+		
 	},
 }
 

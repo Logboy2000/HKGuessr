@@ -43,14 +43,14 @@ async function registerPack(data, locations, mapInfo, isCustom = false) {
 
 	let gameMapName = 'custom'
 
-	if(data.map.defaultMap === "images/game/defaultMaps/pharloom.png") {
+	if (data.map.defaultMap === "images/game/defaultMaps/pharloom.png") {
 		gameMapName = 'pharloom'
 	}
-		if(data.map.defaultMap === "images/game/defaultMaps/hallownest.png") {
+	if (data.map.defaultMap === "images/game/defaultMaps/hallownest.png") {
 		gameMapName = 'hallownest'
 	}
 
-	
+
 
 	// Update game mode select options
 	const choiceData = {
@@ -64,7 +64,7 @@ async function registerPack(data, locations, mapInfo, isCustom = false) {
 		gameMapName: gameMapName,
 	};
 
-	
+
 	imagePackMC.addChoice(choiceData);
 
 
@@ -210,9 +210,9 @@ export async function loadInitialData() {
 				console.error(`Error loading ${packName} pack:`, error)
 			}
 		}
-
-		imagePackMC.selectChoiceByIndex(0)
-		imagePackMC.selectChoiceByIndex(1)
+		if (imagePackMC.hasSelection() == false) {
+			imagePackMC.selectChoiceByIndex(0)
+		}
 		return loadedGameModes
 	} catch (error) {
 		console.error('Error loading location data:', error)

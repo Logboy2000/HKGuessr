@@ -1,3 +1,4 @@
+import { GameManager } from "../game";
 export class MultipleChoice {
 	constructor(container, options = []) {
 		this.container = container;
@@ -78,9 +79,11 @@ export class MultipleChoice {
 				if (this.selected.has(option.id)) {
 					this.selected.delete(option.id);
 					choiceDiv.classList.remove('selected');
+					GameManager.saveOptionsToLocalStorage()
 				} else {
 					this.selected.add(option.id);
 					choiceDiv.classList.add('selected');
+					GameManager.saveOptionsToLocalStorage()
 				}
 			});
 		});
@@ -94,10 +97,11 @@ export class MultipleChoice {
 		}
 	}
 
+	//
 	getSelected() {
 		return Array.from(this.selected);
 	}
-
+	// 
 	getSelectedOptions() {
 		return this.options.filter(option => this.selected.has(option.id));
 	}
@@ -117,5 +121,9 @@ export class MultipleChoice {
 		this.options = [];
 		this.selected.clear();
 		this.render();
+	}
+
+	hasSelection() {
+		return this.selected.size > 0;
 	}
 }
