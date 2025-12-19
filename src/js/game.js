@@ -510,6 +510,7 @@ export const GameManager = {
 		// Close any open windows
 		wm.close()
 
+		// blurTimeInput.value is in ms
 		this.totalBlurTime = DOM.blurTimeInput.value * 1000
 
 		// Load the map image for the *first* valid mode

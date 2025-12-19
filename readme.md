@@ -23,7 +23,7 @@ Enable blurring, time limits, and difficulty filters to tailor your experience
 
 
 
-## Local Setup
+## Contributing
 To set up Hollow Guessr locally, follow these steps:
 
 1. Clone the repository:
@@ -47,7 +47,9 @@ npm install
 ```bash
 npm run dev
 ```
-5. Open your web browser
+5. Open your web browser to test
+
+6. READ THE CODE DOCUMENTATION HERE (WIP): [DOCS](https://github.com/Logboy2000/HKGuessr/wiki)
 
 ## Credits
 - **Hollow Knight**: Created by Team Cherry and source of all in game screenshots.

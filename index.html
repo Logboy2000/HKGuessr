@@ -75,6 +75,13 @@
 	</div>
 	<!-- Main script entry point -->
 	<script type="module" src="/src/js/main.js"></script>
+	<script>
+		// go away scammers
+		if (window.top !== window.self) {
+			window.top.location = window.location.href;
+		}
+	</script>
+
 </body>
 
 </html>
