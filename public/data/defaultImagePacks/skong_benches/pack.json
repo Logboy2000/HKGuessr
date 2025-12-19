@@ -1,0 +1,468 @@
+{
+  "name": "Benches (Act 3)",
+  "gameModeId": "silksong_benches",
+  "author": "DETONAGAME",
+  "thumbnail": "images/thumbnail.png",
+  "locations": [
+    {
+      "x": 1861,
+      "y": 3233,
+      "difficulty": "2",
+      "image": "images/loc-1-01.PNG"
+    },
+    {
+      "x": 2272,
+      "y": 3038,
+      "difficulty": "3",
+      "image": "images/loc-2-02.PNG"
+    },
+    {
+      "x": 1888,
+      "y": 2954,
+      "difficulty": "2.5",
+      "image": "images/loc-3-03.PNG"
+    },
+    {
+      "x": 2270,
+      "y": 2830,
+      "difficulty": "3",
+      "image": "images/loc-4-04.PNG"
+    },
+    {
+      "x": 2006,
+      "y": 2769,
+      "difficulty": "1.5",
+      "image": "images/loc-5-05.PNG"
+    },
+    {
+      "x": 1894,
+      "y": 2777,
+      "difficulty": 5,
+      "image": "images/loc-6-06__OMG_.PNG"
+    },
+    {
+      "x": 2065,
+      "y": 2635,
+      "difficulty": "4",
+      "image": "images/loc-7-07__forge_daughter_.PNG"
+    },
+    {
+      "x": 2207,
+      "y": 2592,
+      "difficulty": "4.8",
+      "image": "images/loc-8-08__shrine_after_lace_.PNG"
+    },
+    {
+      "x": 1923,
+      "y": 2500,
+      "difficulty": "5.9",
+      "image": "images/loc-9-09__the_one_deep_docks_bench_you_pay_for_.PNG"
+    },
+    {
+      "x": 2237,
+      "y": 2356,
+      "difficulty": "2.5",
+      "image": "images/loc-10-10__hunter_march_.PNG"
+    },
+    {
+      "x": 1220,
+      "y": 2420,
+      "difficulty": "6",
+      "image": "images/loc-11-11__shrine_after_bell_beast_.PNG"
+    },
+    {
+      "x": 1604,
+      "y": 2495,
+      "difficulty": "3",
+      "image": "images/loc-12-12__RIP_loddie_.PNG"
+    },
+    {
+      "x": 970,
+      "y": 2440,
+      "difficulty": "3",
+      "image": "images/loc-13-13__pre_bell_beast_fight_.PNG"
+    },
+    {
+      "x": 1019,
+      "y": 2385,
+      "difficulty": "2",
+      "image": "images/loc-14-14__just_moss_druid.PNG"
+    },
+    {
+      "x": 1334,
+      "y": 2512,
+      "difficulty": "6.5",
+      "image": "images/loc-15-15__justice_for_these_guys_.PNG"
+    },
+    {
+      "x": 1181,
+      "y": 2574,
+      "difficulty": "6.5",
+      "image": "images/loc-16-16__the_first_bell_toll_.PNG"
+    },
+    {
+      "x": 975,
+      "y": 2740,
+      "difficulty": "2.5",
+      "image": "images/loc-17-17__weavenest_atla_.PNG"
+    },
+    {
+      "x": 588,
+      "y": 2598,
+      "difficulty": "1.5",
+      "image": "images/loc-18-18__theyre_dead_.PNG"
+    },
+    {
+      "x": 409,
+      "y": 2305,
+      "difficulty": "1",
+      "image": "images/loc-19-19__zylotol_wtf_.PNG"
+    },
+    {
+      "x": 1648,
+      "y": 2226,
+      "difficulty": "1",
+      "image": "images/loc-20-20__poor_pavo_.PNG"
+    },
+    {
+      "x": 1639,
+      "y": 2197,
+      "difficulty": "1",
+      "image": "images/loc-21-21__an_incomplete_bellhome_.PNG"
+    },
+    {
+      "x": 1641,
+      "y": 2143,
+      "difficulty": "6",
+      "image": "images/loc-22-22__ORTABLEISBROOKEN_.PNG"
+    },
+    {
+      "x": 1115,
+      "y": 2334,
+      "difficulty": "6.5",
+      "image": "images/loc-23-23__fuck_u_greyroot_.PNG"
+    },
+    {
+      "x": 820,
+      "y": 2209,
+      "difficulty": "8",
+      "image": "images/loc-24-24__lower_bell_toll_in_shellwood_.PNG"
+    },
+    {
+      "x": 949,
+      "y": 2083,
+      "difficulty": "7",
+      "image": "images/loc-25-25__shrine_between_steps_and_wood_.PNG"
+    },
+    {
+      "x": 1375,
+      "y": 2118,
+      "difficulty": "6",
+      "image": "images/loc-26-26__first_of_the_two_bell_tolls_in_shellwood_.PNG"
+    },
+    {
+      "x": 2037,
+      "y": 1942,
+      "difficulty": "4",
+      "image": "images/loc-27-27__aura_.PNG"
+    },
+    {
+      "x": 2264,
+      "y": 2114,
+      "difficulty": "2",
+      "image": "images/loc-28-28__creige_has_antphobia_.PNG"
+    },
+    {
+      "x": 2721,
+      "y": 2102,
+      "difficulty": "6.5",
+      "image": "images/loc-29-29__greymoor_shrine_.PNG"
+    },
+    {
+      "x": 3473,
+      "y": 2104,
+      "difficulty": "6",
+      "image": "images/loc-30-30__verdania_isnt_green_.PNG"
+    },
+    {
+      "x": 2913,
+      "y": 1951,
+      "difficulty": "3",
+      "image": "images/loc-31-31__the_craws_scared_the_shi_put_of_me_.PNG"
+    },
+    {
+      "x": 2447,
+      "y": 1916,
+      "difficulty": "4.5",
+      "image": "images/loc-32-32__troll_bell_toll_sinners_road_edition_.PNG"
+    },
+    {
+      "x": 2460,
+      "y": 1758,
+      "difficulty": "4",
+      "image": "images/loc-33-33__phantom_of_the_organ_.PNG"
+    },
+    {
+      "x": 2313,
+      "y": 2497,
+      "difficulty": "8",
+      "image": "images/loc-34-34__leftmost_bell_toll_in_far_fields_.PNG"
+    },
+    {
+      "x": 2741,
+      "y": 2450,
+      "difficulty": "3",
+      "image": "images/loc-35-35__underworks_lite_.PNG"
+    },
+    {
+      "x": 3412,
+      "y": 2395,
+      "difficulty": "2.5",
+      "image": "images/loc-36-36__ankhlets_dont_work_.PNG"
+    },
+    {
+      "x": 3002,
+      "y": 2275,
+      "difficulty": "4",
+      "image": "images/loc-37-37__b4_karmelita_.PNG"
+    },
+    {
+      "x": 2897,
+      "y": 2635,
+      "difficulty": "1",
+      "image": "images/loc-38-38__simple_seamstress_.PNG"
+    },
+    {
+      "x": 3359,
+      "y": 2674,
+      "difficulty": "7",
+      "image": "images/loc-39-39__weavenest_cindril_.PNG"
+    },
+    {
+      "x": 2720,
+      "y": 2564,
+      "difficulty": "9",
+      "image": "images/loc-40-40__far_fields_bellway_.PNG"
+    },
+    {
+      "x": 707,
+      "y": 1795,
+      "difficulty": "7.7",
+      "image": "images/loc-41-41__blasted_steps_bellway_.PNG"
+    },
+    {
+      "x": 669,
+      "y": 2036,
+      "difficulty": "8",
+      "image": "images/loc-42-42__entrance_to_steps_.PNG"
+    },
+    {
+      "x": 321,
+      "y": 1881,
+      "difficulty": "2",
+      "image": "images/loc-43-43__pinstress_house_.PNG"
+    },
+    {
+      "x": 1081,
+      "y": 1590,
+      "difficulty": "2.5",
+      "image": "images/loc-44-44__maybe_the_quirrel_of_someone_else_.PNG"
+    },
+    {
+      "x": 289,
+      "y": 1486,
+      "difficulty": "4",
+      "image": "images/loc-45-45__koral_bench_.PNG"
+    },
+    {
+      "x": 2662,
+      "y": 1760,
+      "difficulty": "7.5",
+      "image": "images/loc-46-46__bilewater_bellway_.PNG"
+    },
+    {
+      "x": 2951,
+      "y": 1113,
+      "difficulty": "7.5",
+      "image": "images/loc-47-47__putrified_ducts_bellway_.PNG"
+    },
+    {
+      "x": 3323,
+      "y": 1227,
+      "difficulty": "1",
+      "image": "images/loc-48-48__awoooo_.PNG"
+    },
+    {
+      "x": 2746,
+      "y": 1241,
+      "difficulty": "2",
+      "image": "images/loc-49-49__shes_dead_.PNG"
+    },
+    {
+      "x": 2940,
+      "y": 1306,
+      "difficulty": "3",
+      "image": "images/loc-50-50__not_even_close_baby_.PNG"
+    },
+    {
+      "x": 2763,
+      "y": 1349,
+      "difficulty": "1.5",
+      "image": "images/loc-51-51__TROLL_BENCH_LOLZERSSS_.PNG"
+    },
+    {
+      "x": 3177,
+      "y": 1452,
+      "difficulty": "6",
+      "image": "images/loc-52-52__groal_runback_bench_.PNG"
+    },
+    {
+      "x": 793,
+      "y": 1123,
+      "difficulty": "4",
+      "image": "images/loc-53-53__warm_and_cozy_.PNG"
+    },
+    {
+      "x": 822,
+      "y": 867,
+      "difficulty": "6",
+      "image": "images/loc-54-54__fix_the_silkshot_.PNG"
+    },
+    {
+      "x": 237,
+      "y": 1316,
+      "difficulty": "7",
+      "image": "images/loc-55-55__bell_toll_in_mount_fay_.PNG"
+    },
+    {
+      "x": 1006,
+      "y": 1407,
+      "difficulty": "3",
+      "image": "images/loc-56-56__the_slab_bellway_.PNG"
+    },
+    {
+      "x": 1099,
+      "y": 1251,
+      "difficulty": "4",
+      "image": "images/loc-57-57__grindle_was_here_.PNG"
+    },
+    {
+      "x": 970,
+      "y": 1167,
+      "difficulty": "6",
+      "image": "images/loc-58-58__bench_b4_broodmother_.PNG"
+    },
+    {
+      "x": 916,
+      "y": 1122,
+      "difficulty": "7",
+      "image": "images/loc-59-59__bench_b4_prison_break_arena_.PNG"
+    },
+    {
+      "x": 2217,
+      "y": 1465,
+      "difficulty": "3",
+      "image": "images/loc-60-60__le_grand_bellway_.PNG"
+    },
+    {
+      "x": 2080,
+      "y": 808,
+      "difficulty": 5,
+      "image": "images/loc-61-61__terminus_pipe_bench_.PNG"
+    },
+    {
+      "x": 2323,
+      "y": 1193,
+      "difficulty": "1",
+      "image": "images/loc-62-62__justice_for_songclave_.PNG"
+    },
+    {
+      "x": 2465,
+      "y": 1293,
+      "difficulty": "3",
+      "image": "images/loc-64-64__sentinels_collection_.PNG"
+    },
+    {
+      "x": 2557,
+      "y": 1464,
+      "difficulty": "5.9",
+      "image": "images/loc-65-65__lower_vaults_bench_.PNG"
+    },
+    {
+      "x": 2121,
+      "y": 1134,
+      "difficulty": "4",
+      "image": "images/loc-66-66__memorium_bench_.PNG"
+    },
+    {
+      "x": 1933,
+      "y": 583,
+      "difficulty": "6.5",
+      "image": "images/loc-67-67__path_of_mild_inconvenience_.PNG"
+    },
+    {
+      "x": 1900,
+      "y": 1205,
+      "difficulty": "2",
+      "image": "images/loc-68-68__cogwork_core_bench_.PNG"
+    },
+    {
+      "x": 1449,
+      "y": 1181,
+      "difficulty": "8",
+      "image": "images/loc-69-69__that_one_rosary_farm_before_high_halls_.PNG"
+    },
+    {
+      "x": 1821,
+      "y": 1142,
+      "difficulty": "4",
+      "image": "images/loc-70-70__moments_b4_high_halls_arena_.PNG"
+    },
+    {
+      "x": 1501,
+      "y": 1561,
+      "difficulty": "9",
+      "image": "images/loc-71-71__underworks_exit_to_chambers_.PNG"
+    },
+    {
+      "x": 1836,
+      "y": 1448,
+      "difficulty": "2",
+      "image": "images/loc-72-72__whiteward_bench_.PNG"
+    },
+    {
+      "x": 1784,
+      "y": 1332,
+      "difficulty": "8",
+      "image": "images/loc-73-73__this_bench_is_right_below_merwijn_.PNG"
+    },
+    {
+      "x": 1528,
+      "y": 1359,
+      "difficulty": "8",
+      "image": "images/loc-74-74__citadel_spa_.PNG"
+    },
+    {
+      "x": 1993,
+      "y": 1665,
+      "difficulty": "2.5",
+      "image": "images/loc-75-75__twelvth_arquitect_bench_.PNG"
+    },
+    {
+      "x": 1661,
+      "y": 1661,
+      "difficulty": "3.5",
+      "image": "images/loc-76-76__pay_up_.PNG"
+    },
+    {
+      "x": 1372,
+      "y": 1842,
+      "difficulty": "3",
+      "image": "images/loc-77-77__after_the_elevator_fell_.PNG"
+    }
+  ],
+  "map": {
+    "useCustomMap": false,
+    "defaultMap": "images/game/defaultMaps/pharloom.png"
+  }
+}
