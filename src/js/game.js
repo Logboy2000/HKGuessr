@@ -500,6 +500,13 @@ export const GameManager = {
 			return
 		}
 
+		// Reset used locations for the selected game modes
+		selectedGameModeIds.forEach((id) => {
+			if (this.gameModeData[id]) {
+				this.usedLocations[id] = []
+			}
+		})
+
 		// Close any open windows
 		wm.close()
 
