@@ -3,7 +3,7 @@ import { GameManager, DEFAULT_MAP_URL, imagePackMC } from './game.js'
 // Single object to store all game mode data
 
 let defaultImagePacks = []
-const defaultImagePacksFolder = 'data/defaultImagePacks/'
+const defaultImagePacksURL = 'https://hkguessrpacks.pages.dev/'
 
 /**
  * Registers a processed pack by adding it to the game's data,
@@ -140,7 +140,7 @@ async function loadCustomImagePack(file) {
 export async function loadInitialData() {
 	// Loads the list of packs from 'packList.json'
 	try {
-		const response = await fetch('data/defaultImagePacks/packList.json')
+		const response = await fetch('https://hkguessrpacks.pages.dev/packList.json')
 		if (!response.ok) {
 			throw new Error(`HTTP error! Status: ${response.status}`)
 		}
@@ -160,7 +160,7 @@ export async function loadInitialData() {
 			try {
 				// Load the pack.json file
 				const response = await fetch(
-					`${defaultImagePacksFolder}${packName}/pack.json`
+					`${defaultImagePacksURL}${packName}/pack.json`
 				)
 				if (!response.ok) {
 					console.error(`Failed to load ${packName} pack.json`)
@@ -170,7 +170,7 @@ export async function loadInitialData() {
 
 				// Prepend the pack folder path to the thumbnail URL if it exists
 				if (data.thumbnail && !/^(https?:)?\/\//.test(data.thumbnail)) {
-					data.thumbnail = `${defaultImagePacksFolder}${packName}/${data.thumbnail}`
+					data.thumbnail = `${defaultImagePacksURL}${packName}/${data.thumbnail}`
 				}
 
 				// Process locations, creating full image paths
@@ -186,7 +186,7 @@ export async function loadInitialData() {
 						loc.x,
 						loc.y,
 						loc.difficulty,
-						`${defaultImagePacksFolder}${packName}/images/${imageName}`,
+						`${defaultImagePacksURL}${packName}/images/${imageName}`,
 					]
 				})
 
@@ -196,7 +196,7 @@ export async function loadInitialData() {
 					if (data.map.useCustomMap) {
 						mapInfo = {
 							useCustomMap: true,
-							mapUrl: `${defaultImagePacksFolder}${packName}/${data.map.mapImage}`,
+							mapUrl: `${defaultImagePacksURL}${packName}/${data.map.mapImage}`,
 						}
 					} else if (data.map.defaultMap) {
 						mapInfo.defaultMap = data.map.defaultMap

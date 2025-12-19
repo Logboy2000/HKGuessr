@@ -32,7 +32,6 @@ To set up Hollow Guessr locally, follow these steps:
 ```bash
 git clone https://github.com/logboy2000/HKGuessr.git
 ```
-*Due to the repo containing all ~2-3GB of image packs, the clone may take a while*
 
 2. Navigate to the project directory:
 ```bash
