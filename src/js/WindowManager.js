@@ -3,6 +3,8 @@
  */
 export default class WindowManager {
 	constructor() {
+		this.windowOpen = new Event('gameWindowOpen')
+		this.windowsClose = new Event('gameWindowsClosed');
 		this.windows = new Map()
 		this.modalOverlay = document.getElementById('modalOverlay')
 		this.currentlyOpen = null
@@ -50,10 +52,6 @@ export default class WindowManager {
 
 		const { element, onOpen } = config
 
-		// Show the overlay and set the modal-open class.
-		document.body.classList.add('modal-open')
-		if (this.modalOverlay) this.modalOverlay.classList.add('visible')
-
 		// Make the window visible.
 		element.style.display = 'flex'
 		// Use a timeout to allow the display property to apply before adding the class for transition.
@@ -72,6 +70,7 @@ export default class WindowManager {
 				focusable[0].focus()
 			}
 		}, 10) // A small delay is sufficient.
+		document.dispatchEvent(this.windowOpen)
 	}
 
 	/**
@@ -101,13 +100,18 @@ export default class WindowManager {
 
 		this.currentlyOpen = null
 
-		// Hide the overlay and remove the modal-open class.
-		const imageLoadingVisible = document.getElementById('loadingText')?.style.display !== 'none'
-		const mapLoadingVisible = document.getElementById('mapLoadingText')?.style.display !== 'none'
-
-		if (!imageLoadingVisible && !mapLoadingVisible) {
-			document.body.classList.remove('modal-open')
-			if (this.modalOverlay) this.modalOverlay.classList.remove('visible')
+		if (!this.areAnyWindowsVisible()){
+			document.dispatchEvent(this.windowsClose)
 		}
+		
 	}
+
+	areAnyWindowsVisible() {
+		return Array.from(this.windows.values()).some(
+			(config) => config.element.classList.contains('visible')
+		)
+	}
+
+	
+
 }

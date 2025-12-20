@@ -102,9 +102,10 @@ export const GameMap = {
 			console.error('Failed to load map image:', error)
 			// Fallback or error handling for image loading
 		} finally {
-			if (mapLoadingEl) mapLoadingEl.style.display = 'none'
+			DOM.loadingText.innerText = 'Loading Map'
 		}
 	},
+
 
 
 

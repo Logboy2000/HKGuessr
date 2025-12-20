@@ -70,14 +70,6 @@ img {
 
 
 
-/* Dimming / backdrop effect when a modal is open */
-.modal-open #mapContainer,
-.modal-open #locationImg,
-.modal-open #controlsContainer {
-	filter: blur(2px) saturate(0.8);
-	opacity: 0.4;
-	transition: all 0.28s ease;
-}
 
 /* Overlay that sits behind modals and blocks clicks */
 .modal-overlay {
@@ -105,7 +97,7 @@ img {
 }
 
 
-#loadingText, #mapLoadingText  {
+#loadingIndicator  {
 	position: fixed;
 	top: 50%;
 	left: 50%;
@@ -113,7 +105,25 @@ img {
 	font-size: 2rem;
 	color: #fff;
 	z-index: 1;
+	flex-direction: column;
+	text-align: center;
 }
+
+#loadingIndicator img {
+	animation: spin 0.5s linear infinite;
+	width: 50px;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+
 
 
 #mapCanvas {
