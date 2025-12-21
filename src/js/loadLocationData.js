@@ -43,14 +43,17 @@ async function registerPack(data, locations, mapInfo, isCustom = false) {
 
 	let gameMapName = 'custom'
 
-	if (data.map.defaultMap === "images/game/defaultMaps/pharloom.png") {
+	if (
+		data.map.defaultMap === 'images/game/defaultMaps/pharloom.png' ||
+		data.map.defaultMap === 'pharloom'
+	) {
 		gameMapName = 'pharloom'
-	}
-	if (data.map.defaultMap === "images/game/defaultMaps/hallownest.png") {
+	} else if (
+		data.map.defaultMap === 'images/game/defaultMaps/hallownest.png' ||
+		data.map.defaultMap === 'hallownest'
+	) {
 		gameMapName = 'hallownest'
 	}
-
-
 
 	// Update game mode select options
 	const choiceData = {
@@ -62,13 +65,12 @@ async function registerPack(data, locations, mapInfo, isCustom = false) {
 		author: data.author || 'Unknown',
 		imageCount: locations.length,
 		gameMapName: gameMapName,
-	};
+	}
 
+	imagePackMC.addChoice(choiceData)
 
-	imagePackMC.addChoice(choiceData);
-
-
-	console.log("Pack Registered:", choiceData.id)
+	console.log('Pack Registered:', choiceData.id)
+	console.log(packData)
 
 	return packData
 }
@@ -124,7 +126,17 @@ async function loadCustomImagePack(file) {
 					mapUrl: URL.createObjectURL(blob),
 				}
 			} else if (data.map.defaultMap) {
-				mapInfo.defaultMap = data.map.defaultMap
+				if (
+					data.map.defaultMap === 'images/game/defaultMaps/pharloom.png' ||
+					data.map.defaultMap === 'pharloom'
+				) {
+					mapInfo.defaultMap = 'images/game/defaultMaps/pharloom.png'
+				} else if (
+					data.map.defaultMap === 'images/game/defaultMaps/hallownest.png' ||
+					data.map.defaultMap === 'hallownest'
+				) {
+					mapInfo.defaultMap = 'images/game/defaultMaps/hallownest.png'
+				}
 			}
 		}
 
@@ -140,7 +152,9 @@ async function loadCustomImagePack(file) {
 export async function loadInitialData() {
 	// Loads the list of packs from 'packList.json'
 	try {
-		const response = await fetch('https://hkguessrpacks.pages.dev/packList.json')
+		const response = await fetch(
+			'https://hkguessrpacks.pages.dev/packList.json'
+		)
 		if (!response.ok) {
 			throw new Error(`HTTP error! Status: ${response.status}`)
 		}

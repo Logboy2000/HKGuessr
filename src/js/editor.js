@@ -52,15 +52,17 @@ const PACK_SCHEMA = [
  * When a pack is imported, this state is updated.
  * When a pack is exported, this state is used to generate the pack.json file.
  */
-const state = { // This will be populated dynamically from the schema
+const state = {
+	// This will be populated dynamically from the schema
 	locations: [], // Array of location objects
 	uploadedFiles: {}, // Maps filename (e.g., '1.png') to File object
 	selectedLocationId: null, // ID of the currently selected location
 	nextLocationId: 1, // Counter for unique location IDs
 	isPlacingNewPin: false, // Flag for the "Add New Location" mode
-	defaultMapUrl: 'images/game/defaultMaps/hallownest.png',
+	defaultMapName: 'hallownest',
+	defaultMapsUrl: 'images/game/defaultMaps/',
 	customMapFile: null, // Holds the File object for the custom map.
-	customMapUrl: 'images/game/defaultMaps/hallownest.png', // URL for the currently displayed map image.
+	currentMapUrl: 'images/game/defaultMaps/hallownest.png', // URL for the currently displayed map image.
 	mapImageWidth: 4498,
 	mapImageHeight: 2901,
 	contributors: [], // Array of contributor objects {images, name, notes}
@@ -90,7 +92,7 @@ const bounds = [
 	[state.mapImageHeight, state.mapImageWidth],
 ]
 // Use the state's customMapUrl for the initial image overlay
-const imageOverlay = L.imageOverlay(state.customMapUrl, bounds).addTo(map)
+const imageOverlay = L.imageOverlay(state.currentMapUrl, bounds).addTo(map)
 
 imageOverlay.on('load', function () {
 	// `this` is the imageOverlay
@@ -180,15 +182,15 @@ mapImageUploadInput.addEventListener('change', (e) => {
 	if (!file) return
 
 	// Revoke the previous URL to free up memory
-	if (state.customMapFile && state.customMapUrl.startsWith('blob:')) {
-		URL.revokeObjectURL(state.customMapUrl)
+	if (state.customMapFile && state.currentMapUrl.startsWith('blob:')) {
+		URL.revokeObjectURL(state.currentMapUrl)
 	}
 
 	state.customMapFile = file
-	state.customMapUrl = URL.createObjectURL(file)
+	state.currentMapUrl = URL.createObjectURL(file)
 
 	// Update the image overlay on the map. The 'load' event will handle resizing.
-	imageOverlay.setUrl(state.customMapUrl)
+	imageOverlay.setUrl(state.currentMapUrl)
 	mapImageUploadLabel.textContent = file.name
 })
 
@@ -277,11 +279,13 @@ function initializeSchemaDrivenUI() {
 				// Store the file object to be zipped later
 				state.uploadedFiles[prop.fileName] = file
 				// Store the path for pack.json
-				state[prop.stateKey] = `images/${prop.fileName}`
+				state[prop.stateKey] = prop.fileName
 
 				// Update UI
 				previewImg.src = URL.createObjectURL(file)
-				fileLabel.querySelector('span').textContent = `Change Thumbnail (${file.name})`
+				fileLabel.querySelector(
+					'span'
+				).textContent = `Change Thumbnail (${file.name})`
 			})
 
 			formGroup.append(label, fileLabel, fileInput, previewImg)
@@ -310,8 +314,8 @@ function clearAllData() {
 	})
 
 	// Revoke any blob URLs to prevent memory leaks
-	if (state.customMapFile && state.customMapUrl.startsWith('blob:')) {
-		URL.revokeObjectURL(state.customMapUrl)
+	if (state.customMapFile && state.currentMapUrl.startsWith('blob:')) {
+		URL.revokeObjectURL(state.currentMapUrl)
 	}
 
 	// Reset state properties based on the schema
@@ -324,9 +328,9 @@ function clearAllData() {
 	state.selectedLocationId = null
 	state.nextLocationId = 1
 	state.isPlacingNewPin = false
-	state.defaultMapUrl = 'images/game/defaultMaps/hallownest.png'
+	state.defaultMapName = 'hallownest'
 	state.customMapFile = null
-	state.customMapUrl = state.defaultMapUrl
+	state.currentMapUrl = state.defaultMapsUrl + state.defaultMapName + '.png'
 	state.contributors = []
 
 	// Update UI inputs to reflect cleared state
@@ -334,21 +338,21 @@ function clearAllData() {
 		const inputElement = document.getElementById(prop.id)
 		if (inputElement) {
 			if (prop.type === 'image') {
-				const previewEl = document.getElementById(prop.previewId);
-				const labelEl = document.querySelector(`label[for="${prop.id}"] span`);
-				if (previewEl) previewEl.src = prop.previewDefault;
-				if (labelEl) labelEl.textContent = prop.label;
+				const previewEl = document.getElementById(prop.previewId)
+				const labelEl = document.querySelector(`label[for="${prop.id}"] span`)
+				if (previewEl) previewEl.src = prop.previewDefault
+				if (labelEl) labelEl.textContent = prop.label
 				// Clear the file input value
-				inputElement.value = '';
+				inputElement.value = ''
 			} else {
 				inputElement.value = prop.defaultValue
 			}
 		}
 	})
 
-	defaultMapSelector.value = 'hallownest.png'
+	defaultMapSelector.value = 'hallownest'
 	mapImageUploadLabel.textContent = 'Upload Custom Map Image'
-	imageOverlay.setUrl(state.customMapUrl)
+	imageOverlay.setUrl(state.currentMapUrl)
 
 	// Reset UI components
 	closeLocationDetails()
@@ -551,8 +555,12 @@ deleteLocationBtn.addEventListener('click', () => {
 defaultMapSelector.addEventListener('change', (e) => {
 	const newValue = e.target.value
 	state.customMapFile = null // Clear any custom map file
-	state.defaultMapUrl = `images/game/defaultMaps/${newValue}`
-	imageOverlay.setUrl(state.defaultMapUrl)
+	state.defaultMapName = `${newValue}`
+	if (newValue === 'pharloom') {
+		imageOverlay.setUrl('images/game/defaultMaps/pharloom.png')
+	} else {
+		imageOverlay.setUrl('images/game/defaultMaps/hallownest.png')
+	}
 })
 
 // --- 5. Map Interaction ---
@@ -642,17 +650,17 @@ importFileInput.addEventListener('change', async (e) => {
 		}
 
 		// Handle thumbnail import
-		const thumbProp = PACK_SCHEMA.find(p => p.stateKey === 'thumbnail');
+		const thumbProp = PACK_SCHEMA.find((p) => p.stateKey === 'thumbnail')
 		if (thumbProp && packData[thumbProp.packKey]) {
-			const thumbFileInZip = zip.file(packData[thumbProp.packKey]);
+			const thumbFileInZip = zip.file(packData[thumbProp.packKey])
 			if (thumbFileInZip) {
-				const thumbBlob = await thumbFileInZip.async('blob');
-				const thumbFile = new File([thumbBlob], thumbProp.fileName);
-				state.uploadedFiles[thumbProp.fileName] = thumbFile;
-				state[thumbProp.stateKey] = packData[thumbProp.packKey];
+				const thumbBlob = await thumbFileInZip.async('blob')
+				const thumbFile = new File([thumbBlob], thumbProp.fileName)
+				state.uploadedFiles[thumbProp.fileName] = thumbFile
+				state[thumbProp.stateKey] = thumbProp.fileName
 
-				const previewEl = document.getElementById(thumbProp.previewId);
-				if (previewEl) previewEl.src = URL.createObjectURL(thumbFile);
+				const previewEl = document.getElementById(thumbProp.previewId)
+				if (previewEl) previewEl.src = URL.createObjectURL(thumbFile)
 			}
 		}
 
@@ -663,7 +671,7 @@ importFileInput.addEventListener('change', async (e) => {
 				state.customMapFile = new File([mapBlob], packData.map.mapImage, {
 					type: 'image/png',
 				})
-				state.customMapUrl = URL.createObjectURL(state.customMapFile)
+				state.currentMapUrl = URL.createObjectURL(state.customMapFile)
 				mapImageUploadLabel.textContent = packData.map.mapImage
 				defaultMapSelector.value = 'hallownest.png' // Reset dropdown
 			} else {
@@ -671,24 +679,35 @@ importFileInput.addEventListener('change', async (e) => {
 					`Map image '${packData.map.mapImage}' not found in zip. Using default map.`
 				)
 				state.customMapFile = null
-				state.customMapUrl = state.defaultMapUrl
+				state.currentMapUrl = state.defaultMapName
 				mapImageUploadLabel.textContent = 'Upload Custom Map Image'
 			}
 		} else if (packData.map?.defaultMap) {
 			state.customMapFile = null
-			state.customMapUrl = packData.map.defaultMap
-			state.defaultMapUrl = packData.map.defaultMap
-			defaultMapSelector.value = packData.map.defaultMap.split('/').pop()
+
+			// Migrate old pack format to the new one
+			if (
+				packData.map.defaultMap === 'images/game/defaultMaps/hallownest.png'
+			) {
+				packData.map.defaultMap = 'hallownest'
+			}
+			if (packData.map.defaultMap === 'images/game/defaultMaps/pharloom.png') {
+				packData.map.defaultMap = 'pharloom'
+			}
+			state.currentMapUrl =
+				state.defaultMapsUrl + packData.map.defaultMap + '.png'
+			state.defaultMapName = packData.map.defaultMap
+			defaultMapSelector.value = packData.map.defaultMap
 			mapImageUploadLabel.textContent = 'Upload Custom Map Image'
 		} else {
 			// If no custom map is specified or found, revert to the default
 			state.customMapFile = null
-			state.customMapUrl = state.defaultMapUrl
+			state.currentMapUrl = state.defaultMapsUrl + state.defaultMapName + '.png'
 			mapImageUploadLabel.textContent = 'Upload Map Image (map.png)'
 		}
 
 		// Set the map URL and explicitly wait for it to load before processing locations.
-		await setMapUrlAndWaitForLoad(state.customMapUrl)
+		await setMapUrlAndWaitForLoad(state.currentMapUrl)
 
 		// Now that the map is loaded and dimensions are correct, process locations.
 		const imagesFolder = zip.folder('images')
@@ -805,7 +824,7 @@ downloadPackBtn.addEventListener('click', async () => {
 		} else {
 			packData.map = {
 				useCustomMap: false,
-				defaultMap: state.defaultMapUrl,
+				defaultMap: state.defaultMapName,
 			}
 		}
 
@@ -813,12 +832,18 @@ downloadPackBtn.addEventListener('click', async () => {
 		const imagesFolder = zip.folder('images')
 
 		// Handle thumbnail export
-		const thumbProp = PACK_SCHEMA.find(p => p.stateKey === 'thumbnail');
-		if (thumbProp && state[thumbProp.stateKey] && state.uploadedFiles[thumbProp.fileName]) {
-			const thumbFile = state.uploadedFiles[thumbProp.fileName];
+		const thumbProp = PACK_SCHEMA.find((p) => p.stateKey === 'thumbnail')
+		if (
+			thumbProp &&
+			state[thumbProp.stateKey] &&
+			state.uploadedFiles[thumbProp.fileName]
+		) {
+			const thumbFile = state.uploadedFiles[thumbProp.fileName]
 			// The path is already in packData from the schema loop
-			// Add the thumbnail file to the 'images' folder in the zip
-			imagesFolder.file(thumbProp.fileName, thumbFile)
+			// Ensure pack.json points to the file in root
+			packData[thumbProp.packKey] = thumbProp.fileName
+			// Add the thumbnail file to the root of the zip
+			zip.file(thumbProp.fileName, thumbFile)
 		}
 
 		for (const loc of state.locations) {
@@ -862,7 +887,13 @@ renderLocationsList()
 // - Selection is clamped (no wrapping).
 // - Ignore arrow keys when focus is inside an input/textarea or a contentEditable element.
 window.addEventListener('keydown', (e) => {
-	if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft' && e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return
+	if (
+		e.key !== 'ArrowRight' &&
+		e.key !== 'ArrowLeft' &&
+		e.key !== 'ArrowUp' &&
+		e.key !== 'ArrowDown'
+	)
+		return
 
 	const active = document.activeElement
 	if (!active) return
@@ -873,7 +904,6 @@ window.addEventListener('keydown', (e) => {
 
 	const currentIndex = state.locations.findIndex(
 		(loc) => loc.id === state.selectedLocationId
-		
 	)
 
 	if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
