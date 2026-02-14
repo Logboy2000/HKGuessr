@@ -226,9 +226,7 @@ export async function loadInitialData() {
 				console.error(`Error loading ${packName} pack:`, error)
 			}
 		}
-		if (imagePackMC.hasSelection() == false) {
-			imagePackMC.selectChoiceByIndex(0)
-		}
+
 		return loadedGameModes
 	} catch (error) {
 		console.error('Error loading location data:', error)

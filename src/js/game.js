@@ -2,7 +2,7 @@
 ////// Geoguessr Clone for Hollow Knight //////
 ///////////////////////////////////////////////
 
-//BEWARE THIS SOURCE CODE IS NOW LESS OF AN ABSOLUTE MESS THAN IT USED TO BE//
+//BEWARE THIS SOURCE CODE IS NOW LESS OF AN ABSOLUTE MESS THAN IT USED TO BE (but still a mess)//
 
 // Variable that can be changed from console to get various debug info
 window.debugMode = false
@@ -112,6 +112,9 @@ export const GameManager = {
     })
 
     this.loadOptionsFromLocalStorage()
+    if (imagePackMC.hasSelection() == false) {
+			imagePackMC.selectChoiceByIndex(0)
+		}
 
     // --- Add all windows to the WindowManager ---
     wm.add({
