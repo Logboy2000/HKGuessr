@@ -48,11 +48,13 @@ async function registerPack(data, locations, mapInfo, isCustom = false) {
 		data.map.defaultMap === 'pharloom'
 	) {
 		gameMapName = 'pharloom'
+		packData.map.defaultMap = 'images/game/defaultMaps/pharloom.png'
 	} else if (
 		data.map.defaultMap === 'images/game/defaultMaps/hallownest.png' ||
 		data.map.defaultMap === 'hallownest'
 	) {
 		gameMapName = 'hallownest'
+		packData.map.defaultMap = 'images/game/defaultMaps/hallownest.png'
 	}
 
 	// Update game mode select options

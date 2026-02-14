@@ -90,7 +90,6 @@ export const GameManager = {
    */
   async init(gameData) {
     document.addEventListener('gameWindowOpen', () => {
-      console.log('window open')
       showMenuBlur()
     })
     document.addEventListener('gameWindowsClosed', () => {
