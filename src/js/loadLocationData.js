@@ -3,7 +3,8 @@ import { GameManager, DEFAULT_MAP_URL, imagePackMC } from './game.js'
 // Single object to store all game mode data
 
 let defaultImagePacks = []
-const defaultImagePacksURL = 'https://hkguessrpacks.pages.dev/'
+const defaultImagePacksURL = 'https://hg-cdn-worker.loganhowarth.workers.dev/'
+
 
 /**
  * Registers a processed pack by adding it to the game's data,
