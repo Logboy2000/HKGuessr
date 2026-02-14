@@ -15,6 +15,7 @@ export default defineConfig({
         donate: resolve(__dirname, 'donate.html'),
         discord: resolve(__dirname, 'discord.html'),
         imagePacks: resolve(__dirname, 'imagePacks.html'),
+        archive: resolve(__dirname, 'archive.html')
       },
     },
   },

@@ -1,0 +1,127 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="src/styles/style.css">
+    <style>
+        body {
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #0c0c0c;
+            color: #fff;
+            font-family: 'Trajan', serif;
+        }
+
+        h1 {
+            text-align: center;
+            color: #f0f0f0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #fff, transparent);
+            margin: 1.5rem 0;
+        }
+
+        sub {
+            display: block;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #aaa;
+            font-style: italic;
+        }
+
+        #versionList {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        #versionList li {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        #versionList li:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        #versionList a, a {
+            display: block;
+            padding: 0.8rem;
+            text-decoration: none;
+            color: #60a5fa;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>The Hollow Guessr Archives</h1>
+    <hr>
+    <br>
+    <sub>This page contains links to many old versions of Hollow Guessr, have fun!</sub>    
+    <br>
+    <ul id="versionList">
+
+    </ul>
+    <script>
+        const versions = {
+            "Latest": "https://hollowguessr.pages.dev/",
+            "1.12.7": "https://60ba13c2.hollowguessr.pages.dev/",
+            "1.12.6": "https://b73c8bdd.hollowguessr.pages.dev/",
+            "1.12.5": "https://713af04d.hollowguessr.pages.dev/",
+            "1.12.4": "https://c0e03e2e.hollowguessr.pages.dev/",
+            "1.12.3": "https://fb50f336.hollowguessr.pages.dev/",
+            "1.12.2": "https://3fb440ad.hollowguessr.pages.dev/",
+            "1.12.1": "https://e521f873.hollowguessr.pages.dev/",
+            "1.12.0": "https://dbe6e3c8.hollowguessr.pages.dev/",
+            "1.10.0": "https://b0e42b82.hollowguessr.pages.dev/",
+            "1.9.4": "https://75c22826.hollowguessr.pages.dev",
+            "1.9.3": "https://e2cdfd12.hollowguessr.pages.dev/",
+            "1.9.2": "https://b998486a.hollowguessr.pages.dev/",
+            "1.9.1": "https://a760870f.hollowguessr.pages.dev",
+            "1.9.0": "https://a45644ff.hollowguessr.pages.dev",
+            "1.8.12": "https://e66efbf1.hollowguessr.pages.dev",
+            "1.8.11": "https://e1332bfa.hollowguessr.pages.dev",
+            "1.8.10": "https://e4f095cf.hollowguessr.pages.dev",
+            "1.8.9": "https://c9d5d0a2.hollowguessr.pages.dev",
+            "1.8.8": "https://1ee94f1c.hollowguessr.pages.dev",
+            "1.8.7": "https://e2b2bf95.hollowguessr.pages.dev",
+            "1.8.6": "https://d2746251.hollowguessr.pages.dev",
+            "1.8.5": "https://ff15b8d1.hollowguessr.pages.dev",
+            "1.8.4": "https://d3c7172e.hollowguessr.pages.dev",
+            "1.8.3": "https://ff768e47.hollowguessr.pages.dev",
+            "1.8.2": "https://860b5b97.hollowguessr.pages.dev",
+            "1.8.1": "https://367efc88.hollowguessr.pages.dev",
+            "1.8.0": "https://b7dfdb2b.hollowguessr.pages.dev",            
+            "1.7.2": "https://c77b05cf.hollowguessr.pages.dev",
+            "1.7.1": "https://be91f0ef.hollowguessr.pages.dev",
+            "1.7.0": "https://400eed9a.hollowguessr.pages.dev",
+            "1.6.6": "https://d77b9199.hollowguessr.pages.dev",
+            "1.6.5": "https://6aa3f95a.hollowguessr.pages.dev",
+            "1.6.4": "https://b987a8c8.hollowguessr.pages.dev",
+            "1.6.3": "https://916732d2.hollowguessr.pages.dev",
+            "1.6.2": "https://ce049bd6.hollowguessr.pages.dev",
+            "1.6.1": "https://e4efe69c.hollowguessr.pages.dev",
+            "1.6.0": "https://01526374.hollowguessr.pages.dev",
+            "1.0.0": "https://hollowguessr1.pages.dev"
+
+        }
+        for (const version in versions) {
+            const listItem = document.createElement("li");
+            listItem.innerHTML = `<a href="${versions[version]}">${version}</a>`;
+            document.getElementById("versionList").appendChild(listItem);
+        }
+    </script>
+</body>
+</html>
