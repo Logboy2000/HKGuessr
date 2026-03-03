@@ -13,11 +13,9 @@
 	<link rel="stylesheet" href="src/styles/locationRequest.css" />
 	<script>
 		// Constants for contributors data
-		const PACK_LIST_URL = 'https://hkguessrpacks.pages.dev/packList.json'
-		const DEFAULT_IMAGE_PACKS_FOLDER = 'https://hkguessrpacks.pages.dev/'
+		const CONTRIBUTORS_URL = 'https://hg-cdn-worker.loganhowarth.workers.dev/contributors.json'
 		const MAX_RETRIES = 3
 		const RETRY_DELAY = 1000 // ms
-		const VERSION = '1.0' // Increment this when making changes to the data format
 	</script>
 </head>
 
@@ -45,8 +43,8 @@
 		</ul>
 
 		<h2>Top Image Packs</h2>
-		<h3>IMPORTANT INFORMATION: This leaderboard is out of date and I am activley working on a solution to make it more automated. Thanks for being patient.</h3>
-		<p>Your name will be added here if you submit an image pack!</p>
+		<p>Your name will be added here if you submit images!</p>
+		<a onclick="loadContributors()" style="cursor: pointer; text-decoration: underline;">Reload </a>
 		<div class="table-container">
 			<table class="contributors-table" id="contributorsTable">
 				<thead>
@@ -55,7 +53,6 @@
 						<th>Images</th>
 						<th>Name</th>
 						<th>Pack</th>
-						<th>Notes</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -134,15 +131,12 @@
 				const packCell = document.createElement('td')
 				packCell.textContent = contributor.pack || ''
 
-				const notesCell = document.createElement('td')
-				notesCell.textContent = contributor.notes || ''
 
 				// Append cells to row
 				row.appendChild(placeCell)
 				row.appendChild(imagesCell)
 				row.appendChild(nameCell)
 				row.appendChild(packCell)
-				row.appendChild(notesCell)
 
 				return row
 			}
@@ -183,7 +177,7 @@
 			}
 
 			/**
-			 * Loads and displays the contributors from all image packs
+			 * Loads and displays the contributors from the aggregated contributors endpoint
 			 * @param {number} retryCount - Current retry attempt (default 0)
 			 */
 			async function loadContributors(retryCount = 0) {
@@ -191,85 +185,31 @@
 					// Show loading state
 					showTableMessage('Loading contributors data...')
 
-					// First, load the pack list
-					const packListResponse = await fetch(
-						`${PACK_LIST_URL}?v=${VERSION}&t=${Date.now()}`
+					// Fetch the aggregated contributors data
+					const response = await fetch(
+						`${CONTRIBUTORS_URL}?t=${Date.now()}`
 					)
 
-					if (!packListResponse.ok) {
+					if (!response.ok) {
 						throw new Error(
-							`Failed to load pack list: ${packListResponse.status} ${packListResponse.statusText}`
+							`Failed to load contributors: ${response.status} ${response.statusText}`
 						)
 					}
 
-					const packList = await packListResponse.json()
+					const contributorsData = await response.json()
 
-					if (!Array.isArray(packList)) {
-						throw new Error('Invalid pack list format')
+					if (typeof contributorsData !== 'object' || contributorsData === null) {
+						throw new Error('Invalid contributors data format')
 					}
 
-					// Load all packs and aggregate contributors
-					const allContributors = []
-					for (const packName of packList) {
-						try {
-							const packResponse = await fetch(
-								`${DEFAULT_IMAGE_PACKS_FOLDER}${packName}/pack.json?v=${VERSION}&t=${Date.now()}`
-							)
-
-							if (!packResponse.ok) {
-								console.warn(`Failed to load pack ${packName}`)
-								continue
-							}
-
-							const packData = await packResponse.json()
-
-							if (packData.contributors && Array.isArray(packData.contributors)) {
-								// Add pack name to each contributor
-								packData.contributors.forEach(contributor => {
-									allContributors.push({
-										...contributor,
-										pack: packData.name || packName
-									})
-								})
-							}
-						} catch (error) {
-							console.warn(`Error loading pack ${packName}:`, error)
-							// Continue loading other packs even if one fails
-						}
-					}
-
-					// Aggregate contributors by name, combining their images and packs
-					const contributorMap = new Map()
-					for (const contributor of allContributors) {
-						const key = contributor.name
-						if (contributorMap.has(key)) {
-							const existing = contributorMap.get(key)
-							existing.images += contributor.images
-							// Track unique packs using a Set
-							if (!existing.packSet) {
-								existing.packSet = new Set([existing.pack])
-							}
-							existing.packSet.add(contributor.pack)
-							// Keep the first non-empty notes
-							if (!existing.notes && contributor.notes) {
-								existing.notes = contributor.notes
-							}
-						} else {
-							contributorMap.set(key, {
-								...contributor,
-								packSet: new Set([contributor.pack])
-							})
-						}
-					}
-
-					// Convert pack sets to comma-separated strings
-					const contributors = Array.from(contributorMap.values()).map(contributor => {
-						if (contributor.packSet) {
-							contributor.pack = Array.from(contributor.packSet).join(', ')
-							delete contributor.packSet
-						}
-						return contributor
-					}).sort((a, b) => b.images - a.images)
+					// Convert object to array and sort by totalImages descending
+					const contributors = Object.entries(contributorsData)
+						.map(([name, data]) => ({
+							name,
+							images: data.totalImages,
+							pack: Object.keys(data.packs).join(', ')
+						}))
+						.sort((a, b) => b.images - a.images)
 
 					// Get table element and prepare for new content
 					const tbody = document.querySelector('#contributorsTable tbody')
