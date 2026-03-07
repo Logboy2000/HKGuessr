@@ -15,6 +15,7 @@ import WindowManager from './WindowManager.js'
 import ToastManager from './ToastManager.js'
 import AudioPlayer from './AudioPlayer.js'
 
+
 export const DEFAULT_MAP_URL = 'images/game/defaultMaps/hallownest.png'
 export const imagePackMC = new MultipleChoice(getElem('packChoices'))
 

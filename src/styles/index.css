@@ -58,83 +58,20 @@ body {
     }
 }
 
-.moving {
-    animation: fadeIn 1.5s cubic-bezier(0.075, 0.82, 0.165, 1);
-}
 
-#silksong-promo {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-    padding: 15px;
-    background-color: rgba(0, 0, 0, 0.6);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    max-width: 440px;
-    text-align: left;
-}
 
 /* Mobile responsiveness */
 @media (max-width: 600px) {
     #title-image {
         max-width: 80%;
     }
-
-    .hk-button {
-        padding: 12px 50px;
-        font-size: 1.5rem;
-    }
-    #silksong-promo {
-        font-size: 0.4rem;
-        padding: 10px;
-        max-width: 90%;
-    }
-    #silksong-promo p, #silksong-promo ul {
-        font-size: 0.5rem !important; 
-    }
 }
 
 
 
-#silksong-promo p, #silksong-promo ul{
-    margin: 5px 0;
-    font-size: 0.7rem;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-}
 
-#silksong-promo li {
-    margin-left: 2rem;
-}
 
-#silksong-promo a {
-    color: #a0cff8;
-    text-decoration: none;
-    transition: color 0.3s;
-    text-shadow: none;
-}
 
-#footer-info {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    user-select: none;
-    text-align: left;
-    font-size: 0.875rem; /* 14px */
-    color: rgba(255, 255, 255, 0.7);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-#footer-info a {
-    color: inherit;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-#footer-info a:hover {
-    color: white;
-}
 #randomText {
     font-style: italic;
     padding-bottom: 20px;

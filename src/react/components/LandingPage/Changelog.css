@@ -1,0 +1,43 @@
+#changelog {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    max-width: 440px;
+    text-align: left;
+}
+
+#changelog p, #changelog ul{
+    margin: 5px 0;
+    font-size: 0.7rem;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+#changelog ul li {
+    margin-left: 2rem;
+    font-family: "Arial, sans-serif"; 
+    font-size: 0.8rem;
+}
+
+#changelog a {
+    color: #a0cff8;
+    text-decoration: none;
+    transition: color 0.3s;
+    text-shadow: none;
+}
+
+@media (max-width: 600px) {
+    #changelog {
+        font-size: 0.4rem;
+        padding: 10px;
+        max-width: 90%;
+    }
+    #changelog p, #changelog ul {
+        font-size: 0.5rem !important; 
+    }
+}
+
+

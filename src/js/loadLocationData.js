@@ -1,4 +1,5 @@
 import { GameManager, DEFAULT_MAP_URL, imagePackMC } from './game.js'
+import JSZip from 'jszip';
 
 // Single object to store all game mode data
 
