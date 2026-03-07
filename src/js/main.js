@@ -1,5 +1,3 @@
-// /home/logan/Programming/Games/HKGuessr/src/js/main.js
-
 // --- Firebase Initialization ---
 const firebaseConfig = {
             apiKey: "AIzaSyBZhZ5ONdvvGS0FbOC-BhmTWZgp0d8bqWc",
