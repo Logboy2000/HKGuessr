@@ -1,10 +1,9 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
-import LandingPage from "./LandingPage"
-import "../js/embedRedirector.js"
+import App from "./App"
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <LandingPage />
+    <App />
   </React.StrictMode>
 )

@@ -1,8 +1,19 @@
-import Changelog from "./components/LandingPage/Changelog"
-import Button from "./components/Button/Button"
-import "./LandingPage.css"
+import Changelog from "../components/Changelog/Changelog"
+import Button from "../components/Button/Button"
+import { useEffect } from "react"
 
 export default function LandingPage() {
+	useEffect(() => {
+
+		const style = document.createElement("link")
+		style.rel = "stylesheet"
+		style.href = "/src/react/pages/LandingPage.css"
+		document.head.appendChild(style)
+
+		return () => {
+			document.head.removeChild(style)
+		}
+	}, [])
 	return (
 		<>
 			<div
@@ -20,7 +31,7 @@ export default function LandingPage() {
 					<Button href="donate.html">Donate</Button>
 					<Button href="discord.html">Discord</Button>
 					<Button href="https://github.com/Logboy2000/HKGuessr">GitHub</Button>
-					<Button href="credits.html">Credits</Button>
+					<Button href="/credits">Credits</Button>
 				</div>
 			</div>
 

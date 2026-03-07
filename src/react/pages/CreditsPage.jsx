@@ -1,0 +1,294 @@
+import Button from "../components/Button/Button"
+import { useEffect } from "react"
+
+export default function CreditsPage() {
+	useEffect(() => {
+        loadContributors()
+
+		const style = document.createElement("link")
+		style.rel = "stylesheet"
+		style.href = "/src/react/pages/CreditsPage.css"
+		document.head.appendChild(style)
+
+		return () => {
+			document.head.removeChild(style)
+		}
+	}, [])
+
+	// Constants for contributors data
+	const CONTRIBUTORS_URL =
+		"https://hg-cdn-worker.loganhowarth.workers.dev/contributors.json"
+	const MAX_RETRIES = 3
+	const RETRY_DELAY = 1000 // ms
+	/**
+	 * Gets the ordinal suffix for a number (1st, 2nd, 3rd, etc.)
+	 * @param {number} i - The number to get the suffix for
+	 * @return {string} The number with its ordinal suffix
+	 */
+	function getOrdinalSuffix(i) {
+		const j = i % 10
+		const k = i % 100
+
+		if (j === 1 && k !== 11) {
+			return i + "st"
+		} else if (j === 2 && k !== 12) {
+			return i + "nd"
+		} else if (j === 3 && k !== 13) {
+			return i + "rd"
+		} else {
+			return i + "th"
+		}
+	}
+
+	/**
+	 * Creates a row element for a contributor
+	 * @param {Object} contributor - The contributor data
+	 * @param {number} place - The place/rank of the contributor
+	 * @return {HTMLElement} The table row element
+	 */
+	function createContributorRow(contributor, place) {
+		const row = document.createElement("tr")
+
+		// Add medal class for top positions
+		if (place === 1) {
+			row.classList.add("gold-medal")
+		} else if (place === 2) {
+			row.classList.add("silver-medal")
+		} else if (place === 3) {
+			row.classList.add("bronze-medal")
+		}
+
+		// Format position text
+		const positionText = getOrdinalSuffix(place)
+
+		const placeCell = document.createElement("td")
+		placeCell.textContent = positionText
+
+		const imagesCell = document.createElement("td")
+		imagesCell.textContent = contributor.images
+
+		const nameCell = document.createElement("td")
+		nameCell.textContent = contributor.name
+
+		const packCell = document.createElement("td")
+		packCell.textContent = contributor.pack || ""
+
+		// Append cells to row
+		row.appendChild(placeCell)
+		row.appendChild(imagesCell)
+		row.appendChild(nameCell)
+		row.appendChild(packCell)
+
+		return row
+	}
+
+	/**
+	 * Shows a message in the contributors table
+	 * @param {string} message - The message to display
+	 * @param {boolean} showReloadButton - Whether to show a reload button
+	 */
+	function showTableMessage(message, showReloadButton = false) {
+		const tbody = document.querySelector("#contributorsTable tbody")
+		tbody.innerHTML = ""
+
+		const row = document.createElement("tr")
+		const cell = document.createElement("td")
+
+		cell.setAttribute("colspan", "5")
+		cell.style.textAlign = "center"
+		cell.style.padding = "20px"
+
+		if (showReloadButton) {
+			const messageSpan = document.createElement("span")
+			messageSpan.textContent = message
+
+			const reloadButton = document.createElement("button")
+			reloadButton.textContent = "Reload Data"
+			reloadButton.style.marginLeft = "15px"
+			reloadButton.addEventListener("click", () => loadContributors())
+
+			cell.appendChild(messageSpan)
+			cell.appendChild(reloadButton)
+		} else {
+			cell.textContent = message
+		}
+
+		row.appendChild(cell)
+		tbody.appendChild(row)
+	}
+
+	/**
+	 * Loads and displays the contributors from the aggregated contributors endpoint
+	 * @param {number} retryCount - Current retry attempt (default 0)
+	 */
+	async function loadContributors(retryCount = 0) {
+		try {
+			// Show loading state
+			showTableMessage("Loading contributors data...")
+
+			// Fetch the aggregated contributors data
+			const response = await fetch(`${CONTRIBUTORS_URL}?t=${Date.now()}`)
+
+			if (!response.ok) {
+				throw new Error(
+					`Failed to load contributors: ${response.status} ${response.statusText}`,
+				)
+			}
+
+			const contributorsData = await response.json()
+
+			if (typeof contributorsData !== "object" || contributorsData === null) {
+				throw new Error("Invalid contributors data format")
+			}
+
+			// Convert object to array and sort by totalImages descending
+			const contributors = Object.entries(contributorsData)
+				.map(([name, data]) => ({
+					name,
+					images: data.totalImages,
+					pack: Object.keys(data.packs).join(", "),
+				}))
+				.sort((a, b) => b.images - a.images)
+
+			// Get table element and prepare for new content
+			const tbody = document.querySelector("#contributorsTable tbody")
+			tbody.innerHTML = ""
+
+			if (contributors.length === 0) {
+				showTableMessage("No contributors found.", true)
+				return
+			}
+
+			// Track the place/rank
+			let currentPlace = 1
+			let previousImages = null
+			const fragment = document.createDocumentFragment()
+
+			// Add each contributor to the table
+			contributors.forEach((contributor, index) => {
+				// Update the place/rank when the image count changes
+				if (previousImages !== null && previousImages !== contributor.images) {
+					currentPlace = index + 1
+				}
+				previousImages = contributor.images
+
+				// Create and add the row
+				const row = createContributorRow(contributor, currentPlace)
+				fragment.appendChild(row)
+			})
+
+			// Add all rows to the table at once (better performance)
+			tbody.appendChild(fragment)
+		} catch (error) {
+			console.error(
+				`Error loading contributors (attempt ${retryCount + 1}/${
+					MAX_RETRIES + 1
+				}):`,
+				error,
+			)
+
+			// Retry loading if we haven't exceeded max retries
+			if (retryCount < MAX_RETRIES) {
+				showTableMessage(
+					`Loading contributors data... (Retry ${
+						retryCount + 1
+					}/${MAX_RETRIES})`,
+				)
+
+				// Wait before retrying
+				await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY))
+				return loadContributors(retryCount + 1)
+			}
+
+			showTableMessage("Error loading contributors data.", true)
+		}
+	}
+
+    
+
+	return (
+		<div className="location-request-content">
+			<div className="button-container">
+				<Button href="/">Back</Button>
+			</div>
+			<br></br>
+			<h1>Credits</h1>
+
+			<h2>Contributors</h2>
+
+			<ul className="suggestions-list">
+				<li>
+					<b>YuriShimoi:</b>
+					<hr></hr>
+					Helped reorganise script and style patterns
+				</li>
+				<li>
+					<b>rblashchuk:</b>
+					<hr></hr>
+					Added initial ground work for different gamemodes and added charms
+					mode
+				</li>
+			</ul>
+
+			<h2>Top Image Packs</h2>
+			<p>Your name will be added here if you submit images!</p>
+			<a
+				style={{ cursor: "pointer", textDecoration: "underline" }}
+				onClick={loadContributors}
+			>
+				Reload{" "}
+			</a>
+			<div className="table-container">
+				<table className="contributors-table" id="contributorsTable">
+					<thead>
+						<tr>
+							<th>Place</th>
+							<th>Images</th>
+							<th>Name</th>
+							<th>Pack</th>
+						</tr>
+					</thead>
+					<tbody>
+						{
+							// Contributors will be loaded here dynamically
+						}
+					</tbody>
+				</table>
+			</div>
+			<h2>Extra Credits</h2>
+			<ul className="suggestions-list">
+				<li>
+					<a href="https://www.teamcherry.com.au/" target="_blank">
+						Team Cherry
+					</a>
+					: Creators of Hollow Knight and Hollow Knight: Silksong.
+				</li>
+				<li>
+					<a href="https://hollowknight.wiki/" target="_blank">
+						The HK Wiki
+					</a>
+					: Source of the initial 54 of the screenshots in Hollow Guessr
+				</li>
+				<li>
+					<a
+						href="https://prashantmohta.github.io/TitleGenerator.HollowKnight/"
+						target="_blank"
+					>
+						HK Title Generator
+					</a>
+					: Used to make the game's logo.
+				</li>
+				<li>
+					<a href="https://www.geoguessr.com/" target="_blank">
+						GeoGuessr
+					</a>
+					: Inspired by the mechanics of GeoGuessr.
+				</li>
+			</ul>
+			<br></br>
+			<div className="button-container">
+				<Button href="/">Back</Button>
+			</div>
+		</div>
+	)
+}
